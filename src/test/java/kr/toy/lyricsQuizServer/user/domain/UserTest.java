@@ -18,4 +18,5 @@ public class UserTest {
     void 사용자는_탈퇴_할_수_있다(){
 
     }
+
 }
