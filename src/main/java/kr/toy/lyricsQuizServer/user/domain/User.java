@@ -3,6 +3,7 @@ package kr.toy.lyricsQuizServer.user.domain;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -71,11 +72,12 @@ public class User {
                 .loginType(loginType)
                 .role(role)
                 .createdAt(createdAt)
-                .updatedAt(updatedAt) // FIXME : update한 시간으로 바뀌어야함.
+                .updatedAt(LocalDateTime.now()) // FIXME : update한 시간으로 바뀌어야함.
                 .build();
     }
 
     public User changeNickName(String nickName){
+        Instant.now();
         return User.builder()
                 .userSeq(userSeq)
                 .nickName(nickName)
