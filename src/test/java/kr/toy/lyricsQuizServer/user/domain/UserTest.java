@@ -10,6 +10,9 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 public class UserTest {
 
+
+    //FIXME : 데이터를 넣어주는 반복 코드 제거하기.
+
     @Test
     void 사용자는_로그인_할_수_있다(){
         User user = User.builder()
@@ -45,7 +48,8 @@ public class UserTest {
 
         String nickName = "changeNickName";
 
-        user = user.changeNickName(nickName);
+        LocalDateTime updateTime = LocalDateTime.now();
+        user = user.changeNickName(nickName, updateTime);
 
         assertThat(user.getNickName()).isEqualTo(nickName);
     }
@@ -62,8 +66,8 @@ public class UserTest {
                 .role(Role.USER)
                 .createdAt(LocalDateTime.now())
                 .build();
-
-        user = user.quit();
+        LocalDateTime quitTime = LocalDateTime.now();
+        user = user.quit(quitTime);
 
         assertThat(user.getIsDeleted()).isTrue();
     }
@@ -82,8 +86,8 @@ public class UserTest {
                 .build();
 
         Role adminRole = Role.ADMIN;
-
-        user = user.grantRole(adminRole);
+        LocalDateTime updateTime = LocalDateTime.now();
+        user = user.grantRole(adminRole, updateTime);
 
         assertThat(user.getRole()).isEqualTo(Role.ADMIN);
 
@@ -101,8 +105,8 @@ public class UserTest {
                 .role(Role.USER)
                 .createdAt(LocalDateTime.now())
                 .build();
-
-        user = user.ban();
+        LocalDateTime banTime = LocalDateTime.now();
+        user = user.ban(banTime);
 
         assertThat(user.getIsBan()).isTrue();
     }

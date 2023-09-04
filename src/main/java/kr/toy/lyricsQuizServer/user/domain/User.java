@@ -61,7 +61,7 @@ public class User {
                 .build();
     }
 
-    public User grantRole(Role role){
+    public User grantRole(Role role, LocalDateTime updateTime){
         return User.builder()
                 .userSeq(userSeq)
                 .nickName(nickName)
@@ -72,11 +72,11 @@ public class User {
                 .loginType(loginType)
                 .role(role)
                 .createdAt(createdAt)
-                .updatedAt(LocalDateTime.now()) // FIXME : update한 시간으로 바뀌어야함.
+                .updatedAt(updateTime) // FIXME : update한 시간으로 바뀌어야함.
                 .build();
     }
 
-    public User changeNickName(String nickName){
+    public User changeNickName(String nickName, LocalDateTime updateTime){
         Instant.now();
         return User.builder()
                 .userSeq(userSeq)
@@ -88,11 +88,11 @@ public class User {
                 .loginType(loginType)
                 .role(role)
                 .createdAt(createdAt)
-                .updatedAt(LocalDateTime.now()) // FIXME : update한 시간으로 바뀌어야함.
+                .updatedAt(updateTime)
                 .build();
     }
 
-    public User quit(){
+    public User quit(LocalDateTime quitTime){
         return User.builder()
                 .userSeq(userSeq)
                 .nickName(nickName)
@@ -103,11 +103,11 @@ public class User {
                 .loginType(loginType)
                 .role(role)
                 .createdAt(createdAt)
-                .updatedAt(LocalDateTime.now()) // FIXME : update한 시간으로 바뀌어야함.
+                .updatedAt(quitTime)
                 .build();
     }
 
-    public User ban(){
+    public User ban(LocalDateTime banTime){
         return User.builder()
                 .userSeq(userSeq)
                 .nickName(nickName)
@@ -118,7 +118,7 @@ public class User {
                 .loginType(loginType)
                 .role(role)
                 .createdAt(createdAt)
-                .updatedAt(updatedAt) // FIXME : update한 시간으로 바뀌어야함.
+                .updatedAt(banTime)
                 .build();
     }
 
