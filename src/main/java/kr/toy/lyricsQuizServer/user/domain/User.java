@@ -46,12 +46,12 @@ public class User {
         this.updatedAt = updatedAt;
     }
 
-    public User login(){
+    public User login(LocalDateTime loginTime){
         return User.builder()
                 .userSeq(userSeq)
                 .nickName(nickName)
                 .email(email)
-                .lastLoginAt(lastLoginAt) // FIXME : 로그인한 시간으로 바뀌어야함.
+                .lastLoginAt(loginTime) // FIXME : 로그인한 시간으로 바뀌어야함.
                 .isBan(isBan)
                 .isDeleted(isDeleted)
                 .loginType(loginType)
@@ -88,7 +88,7 @@ public class User {
                 .loginType(loginType)
                 .role(role)
                 .createdAt(createdAt)
-                .updatedAt(updatedAt) // FIXME : update한 시간으로 바뀌어야함.
+                .updatedAt(LocalDateTime.now()) // FIXME : update한 시간으로 바뀌어야함.
                 .build();
     }
 
@@ -103,7 +103,7 @@ public class User {
                 .loginType(loginType)
                 .role(role)
                 .createdAt(createdAt)
-                .updatedAt(updatedAt) // FIXME : update한 시간으로 바뀌어야함.
+                .updatedAt(LocalDateTime.now()) // FIXME : update한 시간으로 바뀌어야함.
                 .build();
     }
 
