@@ -1,5 +1,6 @@
 package kr.toy.lyricsQuizServer.user.domain;
 
+import kr.toy.lyricsQuizServer.user.domain.dto.UserCreate;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -44,6 +45,23 @@ public class User {
         this.role = role;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
+    }
+
+
+    public static User from(UserCreate userCreate, LocalDateTime createTime){
+        User user = User.builder()
+                .email(userCreate.getEmail())
+                .nickName(userCreate.getNickName())
+                .lastLoginAt(createTime)
+                .isBan(false)
+                .isDeleted(false)
+                .loginType(userCreate.getLoginType())
+                .role(Role.USER)
+                .createdAt(createTime)
+                .updatedAt(createTime)
+                .build();
+
+        return user;
     }
 
     public User login(LocalDateTime loginTime){
