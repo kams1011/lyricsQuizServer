@@ -1,7 +1,11 @@
 package kr.toy.lyricsQuizServer.user.infrastructure;
 
-import kr.toy.lyricsQuizServer.user.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface UserJpaRepository extends JpaRepository<User, Long> {
+import java.util.Optional;
+
+
+public interface UserJpaRepository extends JpaRepository<UserEntity, Long> {
+
+    Optional<UserEntity> findByEmail(String email);
 }

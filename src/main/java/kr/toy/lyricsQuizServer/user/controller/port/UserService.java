@@ -1,6 +1,7 @@
 package kr.toy.lyricsQuizServer.user.controller.port;
 
 import kr.toy.lyricsQuizServer.user.domain.User;
+import org.springframework.stereotype.Service;
 
 public interface UserService {
 
