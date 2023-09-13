@@ -1,0 +1,17 @@
+= User API
+:snippets: build/generated-snippets
+:doctype: book
+:icons: font
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+
+== 회원 가져오기
+
+=== Request
+
+include::{snippets}/user/http-request.adoc[]
+
+=== Response
+
+include::{snippets}/user/http-response.adoc[]
