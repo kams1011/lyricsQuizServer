@@ -6,3 +6,5 @@ spring:
       ddl-auto: update
   profiles:
     include: db
+server:
+  port: 80
