@@ -1,6 +1,6 @@
 <template>
 
-  i'm chatRoom
+  고냥 해보자고
 </template>
 
 <script>
