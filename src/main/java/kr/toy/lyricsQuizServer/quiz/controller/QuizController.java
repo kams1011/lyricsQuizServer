@@ -28,4 +28,14 @@ public class QuizController {
         // 채팅 메시지 처리 로직
         return message;
     }
+
+    //TODO 로비 리스트 API
+
+    //로비 리스트 API
+    //방 제목 검색 API
+    //방장 닉네임 검색 API
+    //같이할 사람 찾는 API
+    //방을 생성하는 API
+    //방에 참석하는 API
+
 }

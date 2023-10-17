@@ -3,7 +3,8 @@
     <meta charset="UTF-8">
     <title>CodePen - Dashboard UI </title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
-    <link rel="stylesheet" href="./style.css">
+<!--    <link rel="stylesheet" href="./src/assets/css/style.css">-->
+
 
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/phosphor-icons@1.4.2/src/css/icons.css"></head>
   <body>
@@ -332,7 +333,8 @@
     </div>
   </main>
   <!-- partial -->
-  <script src="https://unpkg.com/phosphor-icons"></script><script src="./script.js"></script>
+  <component is="script"  src="https://unpkg.com/phosphor-icons"/>
+  <component is="script"  src="../js/script.js"/>
   </body>
 </template>
 
@@ -343,5 +345,6 @@ export default {
 </script>
 
 <style scoped>
-
+@import '../assets/css/style.css';
+/*@import '../assets/js/script.js';*/
 </style>
