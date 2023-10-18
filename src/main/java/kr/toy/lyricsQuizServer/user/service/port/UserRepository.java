@@ -8,5 +8,6 @@ public interface UserRepository {
 
     User getByEmail(String email);
 
+    User getByNickName(String nickName);
 
 }

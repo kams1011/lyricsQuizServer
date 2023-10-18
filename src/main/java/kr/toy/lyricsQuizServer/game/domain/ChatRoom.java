@@ -1,4 +1,4 @@
-package kr.toy.lyricsQuizServer.quiz.domain;
+package kr.toy.lyricsQuizServer.game.domain;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

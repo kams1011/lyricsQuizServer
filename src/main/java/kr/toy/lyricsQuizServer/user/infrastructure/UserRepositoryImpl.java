@@ -24,4 +24,9 @@ public class UserRepositoryImpl implements UserRepository {
     public User getByEmail(String email) {
         return userJpaRepository.findByEmail(email).orElseThrow(NoSuchElementException::new).toModel();
     }
+
+    @Override
+    public User getByNickName(String nickName) {
+        return userJpaRepository.findByNickName(nickName).orElseThrow(NoSuchElementException::new).toModel();
+    }
 }

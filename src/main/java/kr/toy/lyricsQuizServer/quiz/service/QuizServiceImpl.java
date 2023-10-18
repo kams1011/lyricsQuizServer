@@ -40,4 +40,9 @@ public class QuizServiceImpl implements QuizService {
     public void chat(Long roomId, ChatMessage message) {
 
     }
+
+    @Override
+    public void retrieve() {
+
+    }
 }

@@ -18,5 +18,7 @@ public interface QuizService {
 
     void chat(Long roomId, ChatMessage message);
 
+    void retrieve();
+
 
 }

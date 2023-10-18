@@ -23,6 +23,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getByNickName(String nickName) {
+        return userRepository.getByNickName(nickName);
+    }
+
+    @Override
     public User signUp() {
         return null;
     }
