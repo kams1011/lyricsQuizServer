@@ -8,21 +8,21 @@ import java.time.LocalDateTime;
 @Getter
 public class GameRoom {
 
-    private Long roomSeq;
+    private final Long roomSeq;
 
-    private String picture;
+    private final String picture;
 
-    private String roomName;
+    private final String roomName;
 
-    private LocalDateTime startTime;
+    private final LocalDateTime startTime;
 
-    private String managerName;
+    private final String managerName;
 
-    private String topic;
+    private final String topic;
 
-    private Integer attendeeLimit;
+    private final Integer attendeeLimit;
 
-    private Integer attendeeCount;
+    private final Integer attendeeCount;
 
 
     @Builder
