@@ -2,8 +2,6 @@ package kr.toy.lyricsQuizServer.game.controller.port;
 
 public interface GameService {
 
-
-
     public void 로비_게임리스트_조회();
     public void 방_제목_검색();
     public void 방장_닉네임_검색();
