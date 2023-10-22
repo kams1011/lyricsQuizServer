@@ -1,5 +1,6 @@
 package kr.toy.lyricsQuizServer.game.domain;
 
+import kr.toy.lyricsQuizServer.game.infrastructure.GameEntity;
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import lombok.Builder;
@@ -12,8 +13,6 @@ public class Game {
 
     private Long gameRoomSeq;
 
-    private LocalDateTime startTime;
-
     private User manager;
 
     private String topic;
@@ -21,6 +20,12 @@ public class Game {
     private Integer attendeeLimit;
 
     private Integer attendeeCount;
+
+    private LocalDateTime createdAt;
+
+    private LocalDateTime startedAt;
+
+    private LocalDateTime endedAt;
 
     private Quiz quiz;
 
