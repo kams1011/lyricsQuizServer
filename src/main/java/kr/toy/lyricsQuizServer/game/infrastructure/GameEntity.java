@@ -25,7 +25,7 @@ public class GameEntity {
     @JoinColumn(name = "userSeq")
     private UserEntity manager;
 
-    private String topic;
+    private String roomName;
 
     private Integer attendeeLimit;
 
@@ -43,13 +43,13 @@ public class GameEntity {
 
 
     @Builder
-    public GameEntity(Long gameRoomSeq, UserEntity manager, String topic,
+    public GameEntity(Long gameRoomSeq, UserEntity manager, String roomName,
                       Integer attendeeLimit, Integer attendeeCount,
                       LocalDateTime createdAt, LocalDateTime startedAt,
                       LocalDateTime endedAt, QuizEntity quiz){
         this.gameRoomSeq = gameRoomSeq;
         this.manager = manager;
-        this.topic = topic;
+        this.roomName = roomName;
         this.attendeeLimit = attendeeLimit;
         this.attendeeCount = attendeeCount;
         this.createdAt = createdAt;
@@ -62,11 +62,13 @@ public class GameEntity {
     public Game toModel(){
         return Game.builder()
                 .gameRoomSeq(gameRoomSeq)
-                .startTime(startTime)
                 .manager(manager.toModel())
-                .topic(topic)
+                .roomName(roomName)
                 .attendeeLimit(attendeeLimit)
                 .attendeeCount(attendeeCount)
+                .createdAt(createdAt)
+                .startedAt(startedAt)
+                .endedAt(endedAt)
                 .quiz(quiz.toModel())
                 .build();
     }

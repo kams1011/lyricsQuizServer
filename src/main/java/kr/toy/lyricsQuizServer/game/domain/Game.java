@@ -15,7 +15,7 @@ public class Game {
 
     private User manager;
 
-    private String topic;
+    private String roomName;
 
     private Integer attendeeLimit;
 
@@ -31,14 +31,19 @@ public class Game {
 
 
     @Builder
-    public Game(Long gameRoomSeq, LocalDateTime startTime, User manager, String topic, Integer attendeeLimit, Integer attendeeCount, Quiz quiz){
+    public Game(Long gameRoomSeq, User manager, String roomName, Integer attendeeLimit,
+                Integer attendeeCount, LocalDateTime createdAt, LocalDateTime startedAt,
+                LocalDateTime endedAt, Quiz quiz){
         this.gameRoomSeq = gameRoomSeq;
-        this.startTime = startTime;
         this.manager = manager;
-        this.topic = topic;
+        this.roomName = roomName;
         this.attendeeLimit = attendeeLimit;
         this.attendeeCount = attendeeCount;
+        this.createdAt = createdAt;
+        this.startedAt = startedAt;
+        this.endedAt = endedAt;
         this.quiz = quiz;
     }
+
 
 }
