@@ -7,7 +7,7 @@ import kr.toy.lyricsQuizServer.user.service.port.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityNotFoundException;
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -17,19 +17,20 @@ public class GameRepositoryImpl implements GameRepository {
 
     private final GameJpaRepository gameJpaRepository;
     private final UserRepository userRepository;
+
     @Override
-    public List<Game> findAll() {
-        return gameJpaRepository.findAll().stream()
-                .map(gameEntity -> gameEntity.toModel())
+    public List<Game> findAll(Pageable pageable) {
+        return gameJpaRepository.findAll(pageable)
+                .stream().map(GameEntity::toModel)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<Game> findAllByRoomNameOrManager(String topic) {
-        User user = userRepository.get
-        return gameJpaRepository.findAllByRoomNameOrManager(topic)
-                .orElseThrow(() -> new EntityNotFoundException())
-                .toModel();
+    public List<Game> findAllByRoomNameOrManagerName(String word, Pageable pageable) {
+        User user = userRepository.getByNickName(word);
+        return gameJpaRepository.findAllByRoomNameOrManager(word, user, pageable)
+                .stream().map(GameEntity::toModel)
+                .collect(Collectors.toList());
     }
 
 }

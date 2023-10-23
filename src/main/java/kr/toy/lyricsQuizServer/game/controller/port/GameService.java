@@ -5,13 +5,14 @@ import kr.toy.lyricsQuizServer.game.domain.Game;
 import kr.toy.lyricsQuizServer.game.infrastructure.GameEntity;
 import kr.toy.lyricsQuizServer.user.domain.User;
 
+import java.awt.print.Pageable;
 import java.util.List;
 
 public interface GameService {
 
-    List<Game> 로비_게임리스트_조회();
+    List<Game> getGameList(Pageable pageable); //진행중인 상태 필요(시작 전, 진행중). 종료된 방은 안나오게.
 
-    List<GameEntity> findAllByRoomNameOrManager(String roomName, User manager);
+    List<Game> getGameListByWord(String word, Pageable pageable);
 
     void 방_생성();
 
