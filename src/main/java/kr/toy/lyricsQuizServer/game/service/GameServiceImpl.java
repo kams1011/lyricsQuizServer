@@ -2,7 +2,6 @@ package kr.toy.lyricsQuizServer.game.service;
 
 
 import kr.toy.lyricsQuizServer.game.controller.port.GameService;
-import kr.toy.lyricsQuizServer.game.controller.response.GameRoom;
 import kr.toy.lyricsQuizServer.game.domain.Game;
 import kr.toy.lyricsQuizServer.game.domain.dto.GameCreate;
 import kr.toy.lyricsQuizServer.game.infrastructure.GameEntity;
@@ -36,13 +35,15 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void create(GameCreate gameCreate)
+    public Game create(GameCreate gameCreate)
     {
         User user = userRepository.getById(gameCreate.getUserSeq());
         Quiz quiz = quizRepository.getById(gameCreate.getQuizSeq());
         Game game = Game.from(gameCreate, user, quiz);
-        GameEntity gameEntity = new GameEntity().fromModel(user, game, quiz);
+        GameEntity gameEntity = GameEntity.fromModel(user, game, quiz);
+        gameRepository.save(gameEntity);
 
+        return game;
     }
 
     @Override

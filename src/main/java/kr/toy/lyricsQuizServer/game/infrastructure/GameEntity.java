@@ -16,8 +16,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Entity
-//@NoArgsConstructor(access = AccessLevel.PROTECTED)
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "game_entity")
 public class GameEntity {
 
@@ -63,8 +62,6 @@ public class GameEntity {
         this.quiz = quiz;
     }
 
-
-
     public Game toModel(){
         return Game.builder()
                 .gameRoomSeq(gameRoomSeq)
@@ -79,7 +76,7 @@ public class GameEntity {
                 .build();
     }
 
-    public GameEntity fromModel(User manager, Game game, Quiz quiz){
+    public static GameEntity fromModel(User manager, Game game, Quiz quiz){
         GameEntity gameEntity = GameEntity.builder()
                 .manager(UserEntity.fromModel(manager))
                 .roomName(game.getRoomName())
