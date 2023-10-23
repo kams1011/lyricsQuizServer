@@ -1,5 +1,6 @@
 package kr.toy.lyricsQuizServer.game.domain;
 
+import kr.toy.lyricsQuizServer.game.domain.dto.GameCreate;
 import kr.toy.lyricsQuizServer.game.infrastructure.GameEntity;
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
 import kr.toy.lyricsQuizServer.user.domain.User;
@@ -46,4 +47,26 @@ public class Game {
     }
 
 
+    public static Game from(GameCreate gameCreate, User manager, Quiz quiz){
+        return Game.builder()
+                .gameRoomSeq(gameCreate.getQuizSeq())
+                .manager(manager)
+                .roomName(gameCreate.getRoomName())
+                .attendeeLimit(gameCreate.getAttendeeLimit())
+                .quiz(quiz)
+                .build();
+    }
+
+    public void create(LocalDateTime dateTime){
+        this.createdAt = dateTime;
+    }
+    public void start(LocalDateTime dateTime){
+        this.startedAt = dateTime;
+    }
+    public void end(LocalDateTime dateTime){
+        this.endedAt = dateTime;
+    }
+    public void join(Integer joinCount){
+        this.attendeeCount = joinCount;
+    }
 }

@@ -10,4 +10,6 @@ public interface UserRepository {
 
     User getByNickName(String nickName);
 
+
+
 }

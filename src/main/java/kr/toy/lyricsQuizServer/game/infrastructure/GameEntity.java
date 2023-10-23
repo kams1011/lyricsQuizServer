@@ -1,18 +1,23 @@
 package kr.toy.lyricsQuizServer.game.infrastructure;
 
 import kr.toy.lyricsQuizServer.game.domain.Game;
+import kr.toy.lyricsQuizServer.game.domain.dto.GameCreate;
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
 import kr.toy.lyricsQuizServer.quiz.infrastructure.QuizEntity;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.infrastructure.UserEntity;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
 @Entity
+//@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @Table(name = "game_entity")
 public class GameEntity {
 
@@ -38,7 +43,7 @@ public class GameEntity {
     private LocalDateTime endedAt;
 
     @ManyToOne
-    @JoinColumn(name = "quiz_id")
+    @JoinColumn(name = "quizSeq")
     private QuizEntity quiz;
 
 
@@ -59,6 +64,7 @@ public class GameEntity {
     }
 
 
+
     public Game toModel(){
         return Game.builder()
                 .gameRoomSeq(gameRoomSeq)
@@ -71,5 +77,19 @@ public class GameEntity {
                 .endedAt(endedAt)
                 .quiz(quiz.toModel())
                 .build();
+    }
+
+    public GameEntity fromModel(User manager, Game game, Quiz quiz){
+        GameEntity gameEntity = GameEntity.builder()
+                .manager(UserEntity.fromModel(manager))
+                .roomName(game.getRoomName())
+                .attendeeLimit(game.getAttendeeLimit())
+                .attendeeCount(game.getAttendeeCount())
+                .createdAt(game.getCreatedAt())
+                .startedAt(game.getStartedAt())
+                .endedAt(game.getEndedAt())
+                .quiz(QuizEntity.fromModel(quiz))
+                .build();
+        return gameEntity;
     }
 }

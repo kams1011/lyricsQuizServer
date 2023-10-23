@@ -4,11 +4,17 @@ package kr.toy.lyricsQuizServer.game.service;
 import kr.toy.lyricsQuizServer.game.controller.port.GameService;
 import kr.toy.lyricsQuizServer.game.controller.response.GameRoom;
 import kr.toy.lyricsQuizServer.game.domain.Game;
+import kr.toy.lyricsQuizServer.game.domain.dto.GameCreate;
+import kr.toy.lyricsQuizServer.game.infrastructure.GameEntity;
 import kr.toy.lyricsQuizServer.game.service.port.GameRepository;
+import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
+import kr.toy.lyricsQuizServer.quiz.service.QuizRepository;
+import kr.toy.lyricsQuizServer.user.domain.User;
+import kr.toy.lyricsQuizServer.user.service.port.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Pageable;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 @Service
@@ -16,6 +22,8 @@ import java.util.List;
 public class GameServiceImpl implements GameService {
 
     private final GameRepository gameRepository;
+    private final UserRepository userRepository;
+    private final QuizRepository quizRepository;
 
     @Override
     public List<Game> getGameList(Pageable pageable) {
@@ -28,7 +36,12 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void 방_생성() {
+    public void create(GameCreate gameCreate)
+    {
+        User user = userRepository.getById(gameCreate.getUserSeq());
+        Quiz quiz = quizRepository.getById(gameCreate.getQuizSeq());
+        Game game = Game.from(gameCreate, user, quiz);
+        GameEntity gameEntity = new GameEntity().fromModel(user, game, quiz);
 
     }
 

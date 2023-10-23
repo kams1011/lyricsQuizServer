@@ -1,13 +1,16 @@
 package kr.toy.lyricsQuizServer.game.infrastructure;
 
 import kr.toy.lyricsQuizServer.game.domain.Game;
+import kr.toy.lyricsQuizServer.game.domain.dto.GameCreate;
 import kr.toy.lyricsQuizServer.game.service.port.GameRepository;
+import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
+import kr.toy.lyricsQuizServer.quiz.service.QuizRepository;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.service.port.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.awt.print.Pageable;
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,6 +34,11 @@ public class GameRepositoryImpl implements GameRepository {
         return gameJpaRepository.findAllByRoomNameOrManager(word, user, pageable)
                 .stream().map(GameEntity::toModel)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public Game save(GameEntity gameEntity) {
+        return gameJpaRepository.save(gameEntity).toModel();
     }
 
 }

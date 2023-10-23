@@ -4,6 +4,8 @@ package kr.toy.lyricsQuizServer.user.infrastructure;
 import kr.toy.lyricsQuizServer.user.domain.LoginType;
 import kr.toy.lyricsQuizServer.user.domain.Role;
 import kr.toy.lyricsQuizServer.user.domain.User;
+import kr.toy.lyricsQuizServer.user.domain.dto.UserCreate;
+import lombok.Builder;
 import lombok.Getter;
 
 import javax.persistence.*;
@@ -39,6 +41,20 @@ public class UserEntity {
     private LocalDateTime updatedAt;
 
 
+    @Builder
+    public UserEntity(Long userSeq, String email, String nickName, LocalDateTime lastLoginAt, Boolean isBan, Boolean isDeleted, LoginType loginType, Role role, LocalDateTime createdAt, LocalDateTime updatedAt){
+        this.userSeq = userSeq;
+        this.email = email;
+        this.nickName = nickName;
+        this.lastLoginAt = lastLoginAt;
+        this.isBan = isBan;
+        this.isDeleted = isDeleted;
+        this.loginType = loginType;
+        this.role = role;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
     public User toModel(){
         return User.builder()
                 .userSeq(userSeq)
@@ -51,6 +67,20 @@ public class UserEntity {
                 .role(role)
                 .createdAt(createdAt)
                 .updatedAt(updatedAt)
+                .build();
+    }
+
+    public static UserEntity fromModel(User user){
+        return UserEntity.builder()
+                .userSeq(user.getUserSeq())
+                .nickName(user.getNickName())
+                .lastLoginAt(user.getLastLoginAt())
+                .isBan(user.getIsBan())
+                .isDeleted(user.getIsDeleted())
+                .loginType(user.getLoginType())
+                .role(user.getRole())
+                .createdAt(user.getCreatedAt())
+                .updatedAt(user.getUpdatedAt())
                 .build();
     }
 
