@@ -2,6 +2,7 @@ package kr.toy.lyricsQuizServer.quiz.infrastructure;
 
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
 import kr.toy.lyricsQuizServer.user.infrastructure.UserEntity;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "game_entity")
 public class QuizEntity {
 

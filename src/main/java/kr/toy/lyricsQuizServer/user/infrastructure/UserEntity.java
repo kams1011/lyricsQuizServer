@@ -5,14 +5,17 @@ import kr.toy.lyricsQuizServer.user.domain.LoginType;
 import kr.toy.lyricsQuizServer.user.domain.Role;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.domain.dto.UserCreate;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "user_entity")
 public class UserEntity {
 
