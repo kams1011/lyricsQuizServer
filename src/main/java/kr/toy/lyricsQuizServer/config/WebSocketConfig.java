@@ -18,8 +18,10 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/chat").set;
-        registry.addEndpoint("/chat").withSockJS();
+//        registry.addEndpoint("/chat").setAllowedOriginPatterns("*").withSockJS();
+        registry.addEndpoint("/join").setAllowedOrigins("http://localhost:8080")
+                .setAllowedOriginPatterns("*")
+                .withSockJS();
     } // STOMP 확인
 }
 
