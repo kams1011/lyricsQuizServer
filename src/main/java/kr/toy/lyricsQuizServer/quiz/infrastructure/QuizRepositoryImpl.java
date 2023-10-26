@@ -19,4 +19,9 @@ public class QuizRepositoryImpl implements QuizRepository {
                 .orElseThrow(() -> new EntityNotFoundException())
                 .toModel();
     }
+
+    @Override
+    public Quiz save(QuizEntity quizEntity) {
+        return quizJpaRepository.save(quizEntity).toModel();
+    }
 }

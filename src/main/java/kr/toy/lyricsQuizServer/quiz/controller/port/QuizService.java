@@ -2,11 +2,13 @@ package kr.toy.lyricsQuizServer.quiz.controller.port;
 
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.ChatMessage;
+import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizCreate;
 
 public interface QuizService {
 
+    Quiz create(QuizCreate quizCreate);
 
-    Quiz create();
+    Quiz create(QuizCreate quizCreate, String youtubeUrl); // YoutubeUrl로 할 수 있는지 체크.
 
     Quiz update();
 

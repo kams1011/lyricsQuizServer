@@ -7,13 +7,13 @@ import lombok.Getter;
 public class GameCreate {
 
 
-        Long userSeq;
+        private Long userSeq;
 
-        String roomName;
+        private String roomName;
 
-        Integer attendeeLimit;
+        private Integer attendeeLimit;
 
-        Long quizSeq;
+        private Long quizSeq;
 
 
         public GameCreate(Long userSeq, String roomName, Integer attendeeLimit, Long quizSeq){

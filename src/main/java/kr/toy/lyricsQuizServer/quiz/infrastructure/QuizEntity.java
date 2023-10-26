@@ -1,6 +1,7 @@
 package kr.toy.lyricsQuizServer.quiz.infrastructure;
 
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
+import kr.toy.lyricsQuizServer.quiz.domain.QuizMakeType;
 import kr.toy.lyricsQuizServer.user.infrastructure.UserEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -9,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Getter
 @Entity
@@ -22,7 +24,15 @@ public class QuizEntity {
 
     String title;
 
+    String singer;
+
+    QuizMakeType quizMakeType;
+
     String information;
+
+    LocalTime startTime; // 파일 내에 노래 구간 정보.
+
+    LocalTime endTime;
 
     String beforeLyrics;
 
@@ -40,11 +50,15 @@ public class QuizEntity {
 
 
     @Builder
-    public QuizEntity(Long quizSeq, String title, String information, String beforeLyrics, String afterLyrics,
+    public QuizEntity(Long quizSeq, String title, String singer, QuizMakeType quizMakeType, String information, LocalTime startTime, LocalTime endTime, String beforeLyrics, String afterLyrics,
                       String answer, LocalDateTime createdAt, LocalDateTime updatedAt, UserEntity maker){
         this.quizSeq = quizSeq;
         this.title = title;
+        this.singer = singer;
+        this.quizMakeType = quizMakeType;
         this.information = information;
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.beforeLyrics = beforeLyrics;
         this.afterLyrics = afterLyrics;
         this.answer = answer;
@@ -57,7 +71,11 @@ public class QuizEntity {
         return Quiz.builder()
                 .quizSeq(quizSeq)
                 .title(title)
+                .singer(singer)
+                .quizMakeType(quizMakeType)
                 .information(information)
+                .startTime(startTime)
+                .endTime(endTime)
                 .beforeLyrics(beforeLyrics)
                 .afterLyrics(afterLyrics)
                 .answer(answer)
@@ -72,7 +90,11 @@ public class QuizEntity {
         return QuizEntity.builder()
                 .quizSeq(quiz.getQuizSeq())
                 .title(quiz.getTitle())
+                .singer(quiz.getSinger())
+                .quizMakeType(quiz.getQuizMakeType())
                 .information(quiz.getInformation())
+                .startTime(quiz.getStartTime())
+                .endTime(quiz.getEndTime())
                 .beforeLyrics(quiz.getBeforeLyrics())
                 .afterLyrics(quiz.getAfterLyrics())
                 .answer(quiz.getAnswer())

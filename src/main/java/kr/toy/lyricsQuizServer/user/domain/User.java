@@ -46,7 +46,6 @@ public class User {
         this.updatedAt = updatedAt;
     }
 
-
     public static User from(UserCreate userCreate, LocalDateTime createTime){
         User user = User.builder()
                 .email(userCreate.getEmail())
