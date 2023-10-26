@@ -1,7 +1,8 @@
 <template>
 <!--  <img alt="Vue logo" src="./assets/logo.png">-->
 <!--  <HelloWorld msg="Welcome to Your Vue.js App"/>-->
-  <Lobby msg="Welcome to Your Vue.js App"/>
+<!--  <Lobby msg="Welcome to Your Vue.js App"/>-->
+  <Room msg="Welcome to Your Vue.js App"/>
 </template>
 
 <!--<script>-->
@@ -33,6 +34,7 @@
 import Stomp from 'webstomp-client'
 import SockJS from 'sockjs-client'
 import Lobby from './views/Lobby'
+import Room from "@/views/Room";
 export default {
   name: 'App',
   data() {
@@ -94,7 +96,8 @@ export default {
   },
   components: {
     // HelloWorld,
-    Lobby
+    Lobby,
+    Room
   }
 }
 </script>
@@ -106,6 +109,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 60px; /* room.vue에서 헤더가 이상하게 나오니까 해결하기*/
 }
 </style>
