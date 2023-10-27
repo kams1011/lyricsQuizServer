@@ -11,39 +11,39 @@ import java.time.LocalTime;
 @Getter
 public class Quiz {
 
-    Long quizSeq;
+    private Long quizSeq;
 
-    QuizMakeType quizMakeType;
+    private QuizContentType quizContentType;
 
-    String title;
+    private String title;
 
-    String singer;
+    private String singer;
 
-    String information;
+    private String information;
 
-    String beforeLyrics;
+    private String beforeLyrics;
 
-    String afterLyrics;
+    private String afterLyrics;
 
-    String answer;
+    private String answer;
 
-    LocalDateTime createdAt;
+    private LocalDateTime createdAt;
 
-    LocalDateTime updatedAt; // JPAAuditing 사용하면 어떻게 변경할지 생각
-    
-    User maker;
+    private LocalDateTime updatedAt; // JPAAuditing 사용하면 어떻게 변경할지 생각
 
-    LocalTime startTime; // 파일 내에 노래 구간 정보.
+    private User maker;
 
-    LocalTime endTime;
+    private LocalTime startTime; // 파일 내에 노래 구간 정보.
+
+    private LocalTime endTime;
 
     @Builder
-    public Quiz(Long quizSeq, QuizMakeType quizMakeType, String title, String singer, String information, LocalTime startTime, LocalTime endTime, String beforeLyrics,
+    public Quiz(Long quizSeq, QuizContentType quizContentType, String title, String singer, String information, LocalTime startTime, LocalTime endTime, String beforeLyrics,
                 String afterLyrics, String answer, LocalDateTime createdAt, LocalDateTime updatedAt, User maker){
         this.quizSeq = quizSeq;
         this.title = title;
         this.singer = singer;
-        this.quizMakeType = quizMakeType;
+        this.quizContentType = quizContentType;
         this.information = information;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -60,7 +60,7 @@ public class Quiz {
         return Quiz.builder()
                 .title(quizCreate.getTitle())
                 .singer(quizCreate.getSinger())
-                .quizMakeType(quizCreate.getQuizMakeType())
+                .quizContentType(quizCreate.getQuizContentType())
                 .information(quizCreate.getInformation())
                 .startTime(quizCreate.getStartTime())
                 .endTime(quizCreate.getEndTime())

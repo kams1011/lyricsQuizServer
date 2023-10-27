@@ -1,6 +1,6 @@
 package kr.toy.lyricsQuizServer.quiz.domain.dto;
 
-import kr.toy.lyricsQuizServer.quiz.domain.QuizMakeType;
+import kr.toy.lyricsQuizServer.quiz.domain.QuizContentType;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -13,7 +13,7 @@ public class QuizCreate {
 
     private String singer;
 
-    private QuizMakeType quizMakeType;
+    private QuizContentType quizContentType;
     private String information;
 
     private LocalTime startTime; // 파일 내에 노래 구간 정보.
@@ -29,10 +29,10 @@ public class QuizCreate {
     private Long userSeq; // 제작자 고유키
 
     @Builder
-    public QuizCreate(String title, String singer, QuizMakeType quizMakeType, String information, LocalTime startTime, LocalTime endTime, String beforeLyrics, String afterLyrics, String answer, Long userSeq){
+    public QuizCreate(String title, String singer, QuizContentType quizContentType, String information, LocalTime startTime, LocalTime endTime, String beforeLyrics, String afterLyrics, String answer, Long userSeq){
         this.title = title;
         this.singer = singer;
-        this.quizMakeType = quizMakeType;
+        this.quizContentType = quizContentType;
         this.information = information;
         this.startTime = startTime;
         this.endTime = endTime;

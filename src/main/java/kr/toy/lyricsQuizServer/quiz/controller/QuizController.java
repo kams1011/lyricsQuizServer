@@ -19,7 +19,6 @@ public class QuizController {
     private final QuizService quizService;
 
 
-
     @PostMapping("")
     public ResponseEntity<Quiz> create(@RequestBody QuizCreate quizCreate){
 

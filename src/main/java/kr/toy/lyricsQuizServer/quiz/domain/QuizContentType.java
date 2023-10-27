@@ -3,17 +3,17 @@ package kr.toy.lyricsQuizServer.quiz.domain;
 import lombok.Getter;
 
 @Getter
-public enum QuizMakeType {
+public enum QuizContentType {
 
     FILE(0),
-    YOUTUBELINK(1);
+    YOUTUBE(1);
 
 
     private String type;
 
     private int number;
 
-    QuizMakeType(int number){
+    QuizContentType(int number){
         this.number = number;
     }
 

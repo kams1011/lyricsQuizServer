@@ -1,7 +1,7 @@
 package kr.toy.lyricsQuizServer.quiz.infrastructure;
 
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
-import kr.toy.lyricsQuizServer.quiz.domain.QuizMakeType;
+import kr.toy.lyricsQuizServer.quiz.domain.QuizContentType;
 import kr.toy.lyricsQuizServer.user.infrastructure.UserEntity;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -15,7 +15,7 @@ import java.time.LocalTime;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "game_entity")
+@Table(name = "quiz_entity")
 public class QuizEntity {
 
     @Id
@@ -26,7 +26,7 @@ public class QuizEntity {
 
     String singer;
 
-    QuizMakeType quizMakeType;
+    QuizContentType quizContentType;
 
     String information;
 
@@ -50,12 +50,12 @@ public class QuizEntity {
 
 
     @Builder
-    public QuizEntity(Long quizSeq, String title, String singer, QuizMakeType quizMakeType, String information, LocalTime startTime, LocalTime endTime, String beforeLyrics, String afterLyrics,
+    public QuizEntity(Long quizSeq, String title, String singer, QuizContentType quizContentType, String information, LocalTime startTime, LocalTime endTime, String beforeLyrics, String afterLyrics,
                       String answer, LocalDateTime createdAt, LocalDateTime updatedAt, UserEntity maker){
         this.quizSeq = quizSeq;
         this.title = title;
         this.singer = singer;
-        this.quizMakeType = quizMakeType;
+        this.quizContentType = quizContentType;
         this.information = information;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -72,7 +72,7 @@ public class QuizEntity {
                 .quizSeq(quizSeq)
                 .title(title)
                 .singer(singer)
-                .quizMakeType(quizMakeType)
+                .quizContentType(quizContentType)
                 .information(information)
                 .startTime(startTime)
                 .endTime(endTime)
@@ -91,7 +91,7 @@ public class QuizEntity {
                 .quizSeq(quiz.getQuizSeq())
                 .title(quiz.getTitle())
                 .singer(quiz.getSinger())
-                .quizMakeType(quiz.getQuizMakeType())
+                .quizContentType(quiz.getQuizContentType())
                 .information(quiz.getInformation())
                 .startTime(quiz.getStartTime())
                 .endTime(quiz.getEndTime())
