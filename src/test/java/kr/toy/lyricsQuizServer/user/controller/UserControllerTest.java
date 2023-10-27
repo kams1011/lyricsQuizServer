@@ -50,7 +50,7 @@ public class UserControllerTest {
     }
 
     @Test
-    void getByEmail_메서드를_통해_유저_정보를_받아올_수_있다() throws Exception {
+    void getByEmail_메서드를_통해_유저_정보를_받아올_수_있다() throws Exception { // FIXME : 전부 200을 리턴하는 오류가 있음.
 
 
         given(userService.getById(1L))
@@ -68,7 +68,7 @@ public class UserControllerTest {
                         .build());
 
         ResultActions perform = this.mockMvc.perform(
-                RestDocumentationRequestBuilders.get(requestMapping + "1")
+                RestDocumentationRequestBuilders.get(requestMapping + "1234")
         );
 
         perform.andExpect(status().isOk())

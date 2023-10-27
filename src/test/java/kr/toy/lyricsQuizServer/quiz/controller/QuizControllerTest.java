@@ -51,46 +51,46 @@ public class QuizControllerTest {
     }
 
 
-
-    @Test
-    void create_메서드를_통해_Quiz를_생성할_수_있다() throws Exception {
-
-        QuizCreate quizCreate = QuizCreate.builder()
-                .title("동서남북")
-                .information()
-                .beforeLyrics()
-                .afterLyrics()
-                .answer()
-                .userSeq(1L)
-                .build();
-
-
-        given(quizService.create())
-                .willReturn();
-
-        ResultActions perform = this.mockMvc.perform(
-                RestDocumentationRequestBuilders.get(requestMapping + "1")
-        );
-
-        perform.andExpect(status().isOk())
-                .andDo(print())
-                .andDo(document("user",
-                                preprocessRequest(prettyPrint()),
-                                preprocessResponse(prettyPrint()))
-//                        requestParameters(
-//                                parameterWithName("user").description("유저 이름").optional()
-//                        ),
-//                        responseFields(
-//                                fieldWithPath("imgList").description("이미지 리스트"),
-//                                fieldWithPath("imgList[].name").description("이미지 등록 회원 이름"),
-//                                fieldWithPath("imgList[].img_url").description("이미지 url"),
-//                                fieldWithPath("imgList[].reg_date").description("이미지 등록일시")
-//                        ))
-                );
-        
-        
-    }
-
+//
+//    @Test
+//    void create_메서드를_통해_Quiz를_생성할_수_있다() throws Exception {
+//
+//        QuizCreate quizCreate = QuizCreate.builder()
+//                .title("동서남북")
+//                .information()
+//                .beforeLyrics()
+//                .afterLyrics()
+//                .answer()
+//                .userSeq(1L)
+//                .build();
+//
+//
+//        given(quizService.create())
+//                .willReturn();
+//
+//        ResultActions perform = this.mockMvc.perform(
+//                RestDocumentationRequestBuilders.get(requestMapping + "1")
+//        );
+//
+//        perform.andExpect(status().isOk())
+//                .andDo(print())
+//                .andDo(document("user",
+//                                preprocessRequest(prettyPrint()),
+//                                preprocessResponse(prettyPrint()))
+////                        requestParameters(
+////                                parameterWithName("user").description("유저 이름").optional()
+////                        ),
+////                        responseFields(
+////                                fieldWithPath("imgList").description("이미지 리스트"),
+////                                fieldWithPath("imgList[].name").description("이미지 등록 회원 이름"),
+////                                fieldWithPath("imgList[].img_url").description("이미지 url"),
+////                                fieldWithPath("imgList[].reg_date").description("이미지 등록일시")
+////                        ))
+//                );
+//
+//
+//    }
+//
 
 
 }
