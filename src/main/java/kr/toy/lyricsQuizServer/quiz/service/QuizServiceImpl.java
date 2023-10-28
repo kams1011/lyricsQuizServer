@@ -33,6 +33,9 @@ public class QuizServiceImpl implements QuizService {
 
         User maker = userService.getById(quizCreate.getUserSeq());
         Quiz quiz = Quiz.from(quizCreate, maker, LocalDateTime.now());
+
+        QuizContent quizContent = quizContentRepository.save(quiz.getQuizContent());
+        //FIXME 유튜브와 파일 분기처리해서 업로드하는 로직 필요
         quizRepository.save(quiz);
 
         return quiz;
@@ -70,9 +73,9 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     public QuizContent contentCreate(QuizContentCreate quizContentCreate) {
-
         return quizContentRepository.save(QuizContent.from(quizContentCreate));
     }
+
 
 
 }
