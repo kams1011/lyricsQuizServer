@@ -28,8 +28,11 @@ public class QuizCreate {
 
     private Long userSeq; // 제작자 고유키
 
+    private QuizContentCreate quizContentCreate;
+
     @Builder
-    public QuizCreate(String title, String singer, QuizContentType quizContentType, String information, LocalTime startTime, LocalTime endTime, String beforeLyrics, String afterLyrics, String answer, Long userSeq){
+    public QuizCreate(String title, String singer, QuizContentType quizContentType, String information, LocalTime startTime, LocalTime endTime, String beforeLyrics, String afterLyrics, String answer,
+                      Long userSeq, QuizContentCreate quizContentCreate){
         this.title = title;
         this.singer = singer;
         this.quizContentType = quizContentType;
@@ -40,6 +43,7 @@ public class QuizCreate {
         this.afterLyrics = afterLyrics;
         this.answer = answer;
         this.userSeq = userSeq;
+        this.quizContentCreate = quizContentCreate;
     }
 
 

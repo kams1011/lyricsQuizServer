@@ -21,7 +21,7 @@ public class QuizRepositoryImpl implements QuizRepository {
     }
 
     @Override
-    public Quiz save(QuizEntity quizEntity) {
-        return quizJpaRepository.save(quizEntity).toModel();
+    public Quiz save(Quiz quiz) {
+        return quizJpaRepository.save(QuizEntity.fromModel(quiz)).toModel();
     }
 }

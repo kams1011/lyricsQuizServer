@@ -48,10 +48,14 @@ public class QuizEntity {
     @JoinColumn(name = "userSeq")
     UserEntity maker; // 제작자 fk 주석처리
 
+    @OneToOne
+    @JoinColumn(name = "quizContentSeq")
+    QuizContentEntity quizContentEntity;
+
 
     @Builder
     public QuizEntity(Long quizSeq, String title, String singer, QuizContentType quizContentType, String information, LocalTime startTime, LocalTime endTime, String beforeLyrics, String afterLyrics,
-                      String answer, LocalDateTime createdAt, LocalDateTime updatedAt, UserEntity maker){
+                      String answer, LocalDateTime createdAt, LocalDateTime updatedAt, UserEntity maker, QuizContentEntity quizContentEntity){
         this.quizSeq = quizSeq;
         this.title = title;
         this.singer = singer;
@@ -65,6 +69,7 @@ public class QuizEntity {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.maker = maker;
+        this.quizContentEntity = quizContentEntity;
     }
 
     public Quiz toModel(){
@@ -82,6 +87,7 @@ public class QuizEntity {
                 .createdAt(createdAt)
                 .updatedAt(updatedAt)
                 .maker(maker.toModel())
+                .quizContent(quizContentEntity.toModel())
                 .build();
     }
 
@@ -101,6 +107,7 @@ public class QuizEntity {
                 .createdAt(quiz.getCreatedAt())
                 .updatedAt(quiz.getUpdatedAt())
                 .maker(UserEntity.fromModel(quiz.getMaker()))
+                .quizContentEntity(QuizContentEntity.fromModel(quiz.getQuizContent()))
                 .build();
     }
 }

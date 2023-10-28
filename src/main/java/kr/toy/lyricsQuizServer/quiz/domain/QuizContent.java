@@ -1,5 +1,6 @@
 package kr.toy.lyricsQuizServer.quiz.domain;
 
+import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizContentCreate;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -20,4 +21,10 @@ public class QuizContent {
         this.detail = detail;
     }
 
+    public static QuizContent from(QuizContentCreate quizContentCreate){
+        return QuizContent.builder()
+                .quizContentType(quizContentCreate.getQuizContentType())
+                .detail(quizContentCreate.getDetail())
+                .build();
+    }
 }

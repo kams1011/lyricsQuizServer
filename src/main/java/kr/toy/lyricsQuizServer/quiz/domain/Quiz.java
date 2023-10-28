@@ -1,5 +1,6 @@
 package kr.toy.lyricsQuizServer.quiz.domain;
 
+import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizContentCreate;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizCreate;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import lombok.Builder;
@@ -37,9 +38,11 @@ public class Quiz {
 
     private LocalTime endTime;
 
+    private QuizContent quizContent;
+
     @Builder
     public Quiz(Long quizSeq, QuizContentType quizContentType, String title, String singer, String information, LocalTime startTime, LocalTime endTime, String beforeLyrics,
-                String afterLyrics, String answer, LocalDateTime createdAt, LocalDateTime updatedAt, User maker){
+                String afterLyrics, String answer, LocalDateTime createdAt, LocalDateTime updatedAt, User maker, QuizContent quizContent){
         this.quizSeq = quizSeq;
         this.title = title;
         this.singer = singer;
@@ -53,6 +56,7 @@ public class Quiz {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.maker = maker;
+        this.quizContent = quizContent;
     }
 
 
@@ -70,6 +74,7 @@ public class Quiz {
                 .createdAt(createdAt)
                 .updatedAt(createdAt)
                 .maker(maker)
+                .quizContent(QuizContent.from(quizCreate.getQuizContentCreate()))
                 .build();
     }
 }

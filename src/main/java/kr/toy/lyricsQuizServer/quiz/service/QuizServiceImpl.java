@@ -2,14 +2,18 @@ package kr.toy.lyricsQuizServer.quiz.service;
 
 import kr.toy.lyricsQuizServer.quiz.controller.port.QuizService;
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
+import kr.toy.lyricsQuizServer.quiz.domain.QuizContent;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.ChatMessage;
+import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizContentCreate;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizCreate;
+import kr.toy.lyricsQuizServer.quiz.infrastructure.QuizContentEntity;
 import kr.toy.lyricsQuizServer.quiz.infrastructure.QuizEntity;
 import kr.toy.lyricsQuizServer.user.controller.port.UserService;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 
 @Service
@@ -20,18 +24,16 @@ public class QuizServiceImpl implements QuizService {
 
     private final QuizRepository quizRepository;
 
+    private final QuizContentRepository quizContentRepository;
+
 
     @Override
+    @Transactional
     public Quiz create(QuizCreate quizCreate) {
-        return null;
-    }
-
-    @Override
-    public Quiz create(QuizCreate quizCreate, String youtubeUrl) {
 
         User maker = userService.getById(quizCreate.getUserSeq());
         Quiz quiz = Quiz.from(quizCreate, maker, LocalDateTime.now());
-        quizRepository.save(QuizEntity.fromModel(quiz));
+        quizRepository.save(quiz);
 
         return quiz;
     }
@@ -65,6 +67,12 @@ public class QuizServiceImpl implements QuizService {
     public void retrieve() {
 
     }
-    
-    
+
+    @Override
+    public QuizContent contentCreate(QuizContentCreate quizContentCreate) {
+
+        return quizContentRepository.save(QuizContent.from(quizContentCreate));
+    }
+
+
 }

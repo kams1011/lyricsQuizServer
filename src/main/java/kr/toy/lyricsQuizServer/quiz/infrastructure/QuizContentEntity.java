@@ -31,7 +31,6 @@ public class QuizContentEntity {
     }
 
 
-
     public QuizContent toModel(){
         return QuizContent.builder()
                 .quizContentSeq(quizContentSeq)

@@ -7,7 +7,7 @@ public interface QuizRepository {
 
     Quiz getById(Long id);
 
-    Quiz save(QuizEntity quizEntity);
+    Quiz save(Quiz quiz);
 
 
 }
