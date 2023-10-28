@@ -12,7 +12,6 @@ public class QuizContentCreate {
 
     private String detail;
 
-
     @Builder
     public QuizContentCreate(QuizContentType quizContentType, String detail){
         this.quizContentType = quizContentType;

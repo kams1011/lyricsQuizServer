@@ -14,8 +14,6 @@ public class Quiz {
 
     private Long quizSeq;
 
-    private QuizContentType quizContentType;
-
     private String title;
 
     private String singer;
@@ -41,12 +39,11 @@ public class Quiz {
     private QuizContent quizContent;
 
     @Builder
-    public Quiz(Long quizSeq, QuizContentType quizContentType, String title, String singer, String information, LocalTime startTime, LocalTime endTime, String beforeLyrics,
+    public Quiz(Long quizSeq, String title, String singer, String information, LocalTime startTime, LocalTime endTime, String beforeLyrics,
                 String afterLyrics, String answer, LocalDateTime createdAt, LocalDateTime updatedAt, User maker, QuizContent quizContent){
         this.quizSeq = quizSeq;
         this.title = title;
         this.singer = singer;
-        this.quizContentType = quizContentType;
         this.information = information;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -64,7 +61,6 @@ public class Quiz {
         return Quiz.builder()
                 .title(quizCreate.getTitle())
                 .singer(quizCreate.getSinger())
-                .quizContentType(quizCreate.getQuizContentType())
                 .information(quizCreate.getInformation())
                 .startTime(quizCreate.getStartTime())
                 .endTime(quizCreate.getEndTime())

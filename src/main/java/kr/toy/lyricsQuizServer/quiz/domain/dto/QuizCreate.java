@@ -13,7 +13,6 @@ public class QuizCreate {
 
     private String singer;
 
-    private QuizContentType quizContentType;
     private String information;
 
     private LocalTime startTime; // 파일 내에 노래 구간 정보.
@@ -31,11 +30,10 @@ public class QuizCreate {
     private QuizContentCreate quizContentCreate;
 
     @Builder
-    public QuizCreate(String title, String singer, QuizContentType quizContentType, String information, LocalTime startTime, LocalTime endTime, String beforeLyrics, String afterLyrics, String answer,
+    public QuizCreate(String title, String singer, String information, LocalTime startTime, LocalTime endTime, String beforeLyrics, String afterLyrics, String answer,
                       Long userSeq, QuizContentCreate quizContentCreate){
         this.title = title;
         this.singer = singer;
-        this.quizContentType = quizContentType;
         this.information = information;
         this.startTime = startTime;
         this.endTime = endTime;
