@@ -52,8 +52,9 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public Quiz solve() {
-        return null;
+    public Boolean solve(Long quizSeq, String answer) {
+        Quiz quiz = quizRepository.getById(quizSeq);
+        return quiz.isCorrect(answer);
     }
 
     @Override

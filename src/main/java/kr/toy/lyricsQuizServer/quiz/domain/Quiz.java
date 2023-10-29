@@ -78,4 +78,13 @@ public class Quiz {
                 .quizContent(QuizContent.from(quizCreate.getQuizContentCreate()))
                 .build();
     }
+
+
+    public Boolean isCorrect(String answer){
+        if (this.answer.equals(answer)){
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

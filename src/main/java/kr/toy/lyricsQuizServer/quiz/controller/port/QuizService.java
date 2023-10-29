@@ -16,7 +16,7 @@ public interface QuizService {
 
     Quiz delete(Long quizSeq);
 
-    Quiz solve();
+    Boolean solve(Long quizSeq, String answer);
 
     void join(Long roomId, ChatMessage message);
 
