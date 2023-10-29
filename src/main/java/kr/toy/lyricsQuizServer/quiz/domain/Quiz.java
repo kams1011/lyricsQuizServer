@@ -14,6 +14,8 @@ public class Quiz {
 
     private Long quizSeq;
 
+    private Boolean isDeleted;
+
     private String title;
 
     private String singer;
@@ -38,10 +40,12 @@ public class Quiz {
 
     private QuizContent quizContent;
 
+
     @Builder
-    public Quiz(Long quizSeq, String title, String singer, String information, LocalTime startTime, LocalTime endTime, String beforeLyrics,
+    public Quiz(Long quizSeq, Boolean isDeleted, String title, String singer, String information, LocalTime startTime, LocalTime endTime, String beforeLyrics,
                 String afterLyrics, String answer, LocalDateTime createdAt, LocalDateTime updatedAt, User maker, QuizContent quizContent){
         this.quizSeq = quizSeq;
+        this.isDeleted = isDeleted;
         this.title = title;
         this.singer = singer;
         this.information = information;
@@ -59,6 +63,7 @@ public class Quiz {
 
     public static Quiz from(QuizCreate quizCreate, User maker, LocalDateTime createdAt){
         return Quiz.builder()
+                .isDeleted(quizCreate.getIsDeleted())
                 .title(quizCreate.getTitle())
                 .singer(quizCreate.getSinger())
                 .information(quizCreate.getInformation())

@@ -22,11 +22,11 @@ public class QuizEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long quizSeq;
 
+    Boolean isDeleted;
+
     String title;
 
     String singer;
-
-    QuizContentType quizContentType;
 
     String information;
 
@@ -54,12 +54,12 @@ public class QuizEntity {
 
 
     @Builder
-    public QuizEntity(Long quizSeq, String title, String singer, QuizContentType quizContentType, String information, LocalTime startTime, LocalTime endTime, String beforeLyrics, String afterLyrics,
+    public QuizEntity(Long quizSeq, Boolean isDeleted, String title, String singer, String information, LocalTime startTime, LocalTime endTime, String beforeLyrics, String afterLyrics,
                       String answer, LocalDateTime createdAt, LocalDateTime updatedAt, UserEntity maker, QuizContentEntity quizContentEntity){
         this.quizSeq = quizSeq;
+        this.isDeleted = isDeleted;
         this.title = title;
         this.singer = singer;
-        this.quizContentType = quizContentType;
         this.information = information;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -75,9 +75,9 @@ public class QuizEntity {
     public Quiz toModel(){
         return Quiz.builder()
                 .quizSeq(quizSeq)
+                .isDeleted(isDeleted)
                 .title(title)
                 .singer(singer)
-                .quizContentType(quizContentType)
                 .information(information)
                 .startTime(startTime)
                 .endTime(endTime)
@@ -95,9 +95,9 @@ public class QuizEntity {
     public static QuizEntity fromModel(Quiz quiz){
         return QuizEntity.builder()
                 .quizSeq(quiz.getQuizSeq())
+                .isDeleted(quiz.getIsDeleted())
                 .title(quiz.getTitle())
                 .singer(quiz.getSinger())
-                .quizContentType(quiz.getQuizContentType())
                 .information(quiz.getInformation())
                 .startTime(quiz.getStartTime())
                 .endTime(quiz.getEndTime())
@@ -109,5 +109,10 @@ public class QuizEntity {
                 .maker(UserEntity.fromModel(quiz.getMaker()))
                 .quizContentEntity(QuizContentEntity.fromModel(quiz.getQuizContent()))
                 .build();
+    }
+
+
+    public void delete(){
+        this.isDeleted = true;
     }
 }

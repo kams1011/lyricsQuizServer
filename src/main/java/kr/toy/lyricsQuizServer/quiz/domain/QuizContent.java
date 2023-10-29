@@ -13,7 +13,6 @@ public class QuizContent {
 
     private String detail;
 
-
     @Builder
     public QuizContent(Long quizContentSeq, QuizContentType quizContentType, String detail){
         this.quizContentSeq = quizContentSeq;

@@ -1,7 +1,6 @@
 package kr.toy.lyricsQuizServer.quiz.service;
 
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
-import kr.toy.lyricsQuizServer.quiz.infrastructure.QuizEntity;
 
 public interface QuizRepository {
 
@@ -9,5 +8,6 @@ public interface QuizRepository {
 
     Quiz save(Quiz quiz);
 
+    Quiz delete(Long id);
 
 }

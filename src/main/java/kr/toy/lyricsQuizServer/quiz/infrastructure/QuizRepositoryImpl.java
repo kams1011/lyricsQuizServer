@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 
 @Repository
 @RequiredArgsConstructor
@@ -15,7 +16,7 @@ public class QuizRepositoryImpl implements QuizRepository {
 
     @Override
     public Quiz getById(Long id) {
-        return quizJpaRepository.findById(id)
+        return quizJpaRepository.findByQuizSeqAndIsDeletedIsFalse(id)
                 .orElseThrow(() -> new EntityNotFoundException())
                 .toModel();
     }
@@ -23,5 +24,13 @@ public class QuizRepositoryImpl implements QuizRepository {
     @Override
     public Quiz save(Quiz quiz) {
         return quizJpaRepository.save(QuizEntity.fromModel(quiz)).toModel();
+    }
+
+    @Override
+    @Transactional
+    public Quiz delete(Long id) {
+        QuizEntity quizEntity = quizJpaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+        quizEntity.delete();
+        return quizEntity.toModel();
     }
 }

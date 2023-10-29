@@ -14,7 +14,7 @@ public interface QuizService {
 
     Quiz update();
 
-    Quiz delete();
+    Quiz delete(Long quizSeq);
 
     Quiz solve();
 

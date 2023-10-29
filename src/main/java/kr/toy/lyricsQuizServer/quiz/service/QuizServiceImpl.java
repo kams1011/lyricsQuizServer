@@ -47,8 +47,8 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public Quiz delete() {
-        return null;
+    public Quiz delete(Long quizSeq) {
+        return quizRepository.delete(quizSeq);
     }
 
     @Override
