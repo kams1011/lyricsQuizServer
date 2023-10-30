@@ -2,7 +2,8 @@
 <!--  <img alt="Vue logo" src="./assets/logo.png">-->
 <!--  <HelloWorld msg="Welcome to Your Vue.js App"/>-->
 <!--  <Lobby msg="Welcome to Your Vue.js App"/>-->
-  <Room msg="Welcome to Your Vue.js App"/>
+<!--  <Room msg="Welcome to Your Vue.js App"/>-->
+  <QuizRegister msg="Welcome to Your Vue.js App"/>
 </template>
 
 <!--<script>-->
@@ -35,6 +36,7 @@ import Stomp from 'webstomp-client'
 import SockJS from 'sockjs-client'
 import Lobby from './views/Lobby'
 import Room from "@/views/Room";
+import QuizRegister from "@/views/QuizRegister";
 export default {
   name: 'App',
   data() {
@@ -97,7 +99,8 @@ export default {
   components: {
     // HelloWorld,
     Lobby,
-    Room
+    Room,
+    QuizRegister
   }
 }
 </script>
