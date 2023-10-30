@@ -56,7 +56,7 @@
         <label for="card-holder">제목</label>
         <input type="file" id="card-holder" />
       </fieldset>
-      <button class="btn"><i class="fa fa-lock"></i> submit</button>
+      <button type="button" class="btn" @click="register"><i class="fa fa-lock"></i> submit</button>
     </form>
   </div>
   </body>
@@ -67,6 +67,8 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "QuizRegister",
   methods: {
@@ -81,7 +83,30 @@ export default {
         youtubeField.style.display = "none";
         fileField.style.display = "block";
       }
-    }
+    },
+    register: function () {
+      const jsonData = {
+        singer: 1234,
+        information: 1234,
+        // startTime: 1234,
+        // endTime: 1234,
+        beforeLyrics: 1234,
+        afterLyrics: 1234,
+        answer: 1234,
+        quizContentCreate: {
+          QuizContentType: 1234,
+          url: 5678
+        }
+      };
+      axios.post('http://localhost/api/quiz', jsonData,
+          { withCredentials : true
+          }).then(response => {
+            console.log(response.data); // 서버 응답 처리
+          })
+          .catch(error => {
+            console.error(error); // 오류 처리
+          });
+    },
   }
 }
 

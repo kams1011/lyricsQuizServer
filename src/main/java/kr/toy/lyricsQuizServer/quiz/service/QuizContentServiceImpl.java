@@ -4,7 +4,9 @@ import kr.toy.lyricsQuizServer.quiz.controller.port.QuizContentService;
 import kr.toy.lyricsQuizServer.quiz.domain.QuizContent;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizContentCreate;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
+@Service
 @RequiredArgsConstructor
 public class QuizContentServiceImpl implements QuizContentService {
 
