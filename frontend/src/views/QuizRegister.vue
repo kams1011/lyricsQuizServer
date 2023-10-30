@@ -16,45 +16,65 @@
     <form class="form" autocomplete="off" novalidate>
       <fieldset>
         <label for="card-holder">제목</label>
-        <input type="text" id="card-holder" />
+        <input type="text" id="title" ref="title"/>
       </fieldset>
       <fieldset>
         <label for="card-holder">가수</label>
-        <input type="text" id="card-holder" />
+        <input type="text" id="singer" ref="singer"/>
       </fieldset>
       <fieldset>
         <label for="card-holder">곡 정보</label>
-        <textarea></textarea>
+        <textarea id="information" ref="information"></textarea>
       </fieldset>
       <fieldset>
         <label for="card-holder">문제 이전 가사</label>
         <!-- <input type="text" id="card-holder" /> -->
-        <textarea></textarea>
+        <textarea id="beforeLyrics" ref="beforeLyrics"></textarea>
       </fieldset>
       <fieldset>
         <label for="card-holder">문제 이후 가사</label>
-        <textarea></textarea>
+        <textarea id="afterLyrics" ref="afterLyrics"></textarea>
       </fieldset>
       <fieldset>
         <label for="card-holder">정답</label>
-        <textarea></textarea>
+        <textarea id="answer" ref="answer"></textarea>
+      </fieldset>
+      <fieldset>
+        문제 시작 시간
+        <select id="startMinutes" ref="startMinutes">
+          <option v-for="startMinutes in 59" :key="startMinutes"> {{startMinutes}}</option>
+        </select>
+        :
+        <select id="startSeconds" ref="startSeconds">
+          <option v-for="startSeconds in 59" :key="startSeconds"> {{startSeconds}}</option>
+        </select>
+      </fieldset>
+      <fieldset>
+        문제 끝 시간
+        <select id="endMinutes" ref="endMinutes">
+          <option v-for="endMinutes in 59" :key="endMinutes"> {{endMinutes}}</option>
+        </select>
+        :
+        <select id="endSeconds" ref="endSeconds">
+          <option v-for="endSeconds in 59" :key="endSeconds"> {{endSeconds}}</option>
+        </select>
       </fieldset>
       <fieldset>
         <label for="card-holder">제출 방식</label>
         <div class="type">
           <label for="youtube" class="type">유튜브</label>
-          <input type="radio" name="type" class="type" id="youtube" v-on:click="toggleFieldset('youtube')" />
+          <input type="radio" name="type" class="type" id="youtube" ref="youtube" v-on:click="toggleFieldset('youtube')" value="youtube"/>
           <label for="file" class="type">파일</label>
-          <input type="radio" name="type" class="type" id="file" v-on:click="toggleFieldset('file')" />
+          <input type="radio" name="type" class="type" id="file" ref="file" v-on:click="toggleFieldset('file')" value="file"/>
         </div>
       </fieldset>
       <fieldset id="youtubeField" style="display: none">
         <label for="card-holder">링크</label>
-        <input type="text" id="card-holder" />
+        <input type="text" ref="url" id="card-holder" />
       </fieldset>
       <fieldset id="fileField" style="display: none">
-        <label for="card-holder">제목</label>
-        <input type="file" id="card-holder" />
+        <label for="card-holder">파일</label>
+        <input type="file" ref="file" id="card-holder" />
       </fieldset>
       <button type="button" class="btn" @click="register"><i class="fa fa-lock"></i> submit</button>
     </form>
@@ -84,18 +104,18 @@ export default {
         fileField.style.display = "block";
       }
     },
-    register: function () {
+    register: function () { //FIXME 이부분 정확히 수정하기.
       const jsonData = {
-        singer: 1234,
-        information: 1234,
-        // startTime: 1234,
-        // endTime: 1234,
-        beforeLyrics: 1234,
-        afterLyrics: 1234,
-        answer: 1234,
+        singer: this.$refs['singer'].value,
+        information: this.$refs['information'].value,
+        startTime: this.$refs['startMinutes'].value + ':' + this.$refs['startSeconds'].value,
+        endTime: this.$refs['endMinutes'].value + ':' + this.$refs['endSeconds'].value,
+        beforeLyrics: this.$refs['beforeLyrics'].value,
+        afterLyrics: this.$refs['afterLyrics'].value,
+        answer: this.$refs['answer'].value,
         quizContentCreate: {
-          QuizContentType: 1234,
-          url: 5678
+          QuizContentType: document.getElementsByName('type'),
+          url: this.$refs['url'].value
         }
       };
       axios.post('http://localhost/api/quiz', jsonData,
