@@ -27,4 +27,19 @@ public class QuizController {
                 .body(quizService.create(quizCreate));
     }
 
+    @DeleteMapping("/{quizSeq}")
+    public ResponseEntity<Quiz> delete(@PathVariable Long quizSeq){
+
+        return ResponseEntity.ok()
+                .body(quizService.delete(quizSeq));
+    }
+
+    @GetMapping("/{quizSeq}")
+    public ResponseEntity<Boolean> solve(@PathVariable Long quizSeq,
+                                      @RequestParam String answer){
+
+        return ResponseEntity.ok()
+                .body(quizService.solve(quizSeq, answer));
+    } //FIXME Answer 가 너무 길어질 가능성 확인.
+
 }

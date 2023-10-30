@@ -24,7 +24,6 @@ public interface QuizService {
 
     void retrieve();
 
-    QuizContent contentCreate(QuizContentCreate quizContentCreate);
 
 
 }

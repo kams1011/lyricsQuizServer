@@ -11,7 +11,7 @@ public class QuizContent {
 
     private QuizContentType quizContentType;
 
-    private String detail;
+    private String detail; // URL을 변환해서 뒤의 detail만 받으면 됨.
 
     @Builder
     public QuizContent(Long quizContentSeq, QuizContentType quizContentType, String detail){
@@ -23,7 +23,15 @@ public class QuizContent {
     public static QuizContent from(QuizContentCreate quizContentCreate){
         return QuizContent.builder()
                 .quizContentType(quizContentCreate.getQuizContentType())
-                .detail(quizContentCreate.getDetail())
                 .build();
+    }
+
+    public String detailFromUrl(String url){
+        if (this.quizContentType.equals(QuizContentType.FILE)) {
+
+        } else if (this.quizContentType.equals(QuizContentType.YOUTUBE)){
+            detail = url.split(".be/|v=|embed/")[1].split("\\?")[0];
+        }
+        return detail;
     }
 }

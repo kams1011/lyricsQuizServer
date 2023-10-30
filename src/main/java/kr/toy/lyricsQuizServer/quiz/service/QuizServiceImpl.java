@@ -1,5 +1,6 @@
 package kr.toy.lyricsQuizServer.quiz.service;
 
+import kr.toy.lyricsQuizServer.quiz.controller.port.QuizContentService;
 import kr.toy.lyricsQuizServer.quiz.controller.port.QuizService;
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
 import kr.toy.lyricsQuizServer.quiz.domain.QuizContent;
@@ -24,7 +25,7 @@ public class QuizServiceImpl implements QuizService {
 
     private final QuizRepository quizRepository;
 
-    private final QuizContentRepository quizContentRepository;
+    private final QuizContentService quizContentService;
 
 
     @Override
@@ -34,8 +35,7 @@ public class QuizServiceImpl implements QuizService {
         User maker = userService.getById(quizCreate.getUserSeq());
         Quiz quiz = Quiz.from(quizCreate, maker, LocalDateTime.now());
 
-        QuizContent quizContent = quizContentRepository.save(quiz.getQuizContent());
-        //FIXME 유튜브와 파일 분기처리해서 업로드하는 로직 필요
+        quizContentService.contentCreate(quizCreate.getQuizContentCreate());
         quizRepository.save(quiz);
 
         return quiz;
@@ -71,12 +71,5 @@ public class QuizServiceImpl implements QuizService {
     public void retrieve() {
 
     }
-
-    @Override
-    public QuizContent contentCreate(QuizContentCreate quizContentCreate) {
-        return quizContentRepository.save(QuizContent.from(quizContentCreate));
-    }
-
-
 
 }

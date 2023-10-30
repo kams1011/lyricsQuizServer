@@ -6,7 +6,6 @@ import kr.toy.lyricsQuizServer.quiz.infrastructure.QuizContentEntity;
 
 public interface QuizContentRepository {
 
-
     QuizContent getById(Long quizContentSeq);
 
     QuizContent save(QuizContent quizContent);
