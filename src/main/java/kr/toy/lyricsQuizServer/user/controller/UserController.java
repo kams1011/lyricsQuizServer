@@ -1,6 +1,8 @@
 package kr.toy.lyricsQuizServer.user.controller;
 
+import kr.toy.lyricsQuizServer.config.OauthConfig;
 import kr.toy.lyricsQuizServer.user.controller.port.UserService;
+import kr.toy.lyricsQuizServer.user.domain.LoginType;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,11 +20,12 @@ public class UserController {
 
     private final UserService userService;
 
+    private final OauthConfig oauthConfig;
+
     @GetMapping("/{id}")
     public ResponseEntity getById(@PathVariable Long id){
         return ResponseEntity.ok().body(userService.getById(id));
     } // FIXME : response dto로 변경
-
 
     @GetMapping("/email/{email}")
     public void getByEmail(@PathVariable String email){

@@ -6,5 +6,7 @@ spring:
       ddl-auto: update
   profiles:
     include: db
+  config:
+    import: application-oauth.yml
 server:
   port: 80

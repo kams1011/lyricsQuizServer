@@ -8,6 +8,7 @@ public enum LoginType {
     GOOGLE(0),
     KAKAO(1),
     NAVER(2),
+
     GITHUB(3);
 
 
@@ -18,6 +19,10 @@ public enum LoginType {
 
     LoginType(int number){
         this.number = number;
+    }
+
+    public void isNotScope(){
+
     }
 
 }
