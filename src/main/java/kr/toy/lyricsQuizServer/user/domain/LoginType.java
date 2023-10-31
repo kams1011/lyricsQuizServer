@@ -9,7 +9,8 @@ public enum LoginType {
     KAKAO(1),
     NAVER(2),
 
-    GITHUB(3);
+    GITHUB(3),
+    INSTAGRAM(4);
 
 
 

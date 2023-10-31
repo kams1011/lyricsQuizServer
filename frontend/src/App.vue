@@ -3,7 +3,8 @@
 <!--  <HelloWorld msg="Welcome to Your Vue.js App"/>-->
 <!--  <Lobby msg="Welcome to Your Vue.js App"/>-->
 <!--  <Room msg="Welcome to Your Vue.js App"/>-->
-  <QuizRegister msg="Welcome to Your Vue.js App"/>
+<!--  <QuizRegister msg="Welcome to Your Vue.js App"/>-->
+  <Login msg="Welcome to Your Vue.js App"/>
 </template>
 
 <!--<script>-->
@@ -37,6 +38,7 @@ import SockJS from 'sockjs-client'
 import Lobby from './views/Lobby'
 import Room from "@/views/Room";
 import QuizRegister from "@/views/QuizRegister";
+import Login from "@/views/Login";
 export default {
   name: 'App',
   data() {
@@ -100,7 +102,8 @@ export default {
     // HelloWorld,
     Lobby,
     Room,
-    QuizRegister
+    QuizRegister,
+    Login
   }
 }
 </script>

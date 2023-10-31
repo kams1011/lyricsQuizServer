@@ -1,10 +1,7 @@
 package kr.toy.lyricsQuizServer.config;
 
 import kr.toy.lyricsQuizServer.user.domain.LoginType;
-import lombok.Data;
-import lombok.Getter;
 import lombok.Setter;
-import lombok.extern.java.Log;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +18,7 @@ public class OauthConfig {
     private Element INSTAGRAM;
 
 
-
+    // 가독성을 위해 Getter를 따로 만듬.
     public Element GOOGLE(){
         return GOOGLE;
     }
@@ -50,6 +47,7 @@ public class OauthConfig {
         String infoUrl;
         String scope;
 
+        // 가독성을 위해 Getter를 따로 만듬.
         public String client_id(){
             return client_id;
         }
@@ -66,10 +64,10 @@ public class OauthConfig {
             return infoUrl;
         }
 
-        public String getScope(LoginType loginType){
+        public String scope(LoginType loginType){
 
             if (loginType.equals(LoginType.KAKAO) == true || loginType.equals(LoginType.NAVER)) {
-                throw new IllegalArgumentException("");
+                throw new IllegalArgumentException("Scope 파라미터가 존재하지 않는 로그인 타입입니다.");
             }
 
             return scope;
