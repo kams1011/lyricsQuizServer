@@ -11,10 +11,16 @@
 <script>
 export default {
   name: "Login",
+  data() {
+    return {
+      GITHUB_URL: process.env.VITE_GITHUB_OAUTH_URL,
+      GITHUB_CLIENT_KEY: process.env.VITE_GITHUB_CLIENT_KEY,
+    };
+  },
   methods: {
     goToGithub() {
         window.location.assign(
-            `https://github.com/login/oauth/authorize?client_id={clientId}`
+            `${data.GITHUB_URL}?client_id=${data.GITHUB_CLIENT_KEY}`
         )
     }
   }
