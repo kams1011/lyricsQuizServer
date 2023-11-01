@@ -15,6 +15,12 @@ export default {
     return {
       GITHUB_URL: process.env.VITE_GITHUB_OAUTH_URL,
       GITHUB_CLIENT_KEY: process.env.VITE_GITHUB_CLIENT_KEY,
+      GOOGLE_URL: process.env.VITE_GOOGLE_URL_OAUTH_URL,
+      GOOGLE_CLIENT_KEY: process.env.VITE_GOOGLE_URL_CLIENT_KEY,
+      NAVER_URL: process.env.VITE_NAVER_OAUTH_URL,
+      NAVER_CLIENT_KEY: process.env.VITE_NAVER_CLIENT_KEY,
+      KAKAO_URL: process.env.VITE_KAKAO_OAUTH_URL,
+      KAKAO_CLIENT_KEY: process.env.VITE_KAKAO_CLIENT_KEY,
     };
   },
   methods: {

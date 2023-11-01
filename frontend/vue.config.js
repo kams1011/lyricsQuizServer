@@ -10,6 +10,7 @@ module.exports = defineConfig({
         target: 'http://localhost:80',
         changeOrigin: true // cross origin 허용
       }
-    }
+    },
+    https: true
   }
 })
