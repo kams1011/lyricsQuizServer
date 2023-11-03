@@ -35,23 +35,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
-        String accessToken = resolveToken(request);
+        String accessToken = resolveToken(request, CookieType.ACCESS.getCookieName());
+
 
         try {
+            // 여기서 AuthenticationManager를 호출해서 AuthenticationProvider가 동작하게됨.
+            // 그러면 provider에서 thrown한 에러를 filter에서 잡는게 가능할듯..
+
             Authentication authentication = authenticationManager.authenticate(new JwtAuthenticationToken("principal_을 넣으세요", accessToken));
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (ExpiredJwtException e) {
             // 만료된 토큰 처리 로직
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
-        }
+        } // 여기서 잡아야겟구나
 
+        String refreshToken = resolveToken(request, CookieType.REFRESH.getCookieName());
         chain.doFilter(request, response);
     }
 
-    private String resolveToken(HttpServletRequest request) {
+    private String resolveToken(HttpServletRequest request, String cookieName) {
         String accessToken = Arrays.stream(request.getCookies())
-                .filter(data -> accessTokenCookieName.equals(data.getName()))
+                .filter(data -> cookieName.equals(data.getName()))
                 .findFirst()
                 .map(Cookie::getValue)
                 .orElseThrow(NoSuchElementException::new);

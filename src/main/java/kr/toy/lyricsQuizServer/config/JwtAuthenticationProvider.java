@@ -31,7 +31,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 
             authenticationToken.setAuthenticated(true);
             authenticationToken.setDetails(claims.getSubject());
-        } catch (ExpiredJwtException expiredJwtException) { // FIXME Custom Exception 제작
+        } catch (ExpiredJwtException expiredJwtException) {
 //            throw new JwtInvalidException("expired token", expiredJwtException);
         } catch (MalformedJwtException malformedJwtException) {
 //            throw new JwtInvalidException("malformed token", malformedJwtException);
@@ -47,6 +47,9 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
         return JwtAuthenticationToken.class.isAssignableFrom(authentication);
     }
 
+
+//    1. 쿠키가 존재하지 않는다.
+//2. 쿠키가 존재하는데 내부의 Jwt는 유효하지 않다.
 
 
 }
