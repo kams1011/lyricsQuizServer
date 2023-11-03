@@ -10,9 +10,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -20,24 +23,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
+    private final String accessTokenCookieName = "yml로관리";
+
+    private final String refreshTokenCookieName = "yml로관리";
+
+    //FIXME 세개 다 환경변수로 바꾸자.
+
     private final AuthenticationManager authenticationManager;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        String header = request.getHeader("Authorization"); //FIXME 쿠키로 변경.
 
-        if (header == null || !header.startsWith("Bearer ")) {
-            chain.doFilter(request, response);
-            return;
-        }
-
-        String token = header.replace("Bearer ", ""); //FIXME 쿠키로 변경.
+        String accessToken = resolveToken(request);
 
         try {
-            Authentication authentication = authenticationManager.authenticate(getAuthentication(token));
+            Authentication authentication = authenticationManager.authenticate(new JwtAuthenticationToken("principal_을 넣으세요", accessToken));
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            // FIXME 직접 setAuthentication을 해주는 부분을 수정하고싶음.
         } catch (ExpiredJwtException e) {
             // 만료된 토큰 처리 로직
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -47,11 +49,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         chain.doFilter(request, response);
     }
 
-    private Authentication getAuthentication(String token) {
-        // JWT 검증 로직
-        // FIXME 서명 검증, 클레임 추출, 사용자 정보 로딩 등의 작업이 필요
+    private String resolveToken(HttpServletRequest request) {
+        String accessToken = Arrays.stream(request.getCookies())
+                .filter(data -> accessTokenCookieName.equals(data.getName()))
+                .findFirst()
+                .map(Cookie::getValue)
+                .orElseThrow(NoSuchElementException::new);
 
-        return new JwtAuthenticationToken(token); // FIXME token을 decode해서 userName과 권한을 넣는다.
+        return accessToken;
     }
 
 
