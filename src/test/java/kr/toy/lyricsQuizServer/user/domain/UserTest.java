@@ -1,6 +1,14 @@
 package kr.toy.lyricsQuizServer.user.domain;
 
+import kr.toy.lyricsQuizServer.config.OauthProperties;
+import kr.toy.lyricsQuizServer.config.SecurityProperties;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
 
@@ -8,10 +16,18 @@ import java.time.LocalDateTime;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
+@SpringBootTest
 public class UserTest {
 
 
     //FIXME : 데이터를 넣어주는 반복 코드 제거하기.
+
+
+    @Autowired
+    OauthProperties oauthProperties;
+
+    @Autowired
+    SecurityProperties securityProperties;
 
     @Test
     void 사용자는_로그인_할_수_있다(){
@@ -111,5 +127,14 @@ public class UserTest {
         assertThat(user.getIsBan()).isTrue();
     }
 
+
+    @Test
+    public void temp(){
+
+        System.out.println(oauthProperties.GITHUB().client_id());
+        System.out.println(oauthProperties.GOOGLE());
+        System.out.println(securityProperties.cookieName());
+        System.out.println(securityProperties.jwtSecret());
+    }
 
 }

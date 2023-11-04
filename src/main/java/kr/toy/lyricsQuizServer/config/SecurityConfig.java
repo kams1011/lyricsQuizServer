@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @RequiredArgsConstructor
@@ -34,9 +35,9 @@ public class SecurityConfig {
                 .csrf().disable()
 //                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .formLogin().disable()
-                .httpBasic().disable()
-                .addFilter(new JwtAuthenticationFilter(authenticationManager(), securityService));
-        return http.build();
+                .httpBasic().disable() 
+                .addFilterBefore(new JwtAuthenticationFilter(authenticationManager(), securityService), UsernamePasswordAuthenticationFilter.class); //FIXME addFilterBefore로 바꾼 부분 정상작동되는지 확인
+        return http.build(); 
     }
 
     @Bean

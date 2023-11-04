@@ -24,9 +24,9 @@ import static javax.management.timer.Timer.ONE_MINUTE;
 public class SecurityService {
 
     private final byte[] secretKeyBytes;
-    private final int accessTokenExpireMinute;
+    private final int accessTokenExpireMinute = 5;
 
-    private final int refreshTokenExpireMinute;
+    private final int refreshTokenExpireMinute = 30; //FIXME 수정
     private final UserRepository userRepository;
 
 

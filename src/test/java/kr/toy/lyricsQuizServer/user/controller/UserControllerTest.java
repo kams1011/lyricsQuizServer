@@ -1,5 +1,7 @@
 package kr.toy.lyricsQuizServer.user.controller;
 
+import kr.toy.lyricsQuizServer.config.OauthProperties;
+import kr.toy.lyricsQuizServer.config.SecurityProperties;
 import kr.toy.lyricsQuizServer.user.controller.port.UserService;
 import kr.toy.lyricsQuizServer.user.domain.Role;
 import kr.toy.lyricsQuizServer.user.domain.User;
@@ -46,6 +48,8 @@ public class UserControllerTest {
     private UserService userService;
 
     private final String requestMapping = "/api/users/";
+
+
     @BeforeEach
     void setup(WebApplicationContext webApplicationContext, RestDocumentationContextProvider restDocumentation) {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
@@ -110,6 +114,7 @@ public class UserControllerTest {
 //        System.out.println(aArr[0]);
 //        System.out.println(aArr[1]);
     }
+
 
 
 }

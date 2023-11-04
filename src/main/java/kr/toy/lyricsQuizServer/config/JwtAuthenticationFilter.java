@@ -24,13 +24,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
-
-
     private final String accessTokenCookieName = "yml로관리";
 
     private final String refreshTokenCookieName = "yml로관리";
-
-    //FIXME 세개 다 환경변수로 바꾸자.
 
     private final AuthenticationManager authenticationManager;
 
