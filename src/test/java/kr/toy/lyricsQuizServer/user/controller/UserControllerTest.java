@@ -17,7 +17,11 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.NoSuchElementException;
 
 import static kr.toy.lyricsQuizServer.user.domain.LoginType.KAKAO;
 import static org.mockito.BDDMockito.given;
@@ -106,4 +110,6 @@ public class UserControllerTest {
 //        System.out.println(aArr[0]);
 //        System.out.println(aArr[1]);
     }
+
+
 }

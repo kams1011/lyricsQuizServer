@@ -3,6 +3,7 @@ package kr.toy.lyricsQuizServer.config;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.stereotype.Component;
@@ -31,12 +32,13 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 
             authenticationToken.setAuthenticated(true);
             authenticationToken.setDetails(claims.getSubject());
+            //FIXME AuthenticationException을 상속받은 CustomException 을 생성해야겠다.
         } catch (ExpiredJwtException expiredJwtException) {
-//            throw new JwtInvalidException("expired token", expiredJwtException);
+            throw new JwtInvalidException("expired token", expiredJwtException);
         } catch (MalformedJwtException malformedJwtException) {
-//            throw new JwtInvalidException("malformed token", malformedJwtException);
+            throw new JwtInvalidException("malformed token", malformedJwtException);
         } catch (IllegalArgumentException illegalArgumentException) {
-//            throw new JwtInvalidException("using illegal argument like null", illegalArgumentException);
+            throw new JwtInvalidException("using illegal argument like null", illegalArgumentException);
         }
 
         return authenticationToken;

@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @Setter
 @ConfigurationProperties(prefix = "oauth")
 @Component
-public class OauthConfig {
+public class OauthProperties {
 
     private Element GOOGLE;
     private Element KAKAO;

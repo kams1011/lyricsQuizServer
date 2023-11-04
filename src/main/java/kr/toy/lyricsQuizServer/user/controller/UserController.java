@@ -1,11 +1,8 @@
 package kr.toy.lyricsQuizServer.user.controller;
 
-import kr.toy.lyricsQuizServer.config.OauthConfig;
 import kr.toy.lyricsQuizServer.user.controller.port.UserService;
-import kr.toy.lyricsQuizServer.user.domain.LoginType;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +17,7 @@ public class UserController {
 
     private final UserService userService;
 
-    private final OauthConfig oauthConfig;
+//    private final OauthConfig oauthConfig;
 
     @GetMapping("/{id}")
     public ResponseEntity getById(@PathVariable Long id){

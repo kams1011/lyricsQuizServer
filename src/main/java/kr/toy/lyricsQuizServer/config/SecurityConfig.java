@@ -1,5 +1,7 @@
 package kr.toy.lyricsQuizServer.config;
 
+import kr.toy.lyricsQuizServer.user.service.port.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,21 +12,30 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
+@RequiredArgsConstructor
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Bean
-    public JwtAuthenticationProvider jwtAuthenticationProvider() {
-        return new JwtAuthenticationProvider();
-    }
+
+    private final SecurityService securityService;
+
+    private final JwtAuthenticationProvider jwtAuthenticationProvider;
+
+
+//    @Bean
+//    public JwtAuthenticationProvider jwtAuthenticationProvider() {
+//        return new JwtAuthenticationProvider();
+//    }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable();
-        http.authorizeRequests()
-            .antMatchers("/home").permitAll()
-            .antMatchers("/mypage").authenticated()
-            .anyRequest().authenticated();
+        http
+//                .addFilter(corsConfig.corsFilter())
+                .csrf().disable()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .formLogin().disable()
+                .httpBasic().disable()
+                .addFilter(new JwtAuthenticationFilter(authenticationManager(), securityService));
         return http.build();
     }
 
@@ -36,6 +47,8 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager() {
-        return authentication -> jwtAuthenticationProvider().authenticate(authentication);
+        return authentication -> jwtAuthenticationProvider.authenticate(authentication);
     }
+
+
 }
