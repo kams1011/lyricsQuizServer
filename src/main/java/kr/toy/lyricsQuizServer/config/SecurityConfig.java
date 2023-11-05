@@ -1,6 +1,5 @@
 package kr.toy.lyricsQuizServer.config;
 
-import kr.toy.lyricsQuizServer.user.service.port.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,7 +20,6 @@ public class SecurityConfig {
     private final SecurityService securityService;
 
     private final JwtAuthenticationProvider jwtAuthenticationProvider;
-
 
 //    @Bean
 //    public JwtAuthenticationProvider jwtAuthenticationProvider() {

@@ -1,6 +1,7 @@
 package kr.toy.lyricsQuizServer.user.service;
 
 import kr.toy.lyricsQuizServer.user.controller.port.UserService;
+import kr.toy.lyricsQuizServer.user.domain.LoginType;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.service.port.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +29,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User signUp() {
+    public User signUp(LoginType loginType, String accessToken) {
+        //AccessToken을 받는다.
+        //LoginType을 받는다.
+        //AccessToken으로 email을 받는다.
+        //RefreshToken을 생성한다.
+        //UserEntity를 생성한다.
+        //저장한다.
+
         return null;
     }
 

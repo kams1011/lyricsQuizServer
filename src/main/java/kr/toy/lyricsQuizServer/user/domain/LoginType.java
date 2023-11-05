@@ -8,11 +8,8 @@ public enum LoginType {
     GOOGLE(0),
     KAKAO(1),
     NAVER(2),
-
     GITHUB(3),
     INSTAGRAM(4);
-
-
 
     private String type;
 
