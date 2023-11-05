@@ -28,4 +28,9 @@ public class UserRepositoryImpl implements UserRepository {
     public User getByNickName(String nickName) {
         return userJpaRepository.findByNickName(nickName).orElseThrow(NoSuchElementException::new).toModel();
     }
+
+    @Override
+    public User save(User user) {
+        return userJpaRepository.save(UserEntity.fromModel(user)).toModel();
+    }
 }

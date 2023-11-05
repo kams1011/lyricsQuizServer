@@ -2,6 +2,7 @@ package kr.toy.lyricsQuizServer.user.controller;
 
 import kr.toy.lyricsQuizServer.user.controller.port.UserService;
 import kr.toy.lyricsQuizServer.user.domain.LoginType;
+import kr.toy.lyricsQuizServer.user.domain.dto.UserCreate;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -35,7 +36,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity register(@RequestParam LoginType loginType){
+    public ResponseEntity register(@RequestBody UserCreate userCreate){
 
         return ResponseEntity.created(URI.create("/users/" + "tmeptemp")).body("temptemp");
         //FIXME 임시로 넣은 값들 수정

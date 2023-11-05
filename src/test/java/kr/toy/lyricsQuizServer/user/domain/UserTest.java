@@ -11,6 +11,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -129,11 +130,6 @@ public class UserTest {
 
     @Test
     public void temp(){
-        System.out.println("1234");
-//        System.out.println(oauthProperties.GITHUB().client_id());
-//        System.out.println(oauthProperties.GOOGLE());
-//        System.out.println(securityProperties.cookieName());
-//        System.out.println(securityProperties.jwtSecret());
     }
 
 }

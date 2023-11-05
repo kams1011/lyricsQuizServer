@@ -12,4 +12,6 @@ public interface UserRepository {
 
     User getByNickName(String nickName);
 
+    User save(User user);
+
 }

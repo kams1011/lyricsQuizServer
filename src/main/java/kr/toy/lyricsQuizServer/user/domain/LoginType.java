@@ -1,6 +1,9 @@
 package kr.toy.lyricsQuizServer.user.domain;
 
+import kr.toy.lyricsQuizServer.config.OauthProperties;
 import lombok.Getter;
+
+import java.util.Arrays;
 
 @Getter
 public enum LoginType {
@@ -22,5 +25,6 @@ public enum LoginType {
     public void isNotScope(){
 
     }
+
 
 }
