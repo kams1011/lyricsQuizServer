@@ -4,10 +4,9 @@ import kr.toy.lyricsQuizServer.user.controller.port.UserService;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 
 @RestController
 @Builder
@@ -29,6 +28,15 @@ public class UserController {
         userService.getByEmail(email);
     } // FIXME : response dto로 변경
 
+    @GetMapping("/login")
+    public void login(){
+
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity register(){
+        return ResponseEntity.created(URI.create("/users/" + "tmeptemp")).body("temptemp");
+    }
 
 
 }

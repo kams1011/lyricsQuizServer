@@ -22,7 +22,6 @@ public class UserTest {
 
     //FIXME : 데이터를 넣어주는 반복 코드 제거하기.
 
-
     @Autowired
     OauthProperties oauthProperties;
 
@@ -130,11 +129,11 @@ public class UserTest {
 
     @Test
     public void temp(){
-
-        System.out.println(oauthProperties.GITHUB().client_id());
-        System.out.println(oauthProperties.GOOGLE());
-        System.out.println(securityProperties.cookieName());
-        System.out.println(securityProperties.jwtSecret());
+        System.out.println("1234");
+//        System.out.println(oauthProperties.GITHUB().client_id());
+//        System.out.println(oauthProperties.GOOGLE());
+//        System.out.println(securityProperties.cookieName());
+//        System.out.println(securityProperties.jwtSecret());
     }
 
 }

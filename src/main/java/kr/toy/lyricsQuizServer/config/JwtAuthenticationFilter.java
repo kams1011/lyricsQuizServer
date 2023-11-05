@@ -21,12 +21,16 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    
+    //FIXME 3개 다 SecurityProperties로 관리
     @Value("${jwt.secret}")
     private String jwtSecret;
-
+    
     private final String accessTokenCookieName = "yml로관리";
 
     private final String refreshTokenCookieName = "yml로관리";
+
+    private final Integer maxAge = 1234; //FIXME MAXAGE를 변수로 받지 않고 고정할지 여부
 
     private final AuthenticationManager authenticationManager;
 
@@ -36,44 +40,36 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
-        String accessToken = resolveToken(request, CookieType.ACCESS.getCookieName());
-        // 여기서 AuthenticationManager를 호출해서 AuthenticationProvider가 동작하게됨.
-        // 그러면 provider에서 thrown한 에러를 filter에서 잡는게 가능할듯..
+        String accessToken = securityService.resolveToken(request, accessTokenCookieName);
         String refreshToken;
+        //1. 회원가입 으로 들어오는 로직.
+        //2. 로그인로직.
+        //3. 사실 회원가입 로직은 로그인 로직 이후 DB에 정보가 없으면 자동으로 리다이렉트 해도 될듯.
+
         try {
             Authentication authentication = authenticationManager.authenticate(new JwtAuthenticationToken("principal_을 넣으세요", accessToken));
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (AuthenticationException e) {
-            refreshTokenCheck(request);
-            //만약 통과한다면?
-//            AccessToken을 재발급해주는 로직을 넣어야함.
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
+            refreshToken = refreshTokenCheck(request, response);
+            if(response.getStatus() == HttpServletResponse.SC_UNAUTHORIZED){
+                return;
+            }
+            String reIssuedAccessToken = securityService.accessTokenIssue(securityService.getUserSeqIn(refreshToken));
+            securityService.setCookie(accessTokenCookieName, reIssuedAccessToken, true, maxAge, response);
         } catch (Exception e){
             e.printStackTrace();
         }
         chain.doFilter(request, response);
     }
 
-    private String resolveToken(HttpServletRequest request, String cookieName) {
-        String token = Arrays.stream(request.getCookies())
-                .filter(data -> cookieName.equals(data.getName()))
-                .findFirst()
-                .map(Cookie::getValue)
-                .orElseThrow(NoSuchElementException::new);
 
-
-
-        return token;
-    }
-
-
-    private String refreshTokenCheck(HttpServletRequest request){
+    public String refreshTokenCheck(HttpServletRequest request, HttpServletResponse response){
         String refreshToken = "";
         try {
-            refreshToken = resolveToken(request, CookieType.REFRESH.getCookieName());
+            refreshToken = securityService.resolveToken(request, refreshTokenCookieName);
         } catch (JwtInvalidException | NullPointerException | NoSuchElementException e){
             SecurityContextHolder.clearContext();
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             //1. Cookie가 없을 때,  -> NullPoint
             //2. Cookie는 있는데 안에 Jwt가 없을때, - NoSuchElementException
             //3. Cookie도 있고 Jwt도 있는데 Jwt관련 에러들이 발생할때. - JwtInvalidException
@@ -81,8 +77,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         return refreshToken;
     }
-
-
-    // jwt 유틸들
 
 }
