@@ -39,6 +39,18 @@ public class OauthProperties {
         return INSTAGRAM;
     }
 
+
+    public Element getElementBy(LoginType loginType){
+        switch (loginType) {
+            case GOOGLE: return GOOGLE;
+            case KAKAO: return KAKAO;
+            case NAVER: return NAVER;
+            case GITHUB: return GITHUB;
+            case INSTAGRAM: return INSTAGRAM;
+            default:throw new IllegalArgumentException();
+        }
+    }
+
     @Setter
     public static class Element{
         String client_id;

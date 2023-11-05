@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
@@ -130,6 +131,10 @@ public class UserTest {
 
     @Test
     public void temp(){
+        System.out.println(securityProperties.cookieName().refreshTokenCookieName());
+        System.out.println(securityProperties.cookieName().accessTokenCookieName());
+        System.out.println(securityProperties.jwtSecret());
+
     }
 
 }

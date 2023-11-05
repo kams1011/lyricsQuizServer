@@ -9,7 +9,7 @@ import java.net.URI;
 public interface OauthClient {
 
     @PostMapping(path = "/create") // 확인
-    void getUserInfo(URI baseUrl, Object param);
+    void getUserInfo(URI baseUrl, Object param); //FIXME return type 변경
 
 
 }

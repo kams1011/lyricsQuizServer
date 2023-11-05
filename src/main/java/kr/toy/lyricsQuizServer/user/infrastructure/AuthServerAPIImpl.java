@@ -17,7 +17,9 @@ public class AuthServerAPIImpl implements AuthServerAPI {
     private final OauthClient oauthClient;
 
     @Override
-    public void getEmail() {
+    public void getUserInfoBy(LoginType loginType, String accessToken) {
+        OauthProperties.Element clientServerElement = oauthProperties.getElementBy(loginType);
+        oauthClient.getUserInfo(URI.create(clientServerElement.infoUrl()), accessToken); // FIXME returnType에 맞는 DTO 생성필요
     }
 
     @Override

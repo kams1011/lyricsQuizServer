@@ -7,6 +7,6 @@ spring:
   profiles:
     include: db
   config:
-    import: application-oauth.yml
+    import: application-oauth.yml, application-security.yml
 server:
   port: 80
