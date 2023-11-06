@@ -28,11 +28,6 @@ export default {
         window.location.assign(
             url + '?client_id=' + client_key
         )
-      const searchParams = new URLSearchParams(location.search);
-        alert(searchParams);
-      // 이동한 후 새로운 URL을 가져옴
-      // URLSearchParams를 사용하여 파라미터 추출
-
     }
   }
 }

@@ -39,6 +39,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
+        if (request.getRequestURI().equals("login/callback")) {
+            //쿠키에 AccessToken이 없고,
+            //어쨌건 Oauth 인증을 거쳐서 무언가 accessToken이 들어옴.
+            //OauthAccessToken과 LoginType URL에 요청을 보내서 사용자 정보를 받아옴.
+            //성공시 accessToken발급 로직 실행
+            //실패시 return
+        }
+
+
 
         String accessToken = securityService.resolveToken(request, accessTokenCookieName);
         String refreshToken;

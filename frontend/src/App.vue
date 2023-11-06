@@ -6,9 +6,10 @@
 <!--  <Login msg="Welcome to Your Vue.js App"/>-->
   <div id="app">
 
-    <router-link to="/">Lobby</router-link>
-    <router-link to="/login">Login</router-link>
-    <router-link to="/room">Room</router-link>
+    <router-link to="/"></router-link>
+    <router-link to="/login"></router-link>
+    <router-link to="/login/callback">login</router-link>
+    <router-link to="/room"></router-link>
     <!-- 여기에 현재 경로에 맞는 컴포넌트가 동적으로 렌더링됩니다 -->
     <router-view></router-view>
   </div>
@@ -42,17 +43,17 @@
 <script>
 import Stomp from 'webstomp-client'
 import SockJS from 'sockjs-client'
-import Lobby from './views/Lobby'
-import Room from "@/views/Room";
-import QuizRegister from "@/views/QuizRegister";
-import Login from "@/views/Login";
+// import Lobby from './views/Lobby'
+// import Room from "@/views/Room";
+// import QuizRegister from "@/views/QuizRegister";
+// import Login from "@/views/Login";
 export default {
   name: 'App',
   data() {
     return {
       userName: "",
       message: "",
-      recvList: []
+      recvList: [],
     }
   },
   created() {
@@ -106,10 +107,10 @@ export default {
   // },
   components: {
     // HelloWorld,
-    Lobby,
-    Room,
-    QuizRegister,
-    Login
+    // Lobby,
+    // Room,
+    // QuizRegister,
+    // Login
   }
 }
 </script>
