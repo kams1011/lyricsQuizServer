@@ -4,52 +4,8 @@
     <title>CodePen - Dashboard UI </title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
 <!--    <link rel="stylesheet" href="./src/assets/css/style.css">-->
-
-
     <link rel="stylesheet" type="text/css" href="https://unpkg.com/phosphor-icons@1.4.2/src/css/icons.css"></head>
   <body>
-  <!-- partial:index.partial.html -->
-  <!-- <header class="header">
-    <div class="header-content responsive-wrapper">
-      <div class="header-logo">
-        <a href="#">
-          <div>
-            <img src="https://assets.codepen.io/285131/untitled-ui-icon.svg" />
-          </div>
-          <img src="https://assets.codepen.io/285131/untitled-ui.svg" />
-        </a>
-      </div>
-      <div class="header-navigation">
-        <nav class="header-navigation-links">
-          <a href="#"> Home </a>
-          <a href="#"> Dashboard </a>
-          <a href="#"> Projects </a>
-          <a href="#"> Tasks </a>
-          <a href="#"> Reporting </a>
-          <a href="#"> Users </a>
-        </nav>
-        <div class="header-navigation-actions">
-          <a href="#" class="button">
-            <i class="ph-lightning-bold"></i>
-            <span>Upgrade now</span>
-          </a>
-          <a href="#" class="icon-button">
-            <i class="ph-gear-bold"></i>
-          </a>
-          <a href="#" class="icon-button">
-            <i class="ph-bell-bold"></i>
-          </a>
-          <a href="#" class="avatar">
-            <img src="https://uifaces.co/our-content/donated/gPZwCbdS.jpg" alt="" />
-          </a>
-        </div>
-      </div>
-      <a href="#" class="button">
-        <i class="ph-list-bold"></i>
-        <span>Menu</span>
-      </a>
-    </div>
-  </header> -->
   <main class="main">
     <div class="responsive-wrapper">
       <div class="main-header">
@@ -165,168 +121,6 @@
                 <a href="#"></a>
               </div>
             </article>
-            <!-- <article class="card">
-              <div class="card-header">
-                <div>
-                  <span><img src="https://assets.codepen.io/285131/zapier.svg" /></span>
-                  <h3>Zapier</h3>
-                </div>
-                <label class="toggle">
-                  <input type="checkbox">
-                  <span></span>
-                </label>
-              </div>
-              <div class="card-body">
-                <p>Build custom automations and integrations with apps.</p>
-              </div>
-              <div class="card-footer">
-                <a href="#">View integration</a>
-              </div>
-            </article>
-            <article class="card">
-              <div class="card-header">
-                <div>
-                  <span><img src="https://assets.codepen.io/285131/notion.svg" /></span>
-                  <h3>Notion</h3>
-                </div>
-                <label class="toggle">
-                  <input type="checkbox" checked>
-                  <span></span>
-                </label>
-              </div>
-              <div class="card-body">
-                <p>Embed notion pages and notes in projects.</p>
-              </div>
-              <div class="card-footer">
-                <a href="#">View integration</a>
-              </div>
-            </article>
-            <article class="card">
-              <div class="card-header">
-                <div>
-                  <span><img src="https://assets.codepen.io/285131/slack.svg" /></span>
-                  <h3>Slack</h3>
-                </div>
-                <label class="toggle">
-                  <input type="checkbox" checked>
-                  <span></span>
-                </label>
-              </div>
-              <div class="card-body">
-                <p>Send notifications to channels and create projects.</p>
-              </div>
-              <div class="card-footer">
-                <a href="#">View integration</a>
-              </div>
-            </article>
-            <article class="card">
-              <div class="card-header">
-                <div>
-                  <span><img src="https://assets.codepen.io/285131/zendesk.svg" /></span>
-                  <h3>Zendesk</h3>
-                </div>
-                <label class="toggle">
-                  <input type="checkbox" checked>
-                  <span></span>
-                </label>
-              </div>
-              <div class="card-body">
-                <p>Link and automate Zendesk tickets.</p>
-              </div>
-              <div class="card-footer">
-                <a href="#">View integration</a>
-              </div>
-            </article>
-            <article class="card">
-              <div class="card-header">
-                <div>
-                  <span><img src="https://assets.codepen.io/285131/jira.svg" /></span>
-                  <h3>Atlassian JIRA</h3>
-                </div>
-                <label class="toggle">
-                  <input type="checkbox">
-                  <span></span>
-                </label>
-              </div>
-              <div class="card-body">
-                <p>Plan, track, and release great software.</p>
-              </div>
-              <div class="card-footer">
-                <a href="#">View integration</a>
-              </div>
-            </article>
-            <article class="card">
-              <div class="card-header">
-                <div>
-                  <span><img src="https://assets.codepen.io/285131/dropbox.svg" /></span>
-                  <h3>Dropbox</h3>
-                </div>
-                <label class="toggle">
-                  <input type="checkbox" checked>
-                  <span></span>
-                </label>
-              </div>
-              <div class="card-body">
-                <p>Everything you need for work, all in one place.</p>
-              </div>
-              <div class="card-footer">
-                <a href="#">View integration</a>
-              </div>
-            </article>
-            <article class="card">
-              <div class="card-header">
-                <div>
-                  <span><img src="https://assets.codepen.io/285131/google-chrome.svg" /></span>
-                  <h3>Google Chrome</h3>
-                </div>
-                <label class="toggle">
-                  <input type="checkbox" checked>
-                  <span></span>
-                </label>
-              </div>
-              <div class="card-body">
-                <p>Link your Google account to share bookmarks across your entire team.</p>
-              </div>
-              <div class="card-footer">
-                <a href="#">View integration</a>
-              </div>
-            </article>
-            <article class="card">
-              <div class="card-header">
-                <div>
-                  <span><img src="https://assets.codepen.io/285131/discord.svg" /></span>
-                  <h3>Discord</h3>
-                </div>
-                <label class="toggle">
-                  <input type="checkbox" checked>
-                  <span></span>
-                </label>
-              </div>
-              <div class="card-body">
-                <p>Keep in touch with your customers without leaving the app.</p>
-              </div>
-              <div class="card-footer">
-                <a href="#">View integration</a>
-              </div>
-            </article>
-            <article class="card">
-              <div class="card-header">
-                <div>
-                  <span><img src="https://assets.codepen.io/285131/google-drive.svg" /></span>
-                  <h3>Google Drive</h3>
-                </div>
-                <label class="toggle">
-                  <input type="checkbox">
-                  <span></span>
-                </label>
-              </div>
-              <div class="card-body">
-                <p>Link your Google account to share files across your entire team.</p>
-              </div>
-              <div class="card-footer">
-                <a href="#">View integration</a>
-              </div>
-            </article> -->
           </div>
         </div>
       </div>
@@ -334,17 +128,16 @@
   </main>
   <!-- partial -->
   <component is="script"  src="https://unpkg.com/phosphor-icons"/>
-  <component is="script"  src="../js/script.js"/>
+<!--  <component is="script"  src="../js/script.js"/>-->
   </body>
 </template>
 
 <script>
 export default {
-  name: "Lobby.vue"
+  name: "Lobby"
 }
 </script>
 
 <style scoped>
 @import '../assets/css/style.css';
-/*@import '../assets/js/script.js';*/
 </style>
