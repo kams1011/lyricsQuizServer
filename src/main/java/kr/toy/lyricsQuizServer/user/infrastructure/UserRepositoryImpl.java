@@ -1,6 +1,7 @@
 package kr.toy.lyricsQuizServer.user.infrastructure;
 
 
+import kr.toy.lyricsQuizServer.user.domain.LoginType;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.service.port.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,11 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public User getByEmail(String email) {
         return userJpaRepository.findByEmail(email).orElseThrow(NoSuchElementException::new).toModel();
+    }
+
+    @Override
+    public User getByEmailAndLoginType(String email, LoginType loginType) {
+        return userJpaRepository.findByEmailAndLoginType(email, loginType).orElseThrow(NoSuchElementException::new).toModel();
     }
 
     @Override

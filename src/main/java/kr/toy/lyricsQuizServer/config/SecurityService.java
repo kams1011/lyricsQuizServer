@@ -26,38 +26,51 @@ import static javax.management.timer.Timer.ONE_MINUTE;
 public class SecurityService {
 
     private final byte[] secretKeyBytes;
-    private final int accessTokenExpireMinute = 5;
-    private final int refreshTokenExpireMinute = 30; //FIXME 수정
+    private final int ACCESS_TOKEN_EXPIRE_MINUTE = 5;
+    private final int REFRESH_TOKEN_EXPIRE_MINUTE = 30; //FIXME 수정
     private final UserRepository userRepository;
 
 
 
     public String accessTokenIssue(Long userSeq){
         User user = userRepository.getById(userSeq);
-        Date now = new Date();
+
         Claims claims = Jwts.claims();
         claims.put("roles", Collections.singleton(user.getRole()));
         claims.put("id", user.getEmail());
         claims.put("nickName", user.getNickName());
-        claims.put("userSeq", userSeq);
 
+        return jwtIssue(userSeq, claims, ACCESS_TOKEN_EXPIRE_MINUTE);
+    }
+
+    public String refreshTokenIssue(Long userSeq){
+        return jwtIssue(userSeq, Jwts.claims(), REFRESH_TOKEN_EXPIRE_MINUTE);
+    }
+
+    public String jwtIssue(Long userSeq, Claims claims, int expireMinute){
+        User user = userRepository.getById(userSeq);
+        Date now = new Date();
+        claims.put("userSeq", user.getUserSeq());
         return Jwts.builder()
                 .setSubject(user.getEmail())
                 .setClaims(claims)
                 .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + ONE_MINUTE * accessTokenExpireMinute))
+                .setExpiration(new Date(now.getTime() + ONE_MINUTE * expireMinute))
                 .signWith(Keys.hmacShaKeyFor(secretKeyBytes))
                 .compact();
     }
 
-    public void setCookie(String tokenName, String tokenValue, Boolean httpOnly, int maxAge, HttpServletResponse response){
-        ResponseCookie cookie = ResponseCookie.from(tokenName, tokenValue)
-                .domain("localhost")
+    public void setCookieWithToken(Boolean isRefreshToken, String tokenValue, HttpServletResponse response){
+        SecurityProperties.CookieName cookieName = new SecurityProperties.CookieName();
+
+        ResponseCookie cookie = ResponseCookie.from(cookieName.getTokenNameBy(isRefreshToken), tokenValue)
+                .domain("localhost") //FIXME 환경변수로 관리
                 .sameSite("None")
                 .secure(true)
                 .path("/")
-                .maxAge(maxAge)
-                .httpOnly(httpOnly).build();
+                .maxAge(55555555)//FIXME 시간 변경
+                .httpOnly(isRefreshToken)
+                .build();
         response.addHeader("Set-Cookie", cookie.toString());
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-expose-headers", "Set-Cookie");

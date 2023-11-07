@@ -6,9 +6,13 @@ import kr.toy.lyricsQuizServer.user.domain.dto.UserCreate;
 import org.springframework.stereotype.Service;
 import sun.rmi.runtime.Log;
 
+import javax.servlet.http.HttpServletResponse;
+
 public interface UserService {
 
     User getByEmail(String email);
+
+    User getByEmailAndLoginType(String email, LoginType loginType);
 
     User getById(Long id);
 
@@ -21,6 +25,8 @@ public interface UserService {
     User quit();
 
     User changeNickName();
+
+    UserCreate loginHandler(HttpServletResponse response, LoginType loginType, String code);
 
 
 

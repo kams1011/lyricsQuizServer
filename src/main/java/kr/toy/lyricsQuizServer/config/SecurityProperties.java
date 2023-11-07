@@ -31,6 +31,14 @@ public class SecurityProperties {
 
         String refreshTokenCookieName;
 
+        public String getTokenNameBy(Boolean httpOnly){
+            if (httpOnly){
+                return refreshTokenCookieName;
+            } else {
+                return accessTokenCookieName;
+            }
+        }
+
         public String accessTokenCookieName(){
             return accessTokenCookieName;
         }

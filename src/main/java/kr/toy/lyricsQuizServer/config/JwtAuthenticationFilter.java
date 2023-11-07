@@ -29,8 +29,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final String refreshTokenCookieName = "yml로관리";
 
-    private final Integer maxAge = 1234; //FIXME MAXAGE를 변수로 받지 않고 고정할지 여부
-
     private final AuthenticationManager authenticationManager;
 
     private final SecurityService securityService;
@@ -38,22 +36,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        System.out.println("=====================");
-        System.out.println(request.getRequestURI());
-            //해당 URL로 들어오면 통과.
-            //쿠키에 AccessToken이 없고,
-            //어쨌건 Oauth 인증을 거쳐서 무언가 accessToken이 들어옴.
-            //OauthAccessToken과 LoginType URL에 요청을 보내서 사용자 정보를 받아옴.
-            //성공시 accessToken발급 로직 실행
-            //실패시 return
-
         // FIXME NoSuchElement catch
         String accessToken = securityService.resolveToken(request, accessTokenCookieName);
 
         String refreshToken;
-        //1. 회원가입 으로 들어오는 로직.
-        //2. 로그인로직.
-        //3. 사실 회원가입 로직은 로그인 로직 이후 DB에 정보가 없으면 자동으로 리다이렉트 해도 될듯.
 
         try {
             Authentication authentication = authenticationManager.authenticate(new JwtAuthenticationToken("principal_을 넣으세요", accessToken));
@@ -64,7 +50,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 return;
             }
             String reIssuedAccessToken = securityService.accessTokenIssue(securityService.getUserSeqIn(refreshToken));
-            securityService.setCookie(accessTokenCookieName, reIssuedAccessToken, true, maxAge, response);
+            securityService.setCookieWithToken(true, reIssuedAccessToken, response);
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -89,8 +75,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        System.out.println("hihi");
-        System.out.println(request.getRequestURI());
         String[] excludePath = {"/api/users/signup", "/api/users/info", "/api/users"};
         String path = request.getRequestURI();
         return Arrays.stream(excludePath).anyMatch(path::startsWith);
