@@ -1,6 +1,8 @@
 package kr.toy.lyricsQuizServer.config;
 
 import kr.toy.lyricsQuizServer.user.domain.LoginType;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
@@ -85,6 +87,44 @@ public class OauthProperties {
             return scope;
         }
 
+    }
+
+
+    @Getter
+    @Builder
+    public static class AccessTokenRequest{
+
+        String client_id;
+
+        String client_secret;
+
+        String code;
+
+        String redirect_uri;
+
+        public static AccessTokenRequest from(Element element, String code){
+            AccessTokenRequest accessTokenRequest = AccessTokenRequest.builder()
+                    .client_id(element.client_id)
+                    .client_secret(element.client_secret)
+                    .code(code)
+                    .build();
+
+            return accessTokenRequest;
+        }
+
+    }
+
+
+
+    @Getter
+    @Setter
+    public static class AccessTokenResponse{
+
+        String access_token;
+
+        String scope;
+
+        String token_type;
     }
 
 

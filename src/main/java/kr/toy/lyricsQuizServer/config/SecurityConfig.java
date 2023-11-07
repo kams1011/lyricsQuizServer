@@ -1,11 +1,13 @@
 package kr.toy.lyricsQuizServer.config;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -28,13 +30,16 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        http.authorizeRequests()
+//                .anyRequest().permitAll();
         http
 //                .addFilter(corsConfig.corsFilter())
                 .csrf().disable()
 //                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .formLogin().disable()
-                .httpBasic().disable() 
-                .addFilterBefore(new JwtAuthenticationFilter(authenticationManager(), securityService), UsernamePasswordAuthenticationFilter.class); //FIXME addFilterBefore로 바꾼 부분 정상작동되는지 확인
+                .httpBasic().disable()
+                .addFilterBefore(new JwtAuthenticationFilter(authenticationManager(), securityService), UsernamePasswordAuthenticationFilter.class);
+        //FIXME addFilterBefore로 바꾼 부분 정상작동되는지 확인
         return http.build(); 
     }
 
@@ -48,6 +53,13 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager() {
         return authentication -> jwtAuthenticationProvider.authenticate(authentication);
     }
+
+//    @Bean
+//    public WebSecurityCustomizer webSecurityCustomizer() {
+//        return (web) -> web.ignoring()
+//                .mvcMatchers("/favicon.io")
+//                .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+//    }
 
 
 }

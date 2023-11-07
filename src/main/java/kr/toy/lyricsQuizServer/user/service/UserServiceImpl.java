@@ -40,10 +40,6 @@ public class UserServiceImpl implements UserService {
         User user = User.from(userCreate, LocalDateTime.now());
         user = userRepository.save(user);
         //AccessToken을 받는다.
-
-
-
-
         //LoginType을 받는다.
         //AccessToken으로 email을 받는다.
         //RefreshToken을 생성한다.

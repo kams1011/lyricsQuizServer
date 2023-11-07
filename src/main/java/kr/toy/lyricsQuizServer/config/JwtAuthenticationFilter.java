@@ -11,7 +11,6 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -39,17 +38,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        if (request.getRequestURI().equals("login/callback")) {
+        System.out.println("=====================");
+        System.out.println(request.getRequestURI());
+            //해당 URL로 들어오면 통과.
             //쿠키에 AccessToken이 없고,
             //어쨌건 Oauth 인증을 거쳐서 무언가 accessToken이 들어옴.
             //OauthAccessToken과 LoginType URL에 요청을 보내서 사용자 정보를 받아옴.
             //성공시 accessToken발급 로직 실행
             //실패시 return
-        }
 
-
-
+        // FIXME NoSuchElement catch
         String accessToken = securityService.resolveToken(request, accessTokenCookieName);
+
         String refreshToken;
         //1. 회원가입 으로 들어오는 로직.
         //2. 로그인로직.
@@ -85,6 +85,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             //FIXME 로그인을 새로 하게 만드는 로직 추가.
         }
         return refreshToken;
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        System.out.println("hihi");
+        System.out.println(request.getRequestURI());
+        String[] excludePath = {"/api/users/signup", "/api/users/info", "/api/users"};
+        String path = request.getRequestURI();
+        return Arrays.stream(excludePath).anyMatch(path::startsWith);
     }
 
 }
