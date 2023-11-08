@@ -1,13 +1,11 @@
 package kr.toy.lyricsQuizServer.user.service;
 
 import kr.toy.lyricsQuizServer.config.OauthProperties;
-import kr.toy.lyricsQuizServer.config.SecurityProperties;
 import kr.toy.lyricsQuizServer.config.SecurityService;
 import kr.toy.lyricsQuizServer.user.controller.port.UserService;
 import kr.toy.lyricsQuizServer.user.domain.LoginType;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.domain.dto.UserCreate;
-import kr.toy.lyricsQuizServer.user.infrastructure.AuthServerAPIImpl;
 import kr.toy.lyricsQuizServer.user.service.port.AuthServerAPI;
 import kr.toy.lyricsQuizServer.user.service.port.UserRepository;
 import lombok.RequiredArgsConstructor;

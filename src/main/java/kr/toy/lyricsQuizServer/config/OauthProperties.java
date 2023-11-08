@@ -102,15 +102,21 @@ public class OauthProperties {
 
         String redirect_uri;
 
+        String grant_type;
+
         public static AccessTokenRequest from(Element element, String code){
             AccessTokenRequest accessTokenRequest = AccessTokenRequest.builder()
                     .client_id(element.client_id)
                     .client_secret(element.client_secret)
+                    .redirect_uri("https://localhost:8080/login/callback")
                     .code(code)
+                    .grant_type("authorization_code")
                     .build();
 
             return accessTokenRequest;
         }
+
+
 
     }
 

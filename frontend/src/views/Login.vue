@@ -1,10 +1,10 @@
 <template>
   <div class="login-box">
     <h2>Social Login Button</h2>
-    <a href="#" class="social-button" id="facebook-connect"> <span>Connect with Facebook</span></a>
+    <a href="#" class="social-button" id="kakao-connect" v-on:click="goToOauthServer('KAKAO', KAKAO_URL, KAKAO_CLIENT_KEY)"> <span>카카오 로그인</span></a>
+    <a href="#" class="social-button" id="naver-connect" v-on:click="goToOauthServer('NAVER', NAVER_URL, NAVER_CLIENT_KEY)"> <span>네이버 로그인</span></a>
     <a href="#" class="social-button" id="google-connect"> <span>Connect with Google</span></a>
-    <a href="#" class="social-button" id="twitter-connect"> <span>Connect with Twitter</span></a>
-    <a href="#" class="social-button" id="github-connect" v-on:click="goToGithub(GITHUB_URL, GITHUB_CLIENT_KEY)"> <span>Connect with GitHub</span></a>
+    <a href="#" class="social-button" id="github-connect" v-on:click="goToOauthServer('GITHUB', GITHUB_URL, GITHUB_CLIENT_KEY)"> <span>Connect with GitHub</span></a>
   </div>
 </template>
 
@@ -24,10 +24,10 @@ export default {
     };
   },
   methods: {
-    goToGithub(url, client_key) {
-        window.location.assign(
-            url + '?client_id=' + client_key
-        )
+    goToOauthServer(site, url, client_key){
+      window.location.assign(
+          url + '&client_id=' + client_key + '&state=' + site
+      )
     }
   }
 }

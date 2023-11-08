@@ -131,9 +131,6 @@ public class UserTest {
 
     @Test
     public void temp(){
-        System.out.println(securityProperties.cookieName().refreshTokenCookieName());
-        System.out.println(securityProperties.cookieName().accessTokenCookieName());
-        System.out.println(securityProperties.jwtSecret());
 
     }
 

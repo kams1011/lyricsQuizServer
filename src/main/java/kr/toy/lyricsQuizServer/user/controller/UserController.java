@@ -24,8 +24,6 @@ public class UserController {
 
     private final AuthServerAPI authServerAPI;
 
-//    private final OauthConfig oauthConfig;
-
     @GetMapping("/{id}")
     public ResponseEntity getById(@PathVariable Long id){
         return ResponseEntity.ok().body(userService.getById(id));

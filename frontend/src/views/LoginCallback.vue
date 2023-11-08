@@ -7,16 +7,19 @@ import axios from "axios";
 
 export default {
   name: "LoginCallback",
+  computed: {
+    dynamicVariable() {
+      return this.$store.getters.getDynamicVariable;
+    },
+  },
   methods: {
     redirect: function(url) {
       window.location.href = url;
-    }
+    },
   },
   created() {
     const redirect = this.redirect;
-    alert(this.$route.query.code);
-    // axios.get('http://localhost:3000/login?code=' + this.$route.query.code + '&state=' + this.$route.query.state)
-    axios.get('http://localhost/api/users/info/GITHUB/' + this.$route.query.code)
+    axios.get('http://localhost/api/users/login/' + this.$route.query.state + '/' + this.$route.query.code)
         .then(function(res) {
           if(!res.data) {
             alert('something went wrong. can\'t get access token.');
