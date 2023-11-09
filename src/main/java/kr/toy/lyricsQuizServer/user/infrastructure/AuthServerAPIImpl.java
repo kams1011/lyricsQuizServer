@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.net.URI;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 @Component
@@ -23,12 +26,8 @@ public class AuthServerAPIImpl implements AuthServerAPI {
     public OauthProperties.AccessTokenResponse getAccessToken(LoginType loginType, String code) {
         OauthProperties.Element clientServerElement = oauthProperties.getElementBy(loginType);
         URI uri = URI.create(clientServerElement.tokenUrl());
-
-        System.out.println("여기까지 ㄴ왔을듯?");
-        System.out.println(code);
         AccessTokenRequest accessTokenRequest = OauthProperties.AccessTokenRequest.from(clientServerElement, code);
         AccessTokenResponse accessToken = oauthClient.getAccessToken(uri, accessTokenRequest);
-        System.out.println(accessToken.getAccess_token());
         return accessToken;
     }
 

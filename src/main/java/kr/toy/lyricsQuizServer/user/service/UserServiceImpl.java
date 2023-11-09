@@ -73,7 +73,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserCreate loginHandler(HttpServletResponse response, LoginType loginType, String code){
+        System.out.println("여기도??");
         OauthProperties.AccessTokenResponse accessTokenResponse = authServerAPI.getAccessToken(loginType, code);
+        System.out.println("HIHI");
+        System.out.println(accessTokenResponse.getAccess_token());
         Map<String, String> userInfo = authServerAPI.getUserInfoBy(loginType, accessTokenResponse.getAccess_token());
 
 

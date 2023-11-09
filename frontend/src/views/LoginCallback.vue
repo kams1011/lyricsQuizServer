@@ -27,7 +27,8 @@ export default {
       code = hashParams.get('access_token');
       state = hashParams.get('state');
     }
-    axios.get('http://localhost/api/users/login/' + state + '/' + code)
+
+    axios.get('http://localhost/api/users/login?loginType=' + state + '&code=' + code)
         .then(function(res) {
           if(!res.data) {
             alert('something went wrong. can\'t get access token.');
