@@ -75,6 +75,8 @@ public class UserServiceImpl implements UserService {
     public UserCreate loginHandler(HttpServletResponse response, LoginType loginType, String code){
         OauthProperties.AccessTokenResponse accessTokenResponse = authServerAPI.getAccessToken(loginType, code);
         Map<String, String> userInfo = authServerAPI.getUserInfoBy(loginType, accessTokenResponse.getAccess_token());
+
+
         String email = userInfo.get("여기에 인증서버별 파라미터 값을 넣습니다."); //FIXME 인증서버 별 email 및 id를 가져오는 파라미터 환경변수에 추가
 
         try {

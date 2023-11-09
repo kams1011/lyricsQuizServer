@@ -24,20 +24,22 @@ public class AuthServerAPIImpl implements AuthServerAPI {
         OauthProperties.Element clientServerElement = oauthProperties.getElementBy(loginType);
         URI uri = URI.create(clientServerElement.tokenUrl());
 
-
+        System.out.println("여기까지 ㄴ왔을듯?");
+        System.out.println(code);
         AccessTokenRequest accessTokenRequest = OauthProperties.AccessTokenRequest.from(clientServerElement, code);
         AccessTokenResponse accessToken = oauthClient.getAccessToken(uri, accessTokenRequest);
-
+        System.out.println(accessToken.getAccess_token());
         return accessToken;
     }
 
     @Override
-    public Map<String, String> getUserInfoBy(LoginType loginType, String accessToken) {
+    public Map<String, String > getUserInfoBy(LoginType loginType, String accessToken) {
         OauthProperties.Element clientServerElement = oauthProperties.getElementBy(loginType);
-        Map<String, String> object = oauthClient.getUserInfo(URI.create(clientServerElement.infoUrl()), "Bearer " + accessToken); // FIXME returnType에 맞는 DTO 생성필요
-
-
-        return object;
+//        Map<String, Object> object = oauthClient.getUserInfo(URI.create(clientServerElement.infoUrl()), "Bearer " + accessToken); // FIXME returnType에 맞는 DTO 생성필요
+        String object = oauthClient.getUserInfo(URI.create(clientServerElement.infoUrl()), "Bearer " + accessToken); // FIXME returnType에 맞는 DTO 생성필요
+        System.out.println("왜안들어와");
+        System.out.println(object);
+        return null;
     }
 
     @Override
