@@ -36,8 +36,6 @@ public class AuthServerAPIImpl implements AuthServerAPI {
         OauthProperties.Element clientServerElement = oauthProperties.getElementBy(loginType);
 //        Map<String, Object> object = oauthClient.getUserInfo(URI.create(clientServerElement.infoUrl()), "Bearer " + accessToken); // FIXME returnType에 맞는 DTO 생성필요
         String object = oauthClient.getUserInfo(URI.create(clientServerElement.infoUrl()), "Bearer " + accessToken); // FIXME returnType에 맞는 DTO 생성필요
-        System.out.println("왜안들어와");
-        System.out.println(object);
         return null;
     }
 

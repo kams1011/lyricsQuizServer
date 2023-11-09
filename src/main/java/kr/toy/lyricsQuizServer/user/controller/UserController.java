@@ -37,7 +37,6 @@ public class UserController {
     @GetMapping("/login")
     public ResponseEntity<Object> login(HttpServletResponse response,  @RequestParam LoginType loginType, @RequestParam String code){
 
-        System.out.println("HIHcontrollerI");
         if(userService.loginHandler(response, loginType, code) == null) {
             return ResponseEntity.status(HttpStatus.OK).body(Response.success("로그인에 성공했습니다.", null));
         } else {
