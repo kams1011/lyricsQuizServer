@@ -7,6 +7,9 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+import java.util.Map;
+
 
 @Setter
 @ConfigurationProperties(prefix = "oauth")
@@ -130,8 +133,6 @@ public class OauthProperties {
 
     }
 
-
-
     @Getter
     @Setter
     public static class AccessTokenResponse{
@@ -141,6 +142,48 @@ public class OauthProperties {
         String scope;
 
         String token_type;
+    }
+
+
+    @Getter
+    @Setter
+    public static class UserInfoDTO{
+
+        String email; //GOOGLE
+
+        String login; //GITHUB
+
+        Map<String, Object> response; //NAVER
+
+        Map<String, Object> kakao_account; //KAKAO
+
+
+        public String getUserInfoInResponse(LoginType loginType){
+            Object variable = getVariableBy(loginType);
+            if (variable instanceof Map){
+                return ((Map<?, ?>) variable).get(loginType.getScope()).toString();
+            } else if (variable instanceof String) {
+                return variable.toString();
+            }
+            return null;
+        }
+
+        public Object getVariableBy(LoginType loginType) {
+            switch (loginType) {
+                case GOOGLE:
+                    return email;
+                case KAKAO:
+                    return kakao_account;
+                case NAVER:
+                    return response;
+                case GITHUB:
+                    return login;
+                case INSTAGRAM:
+                    return "NOTYET";
+                default:
+                    throw new IllegalArgumentException();
+            }
+        }
     }
 
 

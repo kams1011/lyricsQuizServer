@@ -4,7 +4,6 @@ import kr.toy.lyricsQuizServer.user.domain.LoginType;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.domain.dto.UserCreate;
 import org.springframework.stereotype.Service;
-import sun.rmi.runtime.Log;
 
 import javax.servlet.http.HttpServletResponse;
 

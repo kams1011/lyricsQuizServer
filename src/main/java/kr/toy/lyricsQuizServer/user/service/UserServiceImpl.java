@@ -50,9 +50,8 @@ public class UserServiceImpl implements UserService {
     public User signUp(UserCreate userCreate) {
         User user = User.from(userCreate, LocalDateTime.now());
         user = userRepository.save(user);
-        //AccessToken을 받는다.
-        //LoginType을 받는다.
-        //AccessToken으로 email을 받는다.
+
+
         //RefreshToken을 생성한다.
         //UserEntity를 생성한다.
         //저장한다.
@@ -74,19 +73,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserCreate loginHandler(HttpServletResponse response, LoginType loginType, String code){
         OauthProperties.AccessTokenResponse accessTokenResponse = authServerAPI.getAccessToken(loginType, code);
-        Map<String, String> userInfo = authServerAPI.getUserInfoBy(loginType, accessTokenResponse.getAccess_token());
-
-
-        String email = userInfo.get("여기에 인증서버별 파라미터 값을 넣습니다."); //FIXME 인증서버 별 email 및 id를 가져오는 파라미터 환경변수에 추가
+        String email = authServerAPI.getEmailBy(loginType, accessTokenResponse.getAccess_token());
 
         try {
-            User user = getByEmailAndLoginType(email, loginType); //회원가입불필요
+            User user = getByEmailAndLoginType(email, loginType);
             String accessToken = securityService.accessTokenIssue(user.getUserSeq());
             String refreshToken = securityService.refreshTokenIssue(user.getUserSeq());
             securityService.setCookieWithToken(false, accessToken, response);
             securityService.setCookieWithToken(true, refreshToken, response);
-
-
             return null;
         } catch (NoSuchElementException e){ // 회원가입필요
             UserCreate userCreate = UserCreate.builder()

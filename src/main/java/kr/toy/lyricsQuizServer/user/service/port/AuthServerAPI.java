@@ -9,7 +9,7 @@ public interface AuthServerAPI {
 
     OauthProperties.AccessTokenResponse getAccessToken(LoginType loginType, String code);
 
-    Map<String, String> getUserInfoBy(LoginType loginType, String accessToken);
+    String getEmailBy(LoginType loginType, String accessToken);
 
     void getInformation();
 

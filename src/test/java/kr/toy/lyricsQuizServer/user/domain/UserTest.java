@@ -129,9 +129,5 @@ public class UserTest {
     }
 
 
-    @Test
-    public void temp(){
-
-    }
 
 }

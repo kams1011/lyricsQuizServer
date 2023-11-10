@@ -1,5 +1,6 @@
 package kr.toy.lyricsQuizServer.user.controller;
 
+import kr.toy.lyricsQuizServer.common.domain.ErrorCode;
 import kr.toy.lyricsQuizServer.common.domain.Response;
 import kr.toy.lyricsQuizServer.user.controller.port.UserService;
 import kr.toy.lyricsQuizServer.user.domain.LoginType;
@@ -37,10 +38,12 @@ public class UserController {
     @GetMapping("/login")
     public ResponseEntity<Object> login(HttpServletResponse response,  @RequestParam LoginType loginType, @RequestParam String code){
 
-        if(userService.loginHandler(response, loginType, code) == null) {
+        UserCreate userCreate = userService.loginHandler(response, loginType, code);
+
+        if (userCreate == null) {
             return ResponseEntity.status(HttpStatus.OK).body(Response.success("로그인에 성공했습니다.", null));
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(authServerAPI.getUserInfoBy(loginType, code));
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Response.fail("로그인에 실패했습니다.", userCreate, ErrorCode.USER_NOT_REGISTERED));
         }
 
 

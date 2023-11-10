@@ -4,23 +4,25 @@ import kr.toy.lyricsQuizServer.config.OauthProperties;
 import lombok.Getter;
 
 import java.util.Arrays;
+import java.util.Map;
 
 @Getter
 public enum LoginType {
 
-    GOOGLE(0),
-    KAKAO(1),
-    NAVER(2),
-    GITHUB(3),
-    INSTAGRAM(4);
+    GOOGLE("email"),
+    KAKAO("email"),
+    NAVER("email"),
+    GITHUB("login"),
+    INSTAGRAM("notyet");
 
     private String type;
 
-    private int number;
+    private String scope;
 
-    LoginType(int number){
-        this.number = number;
+    LoginType(String scope){
+        this.scope = scope;
     }
+
 
     public void isNotScope(){
 

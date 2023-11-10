@@ -32,11 +32,12 @@ public class AuthServerAPIImpl implements AuthServerAPI {
     }
 
     @Override
-    public Map<String, String > getUserInfoBy(LoginType loginType, String accessToken) {
+    public String getEmailBy(LoginType loginType, String accessToken) {
         OauthProperties.Element clientServerElement = oauthProperties.getElementBy(loginType);
-//        Map<String, Object> object = oauthClient.getUserInfo(URI.create(clientServerElement.infoUrl()), "Bearer " + accessToken); // FIXME returnType에 맞는 DTO 생성필요
-        String object = oauthClient.getUserInfo(URI.create(clientServerElement.infoUrl()), "Bearer " + accessToken); // FIXME returnType에 맞는 DTO 생성필요
-        return null;
+        OauthProperties.UserInfoDTO userInfoResponse = oauthClient.getUserInfo(URI.create(clientServerElement.infoUrl()), "Bearer " + accessToken); // FIXME 잘못된 인자가 들어왔거나 Return type이 달라질떄, 통신에 실패했을때 에러 핸들링 필요
+
+        System.out.println(userInfoResponse.getUserInfoInResponse(loginType));
+        return userInfoResponse.getUserInfoInResponse(loginType);
     }
 
     @Override
