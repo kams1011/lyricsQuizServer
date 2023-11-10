@@ -15,6 +15,8 @@ public class SecurityProperties {
 
     private String jwtSecret;
 
+    private String domain;
+
 
     public CookieName cookieName(){
         return cookieName;
@@ -23,6 +25,8 @@ public class SecurityProperties {
     public String jwtSecret(){
         return jwtSecret;
     }
+
+    public String domain() { return  domain;}
 
     @Setter
     public static class CookieName{

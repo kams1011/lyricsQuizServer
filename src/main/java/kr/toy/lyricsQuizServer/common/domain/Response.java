@@ -1,7 +1,9 @@
 package kr.toy.lyricsQuizServer.common.domain;
 
 import lombok.Builder;
+import lombok.Getter;
 
+@Getter
 public class Response {
 
     Boolean success;

@@ -8,11 +8,13 @@ import Lobby from './views/Lobby.vue';
 import Login from './views/Login.vue';
 import Room from "@/views/Room";
 import LoginCallback from "@/views/LoginCallback";
+import UserRegister from "@/views/UserRegister";
 
 const routes = [
     { path: '/', component: Lobby },
     { path: '/login', component: Login },
     { path: '/login/callback', component: LoginCallback },
+    { path: '/user/register/:loginType/:id', component: UserRegister },
     { path: '/room', component: Room },
 ];
 

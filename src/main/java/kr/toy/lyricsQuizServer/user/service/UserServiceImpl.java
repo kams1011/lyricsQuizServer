@@ -47,14 +47,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User signUp(UserCreate userCreate) {
+    public User signUp(HttpServletResponse response, UserCreate userCreate) {
         User user = User.from(userCreate, LocalDateTime.now());
         user = userRepository.save(user);
-
-
-        //RefreshToken을 생성한다.
-        //UserEntity를 생성한다.
-        //저장한다.
+        makeTokensAndSetCookie(user, response);
 
         return user;
     }
@@ -77,10 +73,7 @@ public class UserServiceImpl implements UserService {
 
         try {
             User user = getByEmailAndLoginType(email, loginType);
-            String accessToken = securityService.accessTokenIssue(user.getUserSeq());
-            String refreshToken = securityService.refreshTokenIssue(user.getUserSeq());
-            securityService.setCookieWithToken(false, accessToken, response);
-            securityService.setCookieWithToken(true, refreshToken, response);
+            makeTokensAndSetCookie(user, response);
             return null;
         } catch (NoSuchElementException e){ // 회원가입필요
             UserCreate userCreate = UserCreate.builder()
@@ -89,6 +82,14 @@ public class UserServiceImpl implements UserService {
                     .build();
             return userCreate;
         }
+    }
+
+
+    public void makeTokensAndSetCookie(User user, HttpServletResponse response){
+        String accessToken = securityService.accessTokenIssue(user.getUserSeq());
+        String refreshToken = securityService.refreshTokenIssue(user.getUserSeq());
+        securityService.setCookieWithToken(false, accessToken, response);
+        securityService.setCookieWithToken(true, refreshToken, response);
     }
 
 }

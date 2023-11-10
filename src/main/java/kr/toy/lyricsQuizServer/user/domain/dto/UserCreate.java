@@ -1,8 +1,10 @@
 package kr.toy.lyricsQuizServer.user.domain.dto;
 
 import kr.toy.lyricsQuizServer.user.domain.LoginType;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+
 
 
 

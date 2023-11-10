@@ -93,8 +93,8 @@ export default {
   name: "QuizRegister",
   methods: {
     toggleFieldset(type) {
-      var youtubeField = document.getElementById("youtubeField");
-      var fileField = document.getElementById("fileField");
+      let youtubeField = document.getElementById("youtubeField");
+      let fileField = document.getElementById("fileField");
 
       if (type === "youtube") {
         youtubeField.style.display = "block";

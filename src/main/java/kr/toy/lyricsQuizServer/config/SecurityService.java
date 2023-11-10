@@ -20,15 +20,20 @@ import java.util.NoSuchElementException;
 import static javax.management.timer.Timer.ONE_MINUTE;
 
 
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @Service
 public class SecurityService {
 
-    private final byte[] secretKeyBytes;
+    private final SecurityProperties securityProperties;
     private final int ACCESS_TOKEN_EXPIRE_MINUTE = 5;
     private final int REFRESH_TOKEN_EXPIRE_MINUTE = 30; //FIXME 수정
     private final UserRepository userRepository;
 
+
+    public SecurityService(SecurityProperties securityProperties, UserRepository userRepository){
+        this.securityProperties = securityProperties;
+        this.userRepository = userRepository;
+    }
 
 
     public String accessTokenIssue(Long userSeq){
@@ -55,15 +60,13 @@ public class SecurityService {
                 .setClaims(claims)
                 .setIssuedAt(now)
                 .setExpiration(new Date(now.getTime() + ONE_MINUTE * expireMinute))
-                .signWith(Keys.hmacShaKeyFor(secretKeyBytes))
+                .signWith(Keys.hmacShaKeyFor(securityProperties.jwtSecret().getBytes()))
                 .compact();
     }
 
     public void setCookieWithToken(Boolean isRefreshToken, String tokenValue, HttpServletResponse response){
-        SecurityProperties.CookieName cookieName = new SecurityProperties.CookieName();
-
-        ResponseCookie cookie = ResponseCookie.from(cookieName.getTokenNameBy(isRefreshToken), tokenValue)
-                .domain("localhost") //FIXME 환경변수로 관리
+        ResponseCookie cookie = ResponseCookie.from(securityProperties.cookieName().getTokenNameBy(isRefreshToken), tokenValue)
+                .domain(securityProperties.domain())
                 .sameSite("None")
                 .secure(true)
                 .path("/")
@@ -94,7 +97,7 @@ public class SecurityService {
 
     public Claims getClaimsIn(String token) {
         Claims claims = Jwts.parserBuilder()
-                .setSigningKey(secretKeyBytes)
+                .setSigningKey(securityProperties.jwtSecret().getBytes())
                 .build()
                 .parseClaimsJws(token)
                 .getBody();

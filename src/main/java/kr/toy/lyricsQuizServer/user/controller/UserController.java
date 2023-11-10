@@ -4,6 +4,7 @@ import kr.toy.lyricsQuizServer.common.domain.ErrorCode;
 import kr.toy.lyricsQuizServer.common.domain.Response;
 import kr.toy.lyricsQuizServer.user.controller.port.UserService;
 import kr.toy.lyricsQuizServer.user.domain.LoginType;
+import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.domain.dto.UserCreate;
 import kr.toy.lyricsQuizServer.user.service.port.AuthServerAPI;
 import lombok.Builder;
@@ -46,12 +47,12 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Response.fail("로그인에 실패했습니다.", userCreate, ErrorCode.USER_NOT_REGISTERED));
         }
 
-
     }
     @PostMapping("/signup")
-    public ResponseEntity register(@RequestBody UserCreate userCreate){
-        return ResponseEntity.created(URI.create("/users/" + "tmeptemp")).body("temptemp");
-        //FIXME 임시로 넣은 값들 수정
+    public ResponseEntity register(HttpServletResponse response, @RequestBody UserCreate userCreate){
+        User user = userService.signUp(response, userCreate);
+
+        return ResponseEntity.created(URI.create("/api/users/" + user.getUserSeq())).body(Response.success("회원가입에 성공했습니다.", user));
     }
 
 

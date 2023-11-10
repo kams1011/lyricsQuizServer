@@ -31,15 +31,17 @@ export default {
     axios.get('http://localhost/api/users/login?loginType=' + state + '&code=' + code)
         .then(function(res) {
           if(!res.data) {
-            alert('something went wrong. can\'t get access token.');
-            // redirect('/')
+            redirect('/')
           }
-          redirect('/user?token=' + res.data + '&service=github')
+          redirect('/');
         })
         .catch(function(err) {
-          alert('something went wrong. request failed.');
-          console.log(err)
-          redirect('/')
+          let user = err.response.data.data;
+          console.log(err);
+          alert('회원가입이 필요합니다.');
+          let email = user.email;
+          let loginType = user.loginType;
+          redirect('/user/register/' + loginType + '/' + email);
         })
   },
 }
