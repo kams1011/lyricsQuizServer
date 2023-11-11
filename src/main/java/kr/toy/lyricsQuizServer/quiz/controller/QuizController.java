@@ -22,7 +22,6 @@ public class QuizController {
 
     @PostMapping("")
     public ResponseEntity<Quiz> create(@RequestBody QuizCreate quizCreate){
-
         return ResponseEntity.ok()
                 .body(quizService.create(quizCreate));
     }

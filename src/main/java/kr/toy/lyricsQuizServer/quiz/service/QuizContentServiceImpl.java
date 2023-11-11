@@ -14,6 +14,7 @@ public class QuizContentServiceImpl implements QuizContentService {
 
     @Override
     public QuizContent contentCreate(QuizContentCreate quizContentCreate) {
+        //FIXME @Valid 추가 필요
         QuizContent quizContent = QuizContent.from(quizContentCreate);
         quizContent.detailFromUrl(quizContentCreate.getUrl());
         return quizContentRepository.save(quizContent);

@@ -1,5 +1,6 @@
 package kr.toy.lyricsQuizServer.quiz.domain;
 
+import kr.toy.lyricsQuizServer.file.domain.File;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizContentCreate;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizCreate;
 import kr.toy.lyricsQuizServer.user.domain.User;
@@ -39,6 +40,8 @@ public class Quiz {
     private LocalTime endTime;
 
     private QuizContent quizContent;
+
+//    private File file; //FIXME 엔티티 등 수정 필요
 
 
     @Builder

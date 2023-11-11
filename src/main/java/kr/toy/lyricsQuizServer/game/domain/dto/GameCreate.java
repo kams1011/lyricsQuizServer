@@ -6,7 +6,6 @@ import lombok.Getter;
 @Getter
 public class GameCreate {
 
-
         private Long userSeq;
 
         private String roomName;
@@ -14,7 +13,6 @@ public class GameCreate {
         private Integer attendeeLimit;
 
         private Long quizSeq;
-
 
         public GameCreate(Long userSeq, String roomName, Integer attendeeLimit, Long quizSeq){
                 this.userSeq = userSeq;
