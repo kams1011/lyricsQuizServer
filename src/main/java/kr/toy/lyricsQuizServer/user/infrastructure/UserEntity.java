@@ -77,6 +77,7 @@ public class UserEntity {
         return UserEntity.builder()
                 .userSeq(user.getUserSeq())
                 .nickName(user.getNickName())
+                .email(user.getEmail())
                 .lastLoginAt(user.getLastLoginAt())
                 .isBan(user.getIsBan())
                 .isDeleted(user.getIsDeleted())

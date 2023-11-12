@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @Builder
 @RequestMapping("/api/quiz")
@@ -21,7 +23,7 @@ public class QuizController {
 
 
     @PostMapping("")
-    public ResponseEntity<Quiz> create(@RequestBody QuizCreate quizCreate){
+    public ResponseEntity<Quiz> create(@Valid @RequestBody QuizCreate quizCreate){
         return ResponseEntity.ok()
                 .body(quizService.create(quizCreate));
     }

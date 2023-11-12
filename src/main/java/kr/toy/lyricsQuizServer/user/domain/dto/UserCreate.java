@@ -4,18 +4,24 @@ import kr.toy.lyricsQuizServer.user.domain.LoginType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 
 @Getter
 public class UserCreate {
 
-    private final String email;
+    @NotBlank
+    private final String email; // FIXME GITHUB는 Email형식으로 들어오지 않을 수 있어서 일단 Email Validation은 제외함.
 
+    @NotBlank
     private final String nickName;
 
-    private final LoginType loginType; // FIXME : LoginType의 유효성 검사를 어떻게 할지 생각
+    @NotNull
+    private final LoginType loginType;
 
     @Builder
     public UserCreate(String email, String nickName, LoginType loginType){

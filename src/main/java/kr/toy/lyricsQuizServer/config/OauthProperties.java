@@ -111,7 +111,7 @@ public class OauthProperties {
             AccessTokenRequest accessTokenRequest = AccessTokenRequest.builder()
                     .client_id(element.client_id)
                     .client_secret(element.client_secret)
-                    .redirect_uri("https://localhost:8080/login/callback")
+                    .redirect_uri("https://localhost:8080/login/callback") //FIXME 환경변수로 관리
                     .code(code)
                     .grant_type("authorization_code")
                     .build();

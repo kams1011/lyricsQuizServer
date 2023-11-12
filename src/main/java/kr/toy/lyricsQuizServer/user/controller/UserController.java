@@ -11,9 +11,12 @@ import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
@@ -49,7 +52,7 @@ public class UserController {
 
     }
     @PostMapping("/signup")
-    public ResponseEntity register(HttpServletResponse response, @RequestBody UserCreate userCreate){
+    public ResponseEntity register(HttpServletResponse response, @Valid @RequestBody UserCreate userCreate){
         User user = userService.signUp(response, userCreate);
 
         return ResponseEntity.created(URI.create("/api/users/" + user.getUserSeq())).body(Response.success("회원가입에 성공했습니다.", user));

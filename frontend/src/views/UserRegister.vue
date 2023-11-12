@@ -51,11 +51,11 @@ export default {
   mounted() {
     this.id = this.$route.params.id;
     this.loginType = this.$route.params.loginType;
-  }, // FIXME 닉네임 입력받는 칸 유효성검사. 프로필 사진 업로드 추가
+  }, // FIXME 닉네임 입력받는 칸 유효성검사. 프로필 사진 업로드 추가, 전송 전에 이메일 타입 유효성검사.
   methods: {
-      register: function () { //FIXME 이부분 정확히 수정하기.
+      register: function () {
       const jsonData = {
-        id: this.$refs['id'].value,
+        email: this.$refs['id'].value,
         loginType: this.$refs['loginType'].value,
         nickName: this.$refs['nickName'].value,
       };
@@ -67,6 +67,7 @@ export default {
             window.location.href = "/";
           })
           .catch(error => {
+            //FIXME Valid 리턴된 에러 띄워주기
             alert('회원가입에 실패했습니다.');
           });
     },

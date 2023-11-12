@@ -47,6 +47,8 @@ public class User {
     }
 
     public static User from(UserCreate userCreate, LocalDateTime createTime){
+        System.out.println("$$$$");
+        System.out.println(userCreate.getEmail());
         User user = User.builder()
                 .email(userCreate.getEmail())
                 .nickName(userCreate.getNickName())
