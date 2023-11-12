@@ -21,6 +21,7 @@ bin/
 application-db.yml
 application-oauth.yml
 application-security.yml
+application-storage.yml
 .env
 .idea
 *.iws

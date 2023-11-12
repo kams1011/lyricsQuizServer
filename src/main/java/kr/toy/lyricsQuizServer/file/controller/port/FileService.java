@@ -9,4 +9,6 @@ public interface FileService {
     String upload(MultipartFile multipartFile) throws IOException;
 
     void check(); //FileTypeCheck
+
+    void deleteFile(Long fileSeq);
 }

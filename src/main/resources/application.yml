@@ -7,7 +7,7 @@ spring:
   profiles:
     include: db
   config:
-    import: application-oauth.yml, application-security.yml
+    import: application-oauth.yml, application-security.yml, application-oauth.yml, application-storage.yml
 server:
 #  ssl:
 #    enabled: true

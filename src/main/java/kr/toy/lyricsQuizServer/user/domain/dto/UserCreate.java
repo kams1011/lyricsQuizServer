@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 
 @Getter
@@ -17,6 +18,7 @@ public class UserCreate {
     @NotBlank
     private final String email; // FIXME GITHUB는 Email형식으로 들어오지 않을 수 있어서 일단 Email Validation은 제외함.
 
+    @Size(min=2, max=10)
     @NotBlank
     private final String nickName;
 
