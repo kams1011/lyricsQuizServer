@@ -1,6 +1,8 @@
 package kr.toy.lyricsQuizServer.config;
 
 import io.jsonwebtoken.*;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -10,8 +12,12 @@ import org.springframework.stereotype.Component;
 
 import java.security.SignatureException;
 
+@RequiredArgsConstructor
 @Component
 public class JwtAuthenticationProvider implements AuthenticationProvider {
+
+
+    private final SecurityProperties securityProperties;
 
 //    @Value("${jwt.secret}")
 //    private String jwtSecret; // FIXME 환경변수로 관리
@@ -24,10 +30,9 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 //        사용자 정보 추출: JWT 토큰에서 사용자 식별 정보를 추출합니다. 대표적으로는 사용자 아이디, 권한 등이 있습니다.
 //        사용자 생성 및 반환: 조회한 사용자 정보를 사용하여 Authentication 객체를 생성하고 반환합니다. 보통은 UsernamePasswordAuthenticationToken이나 그의 서브클래스를 사용합니다.
 
-        String jwtSecret = "1234"; //FIXME 삭제
         try{
             Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(jwtSecret).build()
+                    .setSigningKey(securityProperties.jwtSecret()).build()
                     .parseClaimsJwt(authenticationToken.getJwt())
                     .getBody();
 

@@ -36,7 +36,6 @@ public class AuthServerAPIImpl implements AuthServerAPI {
         OauthProperties.Element clientServerElement = oauthProperties.getElementBy(loginType);
         OauthProperties.UserInfoDTO userInfoResponse = oauthClient.getUserInfo(URI.create(clientServerElement.infoUrl()), "Bearer " + accessToken); // FIXME 잘못된 인자가 들어왔거나 Return type이 달라질떄, 통신에 실패했을때 에러 핸들링 필요
 
-        System.out.println(userInfoResponse.getUserInfoInResponse(loginType));
         return userInfoResponse.getUserInfoInResponse(loginType);
     }
 

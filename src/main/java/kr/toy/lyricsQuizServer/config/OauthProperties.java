@@ -118,19 +118,6 @@ public class OauthProperties {
 
             return accessTokenRequest;
         }
-
-        @Override
-        public String toString() {
-            return
-                    "code=" + code + '&' +
-                            "client_id=" + client_id + '&' +
-                            "client_secret=" + client_secret + '&' +
-                            "redirect_uri=" + redirect_uri + '&' +
-                            "grant_type=" + grant_type;
-        }
-
-
-
     }
 
     @Getter

@@ -22,6 +22,7 @@ application-db.yml
 application-oauth.yml
 application-security.yml
 application-storage.yml
+application-redis.yml
 .env
 .idea
 *.iws

@@ -99,22 +99,6 @@ public class UserControllerTest {
     }
 
 
-    @Test
-    public void temp(){
-        String a = "https://www.youtube.com/embed/jOTfBlKSQYY?si=GiTgyiNMYtnFnwki";
-        String b = "https://youtu.be/MVlLJEeEyzU?feature=shared";
-        String c = "https://www.youtube.com/watch?v=jOTfBlKSQYY";
-        System.out.println(a.split(".be/|v=|embed/")[1].split("\\?")[0]);
-        System.out.println(b.split(".be/|v=|embed/")[1].split("\\?")[0]);
-        System.out.println(c.split(".be/|v=|embed/")[1].split("\\?")[0]);
-//        String first = c.split("\\?")[0].split(".be/|v=|embed/")[1];
-//        String[] aArr = first.split(".be/|v=|embed/");
-//        System.out.println(aArr[1]);
-//        aArr = a.split("v=");
-//        System.out.println(aArr[0]);
-//        System.out.println(aArr[1]);
-    }
-
 
 
 }

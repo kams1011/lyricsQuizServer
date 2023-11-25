@@ -20,13 +20,15 @@ import java.util.NoSuchElementException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     
-    //FIXME 3개 다 SecurityProperties로 관리
-    @Value("${jwt.secret}")
-    private String jwtSecret;
-    
-    private final String accessTokenCookieName = "yml로관리";
+//    //FIXME 3개 다 SecurityProperties로 관리
+//    @Value("${jwt.secret}")
+//    private String jwtSecret;
 
-    private final String refreshTokenCookieName = "yml로관리";
+    private final SecurityProperties securityProperties;
+    
+//    private final String accessTokenCookieName = "yml로관리";
+
+//    private final String refreshTokenCookieName = "yml로관리";
 
     private final AuthenticationManager authenticationManager;
 
@@ -36,18 +38,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         // FIXME NoSuchElement catch
-        String accessToken = securityService.resolveToken(request, accessTokenCookieName);
+        String accessToken = securityService.resolveToken(request, securityProperties.cookieName().accessTokenCookieName);
 
         String refreshToken;
 
         try {
-            Authentication authentication = authenticationManager.authenticate(new JwtAuthenticationToken("principal_을 넣으세요", accessToken));
+            Authentication authentication = authenticationManager.authenticate(new JwtAuthenticationToken(securityService.getEmailIn(accessToken), accessToken));
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (AuthenticationException e) {
             refreshToken = refreshTokenCheck(request, response);
             if(response.getStatus() == HttpServletResponse.SC_UNAUTHORIZED){
                 return;
             }
+
             String reIssuedAccessToken = securityService.accessTokenIssue(securityService.getUserSeqIn(refreshToken));
             securityService.setCookieWithToken(true, reIssuedAccessToken, response);
         } catch (Exception e){
@@ -60,7 +63,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public String refreshTokenCheck(HttpServletRequest request, HttpServletResponse response){
         String refreshToken = "";
         try {
-            refreshToken = securityService.resolveToken(request, refreshTokenCookieName);
+            refreshToken = securityService.resolveToken(request, securityProperties.cookieName().refreshTokenCookieName);
         } catch (JwtInvalidException | NullPointerException | NoSuchElementException e){
             SecurityContextHolder.clearContext();
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -74,7 +77,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String[] excludePath = {"/api/users/signup", "/api/users/info", "/api/users"};
+        String[] excludePath = {"/api/users/signup", "/api/users/info", "/api/users", "/api/file"};
         String path = request.getRequestURI();
         return Arrays.stream(excludePath).anyMatch(path::startsWith);
     }

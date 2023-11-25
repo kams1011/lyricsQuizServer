@@ -2,12 +2,15 @@ package kr.toy.lyricsQuizServer.file.service;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import kr.toy.lyricsQuizServer.config.StorageProperties;
 import kr.toy.lyricsQuizServer.file.controller.port.FileService;
 import lombok.RequiredArgsConstructor;
+import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
 
 @Service
@@ -15,9 +18,7 @@ import java.io.IOException;
 public class FileServiceImpl implements FileService {
     private final AmazonS3 amazonS3;
 
-    //FIXME 환경변수 ConfigurationProperties로 변경
-    @Value("${cloud.aws.s3.bucket}")
-    private String bucket;
+    private final StorageProperties storageProperties;
 
     @Override
     public String upload(MultipartFile multipartFile) throws IOException {
@@ -29,14 +30,14 @@ public class FileServiceImpl implements FileService {
         metadata.setContentLength(multipartFile.getSize());
         metadata.setContentType(multipartFile.getContentType());
 
-        amazonS3.putObject(bucket, originalFilename, multipartFile.getInputStream(), metadata);
-        return amazonS3.getUrl(bucket, originalFilename).toString();
+        amazonS3.putObject(storageProperties.getS3().getBucket(), originalFilename, multipartFile.getInputStream(), metadata);
+        return amazonS3.getUrl(storageProperties.getS3().getBucket(), originalFilename).toString();
     }
 
     @Override
     public void check() {
         //RETURN IMAGE OR MUSIC
-
+        MultipartFile file;
     }
 
     @Override
@@ -46,6 +47,6 @@ public class FileServiceImpl implements FileService {
         //FIXME 현재 진행중인 게임이 있는지 체크
 
         String originalFilename = null;
-        amazonS3.deleteObject(bucket, originalFilename);
+        amazonS3.deleteObject(storageProperties.getS3().getBucket(), originalFilename);
     }
 }

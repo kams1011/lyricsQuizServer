@@ -21,6 +21,8 @@ public class SecurityConfig {
 
     private final SecurityService securityService;
 
+    private final SecurityProperties securityProperties;
+
     private final JwtAuthenticationProvider jwtAuthenticationProvider;
 
 //    @Bean
@@ -38,7 +40,7 @@ public class SecurityConfig {
 //                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .formLogin().disable()
                 .httpBasic().disable()
-                .addFilterBefore(new JwtAuthenticationFilter(authenticationManager(), securityService), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtAuthenticationFilter(securityProperties, authenticationManager(), securityService), UsernamePasswordAuthenticationFilter.class);
         //FIXME addFilterBefore로 바꾼 부분 정상작동되는지 확인
         return http.build(); 
     }

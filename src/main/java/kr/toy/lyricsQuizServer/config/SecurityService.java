@@ -90,17 +90,32 @@ public class SecurityService {
 
     public Long getUserSeqIn(String token){
         Claims claims = getClaimsIn(token);
-        Long userSeq = (Long) claims.get("userSeq");
-
+        Long userSeq = Long.parseLong(claims.get("userSeq").toString());
         return userSeq;
     }
 
+    public String getEmailIn(String token){
+        Claims claims = getClaimsIn(token);
+        String email = claims.get("id").toString();
+        return email;
+    }
+
     public Claims getClaimsIn(String token) {
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(securityProperties.jwtSecret().getBytes())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+        Claims claims;
+        try{
+            claims = Jwts.parserBuilder()
+                    .setSigningKey(securityProperties.jwtSecret().getBytes())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (ExpiredJwtException expiredJwtException) {
+            throw new JwtInvalidException("expired token", expiredJwtException);
+        } catch (MalformedJwtException malformedJwtException) {
+            throw new JwtInvalidException("malformed token", malformedJwtException);
+        } catch (IllegalArgumentException illegalArgumentException) {
+            throw new JwtInvalidException("using illegal argument like null", illegalArgumentException);
+        }
+
         return claims;
     }
     
