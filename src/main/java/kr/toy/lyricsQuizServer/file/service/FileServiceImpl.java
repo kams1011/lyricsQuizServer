@@ -4,6 +4,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import kr.toy.lyricsQuizServer.config.StorageProperties;
 import kr.toy.lyricsQuizServer.file.controller.port.FileService;
+import kr.toy.lyricsQuizServer.file.domain.FileExtension;
 import lombok.RequiredArgsConstructor;
 import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
 
 @Service
 @RequiredArgsConstructor
@@ -35,9 +38,19 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void check() {
+    public void check(MultipartFile file) {
         //RETURN IMAGE OR MUSIC
-        MultipartFile file;
+
+        String fileType = file.getContentType();
+
+        FileExtension fileExtension = Arrays.stream(FileExtension.values())
+                .filter(data -> data.getType().equals(fileType))
+                .findFirst().orElseThrow(IllegalArgumentException::new);
+
+//        checkFileSignature(file, fileExtension);
+
+
+
     }
 
     @Override
@@ -48,5 +61,15 @@ public class FileServiceImpl implements FileService {
 
         String originalFilename = null;
         amazonS3.deleteObject(storageProperties.getS3().getBucket(), originalFilename);
+    }
+
+
+    public boolean checkFileSignature(MultipartFile file, FileExtension fileExtension) throws IOException {
+
+        int signatureLength = fileExtension.getCode().length;
+
+        Boolean isValid = file.getBytes().equals(Arrays.copyOfRange(file.getBytes(), 0, signatureLength));
+
+        return isValid;
     }
 }

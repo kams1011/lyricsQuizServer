@@ -3,6 +3,7 @@ package kr.toy.lyricsQuizServer.user.domain;
 import kr.toy.lyricsQuizServer.config.OauthProperties;
 import kr.toy.lyricsQuizServer.config.SecurityProperties;
 import kr.toy.lyricsQuizServer.config.StorageProperties;
+import kr.toy.lyricsQuizServer.file.domain.FileExtension;
 import org.apache.tomcat.util.buf.HexUtils;
 import org.assertj.core.util.Hexadecimals;
 import org.junit.jupiter.api.Test;
@@ -137,14 +138,12 @@ public class UserTest {
 
     @Test
     public void tmep(){
-//        0x52 0x49 0x46 0x46 0x41 0x56 0x49 0x20
-        int[] arr = {0x52, 0x49, 0x46, 0x46, 0x41, 0x56, 0x49, 0x20};
-        int[] arr2 = new int[arr.length];
-        for (int i=0; i<arr.length; i++){
-            arr2[i] = arr[i];
-            System.out.print(", " + arr2[i]);
-        }
-        System.out.println("-----");
+
+        System.out.println(0x52);
+        System.out.println(0x49);
+        System.out.println(0x49);
+        System.out.println(0x46);
+
     }
 
 

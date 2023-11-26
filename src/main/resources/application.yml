@@ -8,6 +8,10 @@ spring:
     include: db
   config:
     import: application-oauth.yml, application-security.yml, application-oauth.yml, application-storage.yml
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
 server:
 #  ssl:
 #    enabled: true
@@ -17,17 +21,5 @@ server:
 #    key-alias: bns-ssl
   port: 80
 
-#cloud:
-#  aws:
-#    s3:
-#      bucket: <S3 버킷 이름>
-#    credentials:
-#      access-key: <저장해놓은 액세스 키>
-#      secret-key: <저장해놓은 비밀 액세스 키>
-#    region:
-#      static: ap-northeast-2
-#      auto: false
-#    stack:
-#      auto: false
 
 
