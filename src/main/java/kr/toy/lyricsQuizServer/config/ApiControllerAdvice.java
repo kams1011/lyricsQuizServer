@@ -3,10 +3,12 @@ package kr.toy.lyricsQuizServer.config;
 import kr.toy.lyricsQuizServer.common.domain.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,4 +24,22 @@ public class ApiControllerAdvice {
 
         return ResponseEntity.badRequest().body(Response.fail("파라미터 오류입니다.", errors, null));
     }
+
+
+    @ExceptionHandler(IOException.class)
+    public ResponseEntity<Response> handleIOExceptions(IOException e){
+
+        return ResponseEntity.badRequest().body(Response.fail(e.getMessage(), null, null));
+
+    }
+
+
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    public ResponseEntity<Response> handleFileValidationExceptions(HttpMediaTypeNotSupportedException e){
+
+        return ResponseEntity.badRequest().body(Response.fail(e.getMessage(), null, null));
+
+    }
+
+
 }

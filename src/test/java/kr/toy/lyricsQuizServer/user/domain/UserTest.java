@@ -136,19 +136,5 @@ public class UserTest {
     }
 
 
-    @Test
-    public void tmep(){
-
-        System.out.println(0x52);
-        System.out.println(0x49);
-        System.out.println(0x49);
-        System.out.println(0x46);
-
-    }
-
-
-    public String tteemp(String temp){
-        return temp.replaceAll(" ", ", ");
-    }
 
 }
