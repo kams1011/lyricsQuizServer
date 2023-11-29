@@ -37,8 +37,8 @@ public class GameRepositoryImpl implements GameRepository {
     }
 
     @Override
-    public Game save(GameEntity gameEntity) {
-        return gameJpaRepository.save(gameEntity).toModel();
+    public Game save(User user, Game game, Quiz quiz) {
+        return gameJpaRepository.save(GameEntity.fromModel(user, game, quiz)).toModel();
     }
 
 }

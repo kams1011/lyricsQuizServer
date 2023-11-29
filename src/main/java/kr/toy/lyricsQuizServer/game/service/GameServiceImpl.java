@@ -40,8 +40,7 @@ public class GameServiceImpl implements GameService {
         User user = userRepository.getById(gameCreate.getUserSeq());
         Quiz quiz = quizRepository.getById(gameCreate.getQuizSeq());
         Game game = Game.from(gameCreate, user, quiz);
-        GameEntity gameEntity = GameEntity.fromModel(user, game, quiz);
-        gameRepository.save(gameEntity);
+        gameRepository.save(user, game, quiz);
         return game;
     }
 
