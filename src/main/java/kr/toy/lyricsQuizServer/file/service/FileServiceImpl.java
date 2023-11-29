@@ -1,13 +1,17 @@
 package kr.toy.lyricsQuizServer.file.service;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import kr.toy.lyricsQuizServer.config.S3Config;
 import kr.toy.lyricsQuizServer.config.StorageProperties;
 import kr.toy.lyricsQuizServer.file.controller.port.FileService;
+import kr.toy.lyricsQuizServer.file.controller.response.FileRegisterSuccess;
 import kr.toy.lyricsQuizServer.file.domain.FileExtension;
 import lombok.RequiredArgsConstructor;
 import org.apache.tika.Tika;
 import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
+import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToFile;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMessage;
 import org.springframework.http.InvalidMediaTypeException;
@@ -23,7 +27,7 @@ import java.util.Arrays;
 @Service
 @RequiredArgsConstructor
 public class FileServiceImpl implements FileService {
-    private final AmazonS3 amazonS3;
+    private final AmazonS3Client amazonS3;
 
     private final StorageProperties storageProperties;
 
@@ -31,7 +35,6 @@ public class FileServiceImpl implements FileService {
     public String upload(MultipartFile file) throws IOException, HttpMediaTypeNotSupportedException {
 
         validateFile(file);
-        //FILE인지 이미지인지 확인 필요.
         String originalFilename = file.getOriginalFilename();
 
         ObjectMetadata metadata = new ObjectMetadata();
@@ -46,13 +49,13 @@ public class FileServiceImpl implements FileService {
     public void validateFile(MultipartFile file) throws IOException, HttpMediaTypeNotSupportedException {
         String fileType = file.getContentType();
 
-            FileExtension fileExtension = Arrays.stream(FileExtension.values())
-                    .filter(data -> data.getType().equals(fileType))
-                    .findFirst().orElseThrow(() -> new HttpMediaTypeNotSupportedException("유효하지 않은 파일 확장자입니다."));
+         FileExtension fileExtension = Arrays.stream(FileExtension.values())
+                 .filter(data -> data.getType().equals(fileType))
+                 .findFirst().orElseThrow(() -> new HttpMediaTypeNotSupportedException("유효하지 않은 파일 확장자입니다."));
 
-            checkFileSize(file);
+         checkFileSize(file);
 
-            checkFileSignature(file, fileExtension);
+         checkFileSignature(file, fileExtension);
 
     }
 
@@ -84,5 +87,10 @@ public class FileServiceImpl implements FileService {
         if(file.getSize() > 10485760){
             throw new FileSizeLimitExceededException("파일 크기를 초과했습니다.", file.getSize(), 10485760);
         }
+    }
+
+
+    public void fileSave(){
+
     }
 }

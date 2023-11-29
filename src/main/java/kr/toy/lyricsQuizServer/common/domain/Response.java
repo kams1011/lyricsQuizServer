@@ -32,6 +32,18 @@ public class Response {
         return response;
     }
 
+    public static Response success(String message){
+        Response response = Response.builder()
+                .success(true)
+                .message(message)
+                .data(null)
+                .build();
+
+        return response;
+    }
+
+
+
     public static Response fail(String message, Object data, ErrorCode errorCode){
         Response response = Response.builder()
                 .success(false)
