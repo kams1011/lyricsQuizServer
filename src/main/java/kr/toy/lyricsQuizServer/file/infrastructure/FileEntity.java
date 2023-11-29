@@ -33,14 +33,17 @@ public class FileEntity {
     @JoinColumn(name = "userSeq")
     UserEntity user;
 
+    Boolean isDeleted;
+
     @Builder
-    public FileEntity(Long fileSeq, String name, String uniqueName, FileExtension extension, Integer size, UserEntity user){
+    public FileEntity(Long fileSeq, String name, String uniqueName, FileExtension extension, Integer size, UserEntity user, Boolean isDeleted){
         this.fileSeq = fileSeq;
         this.name = name;
         this.uniqueName = uniqueName;
         this.extension = extension;
         this.size = size;
         this.user = user;
+        this.isDeleted = isDeleted;
     }
 
 
@@ -52,6 +55,7 @@ public class FileEntity {
                 .extension(extension)
                 .size(size)
                 .user(user.toModel())
+                .isDeleted(isDeleted)
                 .build();
 
         return file;
@@ -66,10 +70,15 @@ public class FileEntity {
                 .extension(file.getExtension())
                 .size(file.getSize())
                 .user(UserEntity.fromModel(file.getUser()))
+                .isDeleted(file.getIsDeleted())
                 .build();
         return fileEntity;
     }
 
+
+    public void delete(){
+        isDeleted = true;
+    }
 
 
 

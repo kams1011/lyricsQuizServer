@@ -17,7 +17,7 @@ public class QuizRepositoryImpl implements QuizRepository {
     @Override
     public Quiz getById(Long id) {
         return quizJpaRepository.findByQuizSeqAndIsDeletedIsFalse(id)
-                .orElseThrow(() -> new EntityNotFoundException())
+                .orElseThrow(EntityNotFoundException::new)
                 .toModel();
     }
 
@@ -29,7 +29,7 @@ public class QuizRepositoryImpl implements QuizRepository {
     @Override
     @Transactional
     public Quiz delete(Long id) {
-        QuizEntity quizEntity = quizJpaRepository.findById(id).orElseThrow(() -> new EntityNotFoundException());
+        QuizEntity quizEntity = quizJpaRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         quizEntity.delete();
         return quizEntity.toModel();
     }

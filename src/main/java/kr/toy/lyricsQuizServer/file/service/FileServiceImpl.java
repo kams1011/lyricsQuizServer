@@ -7,7 +7,11 @@ import kr.toy.lyricsQuizServer.config.S3Config;
 import kr.toy.lyricsQuizServer.config.StorageProperties;
 import kr.toy.lyricsQuizServer.file.controller.port.FileService;
 import kr.toy.lyricsQuizServer.file.controller.response.FileRegisterSuccess;
+import kr.toy.lyricsQuizServer.file.domain.File;
 import kr.toy.lyricsQuizServer.file.domain.FileExtension;
+import kr.toy.lyricsQuizServer.user.domain.Role;
+import kr.toy.lyricsQuizServer.user.domain.User;
+import kr.toy.lyricsQuizServer.user.service.port.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.tika.Tika;
 import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
@@ -19,7 +23,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -30,6 +33,27 @@ public class FileServiceImpl implements FileService {
     private final AmazonS3Client amazonS3;
 
     private final StorageProperties storageProperties;
+
+    private final FileRepository fileRepository;
+
+    private final UserRepository userRepository;
+
+    @Override
+    public File save(File file) {
+
+        fileRepository.save(file);
+
+        return file;
+    }
+
+    @Override
+    public File getFileBy(Long fileSeq) {
+        return fileRepository.getBy(fileSeq);
+    }
+
+
+    //FIXME 주석처리해놓은 UPDATE, DELETE 구현.
+    //FIXME STORAGE UPLOAD 부분을 따로 클래스 분리할지 생각.
 
     @Override
     public String upload(MultipartFile file) throws IOException, HttpMediaTypeNotSupportedException {
@@ -60,13 +84,14 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void deleteFile(Long fileSeq) {
-        //FIXME fileSeq 로 originalFileName을 찾는 메서드 구현
-        //FIXME 삭제할 권한이 있는지 체크
-        //FIXME 현재 진행중인 게임이 있는지 체크
+    public void delete(Long userSeq, Long fileSeq) {
+        File file = getFileBy(fileSeq);
 
-        String originalFilename = null;
-        amazonS3.deleteObject(storageProperties.getS3().getBucket(), originalFilename);
+        hasAuthority(userSeq, fileSeq);
+
+        //FIXME 현재 진행중인 게임이 있는지 체크 -> Quiz에 File mapping 추가
+        
+        amazonS3.deleteObject(storageProperties.getS3().getBucket(), file.getUniqueName());
     }
 
 
@@ -89,8 +114,20 @@ public class FileServiceImpl implements FileService {
         }
     }
 
+    public Boolean hasAuthority(Long userSeq, Long fileSeq){
+        User user = userRepository.getById(userSeq);
+        File file = fileRepository.getBy(fileSeq);
 
-    public void fileSave(){
+        if(file.getUser().equals(user)) {
+            return true;
+        } else if(user.getRole().equals(Role.ADMIN)){
+           return true;
+        } else {
+            return false;
+        }
 
     }
+
+
+
 }

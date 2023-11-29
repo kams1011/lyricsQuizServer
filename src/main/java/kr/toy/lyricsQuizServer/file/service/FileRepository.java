@@ -5,13 +5,13 @@ import kr.toy.lyricsQuizServer.file.infrastructure.FileEntity;
 
 public interface FileRepository {
 
-    void save(File file);
+    File save(File file);
 
-    void read(Long fileSeq);
+    File getBy(Long fileSeq);
 
     void update();
 
-    void delete();
+    void delete(Long fileSeq);
 
 
 

@@ -20,16 +20,19 @@ public class File {
 
     User user;
 
+    Boolean isDeleted;
+
 
 
     @Builder
-    public File(Long fileSeq, String name, String uniqueName, FileExtension extension, Integer size, User user){
+    public File(Long fileSeq, String name, String uniqueName, FileExtension extension, Integer size, User user, Boolean isDeleted){
         this.fileSeq = fileSeq;
         this.name = name;
         this.uniqueName = uniqueName;
         this.extension = extension;
         this.size = size;
         this.user = user;
+        this.isDeleted = isDeleted;
     }
 
 

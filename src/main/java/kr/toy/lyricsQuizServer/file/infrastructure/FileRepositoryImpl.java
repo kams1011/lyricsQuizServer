@@ -4,6 +4,9 @@ import kr.toy.lyricsQuizServer.file.domain.File;
 import kr.toy.lyricsQuizServer.file.service.FileRepository;
 import lombok.RequiredArgsConstructor;
 
+import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
+
 @RequiredArgsConstructor
 public class FileRepositoryImpl implements FileRepository {
 
@@ -11,13 +14,18 @@ public class FileRepositoryImpl implements FileRepository {
 
 
     @Override
-    public void save(File file) {
-
+    public File save(File file) {
+        fileJpaRepository.save(FileEntity.fromModel(file));
+        return file;
     }
 
     @Override
-    public void read(Long fileSeq) {
+    public File getBy(Long fileSeq) {
+        File file = fileJpaRepository.findByFileSeqAndIsDeletedIsFalse(fileSeq)
+                .orElseThrow(EntityNotFoundException::new)
+                .toModel();
 
+        return file;
     }
 
     @Override
@@ -26,7 +34,11 @@ public class FileRepositoryImpl implements FileRepository {
     }
 
     @Override
-    public void delete() {
+    @Transactional
+    public void delete(Long fileSeq) {
+        FileEntity fileEntity = fileJpaRepository.findByFileSeqAndIsDeletedIsFalse(fileSeq)
+                .orElseThrow(EntityNotFoundException::new);
 
+        fileEntity.delete();
     }
 }
