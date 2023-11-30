@@ -1,30 +1,21 @@
 package kr.toy.lyricsQuizServer.file.service;
 
-import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
-import kr.toy.lyricsQuizServer.config.S3Config;
 import kr.toy.lyricsQuizServer.config.StorageProperties;
 import kr.toy.lyricsQuizServer.file.controller.port.FileService;
-import kr.toy.lyricsQuizServer.file.controller.response.FileRegisterSuccess;
 import kr.toy.lyricsQuizServer.file.domain.File;
 import kr.toy.lyricsQuizServer.file.domain.FileExtension;
 import kr.toy.lyricsQuizServer.user.domain.Role;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.service.port.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.apache.tika.Tika;
 import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
-import org.hibernate.tool.schema.internal.exec.ScriptTargetOutputToFile;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpMessage;
-import org.springframework.http.InvalidMediaTypeException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 
 @Service
@@ -89,7 +80,7 @@ public class FileServiceImpl implements FileService {
 
         hasAuthority(userSeq, fileSeq);
 
-        //FIXME 현재 진행중인 게임이 있는지 체크 -> Quiz에 File mapping 추가
+        //FIXME 현재 진행중인 게임이 있는지 체크 -> Redis 구현 후 제작
         
         amazonS3.deleteObject(storageProperties.getS3().getBucket(), file.getUniqueName());
     }
@@ -122,11 +113,13 @@ public class FileServiceImpl implements FileService {
             return true;
         } else if(user.getRole().equals(Role.ADMIN)){
            return true;
-        } else {
-            return false;
         }
 
+        return false;
     }
+
+
+
 
 
 

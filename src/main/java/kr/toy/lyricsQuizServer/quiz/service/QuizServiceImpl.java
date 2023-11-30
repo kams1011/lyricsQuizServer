@@ -1,5 +1,9 @@
 package kr.toy.lyricsQuizServer.quiz.service;
 
+import kr.toy.lyricsQuizServer.file.controller.port.FileService;
+import kr.toy.lyricsQuizServer.file.controller.port.QuizFileService;
+import kr.toy.lyricsQuizServer.file.domain.File;
+import kr.toy.lyricsQuizServer.file.service.QuizFileRepository;
 import kr.toy.lyricsQuizServer.quiz.controller.port.QuizContentService;
 import kr.toy.lyricsQuizServer.quiz.controller.port.QuizService;
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
@@ -27,6 +31,9 @@ public class QuizServiceImpl implements QuizService {
 
     private final QuizContentService quizContentService;
 
+    private final QuizFileService quizFileService;
+
+    private final FileService fileService;
 
     @Override
     @Transactional
@@ -34,9 +41,11 @@ public class QuizServiceImpl implements QuizService {
 
         User maker = userService.getById(quizCreate.getUserSeq());
         Quiz quiz = Quiz.from(quizCreate, maker, LocalDateTime.now());
+        File file = fileService.getFileBy(quizCreate.getQuizContentCreate().getFileSeq());
 
-        quizContentService.contentCreate(quizCreate.getQuizContentCreate());
         quizRepository.save(quiz);
+        quizContentService.contentCreate(quizCreate.getQuizContentCreate());
+        quizFileService.save(quiz, file);
 
         return quiz;
     }
