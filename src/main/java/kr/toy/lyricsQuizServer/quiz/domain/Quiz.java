@@ -35,13 +35,11 @@ public class Quiz {
 
     private User maker;
 
-    private LocalTime startTime; // 파일 내에 노래 구간 정보.
+    private LocalTime startTime; // 노래 구간 정보.
 
     private LocalTime endTime;
 
     private QuizContent quizContent;
-
-//    private File file; //FIXME 엔티티 등 수정 필요
 
 
     @Builder

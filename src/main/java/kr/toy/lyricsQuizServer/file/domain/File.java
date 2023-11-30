@@ -14,11 +14,13 @@ public class File {
 
     String uniqueName; // 파일 고유 이름.
 
-    FileExtension extension; // FIXME : ENUM으로 관리하는게 용이할거같음.
+    FileExtension extension;
 
     Integer size; // FIXME : Size관련해서 수정
 
-    User user;
+    User user; // 올린 사람은 상관이 없을거 같긴 함.
+
+    String fileCategory; // FIXME : ENUM으로 변경하고 관련 로직 추가.
 
     Boolean isDeleted;
 
