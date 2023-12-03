@@ -15,6 +15,7 @@
     <router-link to="/login"></router-link>
     <router-link to="/login/callback"></router-link>
     <router-link to="/user/register"></router-link>
+    <router-link to="/quiz/register"></router-link>
     <router-link to="/room"></router-link>
     <!-- 여기에 현재 경로에 맞는 컴포넌트가 동적으로 렌더링됩니다 -->
     <router-view></router-view>

@@ -3,11 +3,13 @@ package kr.toy.lyricsQuizServer.file.infrastructure;
 import kr.toy.lyricsQuizServer.file.domain.File;
 import kr.toy.lyricsQuizServer.file.service.FileRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 
 @RequiredArgsConstructor
+@Repository
 public class FileRepositoryImpl implements FileRepository {
 
     private final FileJpaRepository fileJpaRepository;

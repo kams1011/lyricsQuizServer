@@ -21,6 +21,7 @@ import java.util.Arrays;
 @Service
 @RequiredArgsConstructor
 public class FileServiceImpl implements FileService {
+
     private final AmazonS3Client amazonS3;
 
     private final StorageProperties storageProperties;

@@ -41,13 +41,13 @@
     </div>
 
     <div class="mb-4">
-      <input type="text" placeholder="Title" class="form-input border-2  border-gray-300 p-2 rounded w-full" ref="title">
+      <input type="text" placeholder="제목" class="form-input border-2  border-gray-300 p-2 rounded w-full" ref="title">
     </div>
     <div class="mb-4">
-      <input type="text" placeholder="Singer" class="form-input border-2 border-gray-300 p-2 rounded w-full" ref="singer">
+      <input type="text" placeholder="가수" class="form-input border-2 border-gray-300 p-2 rounded w-full" ref="singer">
     </div>
     <div class="mb-4">
-      <textarea placeholder="information" class="form-textarea border-2 border-gray-300 p-2 rounded mx-auto w-full" rows="4" ref="information"></textarea>
+      <textarea placeholder="곡 정보" class="form-textarea border-2 border-gray-300 p-2 rounded mx-auto w-full" rows="4" ref="information"></textarea>
     </div>
     <div class="mb-4 mx-auto justify-center">
       <input type="text" placeholder="재생 시작 분" class="form-input border-2 border-gray-300 p-1 rounded w-1/5 mr-2 ml-2" ref="startMinutes"> :
@@ -56,19 +56,19 @@
       <input type="text" placeholder="재생 끝 초" class="form-input border-2 border-gray-300 p-1 rounded w-1/5 ml-2 mr-2" ref="endSeconds">
     </div>
     <div class="mb-4">
-      <textarea placeholder="beforeLyrics" class="form-textarea border-2 border-gray-300 p-2 rounded mx-auto w-full" rows="4" ref="beforeLyrics"></textarea>
+      <textarea placeholder="이전 가사" class="form-textarea border-2 border-gray-300 p-2 rounded mx-auto w-full" rows="4" ref="beforeLyrics"></textarea>
     </div>
     <div class="mb-4">
-      <textarea placeholder="afterLyrics" class="form-textarea border-2 border-gray-300 p-2 rounded mx-auto w-full" rows="4" ref="afterLyrics"></textarea>
+      <textarea placeholder="이후 가사" class="form-textarea border-2 border-gray-300 p-2 rounded mx-auto w-full" rows="4" ref="afterLyrics"></textarea>
     </div>
     <div class="mb-4">
-      <textarea placeholder="answer" class="form-textarea border-2 border-gray-300 p-2 rounded mx-auto w-full" rows="4" ref="answer"></textarea>
+      <textarea placeholder="정답" class="form-textarea border-2 border-gray-300 p-2 rounded mx-auto w-full" rows="4" ref="answer"></textarea>
     </div>
     <div class="flex justify-between items-center">
       <!--    <button class="text-blue-500 hover:text-blue-700 text-sm">Markdown Mode</button>-->
       <div class="space-x-4">
         <!--      <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">Save Draft</button>-->
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">등록</button>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" v-on:click="register()">등록</button>
       </div>
     </div>
   </div>

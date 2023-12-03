@@ -4,9 +4,11 @@ import kr.toy.lyricsQuizServer.file.domain.QuizFile;
 import kr.toy.lyricsQuizServer.file.service.QuizFileRepository;
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityNotFoundException;
 
+@Repository
 @RequiredArgsConstructor
 public class QuizFileRepositoryImpl implements QuizFileRepository {
 

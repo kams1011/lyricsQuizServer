@@ -1,10 +1,9 @@
 package kr.toy.lyricsQuizServer.user.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import kr.toy.lyricsQuizServer.user.domain.LoginType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -26,7 +25,10 @@ public class UserCreate {
     private final LoginType loginType;
 
     @Builder
-    public UserCreate(String email, String nickName, LoginType loginType){
+    @JsonCreator
+    public UserCreate(@JsonProperty("email") String email,
+                      @JsonProperty("nickName") String nickName,
+                      @JsonProperty("loginType") LoginType loginType){
         this.email = email;
         this.nickName = nickName;
         this.loginType = loginType;
