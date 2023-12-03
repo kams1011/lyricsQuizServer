@@ -1,6 +1,7 @@
 package kr.toy.lyricsQuizServer.config;
 
 import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,8 +33,8 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 
         try{
             Claims claims = Jwts.parserBuilder()
-                    .setSigningKey(securityProperties.jwtSecret()).build()
-                    .parseClaimsJwt(authenticationToken.getJwt())
+                    .setSigningKey(Keys.hmacShaKeyFor(securityProperties.jwtSecret().getBytes())).build()
+                    .parseClaimsJws(authenticationToken.getJwt())
                     .getBody();
 
             authenticationToken.setAuthenticated(true);

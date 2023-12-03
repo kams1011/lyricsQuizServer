@@ -28,7 +28,8 @@ export default {
       state = hashParams.get('state');
     }
 
-    axios.get('http://localhost/api/users/login?loginType=' + state + '&code=' + code)
+    axios.get('http://localhost/api/users/login?loginType=' + state + '&code=' + code,
+        { withCredentials : true})
         .then(function(res) {
           if(!res.data) {
             redirect('/')

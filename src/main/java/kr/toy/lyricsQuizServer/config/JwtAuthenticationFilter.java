@@ -20,15 +20,7 @@ import java.util.NoSuchElementException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     
-//    //FIXME 3개 다 SecurityProperties로 관리
-//    @Value("${jwt.secret}")
-//    private String jwtSecret;
-
     private final SecurityProperties securityProperties;
-    
-//    private final String accessTokenCookieName = "yml로관리";
-
-//    private final String refreshTokenCookieName = "yml로관리";
 
     private final AuthenticationManager authenticationManager;
 
@@ -50,7 +42,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if(response.getStatus() == HttpServletResponse.SC_UNAUTHORIZED){
                 return;
             }
-
             String reIssuedAccessToken = securityService.accessTokenIssue(securityService.getUserSeqIn(refreshToken));
             securityService.setCookieWithToken(true, reIssuedAccessToken, response);
         } catch (Exception e){

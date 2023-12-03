@@ -1,5 +1,7 @@
 package kr.toy.lyricsQuizServer.quiz.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import kr.toy.lyricsQuizServer.quiz.domain.QuizContentType;
 import lombok.Builder;
 import lombok.Getter;
@@ -44,14 +46,24 @@ public class QuizCreate {
     private QuizContentCreate quizContentCreate;
 
     @Builder
-    public QuizCreate(String title, Boolean isDeleted, String singer, String information, LocalTime startTime, LocalTime endTime, String beforeLyrics, String afterLyrics, String answer,
-                      Long userSeq, QuizContentCreate quizContentCreate){
+    @JsonCreator
+    public QuizCreate(@JsonProperty("title") String title,
+//                      Boolean isDeleted,
+                      @JsonProperty("singer") String singer,
+                      @JsonProperty("information") String information,
+//                      @JsonProperty("startTime") LocalTime startTime,
+//                      @JsonProperty("endTime") LocalTime endTime,
+                      @JsonProperty("beforeLyrics") String beforeLyrics,
+                      @JsonProperty("afterLyrics") String afterLyrics,
+                      @JsonProperty("answer") String answer,
+//                      Long userSeq,
+                      @JsonProperty("quizContentCreate") QuizContentCreate quizContentCreate){
         this.title = title;
         this.isDeleted = isDeleted;
         this.singer = singer;
         this.information = information;
-        this.startTime = startTime;
-        this.endTime = endTime;
+//        this.startTime = startTime;
+//        this.endTime = endTime;
         this.beforeLyrics = beforeLyrics;
         this.afterLyrics = afterLyrics;
         this.answer = answer;

@@ -70,7 +70,6 @@ public class UserServiceImpl implements UserService {
     public UserCreate loginHandler(HttpServletResponse response, LoginType loginType, String code){
         OauthProperties.AccessTokenResponse accessTokenResponse = authServerAPI.getAccessToken(loginType, code);
         String email = authServerAPI.getEmailBy(loginType, accessTokenResponse.getAccess_token());
-
         try {
             User user = getByEmailAndLoginType(email, loginType);
             makeTokensAndSetCookie(user, response);
@@ -90,6 +89,7 @@ public class UserServiceImpl implements UserService {
         String refreshToken = securityService.refreshTokenIssue(user.getUserSeq());
         securityService.setCookieWithToken(false, accessToken, response);
         securityService.setCookieWithToken(true, refreshToken, response);
+
     }
 
 }

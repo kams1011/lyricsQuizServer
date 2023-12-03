@@ -38,6 +38,7 @@
       <fieldset id="youtubeField" style="display: none">
         <input type="text" placeholder="URL" class="form-input border-2 border-gray-300 p-2 rounded w-full mb-5" ref="url">
       </fieldset>
+      <!-- FILE 아니면 YOUTUBE -->
     </div>
 
     <div class="mb-4">
@@ -83,7 +84,15 @@ import axios from "axios";
 
 export default {
   name: "QuizRegister",
+  data() {
+    return {
+      type: 'FILE',
+    };
+  },
   methods: {
+    fillZero(number){
+      return (number < 10 ? '0' : '') + number;
+    },
     toggleFieldset(type) {
       let youtubeButton = document.getElementById("youtubeButton");
       let youtubeField = document.getElementById("youtubeField");
@@ -97,6 +106,7 @@ export default {
         fileButton.classList.add('bg-gray-300');
         youtubeField.style.display = "block";
         fileField.style.display = "none";
+        this.type = 'YOUTUBE';
       } else if (type === "file") {
         fileButton.classList.remove('bg-gray-300');
         fileButton.classList.add('bg-blue-600');
@@ -104,20 +114,28 @@ export default {
         youtubeButton.classList.add('bg-gray-300');
         youtubeField.style.display = "none";
         fileField.style.display = "block";
+        this.type = 'FILE';
       }
     },
     register: function () { //FIXME 이부분 정확히 수정하기.
+
+      let startDate = '00:' +
+              this.fillZero(this.$refs['startMinutes'].value) + ':' +
+              this.fillZero(this.$refs['startSeconds'].value);
+      let endDate = '00:' +
+          this.fillZero(this.$refs['endMinutes'].value) + ':' +
+          this.fillZero(this.$refs['endSeconds'].value);
       const jsonData = {
         title : this.$refs['title'].value,
         singer: this.$refs['singer'].value,
         information: this.$refs['information'].value,
-        startTime: this.$refs['startMinutes'].value + ':' + this.$refs['startSeconds'].value,
-        endTime: this.$refs['endMinutes'].value + ':' + this.$refs['endSeconds'].value,
+        startTime: startDate,
+        endTime: endDate,
         beforeLyrics: this.$refs['beforeLyrics'].value,
         afterLyrics: this.$refs['afterLyrics'].value,
         answer: this.$refs['answer'].value,
         quizContentCreate: {
-          QuizContentType: document.getElementsByName('type'),
+          QuizContentType: this.type,
           url: this.$refs['url'].value
         }
       };

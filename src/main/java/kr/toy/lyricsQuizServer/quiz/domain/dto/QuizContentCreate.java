@@ -1,5 +1,7 @@
 package kr.toy.lyricsQuizServer.quiz.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import kr.toy.lyricsQuizServer.quiz.domain.QuizContentType;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +17,10 @@ public class QuizContentCreate {
     private Long fileSeq;
 
     @Builder
-    public QuizContentCreate(QuizContentType quizContentType, String url, Long fileSeq){
+    @JsonCreator
+    public QuizContentCreate(@JsonProperty("quizContentType") QuizContentType quizContentType,
+                             @JsonProperty("url") String url,
+                             @JsonProperty("fileSeq") Long fileSeq){
         this.quizContentType = quizContentType;
         this.url = url;
         this.fileSeq = fileSeq;
