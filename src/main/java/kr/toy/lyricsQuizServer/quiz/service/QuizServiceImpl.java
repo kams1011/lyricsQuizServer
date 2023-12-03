@@ -41,6 +41,7 @@ public class QuizServiceImpl implements QuizService {
     public Quiz create(QuizCreate quizCreate) {
 
 //        User maker = userService.getById(quizCreate.getUserSeq());
+        //FIXME 임시 값이므로 추후 변경
         User maker = userService.getById(3L);
         Quiz quiz = Quiz.from(quizCreate, maker, LocalDateTime.now());
 
