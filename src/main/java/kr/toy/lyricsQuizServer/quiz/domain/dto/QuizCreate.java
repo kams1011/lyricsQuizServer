@@ -39,8 +39,8 @@ public class QuizCreate {
     @NotBlank
     private String answer;
 
-    @NotNull
-    private Long userSeq; // 제작자 고유키
+//    @NotNull
+//    private Long userSeq; // 제작자 고유키
 
     @NotNull
     private QuizContentCreate quizContentCreate;
@@ -67,7 +67,7 @@ public class QuizCreate {
         this.beforeLyrics = beforeLyrics;
         this.afterLyrics = afterLyrics;
         this.answer = answer;
-        this.userSeq = userSeq;
+//        this.userSeq = userSeq;
         this.quizContentCreate = quizContentCreate;
     }
 

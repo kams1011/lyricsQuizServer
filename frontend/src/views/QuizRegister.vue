@@ -135,7 +135,7 @@ export default {
         afterLyrics: this.$refs['afterLyrics'].value,
         answer: this.$refs['answer'].value,
         quizContentCreate: {
-          QuizContentType: this.type,
+          quizContentType: this.type,
           url: this.$refs['url'].value
         }
       };

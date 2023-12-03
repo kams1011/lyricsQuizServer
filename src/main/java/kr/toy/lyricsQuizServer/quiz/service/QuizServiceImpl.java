@@ -8,6 +8,7 @@ import kr.toy.lyricsQuizServer.quiz.controller.port.QuizContentService;
 import kr.toy.lyricsQuizServer.quiz.controller.port.QuizService;
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
 import kr.toy.lyricsQuizServer.quiz.domain.QuizContent;
+import kr.toy.lyricsQuizServer.quiz.domain.QuizContentType;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.ChatMessage;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizContentCreate;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizCreate;
@@ -39,13 +40,21 @@ public class QuizServiceImpl implements QuizService {
     @Transactional
     public Quiz create(QuizCreate quizCreate) {
 
-        User maker = userService.getById(quizCreate.getUserSeq());
+//        User maker = userService.getById(quizCreate.getUserSeq());
+        User maker = userService.getById(3L);
         Quiz quiz = Quiz.from(quizCreate, maker, LocalDateTime.now());
-        File file = fileService.getFileBy(quizCreate.getQuizContentCreate().getFileSeq());
 
+
+        //FIXME
+        // org.hibernate.TransientPropertyValueException: object references an unsaved transient instance - save the transient instance before flushing : kr.toy.lyricsQuizServer.quiz.infrastructure.QuizEntity.quizContentEntity -> kr.toy.lyricsQuizServer.quiz.infrastructure.QuizContentEntit
+        if (quizCreate.getQuizContentCreate().getQuizContentType().equals(QuizContentType.FILE)){
+            File file = fileService.getFileBy(quizCreate.getQuizContentCreate().getFileSeq());
+            quizFileService.save(quiz, file);
+        }
         quizRepository.save(quiz);
         quizContentService.contentCreate(quizCreate.getQuizContentCreate());
-        quizFileService.save(quiz, file);
+
+
 
         return quiz;
     }
