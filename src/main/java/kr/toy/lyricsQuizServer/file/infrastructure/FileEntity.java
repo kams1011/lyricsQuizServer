@@ -27,7 +27,7 @@ public class FileEntity {
 
     FileExtension extension;
 
-    Integer size; // FIXME : Size관련해서 수정
+    Long size;
 
     @ManyToOne
     @JoinColumn(name = "userSeq")
@@ -36,7 +36,7 @@ public class FileEntity {
     Boolean isDeleted;
 
     @Builder
-    public FileEntity(Long fileSeq, String name, String uniqueName, FileExtension extension, Integer size, UserEntity user, Boolean isDeleted){
+    public FileEntity(Long fileSeq, String name, String uniqueName, FileExtension extension, Long size, UserEntity user, Boolean isDeleted){
         this.fileSeq = fileSeq;
         this.name = name;
         this.uniqueName = uniqueName;

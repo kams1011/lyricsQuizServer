@@ -1,6 +1,7 @@
 package kr.toy.lyricsQuizServer.quiz.infrastructure;
 
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
+import kr.toy.lyricsQuizServer.quiz.domain.QuizContent;
 import kr.toy.lyricsQuizServer.quiz.service.QuizRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -22,8 +23,11 @@ public class QuizRepositoryImpl implements QuizRepository {
     }
 
     @Override
-    public Quiz save(Quiz quiz) {
-        return quizJpaRepository.save(QuizEntity.fromModel(quiz)).toModel();
+    public Quiz save(Quiz quiz, QuizContent quizContent) {
+        QuizEntity quizEntity = QuizEntity.fromModel(quiz);
+        quizEntity.setQuizContentEntity(QuizContentEntity.fromModel(quizContent));
+        quizJpaRepository.save(quizEntity);
+        return quizEntity.toModel();
     }
 
     @Override

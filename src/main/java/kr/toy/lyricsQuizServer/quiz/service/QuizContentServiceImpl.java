@@ -6,6 +6,8 @@ import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizContentCreate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
 @RequiredArgsConstructor
 public class QuizContentServiceImpl implements QuizContentService {

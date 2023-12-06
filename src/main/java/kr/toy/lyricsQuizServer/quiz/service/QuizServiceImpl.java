@@ -42,19 +42,16 @@ public class QuizServiceImpl implements QuizService {
 
 //        User maker = userService.getById(quizCreate.getUserSeq());
         //FIXME 임시 값이므로 추후 변경
-        User maker = userService.getById(3L);
-        Quiz quiz = Quiz.from(quizCreate, maker, LocalDateTime.now());
+        User maker = userService.getById(20L);
+        QuizContent quizContent = quizContentService.contentCreate(quizCreate.getQuizContentCreate());
+        Quiz quiz = Quiz.from(quizCreate, quizContent, maker, LocalDateTime.now());
 
-
-        //FIXME
-        // org.hibernate.TransientPropertyValueException: object references an unsaved transient instance - save the transient instance before flushing : kr.toy.lyricsQuizServer.quiz.infrastructure.QuizEntity.quizContentEntity -> kr.toy.lyricsQuizServer.quiz.infrastructure.QuizContentEntit
         if (quizCreate.getQuizContentCreate().getQuizContentType().equals(QuizContentType.FILE)){
             File file = fileService.getFileBy(quizCreate.getQuizContentCreate().getFileSeq());
             quizFileService.save(quiz, file);
         }
-        quizRepository.save(quiz);
-        quizContentService.contentCreate(quizCreate.getQuizContentCreate());
 
+        quizRepository.save(quiz, quizContent);
 
 
         return quiz;

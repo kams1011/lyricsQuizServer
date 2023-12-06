@@ -4,10 +4,14 @@ import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizContentCreate;
 import lombok.Builder;
 import lombok.Getter;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+
 @Getter
 public class QuizContent {
 
     private Long quizContentSeq;
+
 
     private QuizContentType quizContentType;
 

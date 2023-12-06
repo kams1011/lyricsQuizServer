@@ -5,7 +5,9 @@ import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededExceptio
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.Map;
 
 public interface FileService {
 
@@ -16,7 +18,7 @@ public interface FileService {
 
 //    File update();
 
-    String upload(MultipartFile multipartFile) throws IOException, HttpMediaTypeNotSupportedException;
+    Map<String, Object> upload(MultipartFile multipartFile, HttpServletRequest request) throws IOException, HttpMediaTypeNotSupportedException;
 
     void validateFile(MultipartFile file) throws IOException, HttpMediaTypeNotSupportedException;
 

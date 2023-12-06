@@ -33,7 +33,7 @@
     </div>
     <div>
       <fieldset id="fileField" style="display: none">
-        <input type="file" class="form-input border-2 border-gray-300 p-2 rounded w-full mb-5" ref="file">
+        <input type="file" class="form-input border-2 border-gray-300 p-2 rounded w-full mb-5" ref="file" v-on:change="fileUpload">
       </fieldset>
       <fieldset id="youtubeField" style="display: none">
         <input type="text" placeholder="URL" class="form-input border-2 border-gray-300 p-2 rounded w-full mb-5" ref="url">
@@ -93,6 +93,19 @@ export default {
     fillZero(number){
       return (number < 10 ? '0' : '') + number;
     },
+    fileUpload(){ // FIXME 무한으로 계속 올리는 상황 막기.
+      const selectedFile = this.$refs.file.files[0];
+      const formData = new FormData();
+      formData.append('file', selectedFile);
+      axios.post('http://localhost/api/file', formData,
+          { withCredentials : true
+          }).then(response => {
+        console.log(response.data); // 서버 응답 처리
+      }).catch(error => {
+        console.error(error); // 오류 처리
+      });
+      this.$refs.file.value = "";
+    },
     toggleFieldset(type) {
       let youtubeButton = document.getElementById("youtubeButton");
       let youtubeField = document.getElementById("youtubeField");
@@ -142,10 +155,9 @@ export default {
       axios.post('http://localhost/api/quiz', jsonData,
           { withCredentials : true
           }).then(response => {
-        console.log(response.data); // 서버 응답 처리
-      })
-          .catch(error => {
-            console.error(error); // 오류 처리
+          console.log(response.data); // 서버 응답 처리
+          }).catch(error => {
+            console.error(error); // 오류 처리//
           });
     },
   }

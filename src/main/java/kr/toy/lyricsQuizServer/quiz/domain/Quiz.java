@@ -62,7 +62,7 @@ public class Quiz {
     }
 
 
-    public static Quiz from(QuizCreate quizCreate, User maker, LocalDateTime createdAt){
+    public static Quiz from(QuizCreate quizCreate, QuizContent quizContent, User maker, LocalDateTime createdAt){
         return Quiz.builder()
                 .isDeleted(quizCreate.getIsDeleted())
                 .title(quizCreate.getTitle())
@@ -76,7 +76,7 @@ public class Quiz {
                 .createdAt(createdAt)
                 .updatedAt(createdAt)
                 .maker(maker)
-                .quizContent(QuizContent.from(quizCreate.getQuizContentCreate()))
+                .quizContent(quizContent)
                 .build();
     }
 

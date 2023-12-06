@@ -111,6 +111,9 @@ public class QuizEntity {
                 .build();
     }
 
+    public void setQuizContentEntity(QuizContentEntity quizContentEntity){
+        this.quizContentEntity = quizContentEntity;
+    }
 
     public void delete(){
         this.isDeleted = true;

@@ -87,6 +87,12 @@ public class SecurityService {
         return token;
     }
 
+    public Long getUserSeqInToken(HttpServletRequest request){
+        String resolvedToken = resolveToken(request, securityProperties.cookieName().accessTokenCookieName);
+        Claims claims = getClaimsIn(resolvedToken);
+        Long userSeq = Long.parseLong(claims.get("userSeq").toString());
+        return userSeq;
+    }
 
     public Long getUserSeqIn(String token){
         Claims claims = getClaimsIn(token);

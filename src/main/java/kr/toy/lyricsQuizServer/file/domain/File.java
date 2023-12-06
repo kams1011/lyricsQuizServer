@@ -16,7 +16,7 @@ public class File {
 
     FileExtension extension;
 
-    Integer size; // FIXME : Size관련해서 수정
+    Long size;
 
     User user; // 올린 사람은 상관이 없을거 같긴 함.
 
@@ -27,7 +27,7 @@ public class File {
 
 
     @Builder
-    public File(Long fileSeq, String name, String uniqueName, FileExtension extension, Integer size, User user, Boolean isDeleted){
+    public File(Long fileSeq, String name, String uniqueName, FileExtension extension, Long size, User user, Boolean isDeleted){
         this.fileSeq = fileSeq;
         this.name = name;
         this.uniqueName = uniqueName;

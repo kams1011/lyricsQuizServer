@@ -9,8 +9,10 @@ import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.net.URI;
+import java.util.Map;
 
 @RestController
 @Builder
@@ -22,10 +24,11 @@ public class FileController {
     private final FileService fileService;
 
     @PostMapping("")
-    public ResponseEntity register(@RequestPart MultipartFile file) throws IOException, HttpMediaTypeNotSupportedException {
+    public ResponseEntity register(@RequestPart MultipartFile file, HttpServletRequest request) throws IOException, HttpMediaTypeNotSupportedException {
 
-        String fileUrl = fileService.upload(file);
-        return ResponseEntity.created(URI.create(fileUrl)).body(Response.success("업로드에 성공했습니다", fileUrl));
+        Map<String, Object> result = fileService.upload(file, request);
+
+        return ResponseEntity.created(URI.create(result.get("url").toString())).body(Response.success("업로드에 성공했습니다", result.get("id").toString()));
 
     }
 }

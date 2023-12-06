@@ -2,6 +2,7 @@ package kr.toy.lyricsQuizServer.file.service;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import kr.toy.lyricsQuizServer.config.SecurityService;
 import kr.toy.lyricsQuizServer.config.StorageProperties;
 import kr.toy.lyricsQuizServer.file.controller.port.FileService;
 import kr.toy.lyricsQuizServer.file.domain.File;
@@ -15,8 +16,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +34,8 @@ public class FileServiceImpl implements FileService {
     private final FileRepository fileRepository;
 
     private final UserRepository userRepository;
+
+    private final SecurityService securityService;
 
     @Override
     public File save(File file) {
@@ -48,7 +55,8 @@ public class FileServiceImpl implements FileService {
     //FIXME STORAGE UPLOAD 부분을 따로 클래스 분리할지 생각.
 
     @Override
-    public String upload(MultipartFile file) throws IOException, HttpMediaTypeNotSupportedException {
+    @Transactional
+    public Map<String, Object> upload(MultipartFile file, HttpServletRequest request) throws IOException, HttpMediaTypeNotSupportedException {
 
         validateFile(file);
         String originalFilename = file.getOriginalFilename();
@@ -57,22 +65,36 @@ public class FileServiceImpl implements FileService {
         metadata.setContentLength(file.getSize());
         metadata.setContentType(file.getContentType());
 
+        User user = userRepository.getById(securityService.getUserSeqInToken(request));
+
+        File fileDomain = File.builder()
+                .name(file.getName())
+                .uniqueName(originalFilename)
+                .extension(getFileExtension(file.getContentType()))
+                .size(file.getSize())
+                .isDeleted(false)
+                .user(user)
+                .build();
+
+        fileDomain = save(fileDomain);
+
+        Map<String, Object> result = new HashMap<>();
+
         amazonS3.putObject(storageProperties.getS3().getBucket(), originalFilename, file.getInputStream(), metadata);
-        return amazonS3.getUrl(storageProperties.getS3().getBucket(), originalFilename).toString();
+        result.put("url", amazonS3.getUrl(storageProperties.getS3().getBucket(), originalFilename).toString());
+        result.put("id", fileDomain.getFileSeq());
+        return result;
     }
 
     @Override
     public void validateFile(MultipartFile file) throws IOException, HttpMediaTypeNotSupportedException {
         String fileType = file.getContentType();
 
-         FileExtension fileExtension = Arrays.stream(FileExtension.values())
-                 .filter(data -> data.getType().equals(fileType))
-                 .findFirst().orElseThrow(() -> new HttpMediaTypeNotSupportedException("유효하지 않은 파일 확장자입니다."));
+         FileExtension fileExtension = getFileExtension(fileType);
 
          checkFileSize(file);
 
          checkFileSignature(file, fileExtension);
-
     }
 
     @Override
@@ -84,6 +106,15 @@ public class FileServiceImpl implements FileService {
         //FIXME 현재 진행중인 게임이 있는지 체크 -> Redis 구현 후 제작
         
         amazonS3.deleteObject(storageProperties.getS3().getBucket(), file.getUniqueName());
+    }
+
+
+    public FileExtension getFileExtension(String fileType) throws HttpMediaTypeNotSupportedException {
+        FileExtension fileExtension = Arrays.stream(FileExtension.values())
+                .filter(data -> data.getType().equals(fileType))
+                .findFirst().orElseThrow(() -> new HttpMediaTypeNotSupportedException("유효하지 않은 파일 확장자입니다."));
+
+        return fileExtension;
     }
 
 

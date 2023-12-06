@@ -17,8 +17,8 @@ public class FileRepositoryImpl implements FileRepository {
 
     @Override
     public File save(File file) {
-        fileJpaRepository.save(FileEntity.fromModel(file));
-        return file;
+        return fileJpaRepository.save(FileEntity.fromModel(file)).toModel();
+
     }
 
     @Override

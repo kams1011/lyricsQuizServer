@@ -19,13 +19,15 @@ public class QuizContentEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long quizContentSeq;
 
+    @Enumerated(value = EnumType.STRING)
     private QuizContentType quizContentType;
 
     private String detail;
 
 
     @Builder
-    public QuizContentEntity(QuizContentType quizContentType, String detail){
+    public QuizContentEntity(Long quizContentSeq, QuizContentType quizContentType, String detail){
+        this.quizContentSeq = quizContentSeq;
         this.quizContentType = quizContentType;
         this.detail = detail;
     }
@@ -42,6 +44,7 @@ public class QuizContentEntity {
 
     public static QuizContentEntity fromModel(QuizContent quizContent){
         return QuizContentEntity.builder()
+                .quizContentSeq(quizContent.getQuizContentSeq())
                 .quizContentType(quizContent.getQuizContentType())
                 .detail(quizContent.getDetail())
                 .build();
