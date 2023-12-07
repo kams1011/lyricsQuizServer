@@ -46,13 +46,11 @@ public class QuizServiceImpl implements QuizService {
         QuizContent quizContent = quizContentService.contentCreate(quizCreate.getQuizContentCreate());
         Quiz quiz = Quiz.from(quizCreate, quizContent, maker, LocalDateTime.now());
 
+        quiz = quizRepository.save(quiz, quizContent);
         if (quizCreate.getQuizContentCreate().getQuizContentType().equals(QuizContentType.FILE)){
             File file = fileService.getFileBy(quizCreate.getQuizContentCreate().getFileSeq());
             quizFileService.save(quiz, file);
         }
-
-        quizRepository.save(quiz, quizContent);
-
 
         return quiz;
     }

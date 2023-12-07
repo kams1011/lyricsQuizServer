@@ -28,7 +28,7 @@ public class FileController {
 
         Map<String, Object> result = fileService.upload(file, request);
 
-        return ResponseEntity.created(URI.create(result.get("url").toString())).body(Response.success("업로드에 성공했습니다", result.get("id").toString()));
+        return ResponseEntity.created(URI.create(result.get("url").toString())).body(Response.success("업로드에 성공했습니다", result));
 
     }
 }

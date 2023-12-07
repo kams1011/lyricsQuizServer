@@ -33,7 +33,8 @@
     </div>
     <div>
       <fieldset id="fileField" style="display: none">
-        <input type="file" class="form-input border-2 border-gray-300 p-2 rounded w-full mb-5" ref="file" v-on:change="fileUpload">
+        <input type="file" label="file" class="form-input border-2 border-gray-300 p-2 rounded w-full mb-5" ref="file" v-on:change="fileUpload">
+        <label for="file" ref="fineInfo"></label>
       </fieldset>
       <fieldset id="youtubeField" style="display: none">
         <input type="text" placeholder="URL" class="form-input border-2 border-gray-300 p-2 rounded w-full mb-5" ref="url">
@@ -86,8 +87,22 @@ export default {
   name: "QuizRegister",
   data() {
     return {
+      fileSeq : null,
       type: 'FILE',
     };
+  },
+  mounted() {
+    let youtubeButton = document.getElementById("youtubeButton");
+    let youtubeField = document.getElementById("youtubeField");
+    let fileButton = document.getElementById("fileButton");
+    let fileField = document.getElementById("fileField");
+    youtubeButton.classList.remove('bg-gray-300');
+    youtubeButton.classList.add('bg-blue-600');
+    fileButton.classList.remove('bg-blue-600');
+    fileButton.classList.add('bg-gray-300');
+    youtubeField.style.display = "block";
+    fileField.style.display = "none";
+    this.type = 'YOUTUBE';
   },
   methods: {
     fillZero(number){
@@ -100,7 +115,9 @@ export default {
       axios.post('http://localhost/api/file', formData,
           { withCredentials : true
           }).then(response => {
-        console.log(response.data); // 서버 응답 처리
+            this.fileSeq = response.data.data.id;
+            this.$refs['file'].style.display = 'none';
+            this.$refs['fineInfo'].innerText = selectedFile.name;
       }).catch(error => {
         console.error(error); // 오류 처리
       });
@@ -131,7 +148,6 @@ export default {
       }
     },
     register: function () { //FIXME 이부분 정확히 수정하기.
-
       let startDate = '00:' +
               this.fillZero(this.$refs['startMinutes'].value) + ':' +
               this.fillZero(this.$refs['startSeconds'].value);
@@ -149,6 +165,7 @@ export default {
         answer: this.$refs['answer'].value,
         quizContentCreate: {
           quizContentType: this.type,
+          fileSeq : this.fileSeq,
           url: this.$refs['url'].value
         }
       };

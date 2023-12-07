@@ -40,9 +40,7 @@ public class FileServiceImpl implements FileService {
     @Override
     public File save(File file) {
 
-        fileRepository.save(file);
-
-        return file;
+        return fileRepository.save(file);
     }
 
     @Override
