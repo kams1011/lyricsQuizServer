@@ -1,49 +1,133 @@
 <template>
-  <!DOCTYPE html>
   <html lang="en">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>구역 나누기 예제</title>
+    <title>Stream Chat Interface</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      body {
+        background-color: #0e0e10;
+        font-family: Arial, sans-serif;
+      }
+      .flex-container {
+        display: flex;
+        height: 100vh;
+      }
+      .video-container {
+        flex: 1;
+        background-color: #18181b;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .video-placeholder {
+        width: 80%;
+        height: 60%;
+        background-color: #0e0e10;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #d1d1d1;
+        font-size: 24px;
+      }
+      .chat-container {
+        width: 400px;
+        background-color: #18181b;
+        color: #d1d1d1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .chat-messages {
+        overflow-y: auto;
+        padding: 16px;
+      }
+      .chat-message {
+        background-color: #0e0e10;
+        padding: 8px 16px;
+        border-radius: 4px;
+        margin-bottom: 4px;
+        font-size: 14px;
+      }
+      .chat-message span {
+        font-weight: bold;
+      }
+      .chat-message .username {
+        color: #efeff1;
+      }
+      .chat-message .message {
+        color: #a7a7a7;
+      }
+      .chat-input {
+        border: none;
+        padding: 12px 16px;
+        font-size: 16px;
+        color: #d1d1d1;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .chat-input::placeholder {
+        color: #4b4b4b;
+      }
+      .streamer-info {
+        color: #a7a7a7;
+        font-size: 12px;
+        text-align: center;
+        padding: 12px 0;
+      }
+      .streamer-info span {
+        color: #efeff1;
+      }
+    </style>
   </head>
   <body>
-  <header>
-    <button>로그인</button>
-    <button>로그아웃</button>
-  </header>
-
-  <main>
-    <div class="left-section">
-      <div class="video-container">
-        <!-- 동영상 영역 -->
+  <div class="flex-container">
+    <!-- Video container -->
+    <div class="video-container w-2/4 h-60 float-left">
+      <div class="video-placeholder">
+        <i class="fas fa-play-circle"></i> Video Player
       </div>
     </div>
 
-    <div class="right-section">
-      <div class="top-right">
-        <!-- 오른쪽 상단 영역 -->
-      </div>
-      <div class="bottom-right">
-        <!-- 오른쪽 하단 영역 (채팅 영역) -->
-        <div class="chat-area">
-          <div class="chat-messages">
-            <!-- 채팅 메시지 표시 영역 -->
-          </div>
-          <div class="chat-input">
-            <input type="text" placeholder="채팅을 입력하세요">
-            <button>전송</button>
-          </div>
+    <!-- Chat container -->
+    <div class="chat-container w-2/4 float-right">
+      <!-- Chat messages -->
+      <div class="chat-messages">
+        <div class="chat-message">
+          <span class="username">dennisuchiha96:</span> <span class="message">I never watch that</span>
+        </div>
+        <div class="chat-message">
+          <span class="username">ajoyiovanne:</span> <span class="message">😂</span>
+        </div>
+        <div class="chat-message">
+          <span class="username">BotterBotter:</span> <span class="message">ya im not saying its a bad bike haha</span>
+        </div>
+        <!-- ... other chat messages ... -->
+        <div class="chat-message">
+          <span class="username">nBattle:</span> <span class="message">ninja*</span>
         </div>
       </div>
+
+      <!-- Streamer info -->
+      <div class="streamer-info">
+        <span>Capp</span> 🟢 302 | Twitter: @CappTheGod | discord | Towns | windy | <span>Capp</span>
+      </div>
+
+      <!-- Chat input -->
+      <input type="text" class="chat-input" placeholder="Send a message">
+      <button type="button" class="chat-input" @click="addChat">
+        <i class="fab"></i> Click</button>
     </div>
-  </main>
+  </div>
   </body>
   </html>
 </template>
 
 <script>
 export default {
-  name: "ChatRoom.vue"
+  name: "ChatRoom.vue",
 }
 </script>
 

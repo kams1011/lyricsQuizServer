@@ -10,6 +10,7 @@ import Room from "@/views/Room";
 import LoginCallback from "@/views/LoginCallback";
 import UserRegister from "@/views/UserRegister";
 import QuizRegister from "@/views/QuizRegister";
+import RoomCreate from "@/views/RoomCreate";
 
 const routes = [
     { path: '/', component: Lobby },
@@ -17,6 +18,7 @@ const routes = [
     { path: '/login/callback', component: LoginCallback },
     { path: '/user/register/:loginType/:id', component: UserRegister },
     { path: '/room', component: Room },
+    { path: '/room/create', component: RoomCreate },
     { path: '/quiz/register', component: QuizRegister },
 ];
 

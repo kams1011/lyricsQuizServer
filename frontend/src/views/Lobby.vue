@@ -41,7 +41,7 @@
           </a>
           <a href="#" class="button">
             <i class="ph-plus-bold"></i>
-            <span>Request integration</span>
+            <span>방 만들기</span>
           </a>
         </div>
       </div>

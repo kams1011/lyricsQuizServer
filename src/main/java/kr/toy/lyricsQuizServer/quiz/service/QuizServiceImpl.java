@@ -20,7 +20,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.awt.print.Pageable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +37,11 @@ public class QuizServiceImpl implements QuizService {
     private final QuizFileService quizFileService;
 
     private final FileService fileService;
+
+    @Override
+    public List<Quiz> search(String keyword, Pageable pageable) {
+        return null;
+    }
 
     @Override
     @Transactional

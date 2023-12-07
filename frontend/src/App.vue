@@ -3,6 +3,7 @@
 <!--    <script src="https://cdn.tailwindcss.com"></script>-->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+
   </head>
 <!--  <HelloWorld msg="Welcome to Your Vue.js App"/>-->
 <!--  <Lobby msg="Welcome to Your Vue.js App"/>-->

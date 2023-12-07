@@ -7,8 +7,12 @@ import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizContentCreate;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizCreate;
 
 import javax.transaction.Transactional;
+import java.awt.print.Pageable;
+import java.util.List;
 
 public interface QuizService {
+
+    List<Quiz> search(String keyword, Pageable pageable);
 
     Quiz create(QuizCreate quizCreate); // YoutubeUrl로 할 수 있는지 체크.
 

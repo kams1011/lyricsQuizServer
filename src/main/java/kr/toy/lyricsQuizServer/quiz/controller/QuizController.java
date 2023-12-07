@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.awt.print.Pageable;
 
 @RestController
 @Builder
@@ -43,4 +44,9 @@ public class QuizController {
                 .body(quizService.solve(quizSeq, answer));
     } //FIXME Answer 가 너무 길어질 가능성 확인.
 
+
+    @GetMapping("/{keyword}")
+    public ResponseEntity getList(@PathVariable String keyword, Pageable pageable){
+        return null;
+    }
 }
