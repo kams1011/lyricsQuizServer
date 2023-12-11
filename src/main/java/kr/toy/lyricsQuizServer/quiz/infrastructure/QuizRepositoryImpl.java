@@ -8,6 +8,9 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.awt.print.Pageable;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
@@ -28,6 +31,12 @@ public class QuizRepositoryImpl implements QuizRepository {
         quizEntity.setQuizContentEntity(QuizContentEntity.fromModel(quizContent));
         quizJpaRepository.save(quizEntity);
         return quizEntity.toModel();
+    }
+
+    @Override
+    public List<Quiz> getList(String keyword, Pageable pageable) {
+        return quizJpaRepository.findAllByTitleContainingAndIsDeletedIsFalse(keyword, pageable)
+                .stream().map(data -> data.toModel()).collect(Collectors.toList());
     }
 
     @Override

@@ -39,8 +39,8 @@ public class QuizServiceImpl implements QuizService {
     private final FileService fileService;
 
     @Override
-    public List<Quiz> search(String keyword, Pageable pageable) {
-        return null;
+    public List<Quiz> getList(String keyword, Pageable pageable) {
+        return quizRepository.getList(keyword, pageable);
     }
 
     @Override

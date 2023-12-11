@@ -25,6 +25,7 @@ public class QuizController {
 
     @PostMapping("")
     public ResponseEntity<Quiz> create(@Valid @RequestBody QuizCreate quizCreate){
+
         return ResponseEntity.ok()
                 .body(quizService.create(quizCreate));
     }
@@ -46,7 +47,13 @@ public class QuizController {
 
 
     @GetMapping("/{keyword}")
-    public ResponseEntity getList(@PathVariable String keyword, Pageable pageable){
+    public ResponseEntity getList(@RequestParam String keyword, Pageable pageable){
+        return ResponseEntity.ok()
+                .body(quizService.getList(keyword, pageable));
+    }
+
+    @GetMapping("/{quizSeq}")
+    public ResponseEntity getDetail(@PathVariable Long quizSeq, Pageable pageable){
         return null;
     }
 }

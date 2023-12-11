@@ -37,7 +37,7 @@ public class GameServiceImpl implements GameService {
     @Override
     public Game create(GameCreate gameCreate)
     {
-        User user = userRepository.getById(gameCreate.getUserSeq());
+        User user = userRepository.getById(gameCreate.getUserSeq()); 
         Quiz quiz = quizRepository.getById(gameCreate.getQuizSeq());
         Game game = Game.from(gameCreate, user, quiz);
         gameRepository.save(user, game, quiz);
@@ -48,4 +48,6 @@ public class GameServiceImpl implements GameService {
     public void 같이_할_사람_검색() {
 
     }
+    
+    //FIXME 초대기능 추가
 }
