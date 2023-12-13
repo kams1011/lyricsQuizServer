@@ -42,6 +42,16 @@ public class Response {
         return response;
     }
 
+    public static Response success(Object data){
+        Response response = Response.builder()
+                .success(true)
+                .message(null)
+                .data(data)
+                .build();
+
+        return response;
+    }
+
 
 
     public static Response fail(String message, Object data, ErrorCode errorCode){

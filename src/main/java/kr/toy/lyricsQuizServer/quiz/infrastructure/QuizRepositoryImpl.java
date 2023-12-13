@@ -4,11 +4,11 @@ import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
 import kr.toy.lyricsQuizServer.quiz.domain.QuizContent;
 import kr.toy.lyricsQuizServer.quiz.service.QuizRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
-import java.awt.print.Pageable;
 import java.util.List;
 import java.util.stream.Collectors;
 

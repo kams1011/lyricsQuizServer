@@ -1,18 +1,20 @@
 package kr.toy.lyricsQuizServer.quiz.controller;
 
 
+import kr.toy.lyricsQuizServer.common.domain.Response;
 import kr.toy.lyricsQuizServer.quiz.controller.port.QuizService;
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizContentCreate;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizCreate;
+import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizDetailToCreateRoom;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.awt.print.Pageable;
 
 @RestController
 @Builder
@@ -37,7 +39,7 @@ public class QuizController {
                 .body(quizService.delete(quizSeq));
     }
 
-    @GetMapping("/{quizSeq}")
+    @GetMapping("/solve/{quizSeq}")
     public ResponseEntity<Boolean> solve(@PathVariable Long quizSeq,
                                       @RequestParam String answer){
 
@@ -46,14 +48,16 @@ public class QuizController {
     } //FIXME Answer 가 너무 길어질 가능성 확인.
 
 
-    @GetMapping("/{keyword}")
+    @GetMapping("")
     public ResponseEntity getList(@RequestParam String keyword, Pageable pageable){
         return ResponseEntity.ok()
                 .body(quizService.getList(keyword, pageable));
     }
 
     @GetMapping("/{quizSeq}")
-    public ResponseEntity getDetail(@PathVariable Long quizSeq, Pageable pageable){
-        return null;
+    public ResponseEntity getDetail(@PathVariable Long quizSeq){
+        Quiz quiz = quizService.find(quizSeq);
+        return ResponseEntity.ok()
+                .body(Response.success(QuizDetailToCreateRoom.fromModel(quiz)));
     }
 }

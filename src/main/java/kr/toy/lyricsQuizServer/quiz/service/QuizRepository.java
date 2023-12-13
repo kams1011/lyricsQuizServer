@@ -2,8 +2,8 @@ package kr.toy.lyricsQuizServer.quiz.service;
 
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
 import kr.toy.lyricsQuizServer.quiz.domain.QuizContent;
+import org.springframework.data.domain.Pageable;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 public interface QuizRepository {

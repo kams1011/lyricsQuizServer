@@ -41,7 +41,7 @@ public class QuizDetailToCreateRoom {
         this.endTime = endTime;
     }
 
-    public QuizDetailToCreateRoom fromModel(Quiz quiz){
+    public static QuizDetailToCreateRoom fromModel(Quiz quiz){
         QuizDetailToCreateRoom quizToCreateRoom = QuizDetailToCreateRoom.builder()
                 .quizSeq(quiz.getQuizSeq())
                 .title(quiz.getTitle())

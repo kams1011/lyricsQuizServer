@@ -12,15 +12,16 @@ import kr.toy.lyricsQuizServer.quiz.domain.QuizContentType;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.ChatMessage;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizContentCreate;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizCreate;
+import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizDetailToCreateRoom;
 import kr.toy.lyricsQuizServer.quiz.infrastructure.QuizContentEntity;
 import kr.toy.lyricsQuizServer.quiz.infrastructure.QuizEntity;
 import kr.toy.lyricsQuizServer.user.controller.port.UserService;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.awt.print.Pageable;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -42,6 +43,12 @@ public class QuizServiceImpl implements QuizService {
     public List<Quiz> getList(String keyword, Pageable pageable) {
         return quizRepository.getList(keyword, pageable);
     }
+
+    @Override
+    public Quiz find(Long quizSeq) {
+        return quizRepository.getById(quizSeq);
+    }
+
 
     @Override
     @Transactional
