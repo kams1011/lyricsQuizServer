@@ -15,92 +15,104 @@
   </head>
   <body>
   <div class="bg-gray-100 p-6 max-w-2xl mx-auto my-8 rounded-lg shadow">
-    <div class="flex mb-4 type">
-      <button class="bg-gray-300 hover:bg-blue-700 text-gray-800 font-bold py-2 px-4 rounded mr-4" id="youtubeButton" v-on:click="toggleFieldset('youtube')">
-        <i class="fab fa-youtube-square"></i> Youtube URL
-      </button>
-      <div class="space-x-2">
-        <button class="bg-gray-300 hover:bg-gray-400 checked:bg-blue-500 text-gray-800 font-bold py-2 px-4 rounded" id="fileButton" v-on:click="toggleFieldset('file')">
-          <i class="fa fa-upload" aria-hidden="true"></i> File
-        </button>
-      </div>
-    </div>
-    <div>
-      <fieldset id="fileField" style="display: none">
-        <input type="file" label="file" class="form-input border-2 border-gray-300 p-2 rounded w-full mb-5" ref="file" v-on:change="fileUpload">
-        <label for="file" ref="fineInfo"></label>
-      </fieldset>
-      <!-- FILE 아니면 YOUTUBE -->
+<!--    <div class="flex mb-4 type">-->
+<!--      <button class="bg-gray-300 hover:bg-blue-700 text-gray-800 font-bold py-2 px-4 rounded mr-4" id="youtubeButton" v-on:click="toggleFieldset('youtube')">-->
+<!--        <i class="fab fa-youtube-square"></i> Youtube URL-->
+<!--      </button>-->
+<!--      <div class="space-x-2">-->
+<!--        <button class="bg-gray-300 hover:bg-gray-400 checked:bg-blue-500 text-gray-800 font-bold py-2 px-4 rounded" id="fileButton" v-on:click="toggleFieldset('file')">-->
+<!--          <i class="fa fa-upload" aria-hidden="true"></i> File-->
+<!--        </button>-->
+<!--        &lt;!&ndash;      <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">&ndash;&gt;-->
+<!--        &lt;!&ndash;        <i class="fas fa-link"></i> Link&ndash;&gt;-->
+<!--        &lt;!&ndash;      </button>&ndash;&gt;-->
+<!--        &lt;!&ndash;      <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">&ndash;&gt;-->
+<!--        &lt;!&ndash;        <i class="fas fa-poll"></i> Poll&ndash;&gt;-->
+<!--        &lt;!&ndash;      </button>&ndash;&gt;-->
+<!--      </div>-->
+<!--    </div>-->
+    <div class="text-center mb-12 mt-12">
+      <h1 class="font-extrabold text-4xl">방 생성하기</h1>
     </div>
 
     <div class="mb-4">
-      <input type="text" placeholder="제목" class="form-input border-2  border-gray-300 p-2 rounded w-full" ref="title">
+      <input type="text" placeholder="방 제목을 입력하세요." class="form-input border-2  border-gray-300 p-2 rounded w-full" ref="roomName">
     </div>
     <div class="mb-4">
-      <input type="text" placeholder="가수" class="form-input border-2 border-gray-300 p-2 rounded w-full" ref="singer">
+      <input type="text" placeholder="게임을 선택해주세요." class="form-input border-2 border-gray-300 p-2 rounded w-full" ref="quizSeq" @click="openModal">
     </div>
-    <div class="mb-4">
-      <textarea placeholder="곡 정보" class="form-textarea border-2 border-gray-300 p-2 rounded mx-auto w-full" rows="4" ref="information"></textarea>
+    <div class="mb-4 text-center">
+      인원 선택 :
+      <select name="attendeeLimit" class="mb-4 pl-4 pr-5 border-2 border-gray-300 rounded-md" ref="attendeeLimit">
+        <option value="2">2명</option>
+        <option value="3">3명</option>
+        <option value="4">4명</option>
+        <option value="5">5명</option>
+        <option value="6">6명</option>
+      </select>
     </div>
+    <div class="text-center mb-4">
+      <label for="isSecretRoom">비밀 방 여부</label>
+      <input type="checkbox" placeholder="비밀 방 여부" class="ml-6 mr-6" ref="isSecretRoom" id="isSecretRoom">
+<!--      <input type="text" placeholder="비밀 번호" class="form-input border-2 border-gray-300 p-2 rounded" ref="password">-->
+    </div>
+
     <div class="flex justify-between items-center">
       <!--    <button class="text-blue-500 hover:text-blue-700 text-sm">Markdown Mode</button>-->
       <div class="space-x-4">
         <!--      <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">Save Draft</button>-->
         <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" v-on:click="register()">등록</button>
-
-        <!-- 모달 -->
-
-        <div>
-          <button @click="fetchData">데이터 가져오기</button>
-
-          <!-- 데이터를 표시할 모달 -->
-          <div v-if="modalVisible" class="modal">
-            <div class="modal-content">
-              <div v-for="item in modalData" :key="item.id">
-                <p>{{ item.artist }}</p>
-                <p>{{ item.songInfo }}</p>
-              </div>
-              <!-- 페이징 처리 등의 추가적인 UI 기능 구현 -->
-              <button @click="closeModal">닫기</button>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
+
+  <div id="app">
+    <QuizSummaryModal :show="modalShow" @close="closeModal">
+      <!-- 모달 내용 -->
+    </QuizSummaryModal>
+  </div>
   </body>
+
+
 
 </template>
 
 <script>
 import axios from "axios";
+import QuizSummaryModal from "@/views/QuizSummaryModal";
 
 export default {
   name: "RoomRegister",
   data() {
     return {
       modalVisible: false,
+      modalShow : false,
       modalData: [],
     };
   },
   methods: {
-    fetchData() {
-      // Axios를 사용하여 데이터 요청
-      axios.get('API_URL') // API_URL은 실제 API의 주소로 대체해야 합니다.
-          .then(response => {
-            // 받아온 데이터를 모달 데이터에 저장하고 모달을 표시
-            this.modalData = response.data;
-            this.modalVisible = true;
-          })
-          .catch(error => {
-            console.error('데이터 가져오기 실패:', error);
-          });
+    register: function () {
+      const jsonData = {
+        title : this.$refs['title'].value,
+        singer: this.$refs['singer'].value,
+      };
+      axios.post('http://localhost/api/quiz', jsonData,
+          { withCredentials : true
+          }).then(response => {
+        console.log(response.data); // 서버 응답 처리
+      }).catch(error => {
+        console.error(error); // 오류 처리//
+      });
+    },
+    openModal() {
+      this.modalShow = true;
     },
     closeModal() {
-      // 모달을 닫을 때 모달 데이터와 모달 표시 여부 초기화
-      this.modalData = [];
-      this.modalVisible = false;
+      this.modalShow = false;
     },
+  },
+  components: {
+    QuizSummaryModal,
   },
 }
 </script>

@@ -35,8 +35,7 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Game create(GameCreate gameCreate)
-    {
+    public Game create(GameCreate gameCreate) { //FIXME 혼자는 시작할 수 없게 수정.
         User user = userRepository.getById(gameCreate.getUserSeq()); 
         Quiz quiz = quizRepository.getById(gameCreate.getQuizSeq());
         Game game = Game.from(gameCreate, user, quiz);
@@ -48,6 +47,8 @@ public class GameServiceImpl implements GameService {
     public void 같이_할_사람_검색() {
 
     }
-    
+
+
     //FIXME 초대기능 추가
+    //FIXME Game 생성 용 QuizSummary List 메서드 추가.
 }

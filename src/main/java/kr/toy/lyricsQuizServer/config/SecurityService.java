@@ -18,6 +18,7 @@ import java.util.Date;
 import java.util.NoSuchElementException;
 
 import static javax.management.timer.Timer.ONE_MINUTE;
+import static javax.management.timer.Timer.ONE_WEEK;
 
 
 //@RequiredArgsConstructor
@@ -26,7 +27,7 @@ public class SecurityService {
 
     private final SecurityProperties securityProperties;
     private final int ACCESS_TOKEN_EXPIRE_MINUTE = 5;
-    private final int REFRESH_TOKEN_EXPIRE_MINUTE = 30; //FIXME 수정
+    private final long REFRESH_TOKEN_EXPIRE_MINUTE = ONE_WEEK; //FIXME 수정
     private final UserRepository userRepository;
 
 
@@ -51,7 +52,7 @@ public class SecurityService {
         return jwtIssue(userSeq, Jwts.claims(), REFRESH_TOKEN_EXPIRE_MINUTE);
     }
 
-    public String jwtIssue(Long userSeq, Claims claims, int expireMinute){
+    public String jwtIssue(Long userSeq, Claims claims, long expireMinute){
         User user = userRepository.getById(userSeq);
         Date now = new Date();
         claims.put("userSeq", user.getUserSeq());

@@ -35,6 +35,7 @@ public class QuizRepositoryImpl implements QuizRepository {
 
     @Override
     public List<Quiz> getList(String keyword, Pageable pageable) {
+        keyword = keyword == null ? "" : keyword;
         return quizJpaRepository.findAllByTitleContainingAndIsDeletedIsFalse(keyword, pageable)
                 .stream().map(data -> data.toModel()).collect(Collectors.toList());
     }

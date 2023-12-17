@@ -40,7 +40,7 @@ public class UserController {
     } // FIXME : response dto로 변경
 
     @GetMapping("/login")
-    public ResponseEntity<Object> login(HttpServletResponse response,  @RequestParam LoginType loginType, @RequestParam String code){
+    public ResponseEntity<Response> login(HttpServletResponse response,  @RequestParam LoginType loginType, @RequestParam String code){
 
         UserCreate userCreate = userService.loginHandler(response, loginType, code);
 

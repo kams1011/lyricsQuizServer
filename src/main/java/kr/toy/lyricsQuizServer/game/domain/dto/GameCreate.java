@@ -10,13 +10,19 @@ public class GameCreate {
 
         private String roomName;
 
+        private Boolean isSecretRoom;
+
+        private String password;
+
         private Integer attendeeLimit;
 
         private Long quizSeq;
 
-        public GameCreate(Long userSeq, String roomName, Integer attendeeLimit, Long quizSeq){
+        public GameCreate(Long userSeq, String roomName, Boolean isSecretRoom, String password, Integer attendeeLimit, Long quizSeq){
                 this.userSeq = userSeq;
                 this.roomName = roomName;
+                this.isSecretRoom = isSecretRoom;
+                this.password = password;
                 this.attendeeLimit = attendeeLimit;
                 this.quizSeq = quizSeq;
         }

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface GameService {
 
-    List<Game> getGameList(Pageable pageable); //진행중인 상태 필요(시작 전, 진행중). 종료된 방은 안나오게.
+    List<Game> getGameList(Pageable pageable); // 진행중인 상태 필요(시작 전, 진행중). 종료된 방은 안나오게.
 
     List<Game> getGameListByWord(String word, Pageable pageable);
 

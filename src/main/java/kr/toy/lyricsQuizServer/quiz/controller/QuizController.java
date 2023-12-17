@@ -26,36 +26,36 @@ public class QuizController {
 
 
     @PostMapping("")
-    public ResponseEntity<Quiz> create(@Valid @RequestBody QuizCreate quizCreate){
+    public ResponseEntity<Response> create(@Valid @RequestBody QuizCreate quizCreate){
 
         return ResponseEntity.ok()
-                .body(quizService.create(quizCreate));
+                .body(Response.success(quizService.create(quizCreate)));
     }
 
     @DeleteMapping("/{quizSeq}")
-    public ResponseEntity<Quiz> delete(@PathVariable Long quizSeq){
+    public ResponseEntity<Response> delete(@PathVariable Long quizSeq){
 
         return ResponseEntity.ok()
-                .body(quizService.delete(quizSeq));
+                .body(Response.success(quizService.delete(quizSeq)));
     }
 
     @GetMapping("/solve/{quizSeq}")
-    public ResponseEntity<Boolean> solve(@PathVariable Long quizSeq,
+    public ResponseEntity<Response> solve(@PathVariable Long quizSeq,
                                       @RequestParam String answer){
 
         return ResponseEntity.ok()
-                .body(quizService.solve(quizSeq, answer));
+                .body(Response.success(quizService.solve(quizSeq, answer)));
     } //FIXME Answer 가 너무 길어질 가능성 확인.
 
 
     @GetMapping("")
-    public ResponseEntity getList(@RequestParam String keyword, Pageable pageable){
+    public ResponseEntity<Response> getList(@RequestParam(required = false) String keyword, Pageable pageable){
         return ResponseEntity.ok()
-                .body(quizService.getList(keyword, pageable));
+                .body(Response.success(quizService.getList(keyword, pageable)));
     }
 
     @GetMapping("/{quizSeq}")
-    public ResponseEntity getDetail(@PathVariable Long quizSeq){
+    public ResponseEntity<Response> getDetail(@PathVariable Long quizSeq){
         Quiz quiz = quizService.find(quizSeq);
         return ResponseEntity.ok()
                 .body(Response.success(QuizDetailToCreateRoom.fromModel(quiz)));

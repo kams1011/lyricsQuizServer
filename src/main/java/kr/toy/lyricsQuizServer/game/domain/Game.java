@@ -18,6 +18,10 @@ public class Game {
 
     private String roomName;
 
+    private Boolean isSecretRoom;
+
+    private String password;
+
     private Integer attendeeLimit;
 
     private Integer attendeeCount;
@@ -32,12 +36,14 @@ public class Game {
 
 
     @Builder
-    public Game(Long gameRoomSeq, User manager, String roomName, Integer attendeeLimit,
-                Integer attendeeCount, LocalDateTime createdAt, LocalDateTime startedAt,
+    public Game(Long gameRoomSeq, User manager, String roomName, Boolean isSecretRoom, String password,
+                Integer attendeeLimit, Integer attendeeCount, LocalDateTime createdAt, LocalDateTime startedAt,
                 LocalDateTime endedAt, Quiz quiz){
         this.gameRoomSeq = gameRoomSeq;
         this.manager = manager;
         this.roomName = roomName;
+        this.isSecretRoom = isSecretRoom;
+        this.password = password;
         this.attendeeLimit = attendeeLimit;
         this.attendeeCount = attendeeCount;
         this.createdAt = createdAt;
@@ -52,6 +58,8 @@ public class Game {
                 .gameRoomSeq(gameCreate.getQuizSeq())
                 .manager(manager)
                 .roomName(gameCreate.getRoomName())
+                .isSecretRoom(gameCreate.getIsSecretRoom())
+                .password(gameCreate.getPassword())
                 .attendeeLimit(gameCreate.getAttendeeLimit())
                 .quiz(quiz)
                 .build();

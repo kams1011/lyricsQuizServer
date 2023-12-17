@@ -31,6 +31,10 @@ public class GameEntity {
 
     private String roomName;
 
+    private Boolean isSecretRoom;
+
+    private String password;
+
     private Integer attendeeLimit;
 
     private Integer attendeeCount;
@@ -47,13 +51,14 @@ public class GameEntity {
 
 
     @Builder
-    public GameEntity(Long gameRoomSeq, UserEntity manager, String roomName,
-                      Integer attendeeLimit, Integer attendeeCount,
-                      LocalDateTime createdAt, LocalDateTime startedAt,
+    public GameEntity(Long gameRoomSeq, UserEntity manager, String roomName, Boolean isSecretRoom, String password,
+                      Integer attendeeLimit, Integer attendeeCount, LocalDateTime createdAt, LocalDateTime startedAt,
                       LocalDateTime endedAt, QuizEntity quiz){
         this.gameRoomSeq = gameRoomSeq;
         this.manager = manager;
         this.roomName = roomName;
+        this.isSecretRoom = isSecretRoom;
+        this.password = password;
         this.attendeeLimit = attendeeLimit;
         this.attendeeCount = attendeeCount;
         this.createdAt = createdAt;
@@ -67,6 +72,8 @@ public class GameEntity {
                 .gameRoomSeq(gameRoomSeq)
                 .manager(manager.toModel())
                 .roomName(roomName)
+                .isSecretRoom(isSecretRoom)
+                .password(password)
                 .attendeeLimit(attendeeLimit)
                 .attendeeCount(attendeeCount)
                 .createdAt(createdAt)
@@ -80,6 +87,8 @@ public class GameEntity {
         GameEntity gameEntity = GameEntity.builder()
                 .manager(UserEntity.fromModel(manager))
                 .roomName(game.getRoomName())
+                .isSecretRoom(game.getIsSecretRoom())
+                .password(game.getPassword())
                 .attendeeLimit(game.getAttendeeLimit())
                 .attendeeCount(game.getAttendeeCount())
                 .createdAt(game.getCreatedAt())
