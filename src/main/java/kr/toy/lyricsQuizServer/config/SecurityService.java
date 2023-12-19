@@ -101,6 +101,14 @@ public class SecurityService {
         return userSeq;
     }
 
+    public User getUserBy(HttpServletRequest request){
+        String token = resolveToken(request, securityProperties.cookieName().accessTokenCookieName);
+        Claims claims = getClaimsIn(token);
+        Long userSeq = Long.parseLong(claims.get("userSeq").toString());
+        User user = userRepository.getById(userSeq);
+        return user;
+    }
+
     public String getEmailIn(String token){
         Claims claims = getClaimsIn(token);
         String email = claims.get("id").toString();

@@ -84,7 +84,8 @@ public class GameEntity {
     }
 
     public static GameEntity fromModel(User manager, Game game, Quiz quiz){
-        GameEntity gameEntity = GameEntity.builder()
+        return GameEntity.builder()
+                .gameRoomSeq(game.getGameRoomSeq())
                 .manager(UserEntity.fromModel(manager))
                 .roomName(game.getRoomName())
                 .isSecretRoom(game.getIsSecretRoom())
@@ -96,6 +97,5 @@ public class GameEntity {
                 .endedAt(game.getEndedAt())
                 .quiz(QuizEntity.fromModel(quiz))
                 .build();
-        return gameEntity;
     }
 }

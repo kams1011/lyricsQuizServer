@@ -35,11 +35,12 @@
       <h1 class="font-extrabold text-4xl">방 생성하기</h1>
     </div>
 
+    <input type="hidden" id="quizSeq" ref="quizSeq"/>
     <div class="mb-4">
       <input type="text" placeholder="방 제목을 입력하세요." class="form-input border-2  border-gray-300 p-2 rounded w-full" ref="roomName">
     </div>
     <div class="mb-4">
-      <input type="text" placeholder="게임을 선택해주세요." class="form-input border-2 border-gray-300 p-2 rounded w-full" ref="quizSeq" @click="openModal">
+      <input type="text" placeholder="게임을 선택해주세요." class="form-input border-2 border-gray-300 p-2 rounded w-full cursor-pointer" id="gameInfo" @click="openModal" readonly>
     </div>
     <div class="mb-4 text-center">
       인원 선택 :
@@ -53,21 +54,21 @@
     </div>
     <div class="text-center mb-4">
       <label for="isSecretRoom">비밀 방 여부</label>
-      <input type="checkbox" placeholder="비밀 방 여부" class="ml-6 mr-6" ref="isSecretRoom" id="isSecretRoom">
-<!--      <input type="text" placeholder="비밀 번호" class="form-input border-2 border-gray-300 p-2 rounded" ref="password">-->
+      <input type="checkbox" placeholder="비밀 방 여부" class="ml-6 mr-6" ref="isSecretRoom" id="isSecretRoom" @change="toggle()">
+      <input type="text" placeholder="비밀 번호" class="form-input border-2 border-gray-300 p-2 rounded" style="display: none" ref="password" id="password">
     </div>
 
     <div class="flex justify-between items-center">
       <!--    <button class="text-blue-500 hover:text-blue-700 text-sm">Markdown Mode</button>-->
       <div class="space-x-4">
         <!--      <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded">Save Draft</button>-->
-        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" v-on:click="register()">등록</button>
+        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" @click="register()">등록</button>
       </div>
     </div>
   </div>
 
   <div id="app">
-    <QuizSummaryModal :show="modalShow" @close="closeModal">
+    <QuizSummaryModal :show="modalShow" @close="closeModal"  @submit="choiceQuiz">
       <!-- 모달 내용 -->
     </QuizSummaryModal>
   </div>
@@ -90,15 +91,26 @@ export default {
       modalData: [],
     };
   },
+
+
+  //FIXME 게임 생성 완료 시 게임 방으로 넘어가는 로직 구현.
+
+
+
+
   methods: {
     register: function () {
       const jsonData = {
-        title : this.$refs['title'].value,
-        singer: this.$refs['singer'].value,
+        roomName : this.$refs['roomName'].value,
+        quizSeq: this.$refs['quizSeq'].value,
+        isSecretRoom: this.$refs['isSecretRoom'].checked,
+        password: this.$refs['password'].value,
+        attendeeLimit: this.$refs['attendeeLimit'].value,
       };
-      axios.post('http://localhost/api/quiz', jsonData,
+      axios.post('http://localhost/api/game', jsonData,
           { withCredentials : true
           }).then(response => {
+
         console.log(response.data); // 서버 응답 처리
       }).catch(error => {
         console.error(error); // 오류 처리//
@@ -110,6 +122,20 @@ export default {
     closeModal() {
       this.modalShow = false;
     },
+    choiceQuiz(data){
+      document.getElementById('quizSeq').value = data.quizSeq;
+      let gameInfo = document.getElementById('gameInfo');
+      gameInfo.value = data.singer + ' - ' + data.title
+    },
+    toggle(){
+      const display = this.$refs['password'].style.display;
+      if(display === "none"){
+        this.$refs['password'].style.display = 'inline';
+      } else {
+        this.$refs['password'].style.display = 'none';
+      }
+    }
+
   },
   components: {
     QuizSummaryModal,

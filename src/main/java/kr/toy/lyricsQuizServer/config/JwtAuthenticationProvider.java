@@ -20,9 +20,6 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 
     private final SecurityProperties securityProperties;
 
-//    @Value("${jwt.secret}")
-//    private String jwtSecret; // FIXME 환경변수로 관리
-
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         JwtAuthenticationToken authenticationToken = (JwtAuthenticationToken) authentication;
@@ -39,6 +36,7 @@ public class JwtAuthenticationProvider implements AuthenticationProvider {
 
             authenticationToken.setAuthenticated(true);
             authenticationToken.setDetails(claims.getSubject());
+            //FIXME 이부분 한번 더 확인해보기.
             //FIXME AuthenticationException을 상속받은 CustomException 을 생성해야겠다.
         } catch (ExpiredJwtException expiredJwtException) {
             throw new JwtInvalidException("expired token", expiredJwtException);

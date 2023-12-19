@@ -55,7 +55,6 @@ public class Game {
 
     public static Game from(GameCreate gameCreate, User manager, Quiz quiz){
         return Game.builder()
-                .gameRoomSeq(gameCreate.getQuizSeq())
                 .manager(manager)
                 .roomName(gameCreate.getRoomName())
                 .isSecretRoom(gameCreate.getIsSecretRoom())
@@ -65,9 +64,12 @@ public class Game {
                 .build();
     }
 
+
     public void create(LocalDateTime dateTime){
         this.createdAt = dateTime;
+        this.attendeeCount = 0;
     }
+
     public void start(LocalDateTime dateTime){
         this.startedAt = dateTime;
     }

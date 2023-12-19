@@ -6,7 +6,7 @@
       <input type="text" placeholder="제목을 입력하세요" class="rounded-none rounded-r-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 flex-1 min-w-0 w-5/6 text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600
       dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-5 ml-4 mr-4" ref="keyword">
       <span @click="getQuizList" class="button">검색</span>
-      <div class="w-full flex p-3 pl-4 items-center hover:bg-gray-300 rounded-lg cursor-pointer" v-for="item in quizSummary" :key="item.quizSeq">
+      <div class="w-full flex p-3 pl-4 items-center hover:bg-gray-300 rounded-lg cursor-pointer" v-for="item in quizSummary" :key="item.quizSeq" @click="choice(item.quizSeq, item.title, item.singer)">
         <div>
           <div class="font-bold text-lg">{{item.title}}</div>
           <div class="text-xs text-gray-500">
@@ -53,6 +53,14 @@ export default {
       }).catch(error => {
         console.error(error); // 오류 처리//
       });
+    },
+    choice(quizSeq, title, singer){
+      this.$emit('submit', {
+        quizSeq : quizSeq,
+        title : title,
+        singer : singer,
+      });
+      this.$emit('close');
     },
     getQuizSeq: function (quizSeq) {
 

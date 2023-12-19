@@ -1,19 +1,22 @@
 package kr.toy.lyricsQuizServer.game.controller;
 
 import kr.toy.lyricsQuizServer.common.domain.Response;
+import kr.toy.lyricsQuizServer.config.SecurityService;
 import kr.toy.lyricsQuizServer.game.controller.port.GameService;
 import kr.toy.lyricsQuizServer.game.controller.response.GameRoom;
+import kr.toy.lyricsQuizServer.game.domain.dto.GameCreate;
 import kr.toy.lyricsQuizServer.quiz.controller.port.QuizService;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizDetailToCreateRoom;
+import kr.toy.lyricsQuizServer.user.domain.User;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import org.springframework.data.domain.Pageable;
+
+import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,10 +26,11 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class GameController {
 
-
     private final GameService gameService;
 
     private final QuizService quizService;
+
+    private final SecurityService securityService;
     //트랜잭션 보장을 해야하는 서비스라면 따로 추출하기.
     //그렇지 않다면 각각 서비스를 injection하는 쪽으로 구현.
 
@@ -50,8 +54,15 @@ public class GameController {
                         .collect(Collectors.toList())));
     }
 
-    //방을 생성하는 구조 생각.
+    @PostMapping("")
+    public ResponseEntity<Response> create(HttpServletRequest request, @RequestBody GameCreate gameCreate){
+        User user = securityService.getUserBy(request);
+        return ResponseEntity.ok().body(Response.success(gameService.create(user, gameCreate)));
+    }
 
-    
+    public ResponseEntity<Response> join(){
+
+        return null;
+    }
 
 }

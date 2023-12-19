@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Pageable;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -21,7 +23,6 @@ import java.util.List;
 public class GameServiceImpl implements GameService {
 
     private final GameRepository gameRepository;
-    private final UserRepository userRepository;
     private final QuizRepository quizRepository;
 
     @Override
@@ -35,12 +36,11 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Game create(GameCreate gameCreate) { //FIXME 혼자는 시작할 수 없게 수정.
-        User user = userRepository.getById(gameCreate.getUserSeq()); 
+    public Game create(User user, GameCreate gameCreate) { //FIXME 혼자는 시작할 수 없게 수정.
         Quiz quiz = quizRepository.getById(gameCreate.getQuizSeq());
         Game game = Game.from(gameCreate, user, quiz);
-        gameRepository.save(user, game, quiz);
-        return game;
+        game.create(LocalDateTime.now());
+        return gameRepository.save(user, game, quiz);
     }
 
     @Override

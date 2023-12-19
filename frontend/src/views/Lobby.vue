@@ -58,11 +58,11 @@
         </div> -->
         <div class="content-main">
           <div class="card-grid">
-            <article class="card">
+            <article class="card" v-for="item in itemList" :key="item.gameRoomSeq">
               <div class="card-header">
                 <div>
                   <span><img src="https://assets.codepen.io/285131/zeplin.svg"></span>
-                  <h3>시작 전 방 샘플</h3>
+                  <h3>{{ item.roomName }}</h3>
                 </div>
                 <div>
                   기타등등
@@ -133,8 +133,33 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
-  name: "Lobby"
+  name: "Lobby",
+  data() {
+    return{
+      itemList: [],
+    }
+  },
+  mounted() {
+    this.getList();
+  },
+  methods: {
+    getList: function () {
+      const keyword = '';
+      axios.get('http://localhost/api/game?keyword=' + keyword,
+          { withCredentials : true
+          }).then(response => {
+            console.log(response.data);
+        this.itemList = response.data.data;
+      }).catch(error => {
+        console.error(error); // 오류 처리//
+      });
+    },
+  }
+
+
 }
 </script>
 

@@ -35,7 +35,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String refreshToken;
 
         try {
-            Authentication authentication = authenticationManager.authenticate(new JwtAuthenticationToken(securityService.getEmailIn(accessToken), accessToken));
+            Authentication authentication = authenticationManager.authenticate(new JwtAuthenticationToken(securityService.getUserSeqIn(accessToken), accessToken));
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (AuthenticationException e) {
             e.printStackTrace();
