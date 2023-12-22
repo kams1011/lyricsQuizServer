@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 public class GameRepositoryImpl implements GameRepository {
 
     private final GameJpaRepository gameJpaRepository;
-    private final UserRepository userRepository;
 
     @Override
     public List<Game> findAll(Pageable pageable) {
@@ -30,8 +29,7 @@ public class GameRepositoryImpl implements GameRepository {
 
     @Override
     public List<Game> findAllByRoomNameOrManagerName(String word, Pageable pageable) {
-        User user = userRepository.getByNickName(word);
-        return gameJpaRepository.findAllByRoomNameOrManager(word, user, pageable)
+        return gameJpaRepository.findAllByRoomNameOrManager(word, pageable)
                 .stream().map(GameEntity::toModel)
                 .collect(Collectors.toList());
     }
