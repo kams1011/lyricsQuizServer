@@ -1,13 +1,12 @@
 package kr.toy.lyricsQuizServer.config;
 
+import kr.toy.lyricsQuizServer.config.ConfigurationProperties.SecurityProperties;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -25,6 +24,8 @@ public class SecurityConfig {
 
     private final JwtAuthenticationProvider jwtAuthenticationProvider;
 
+    private final JwtUtils jwtUtils;
+
 //    @Bean
 //    public JwtAuthenticationProvider jwtAuthenticationProvider() {
 //        return new JwtAuthenticationProvider();
@@ -41,7 +42,7 @@ public class SecurityConfig {
 //                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .formLogin().disable()
                 .httpBasic().disable()
-                .addFilterBefore(new JwtAuthenticationFilter(securityProperties, authenticationManager(), securityService), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtAuthenticationFilter(securityProperties, authenticationManager(), securityService, jwtUtils), UsernamePasswordAuthenticationFilter.class);
         //FIXME addFilterBefore로 바꾼 부분 정상작동되는지 확인
         return http.build(); 
     }

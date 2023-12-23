@@ -52,11 +52,8 @@ public class QuizServiceImpl implements QuizService {
 
     @Override
     @Transactional
-    public Quiz create(QuizCreate quizCreate) {
+    public Quiz create(User maker, QuizCreate quizCreate) {
 
-//        User maker = userService.getById(quizCreate.getUserSeq());
-        //FIXME 임시 값이므로 추후 변경
-        User maker = userService.getById(20L);
         QuizContent quizContent = quizContentService.contentCreate(quizCreate.getQuizContentCreate());
         Quiz quiz = Quiz.from(quizCreate, quizContent, maker, LocalDateTime.now());
 

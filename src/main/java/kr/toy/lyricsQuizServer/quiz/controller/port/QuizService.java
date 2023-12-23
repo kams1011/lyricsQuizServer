@@ -6,6 +6,7 @@ import kr.toy.lyricsQuizServer.quiz.domain.dto.ChatMessage;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizContentCreate;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizCreate;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizDetailToCreateRoom;
+import kr.toy.lyricsQuizServer.user.domain.User;
 import org.springframework.data.domain.Pageable;
 
 import javax.transaction.Transactional;
@@ -17,7 +18,7 @@ public interface QuizService {
 
     Quiz find(Long quizSeq);
 
-    Quiz create(QuizCreate quizCreate); // YoutubeUrl로 할 수 있는지 체크.
+    Quiz create(User maker, QuizCreate quizCreate); // YoutubeUrl로 할 수 있는지 체크.
 
     Quiz update();
 

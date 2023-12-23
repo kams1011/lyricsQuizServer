@@ -56,7 +56,8 @@ public class GameController {
 
     @PostMapping("")
     public ResponseEntity<Response> create(HttpServletRequest request, @RequestBody GameCreate gameCreate){
-        User user = securityService.getUserBy(request);
+//        User user = securityService.getUserBy(request);
+        User user = null; //FIXME ArgsResolver로 변경
         return ResponseEntity.ok().body(Response.success(gameService.create(user, gameCreate)));
     }
 

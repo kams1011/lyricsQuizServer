@@ -1,4 +1,4 @@
-package kr.toy.lyricsQuizServer.config;
+package kr.toy.lyricsQuizServer.config.ConfigurationProperties;
 
 import lombok.Getter;
 import lombok.Setter;

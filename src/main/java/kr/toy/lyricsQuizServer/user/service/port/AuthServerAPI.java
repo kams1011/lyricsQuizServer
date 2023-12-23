@@ -1,9 +1,7 @@
 package kr.toy.lyricsQuizServer.user.service.port;
 
-import kr.toy.lyricsQuizServer.config.OauthProperties;
+import kr.toy.lyricsQuizServer.config.ConfigurationProperties.OauthProperties;
 import kr.toy.lyricsQuizServer.user.domain.LoginType;
-
-import java.util.Map;
 
 public interface AuthServerAPI {
 

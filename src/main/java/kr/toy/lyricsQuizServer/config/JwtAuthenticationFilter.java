@@ -1,7 +1,7 @@
 package kr.toy.lyricsQuizServer.config;
 
+import kr.toy.lyricsQuizServer.config.ConfigurationProperties.SecurityProperties;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -26,16 +26,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final SecurityService securityService;
 
+    private final JwtUtils jwtUtils;
+    //FIXME Jwt 재발급 등의 로직은 Filter에서 제외.
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         // FIXME NoSuchElement catch
-        String accessToken = securityService.resolveToken(request, securityProperties.cookieName().accessTokenCookieName);
+        String accessToken = securityService.resolveToken(request, securityProperties.cookieName().accessTokenCookieName());
 
         String refreshToken;
 
         try {
-            Authentication authentication = authenticationManager.authenticate(new JwtAuthenticationToken(securityService.getUserSeqIn(accessToken), accessToken));
+            Authentication authentication = authenticationManager.authenticate(new JwtAuthenticationToken(jwtUtils.getUserSeqIn(accessToken), accessToken));
             SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (AuthenticationException e) {
             e.printStackTrace();
@@ -43,8 +46,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if(response.getStatus() == HttpServletResponse.SC_UNAUTHORIZED){
                 return;
             }
-            String reIssuedAccessToken = securityService.accessTokenIssue(securityService.getUserSeqIn(refreshToken));
-            securityService.setCookieWithToken(true, reIssuedAccessToken, response);
+//            String reIssuedAccessToken = securityService.accessTokenIssue(securityService.getUserSeqIn(refreshToken));
+//            securityService.setCookieWithToken(true, reIssuedAccessToken, response);
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -55,7 +58,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     public String refreshTokenCheck(HttpServletRequest request, HttpServletResponse response){
         String refreshToken = "";
         try {
-            refreshToken = securityService.resolveToken(request, securityProperties.cookieName().refreshTokenCookieName);
+            refreshToken = securityService.resolveToken(request, securityProperties.cookieName().refreshTokenCookieName());
         } catch (JwtInvalidException | NullPointerException | NoSuchElementException e){
             SecurityContextHolder.clearContext();
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

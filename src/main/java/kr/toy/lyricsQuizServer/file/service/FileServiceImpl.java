@@ -3,7 +3,7 @@ package kr.toy.lyricsQuizServer.file.service;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import kr.toy.lyricsQuizServer.config.SecurityService;
-import kr.toy.lyricsQuizServer.config.StorageProperties;
+import kr.toy.lyricsQuizServer.config.ConfigurationProperties.StorageProperties;
 import kr.toy.lyricsQuizServer.file.controller.port.FileService;
 import kr.toy.lyricsQuizServer.file.domain.File;
 import kr.toy.lyricsQuizServer.file.domain.FileExtension;
@@ -63,7 +63,8 @@ public class FileServiceImpl implements FileService {
         metadata.setContentLength(file.getSize());
         metadata.setContentType(file.getContentType());
 
-        User user = userRepository.getById(securityService.getUserSeqInToken(request));
+//        User user = userRepository.getById(securityService.resolveToken(request));
+        User user = null; //FIXME ArgsResolver로 변경
 
         File fileDomain = File.builder()
                 .name(file.getName())

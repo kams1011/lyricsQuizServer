@@ -39,9 +39,6 @@ public class QuizCreate {
     @NotBlank
     private String answer;
 
-//    @NotNull
-//    private Long userSeq; // 제작자 고유키
-
     @NotNull
     private QuizContentCreate quizContentCreate;
 

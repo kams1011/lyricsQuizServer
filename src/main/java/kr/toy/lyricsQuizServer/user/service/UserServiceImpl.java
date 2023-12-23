@@ -1,6 +1,7 @@
 package kr.toy.lyricsQuizServer.user.service;
 
-import kr.toy.lyricsQuizServer.config.OauthProperties;
+import kr.toy.lyricsQuizServer.config.ConfigurationProperties.OauthProperties;
+import kr.toy.lyricsQuizServer.config.JwtUtils;
 import kr.toy.lyricsQuizServer.config.SecurityService;
 import kr.toy.lyricsQuizServer.user.controller.port.UserService;
 import kr.toy.lyricsQuizServer.user.domain.LoginType;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
-import java.util.Map;
 import java.util.NoSuchElementException;
 
 @Service
@@ -23,6 +23,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     private final AuthServerAPI authServerAPI;
+
+    private final JwtUtils jwtUtils;
 
     private final SecurityService securityService;
 
@@ -85,11 +87,10 @@ public class UserServiceImpl implements UserService {
 
 
     public void makeTokensAndSetCookie(User user, HttpServletResponse response){
-        String accessToken = securityService.accessTokenIssue(user.getUserSeq());
-        String refreshToken = securityService.refreshTokenIssue(user.getUserSeq());
+        String accessToken = jwtUtils.accessTokenIssue(user.getUserSeq());
+        String refreshToken = jwtUtils.refreshTokenIssue(user.getUserSeq());
         securityService.setCookieWithToken(false, accessToken, response);
         securityService.setCookieWithToken(true, refreshToken, response);
-
     }
 
 }

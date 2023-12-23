@@ -1,22 +1,13 @@
 package kr.toy.lyricsQuizServer.user.domain;
 
-import kr.toy.lyricsQuizServer.config.OauthProperties;
-import kr.toy.lyricsQuizServer.config.SecurityProperties;
-import kr.toy.lyricsQuizServer.config.StorageProperties;
-import kr.toy.lyricsQuizServer.file.domain.FileExtension;
-import org.apache.tomcat.util.buf.HexUtils;
-import org.assertj.core.util.Hexadecimals;
+import kr.toy.lyricsQuizServer.config.ConfigurationProperties.OauthProperties;
+import kr.toy.lyricsQuizServer.config.ConfigurationProperties.SecurityProperties;
+import kr.toy.lyricsQuizServer.config.ConfigurationProperties.StorageProperties;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.lang.reflect.Field;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;

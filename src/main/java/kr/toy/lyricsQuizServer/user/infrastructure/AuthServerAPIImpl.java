@@ -1,18 +1,14 @@
 package kr.toy.lyricsQuizServer.user.infrastructure;
 
-import kr.toy.lyricsQuizServer.config.OauthProperties;
-import kr.toy.lyricsQuizServer.config.OauthProperties.AccessTokenRequest;
-import kr.toy.lyricsQuizServer.config.OauthProperties.AccessTokenResponse;
+import kr.toy.lyricsQuizServer.config.ConfigurationProperties.OauthProperties;
+import kr.toy.lyricsQuizServer.config.ConfigurationProperties.OauthProperties.AccessTokenRequest;
+import kr.toy.lyricsQuizServer.config.ConfigurationProperties.OauthProperties.AccessTokenResponse;
 import kr.toy.lyricsQuizServer.user.domain.LoginType;
 import kr.toy.lyricsQuizServer.user.service.port.AuthServerAPI;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.net.URI;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
