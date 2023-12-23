@@ -42,7 +42,7 @@ public class SecurityConfig {
 //                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .formLogin().disable()
                 .httpBasic().disable()
-                .addFilterBefore(new JwtAuthenticationFilter(securityProperties, authenticationManager(), securityService, jwtUtils), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new JwtAuthenticationFilter(securityProperties, authenticationManager(), securityService, jwtUtils ), UsernamePasswordAuthenticationFilter.class);
         //FIXME addFilterBefore로 바꾼 부분 정상작동되는지 확인
         return http.build(); 
     }

@@ -1,15 +1,26 @@
 package kr.toy.lyricsQuizServer.config;
 
+import kr.toy.lyricsQuizServer.config.ConfigurationProperties.SecurityProperties;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @Configuration
-public class CorsConfig implements WebMvcConfigurer {
+public class WebMVCConfig implements WebMvcConfigurer {
+
+    private final SecurityService securityService;
+
+    private final SecurityProperties securityProperties;
+
+    private final JwtUtils jwtUtils;
+
 
     @Override
     public void addCorsMappings(CorsRegistry registry){
@@ -26,5 +37,11 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(new JwtArgumentResolver());
+    }
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new AuthenticationInterceptor(securityService, securityProperties, jwtUtils));
+//                .excludePathPatterns("/css/**", "/images/**", "/js/**");
     }
 }
