@@ -17,6 +17,9 @@ public class SecurityProperties {
 
     private String domain;
 
+    private Long ACCESS_TOKEN_EXPIRE_MINUTE;
+
+    private Long REFRESH_TOKEN_EXPIRE_MINUTE;
 
     public CookieName cookieName(){
         return cookieName;
@@ -27,6 +30,14 @@ public class SecurityProperties {
     }
 
     public String domain() { return  domain;}
+
+    public Long AccessTokenExpireMinute() {
+        return ACCESS_TOKEN_EXPIRE_MINUTE;
+    }
+
+    public Long RefreshTokenExpireMinute() {
+        return REFRESH_TOKEN_EXPIRE_MINUTE;
+    }
 
     @Setter
     public static class CookieName{

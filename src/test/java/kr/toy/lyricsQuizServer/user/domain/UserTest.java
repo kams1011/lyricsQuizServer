@@ -126,8 +126,6 @@ public class UserTest {
         assertThat(user.getIsBan()).isTrue();
     }
 
-
-
 }
 
 

@@ -11,12 +11,8 @@ import kr.toy.lyricsQuizServer.user.service.port.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
-import java.util.NoSuchElementException;
 
 import static javax.management.timer.Timer.ONE_MINUTE;
 import static javax.management.timer.Timer.ONE_WEEK;
@@ -26,8 +22,6 @@ import static javax.management.timer.Timer.ONE_WEEK;
 public class JwtUtils {
 
     private final SecurityProperties securityProperties;
-    private final int ACCESS_TOKEN_EXPIRE_MINUTE = 5;
-    private final long REFRESH_TOKEN_EXPIRE_MINUTE = ONE_WEEK; //FIXME 수정
     private final UserRepository userRepository;
 
     public String accessTokenIssue(Long userSeq){
@@ -38,11 +32,11 @@ public class JwtUtils {
         claims.put("id", user.getEmail());
         claims.put("nickName", user.getNickName());
 
-        return jwtIssue(userSeq, claims, ACCESS_TOKEN_EXPIRE_MINUTE);
+        return jwtIssue(userSeq, claims, securityProperties.AccessTokenExpireMinute());
     }
 
     public String refreshTokenIssue(Long userSeq){
-        return jwtIssue(userSeq, Jwts.claims(), REFRESH_TOKEN_EXPIRE_MINUTE);
+        return jwtIssue(userSeq, Jwts.claims(), securityProperties.RefreshTokenExpireMinute());
     }
 
     public String jwtIssue(Long userSeq, Claims claims, long expireMinute){
