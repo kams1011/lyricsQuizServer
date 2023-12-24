@@ -1,6 +1,7 @@
 package kr.toy.lyricsQuizServer.file.controller.port;
 
 import kr.toy.lyricsQuizServer.file.domain.File;
+import kr.toy.lyricsQuizServer.user.domain.User;
 import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,7 +19,7 @@ public interface FileService {
 
 //    File update();
 
-    Map<String, Object> upload(MultipartFile multipartFile, HttpServletRequest request) throws IOException, HttpMediaTypeNotSupportedException;
+    Map<String, Object> upload(MultipartFile multipartFile, User uploader) throws IOException, HttpMediaTypeNotSupportedException;
 
     void validateFile(MultipartFile file) throws IOException, HttpMediaTypeNotSupportedException;
 

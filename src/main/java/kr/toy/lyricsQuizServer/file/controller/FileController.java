@@ -2,6 +2,7 @@ package kr.toy.lyricsQuizServer.file.controller;
 
 import kr.toy.lyricsQuizServer.common.domain.Response;
 import kr.toy.lyricsQuizServer.file.controller.port.FileService;
+import kr.toy.lyricsQuizServer.user.domain.User;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,9 +25,9 @@ public class FileController {
     private final FileService fileService;
 
     @PostMapping("")
-    public ResponseEntity register(@RequestPart MultipartFile file, HttpServletRequest request) throws IOException, HttpMediaTypeNotSupportedException {
+    public ResponseEntity register(@RequestPart MultipartFile file, User uploader) throws IOException, HttpMediaTypeNotSupportedException {
 
-        Map<String, Object> result = fileService.upload(file, request);
+        Map<String, Object> result = fileService.upload(file, uploader);
 
         return ResponseEntity.created(URI.create(result.get("url").toString())).body(Response.success("업로드에 성공했습니다", result));
 

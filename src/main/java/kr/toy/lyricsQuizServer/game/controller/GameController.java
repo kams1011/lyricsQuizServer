@@ -34,7 +34,6 @@ public class GameController {
     //트랜잭션 보장을 해야하는 서비스라면 따로 추출하기.
     //그렇지 않다면 각각 서비스를 injection하는 쪽으로 구현.
 
-
     //현재 아키텍쳐 구조로는 entity가 컨트롤러에 드러나지 않는다.
     //그렇다면 화면에 나올 데이터를 뿌려주는 dto는 프레젠테이션 영역인 컨트롤러에서 하는게 계층별 역할분리에 부합한다.
     @GetMapping("")
@@ -55,10 +54,8 @@ public class GameController {
     }
 
     @PostMapping("")
-    public ResponseEntity<Response> create(HttpServletRequest request, @RequestBody GameCreate gameCreate){
-//        User user = securityService.getUserBy(request);
-        User user = null; //FIXME ArgsResolver로 변경
-        return ResponseEntity.ok().body(Response.success(gameService.create(user, gameCreate)));
+    public ResponseEntity<Response> create(@RequestBody GameCreate gameCreate, User maker){
+        return ResponseEntity.ok().body(Response.success(gameService.create(maker, gameCreate)));
     }
 
     public ResponseEntity<Response> join(){

@@ -54,7 +54,7 @@ public class FileServiceImpl implements FileService {
 
     @Override
     @Transactional
-    public Map<String, Object> upload(MultipartFile file, HttpServletRequest request) throws IOException, HttpMediaTypeNotSupportedException {
+    public Map<String, Object> upload(MultipartFile file, User uploader) throws IOException, HttpMediaTypeNotSupportedException {
 
         validateFile(file);
         String originalFilename = file.getOriginalFilename();
