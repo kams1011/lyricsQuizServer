@@ -20,11 +20,12 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        String refreshToken = securityService.resolveToken(request, securityProperties.cookieName().refreshTokenCookieName());
-
-        String reIssuedAccessToken = jwtUtils.accessTokenIssue(jwtUtils.getUserSeqIn(refreshToken));
-
-        securityService.setCookieWithToken(true, reIssuedAccessToken, response);
+        //FIXME 필터 적용 제외되는 endpoint 처리 필요, JWT가 유효하지 않을 때만 추가해주는 로직 필요
+//        String refreshToken = securityService.resolveToken(request, securityProperties.cookieName().refreshTokenCookieName());
+//
+//        String reIssuedAccessToken = jwtUtils.accessTokenIssue(jwtUtils.getUserSeqIn(refreshToken));
+//
+//        securityService.setCookieWithToken(true, reIssuedAccessToken, response);
 
         return true;
     }

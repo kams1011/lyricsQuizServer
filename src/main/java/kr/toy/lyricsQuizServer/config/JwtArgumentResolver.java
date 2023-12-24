@@ -1,5 +1,6 @@
 package kr.toy.lyricsQuizServer.config;
 
+import kr.toy.lyricsQuizServer.config.ConfigurationProperties.SecurityProperties;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +13,15 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 import javax.servlet.http.HttpServletRequest;
 
+@RequiredArgsConstructor
 public class JwtArgumentResolver implements HandlerMethodArgumentResolver {
 
 
-//    @Autowired
-//    SecurityService securityService; //FIXME RequiredArgsConstructor 로 변경.
+    private final SecurityService securityService;
+
+    private final JwtUtils jwtUtils;
+
+    private final SecurityProperties securityProperties;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -27,8 +32,8 @@ public class JwtArgumentResolver implements HandlerMethodArgumentResolver {
     public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer, NativeWebRequest webRequest, WebDataBinderFactory binderFactory) throws Exception {
         HttpServletRequest httpServletRequest = (HttpServletRequest) webRequest.getNativeRequest();
 
-//        User user = securityService.getUserBy(httpServletRequest);
-        User user = null;
+        String accessToken = securityService.resolveToken(httpServletRequest, securityProperties.cookieName().accessTokenCookieName());
+        User user = jwtUtils.getUserBy(accessToken);
 
         return user;
     }

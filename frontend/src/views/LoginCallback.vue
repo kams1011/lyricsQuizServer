@@ -40,6 +40,7 @@ export default {
           let user = err.response.data.data;
           console.log(err);
           alert('회원가입이 필요합니다.');
+
           let email = user.email;
           let loginType = user.loginType;
           redirect('/user/register/' + loginType + '/' + email);

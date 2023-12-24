@@ -27,10 +27,8 @@ public class QuizController {
 
     @PostMapping("")
     public ResponseEntity<Response> create(@Valid @RequestBody QuizCreate quizCreate, User maker){
-
         return ResponseEntity.ok()
                 .body(Response.success(quizService.create(maker, quizCreate)));
-        //FIXME ArgsResolver 작동하는지 확인
     }
 
     @DeleteMapping("/{quizSeq}")
