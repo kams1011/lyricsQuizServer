@@ -6,8 +6,6 @@ import lombok.Getter;
 @Getter
 public class GameCreate {
 
-        private Long userSeq;
-
         private String roomName;
 
         private Boolean isSecretRoom;
@@ -18,8 +16,7 @@ public class GameCreate {
 
         private Long quizSeq;
 
-        public GameCreate(Long userSeq, String roomName, Boolean isSecretRoom, String password, Integer attendeeLimit, Long quizSeq){
-                this.userSeq = userSeq;
+        public GameCreate(String roomName, Boolean isSecretRoom, String password, Integer attendeeLimit, Long quizSeq){
                 this.roomName = roomName;
                 this.isSecretRoom = isSecretRoom;
                 this.password = password;

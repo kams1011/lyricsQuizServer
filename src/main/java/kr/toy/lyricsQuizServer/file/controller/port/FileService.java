@@ -23,5 +23,5 @@ public interface FileService {
 
     void validateFile(MultipartFile file) throws IOException, HttpMediaTypeNotSupportedException;
 
-    void delete(Long userSeq, Long fileSeq);
+    void delete(User user, Long fileSeq);
 }

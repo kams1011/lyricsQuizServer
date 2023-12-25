@@ -97,10 +97,10 @@ public class FileServiceImpl implements FileService {
     }
 
     @Override
-    public void delete(Long userSeq, Long fileSeq) {
+    public void delete(User user, Long fileSeq) {
         File file = getFileBy(fileSeq);
 
-        hasAuthority(userSeq, fileSeq);
+        hasAuthority(user, fileSeq);
 
         //FIXME 현재 진행중인 게임이 있는지 체크 -> Redis 구현 후 제작
         
@@ -136,8 +136,7 @@ public class FileServiceImpl implements FileService {
         }
     }
 
-    public Boolean hasAuthority(Long userSeq, Long fileSeq){
-        User user = userRepository.getById(userSeq);
+    public Boolean hasAuthority(User user, Long fileSeq){
         File file = fileRepository.getBy(fileSeq);
 
         if(file.getUser().equals(user)) {

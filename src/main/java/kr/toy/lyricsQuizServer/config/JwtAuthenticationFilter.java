@@ -31,8 +31,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
+
         // FIXME NoSuchElement catch
         String accessToken = securityService.resolveToken(request, securityProperties.cookieName().accessTokenCookieName());
+
         try {
             Authentication authentication = authenticationManager.authenticate(new JwtAuthenticationToken(jwtUtils.getUserSeqIn(accessToken), accessToken));
             SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -42,6 +44,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             if(response.getStatus() == HttpServletResponse.SC_UNAUTHORIZED){
                 return;
             }
+            request.setAttribute("authenticated", false);
         } catch (Exception e){
             e.printStackTrace();
         }
@@ -65,10 +68,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
-        String[] excludePath = {"/api/users/signup", "/api/users/info", "/api/users", "/api/file"};
+    protected boolean shouldNotFilter(HttpServletRequest request){
         String path = request.getRequestURI();
-        return Arrays.stream(excludePath).anyMatch(path::startsWith);
+        return ExcludeURL.isExcludeURL(path);
     }
 
 }

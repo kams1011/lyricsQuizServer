@@ -7,6 +7,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 
 @RequiredArgsConstructor
 public class AuthenticationInterceptor implements HandlerInterceptor {
@@ -20,13 +21,15 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        //FIXME 필터 적용 제외되는 endpoint 처리 필요, JWT가 유효하지 않을 때만 추가해주는 로직 필요
-//        String refreshToken = securityService.resolveToken(request, securityProperties.cookieName().refreshTokenCookieName());
-//
-//        String reIssuedAccessToken = jwtUtils.accessTokenIssue(jwtUtils.getUserSeqIn(refreshToken));
-//
-//        securityService.setCookieWithToken(true, reIssuedAccessToken, response);
+        String path = request.getRequestURI();
 
+        if(!ExcludeURL.isExcludeURL(path) && needTokenRenew(request)){
+            String refreshToken = securityService.resolveToken(request, securityProperties.cookieName().refreshTokenCookieName());
+
+            String reIssuedAccessToken = jwtUtils.accessTokenIssue(jwtUtils.getUserSeqIn(refreshToken));
+
+            securityService.setCookieWithToken(true, reIssuedAccessToken, response);
+        }
         return true;
     }
 
@@ -44,4 +47,11 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         // 예외 처리 로직 구현
     }
 
+
+    public Boolean needTokenRenew(HttpServletRequest request){
+        if(request.getAttribute("authenticated") == (Object) false){
+            return true;
+        }
+        return false;
+    }
 }

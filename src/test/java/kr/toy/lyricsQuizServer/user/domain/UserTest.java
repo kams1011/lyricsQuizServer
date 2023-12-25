@@ -126,6 +126,14 @@ public class UserTest {
         assertThat(user.getIsBan()).isTrue();
     }
 
+
+
+    @Test
+    public void temp(){
+        Boolean isTrue = true;
+        boolean isFalse = false;
+
+    }
 }
 
 

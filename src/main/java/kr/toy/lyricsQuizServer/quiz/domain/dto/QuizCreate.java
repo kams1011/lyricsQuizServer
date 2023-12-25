@@ -53,7 +53,6 @@ public class QuizCreate {
                       @JsonProperty("beforeLyrics") String beforeLyrics,
                       @JsonProperty("afterLyrics") String afterLyrics,
                       @JsonProperty("answer") String answer,
-//                      Long userSeq,
                       @JsonProperty("quizContentCreate") QuizContentCreate quizContentCreate){
         this.title = title;
         this.isDeleted = isDeleted;
@@ -64,7 +63,6 @@ public class QuizCreate {
         this.beforeLyrics = beforeLyrics;
         this.afterLyrics = afterLyrics;
         this.answer = answer;
-//        this.userSeq = userSeq;
         this.quizContentCreate = quizContentCreate;
     }
 
