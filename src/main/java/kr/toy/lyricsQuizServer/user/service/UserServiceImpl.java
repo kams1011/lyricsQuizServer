@@ -74,9 +74,12 @@ public class UserServiceImpl implements UserService {
         String email = authServerAPI.getEmailBy(loginType, accessTokenResponse.getAccess_token());
         try {
             User user = getByEmailAndLoginType(email, loginType);
+            System.out.println("12345");
+            System.out.println(user == null);
             makeTokensAndSetCookie(user, response);
             return null;
         } catch (NoSuchElementException e){ // 회원가입필요
+            System.out.println(1234);
             UserCreate userCreate = UserCreate.builder()
                     .email(email)
                     .loginType(loginType)

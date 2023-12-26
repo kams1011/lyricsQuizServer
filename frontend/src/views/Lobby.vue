@@ -76,51 +76,51 @@
                 <p>Topic : 가나다라마바사</p>
               </div>
               <div class="card-footer">
-                <a href="#">1 / 6</a>
+                <a href="#">{{ item.attendeeCount }} / {{ item.attendeeLimit }}</a>
               </div>
             </article>
-            <article class="card">
-              <div class="card-header">
-                <div>
-                  <span><img src="https://assets.codepen.io/285131/github.svg"></span>
-                  <h3>시작한 방 샘플</h3>
-                </div>
-                <div>
-                  경과시간?
-                </div>
-                <!-- <label class="toggle">
-                  <input type="checkbox" checked>
-                  <span></span>
-                </label> -->
-              </div>
-              <div class="card-body">
-                <p>Topic : 가나다라마바사</p>
-              </div>
-              <div class="card-footer">
-                <a href="#">5 / 6</a>
-              </div>
-            </article>
-            <article class="card">
-              <div class="card-header">
-                <div>
-                  <span><img src="https://assets.codepen.io/285131/figma.svg"></span>
-                  <h3>빈자리 샘플</h3>
-                </div>
-                <div>
-                  시작시간?
-                </div>
-                <!-- <label class="toggle">
-                  <input type="checkbox" checked>
-                  <span></span>
-                </label> -->
-              </div>
-              <div class="card-body">
-                <p>Topic : 가나다라마바사</p>
-              </div>
-              <div class="card-footer">
-                <a href="#"></a>
-              </div>
-            </article>
+<!--            <article class="card">-->
+<!--              <div class="card-header">-->
+<!--                <div>-->
+<!--                  <span><img src="https://assets.codepen.io/285131/github.svg"></span>-->
+<!--                  <h3>시작한 방 샘플</h3>-->
+<!--                </div>-->
+<!--                <div>-->
+<!--                  경과시간?-->
+<!--                </div>-->
+<!--                &lt;!&ndash; <label class="toggle">-->
+<!--                  <input type="checkbox" checked>-->
+<!--                  <span></span>-->
+<!--                </label> &ndash;&gt;-->
+<!--              </div>-->
+<!--              <div class="card-body">-->
+<!--                <p>Topic : 가나다라마바사</p>-->
+<!--              </div>-->
+<!--              <div class="card-footer">-->
+<!--                <a href="#">5 / 6</a>-->
+<!--              </div>-->
+<!--            </article>-->
+<!--            <article class="card">-->
+<!--              <div class="card-header">-->
+<!--                <div>-->
+<!--                  <span><img src="https://assets.codepen.io/285131/figma.svg"></span>-->
+<!--                  <h3>빈자리 샘플</h3>-->
+<!--                </div>-->
+<!--                <div>-->
+<!--                  시작시간?-->
+<!--                </div>-->
+<!--                &lt;!&ndash; <label class="toggle">-->
+<!--                  <input type="checkbox" checked>-->
+<!--                  <span></span>-->
+<!--                </label> &ndash;&gt;-->
+<!--              </div>-->
+<!--              <div class="card-body">-->
+<!--                <p>Topic : 가나다라마바사</p>-->
+<!--              </div>-->
+<!--              <div class="card-footer">-->
+<!--                <a href="#"></a>-->
+<!--              </div>-->
+<!--            </article>-->
           </div>
         </div>
       </div>

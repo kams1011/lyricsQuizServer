@@ -32,6 +32,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
 
+        System.out.println("HIHI");
+        System.out.println(request.getRequestURI());
+        System.out.println(ExcludeURL.isExcludeURL(request.getRequestURI()));
         // FIXME NoSuchElement catch
         String accessToken = securityService.resolveToken(request, securityProperties.cookieName().accessTokenCookieName());
 

@@ -19,7 +19,7 @@ public class GameRoom {
 
     private final String managerName;
 
-//    private final String topic;
+    private final String topic;
 
     private final Integer attendeeLimit;
 
@@ -28,15 +28,14 @@ public class GameRoom {
 
     @Builder
     public GameRoom(Long gameRoomSeq, String picture, String roomName, LocalDateTime startedAt,
-                    String managerName,
-//                    String topic,
+                    String managerName, String topic,
                     Integer attendeeLimit, Integer attendeeCount) {
         this.gameRoomSeq = gameRoomSeq;
         this.picture = picture;
         this.roomName = roomName;
         this.startedAt = startedAt;
         this.managerName = managerName;
-//        this.topic = topic;
+        this.topic = topic;
         this.attendeeLimit = attendeeLimit;
         this.attendeeCount = attendeeCount;
     }
@@ -47,6 +46,7 @@ public class GameRoom {
                 .gameRoomSeq(game.getGameRoomSeq())
 //                .picture(game.getQuiz().get)
                 .roomName(game.getRoomName())
+                .topic(game.getQuiz().getTitle()) //FIXME Query 확인하기
                 .startedAt(game.getStartedAt())
                 .managerName(game.getManager().getNickName())
                 .attendeeLimit(game.getAttendeeLimit())

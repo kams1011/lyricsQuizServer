@@ -15,6 +15,7 @@ public enum ExcludeURL {
 
     회원가입("/api/users/signup"),
     유저정보조회("/api/users/info"),
+    로그인("/api/users/login"),
     유저조회("/api/users");
 
     private String URL;
@@ -26,9 +27,9 @@ public enum ExcludeURL {
 
     public static Boolean isExcludeURL(final String URL){
         return Arrays.stream(ExcludeURL.values())
-                .map(data -> data.URL.startsWith(URL))
+                .filter(data -> data.URL.startsWith(URL))
                 .findFirst()
-                .orElse(false);
+                .isPresent();
     }
 
 

@@ -3,11 +3,13 @@ package kr.toy.lyricsQuizServer.user.domain;
 import kr.toy.lyricsQuizServer.config.ConfigurationProperties.OauthProperties;
 import kr.toy.lyricsQuizServer.config.ConfigurationProperties.SecurityProperties;
 import kr.toy.lyricsQuizServer.config.ConfigurationProperties.StorageProperties;
+import kr.toy.lyricsQuizServer.config.ExcludeURL;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -128,12 +130,6 @@ public class UserTest {
 
 
 
-    @Test
-    public void temp(){
-        Boolean isTrue = true;
-        boolean isFalse = false;
-
-    }
 }
 
 
