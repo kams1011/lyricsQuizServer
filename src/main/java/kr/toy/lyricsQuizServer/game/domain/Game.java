@@ -32,13 +32,14 @@ public class Game {
 
     private LocalDateTime endedAt;
 
+    private GameStatus gameStatus;
+
     private Quiz quiz;
 
 
     @Builder
-    public Game(Long gameRoomSeq, User manager, String roomName, Boolean isSecretRoom, String password,
-                Integer attendeeLimit, Integer attendeeCount, LocalDateTime createdAt, LocalDateTime startedAt,
-                LocalDateTime endedAt, Quiz quiz){
+    public Game(Long gameRoomSeq, User manager, String roomName, Boolean isSecretRoom, String password, Integer attendeeLimit, Integer attendeeCount, LocalDateTime createdAt, LocalDateTime startedAt,
+                LocalDateTime endedAt, Quiz quiz, GameStatus gameStatus){
         this.gameRoomSeq = gameRoomSeq;
         this.manager = manager;
         this.roomName = roomName;
@@ -50,6 +51,7 @@ public class Game {
         this.startedAt = startedAt;
         this.endedAt = endedAt;
         this.quiz = quiz;
+        this.gameStatus = gameStatus;
     }
 
 
@@ -61,9 +63,9 @@ public class Game {
                 .password(gameCreate.getPassword())
                 .attendeeLimit(gameCreate.getAttendeeLimit())
                 .quiz(quiz)
+                .gameStatus(GameStatus.READY)
                 .build();
     }
-
 
     public void create(LocalDateTime dateTime){
         this.createdAt = dateTime;
@@ -76,7 +78,11 @@ public class Game {
     public void end(LocalDateTime dateTime){
         this.endedAt = dateTime;
     }
-    public void join(Integer joinCount){
-        this.attendeeCount = joinCount;
+    public void join(){
+        if (this.attendeeCount < this.attendeeLimit) {
+            this.attendeeCount++;
+        } else {
+            throw new IllegalStateException();
+        }
     }
 }

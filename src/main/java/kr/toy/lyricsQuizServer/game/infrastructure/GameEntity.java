@@ -1,6 +1,7 @@
 package kr.toy.lyricsQuizServer.game.infrastructure;
 
 import kr.toy.lyricsQuizServer.game.domain.Game;
+import kr.toy.lyricsQuizServer.game.domain.GameStatus;
 import kr.toy.lyricsQuizServer.game.domain.dto.GameCreate;
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
 import kr.toy.lyricsQuizServer.quiz.infrastructure.QuizEntity;
@@ -49,11 +50,14 @@ public class GameEntity {
     @JoinColumn(name = "quizSeq")
     private QuizEntity quiz;
 
+    @Enumerated(value = EnumType.STRING)
+    private GameStatus gameStatus;
+
 
     @Builder
     public GameEntity(Long gameRoomSeq, UserEntity manager, String roomName, Boolean isSecretRoom, String password,
                       Integer attendeeLimit, Integer attendeeCount, LocalDateTime createdAt, LocalDateTime startedAt,
-                      LocalDateTime endedAt, QuizEntity quiz){
+                      LocalDateTime endedAt, QuizEntity quiz, GameStatus gameStatus){
         this.gameRoomSeq = gameRoomSeq;
         this.manager = manager;
         this.roomName = roomName;
@@ -65,6 +69,7 @@ public class GameEntity {
         this.startedAt = startedAt;
         this.endedAt = endedAt;
         this.quiz = quiz;
+        this.gameStatus = gameStatus;
     }
 
     public Game toModel(){
@@ -80,6 +85,7 @@ public class GameEntity {
                 .startedAt(startedAt)
                 .endedAt(endedAt)
                 .quiz(quiz.toModel())
+                .gameStatus(gameStatus)
                 .build();
     }
 
@@ -96,6 +102,16 @@ public class GameEntity {
                 .startedAt(game.getStartedAt())
                 .endedAt(game.getEndedAt())
                 .quiz(QuizEntity.fromModel(quiz))
+                .gameStatus(game.getGameStatus())
                 .build();
+    }
+
+
+    public void start(){
+        this.gameStatus = GameStatus.IN_PROGRESS;
+    }
+
+    public void over(){
+        this.gameStatus = GameStatus.FINISHED;
     }
 }

@@ -58,14 +58,18 @@
         </div> -->
         <div class="content-main">
           <div class="card-grid">
-            <article class="card" v-for="item in itemList" :key="item.gameRoomSeq">
+            <article class="card" v-for="item in itemList" :key="item.gameRoomSeq" v-on="onclick()">
+              <div v-if="item.gameStatus != 'FINISHED'">
               <div class="card-header">
                 <div>
                   <span><img src="https://assets.codepen.io/285131/zeplin.svg"></span>
                   <h3>{{ item.roomName }}</h3>
                 </div>
-                <div>
-                  기타등등
+                <div v-if="item.gameStatus === 'READY'">
+                  대기
+                </div>
+                <div v-if="item.gameStatus === 'IN_PROGRES'">
+                  진행중
                 </div>
                 <!-- <label class="toggle">
                   <input type="checkbox" checked>
@@ -73,54 +77,13 @@
                 </label> -->
               </div>
               <div class="card-body">
-                <p>Topic : 가나다라마바사</p>
+                <p>주제 : {{ item.topic }}</p>
               </div>
               <div class="card-footer">
                 <a href="#">{{ item.attendeeCount }} / {{ item.attendeeLimit }}</a>
               </div>
+              </div>
             </article>
-<!--            <article class="card">-->
-<!--              <div class="card-header">-->
-<!--                <div>-->
-<!--                  <span><img src="https://assets.codepen.io/285131/github.svg"></span>-->
-<!--                  <h3>시작한 방 샘플</h3>-->
-<!--                </div>-->
-<!--                <div>-->
-<!--                  경과시간?-->
-<!--                </div>-->
-<!--                &lt;!&ndash; <label class="toggle">-->
-<!--                  <input type="checkbox" checked>-->
-<!--                  <span></span>-->
-<!--                </label> &ndash;&gt;-->
-<!--              </div>-->
-<!--              <div class="card-body">-->
-<!--                <p>Topic : 가나다라마바사</p>-->
-<!--              </div>-->
-<!--              <div class="card-footer">-->
-<!--                <a href="#">5 / 6</a>-->
-<!--              </div>-->
-<!--            </article>-->
-<!--            <article class="card">-->
-<!--              <div class="card-header">-->
-<!--                <div>-->
-<!--                  <span><img src="https://assets.codepen.io/285131/figma.svg"></span>-->
-<!--                  <h3>빈자리 샘플</h3>-->
-<!--                </div>-->
-<!--                <div>-->
-<!--                  시작시간?-->
-<!--                </div>-->
-<!--                &lt;!&ndash; <label class="toggle">-->
-<!--                  <input type="checkbox" checked>-->
-<!--                  <span></span>-->
-<!--                </label> &ndash;&gt;-->
-<!--              </div>-->
-<!--              <div class="card-body">-->
-<!--                <p>Topic : 가나다라마바사</p>-->
-<!--              </div>-->
-<!--              <div class="card-footer">-->
-<!--                <a href="#"></a>-->
-<!--              </div>-->
-<!--            </article>-->
           </div>
         </div>
       </div>

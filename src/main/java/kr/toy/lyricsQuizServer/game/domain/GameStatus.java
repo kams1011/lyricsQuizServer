@@ -5,10 +5,9 @@ import lombok.Getter;
 @Getter
 public enum GameStatus {
 
-    WAITING,
+    READY,
     IN_PROGRESS,
     FINISHED;
-
 
 
 }
