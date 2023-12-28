@@ -9,7 +9,6 @@ import kr.toy.lyricsQuizServer.quiz.controller.port.QuizService;
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
 import kr.toy.lyricsQuizServer.quiz.domain.QuizContent;
 import kr.toy.lyricsQuizServer.quiz.domain.QuizContentType;
-import kr.toy.lyricsQuizServer.quiz.domain.dto.ChatMessage;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizContentCreate;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizCreate;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizDetailToCreateRoom;
@@ -82,19 +81,5 @@ public class QuizServiceImpl implements QuizService {
         return quiz.isCorrect(answer);
     }
 
-    @Override
-    public void join(Long roomId, ChatMessage message) {
-
-    }
-
-    @Override
-    public void chat(Long roomId, ChatMessage message) {
-
-    }
-
-    @Override
-    public void retrieve() {
-
-    }
 
 }
