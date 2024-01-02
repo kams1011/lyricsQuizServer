@@ -112,7 +112,7 @@ export default {
       const selectedFile = this.$refs.file.files[0];
       const formData = new FormData();
       formData.append('file', selectedFile);
-      axios.post('http://localhost/api/file', formData,
+      axios.post('https://localhost:80/api/file', formData,
           { withCredentials : true
           }).then(response => {
             this.fileSeq = response.data.data.id;
@@ -169,7 +169,7 @@ export default {
           url: this.$refs['url'].value
         }
       };
-      axios.post('http://localhost/api/quiz', jsonData,
+      axios.post('https://localhost:80/api/quiz', jsonData,
           { withCredentials : true
           }).then(response => {
           console.log(response.data); // 서버 응답 처리

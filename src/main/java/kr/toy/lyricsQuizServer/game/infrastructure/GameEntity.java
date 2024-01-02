@@ -21,7 +21,6 @@ import java.time.LocalDateTime;
 @Table(name = "game_entity")
 public class GameEntity {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long gameRoomSeq;

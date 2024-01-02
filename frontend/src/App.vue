@@ -11,7 +11,6 @@
 <!--  <QuizRegister msg="Welcome to Your Vue.js App"/>-->
 <!--  <Login msg="Welcome to Your Vue.js App"/>-->
   <div id="app">
-
     <router-link to="/"></router-link>
     <router-link to="/login"></router-link>
     <router-link to="/login/callback"></router-link>
@@ -23,38 +22,7 @@
   </div>
 </template>
 
-<!--<script>-->
-<!--// import HelloWorld from './components/HelloWorld.vue'-->
-<!--import Lobby from './views/Lobby'-->
-
-<!--export default {-->
-<!--  name: 'App',-->
-<!--  data(){-->
-<!--    return {-->
-<!--      price1 : 60,-->
-
-<!--    }-->
-<!--  },-->
-<!--  methods : {-->
-<!--    increase(){-->
-<!--      this.price1 = 1234;-->
-<!--    }-->
-<!--  },-->
-<!--  components: {-->
-<!--    // HelloWorld,-->
-<!--    Lobby-->
-<!--  }-->
-<!--}-->
-<!--</script>-->
-
-
 <script>
-import Stomp from 'webstomp-client'
-import SockJS from 'sockjs-client'
-// import Lobby from './views/Lobby'
-// import Room from "@/views/Room";
-// import QuizRegister from "@/views/QuizRegister";
-// import Login from "@/views/Login";
 export default {
   name: 'App',
   data() {

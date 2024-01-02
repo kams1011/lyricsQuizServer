@@ -11,6 +11,8 @@ import java.util.List;
 
 public interface GameRepository {
 
+    Game findById(Long gameSeq);
+
     List<Game> findAll(Pageable pageable);
 
     List<Game> findAllByRoomNameOrManagerName(String word, Pageable pageable);

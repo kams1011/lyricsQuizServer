@@ -11,6 +11,8 @@ public interface ChatRoomRepository {
 
     ChatRoom findRoomById(Long chatRoomSeq);
 
+    ChatRoom save(ChatRoom chatRoom);
+
     ChatRoom createChatRoom(String name);
 
 }

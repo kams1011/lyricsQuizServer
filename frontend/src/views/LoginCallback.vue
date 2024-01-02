@@ -1,5 +1,4 @@
 <template>
-hihi
 </template>
 
 <script>
@@ -28,7 +27,7 @@ export default {
       state = hashParams.get('state');
     }
 
-    axios.get('http://localhost/api/users/login?loginType=' + state + '&code=' + code,
+    axios.get('https://localhost:80/api/users/login?loginType=' + state + '&code=' + code,
         { withCredentials : true})
         .then(function(res) {
           if(!res.data) {

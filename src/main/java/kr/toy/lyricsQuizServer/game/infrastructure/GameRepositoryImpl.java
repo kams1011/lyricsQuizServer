@@ -21,6 +21,11 @@ public class GameRepositoryImpl implements GameRepository {
     private final GameJpaRepository gameJpaRepository;
 
     @Override
+    public Game findById(Long gameSeq) {
+        return gameJpaRepository.findById(gameSeq).orElseThrow(IllegalArgumentException::new).toModel();
+    }
+
+    @Override
     public List<Game> findAll(Pageable pageable) {
         return gameJpaRepository.findAll(pageable)
                 .stream().map(GameEntity::toModel)

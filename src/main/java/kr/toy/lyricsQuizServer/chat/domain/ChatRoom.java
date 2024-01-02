@@ -1,23 +1,22 @@
 package kr.toy.lyricsQuizServer.chat.domain;
 
-import kr.toy.lyricsQuizServer.chat.infrastructure.ChatRoomEntity;
+import kr.toy.lyricsQuizServer.game.domain.Game;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
-import java.util.UUID;
+import java.io.Serializable;
 
 @Getter
-public class ChatRoom {
+public class ChatRoom implements Serializable {
 
     private Long chatRoomSeq;
 
-    private String name; // FIXME 이름도 Game에서 가져오는 걸로 변경할듯?
+    private Game game; // FIXME 이름도 Game에서 가져오는 걸로 변경할듯?
 
     @Builder
-    public ChatRoom(Long chatRoomSeq, String name){
+    public ChatRoom(Long chatRoomSeq, Game game){
         this.chatRoomSeq = chatRoomSeq;
-        this.name = name;
+        this.game = game;
     }
 
 }

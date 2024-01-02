@@ -45,7 +45,7 @@ export default {
     },
     getQuizList: function () {
       const keyword = this.$refs['keyword'].value;
-      axios.get('http://localhost/api/game/quiz?keyword=' + keyword,
+      axios.get('https://localhost:80/api/game/quiz?keyword=' + keyword,
           { withCredentials : true
           }).then(response => {
             this.quizSummary = response.data.data;

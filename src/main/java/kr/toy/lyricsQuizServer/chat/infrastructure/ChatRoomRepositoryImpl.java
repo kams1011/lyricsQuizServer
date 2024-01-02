@@ -11,7 +11,6 @@ import java.util.List;
 @Repository
 public class ChatRoomRepositoryImpl implements ChatRoomRepository {
 
-    private final ChatRoomJPARepository chatRoomJPARepository;
 
 //    @Override
 //    public List<ChatRoom> findAllRoom(Pageable pageable) {
@@ -20,9 +19,12 @@ public class ChatRoomRepositoryImpl implements ChatRoomRepository {
 
     @Override
     public ChatRoom findRoomById(Long chatRoomSeq) {
-        return chatRoomJPARepository.findById(chatRoomSeq)
-                .orElseThrow(IllegalArgumentException::new)
-                .toModel();
+        return null;
+    }
+
+    @Override
+    public ChatRoom save(ChatRoom chatRoom) {
+        return null;
     }
 
     @Override

@@ -1,7 +1,6 @@
 package kr.toy.lyricsQuizServer.chat.controller.dto;
 
 
-import com.amazonaws.services.kms.model.MessageType;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -18,6 +17,9 @@ public class ChatMessage {
         this.message = message;
     }
 
+    public enum MessageType {
+        JOIN, TALK
+    }
 
     @Builder
     public ChatMessage(MessageType type, String roomId, String sender, String message){

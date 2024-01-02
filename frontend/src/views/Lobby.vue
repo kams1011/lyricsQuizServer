@@ -58,7 +58,7 @@
         </div> -->
         <div class="content-main">
           <div class="card-grid">
-            <article class="card" v-for="item in itemList" :key="item.gameRoomSeq" v-on="onclick()">
+            <article class="card" v-for="item in itemList" :key="item.gameRoomSeq">
               <div v-if="item.gameStatus != 'FINISHED'">
               <div class="card-header">
                 <div>
@@ -111,7 +111,7 @@ export default {
   methods: {
     getList: function () {
       const keyword = '';
-      axios.get('http://localhost/api/game?keyword=' + keyword,
+      axios.get('https://localhost:80/api/game?keyword=' + keyword,
           { withCredentials : true
           }).then(response => {
             console.log(response.data);

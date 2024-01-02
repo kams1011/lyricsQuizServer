@@ -7,10 +7,13 @@ import lombok.Getter;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
-public class GameRoom {
+public class GameRoom implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private final Long gameRoomSeq;
 
