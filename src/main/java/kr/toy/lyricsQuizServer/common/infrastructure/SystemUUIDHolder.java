@@ -10,6 +10,6 @@ public class SystemUUIDHolder implements UUIDHolder {
 
     @Override
     public String makeUUID(){
-        return UUID.randomUUID().toString();
+        return String.valueOf(UUID.randomUUID());
     }
 }

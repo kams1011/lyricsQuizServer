@@ -54,20 +54,20 @@ public class JwtUtils {
 
     public Long getUserSeqIn(String token){
         Claims claims = getClaimsIn(token);
-        Long userSeq = Long.parseLong(claims.get("userSeq").toString());
+        Long userSeq = Long.parseLong(String.valueOf(claims.get("userSeq")));
         return userSeq;
     }
 
     public User getUserBy(String token){
         Claims claims = getClaimsIn(token);
-        Long userSeq = Long.parseLong(claims.get("userSeq").toString());
+        Long userSeq = Long.parseLong(String.valueOf(claims.get("userSeq")));
         User user = userRepository.getById(userSeq);
         return user;
     }
 
     public String getEmailIn(String token){
         Claims claims = getClaimsIn(token);
-        String email = claims.get("id").toString();
+        String email = String.valueOf(claims.get("id"));
         return email;
     }
 

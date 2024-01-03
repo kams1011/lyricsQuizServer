@@ -31,7 +31,7 @@ public class SecurityService {
                 .maxAge(55555555)//FIXME 시간 변경
                 .httpOnly(isRefreshToken)
                 .build();
-        response.addHeader("Set-Cookie", cookie.toString());
+        response.addHeader("Set-Cookie", String.valueOf(cookie));
         response.setHeader("Access-Control-Allow-Credentials", "true");
         response.setHeader("Access-Control-expose-headers", "Set-Cookie");
     }

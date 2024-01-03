@@ -1,7 +1,9 @@
 package kr.toy.lyricsQuizServer.game.service;
 
 
+import kr.toy.lyricsQuizServer.chat.controller.port.ChatService;
 import kr.toy.lyricsQuizServer.game.controller.port.GameService;
+import kr.toy.lyricsQuizServer.game.controller.response.GameRoom;
 import kr.toy.lyricsQuizServer.game.domain.Game;
 import kr.toy.lyricsQuizServer.game.domain.dto.GameCreate;
 import kr.toy.lyricsQuizServer.game.infrastructure.GameEntity;
@@ -11,6 +13,7 @@ import kr.toy.lyricsQuizServer.quiz.service.QuizRepository;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.service.port.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Pageable;
@@ -24,6 +27,7 @@ public class GameServiceImpl implements GameService {
 
     private final GameRepository gameRepository;
     private final QuizRepository quizRepository;
+    private final ChatService chatService;
 
     @Override
     public List<Game> getGameList(Pageable pageable) {
@@ -38,9 +42,21 @@ public class GameServiceImpl implements GameService {
     @Override
     public Game create(User user, GameCreate gameCreate) { //FIXME 혼자는 시작할 수 없게 수정.
         Quiz quiz = quizRepository.getById(gameCreate.getQuizSeq());
-        Game game = Game.from(gameCreate, user, quiz);
-        game.create(LocalDateTime.now());
-        return gameRepository.save(user, game, quiz);
+        Game game = Game.from(gameCreate, user, quiz).create(LocalDateTime.now());
+        game = gameRepository.save(user, game, quiz);
+        chatService.create(GameRoom.from(game));
+        return game;
+    }
+
+    @Override
+    public void enter(Long gameRoomSeq) {
+//        String topicName = String.valueOf(gameRoomSeq);
+//        ChannelTopic topic = topics.get(topicName);
+//        if (topic == null) {
+//            topic = new ChannelTopic(topicName);
+//            redisMessageListener.addMessageListener(redisSubscriber, topic);
+//            topics.put(topicName, topic);
+//        }
     }
 
     @Override

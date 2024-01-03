@@ -67,9 +67,10 @@ public class Game {
                 .build();
     }
 
-    public void create(LocalDateTime dateTime){
+    public Game create(LocalDateTime dateTime){
         this.createdAt = dateTime;
         this.attendeeCount = 0;
+        return this;
     }
 
     public void start(LocalDateTime dateTime){

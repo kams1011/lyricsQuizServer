@@ -15,5 +15,7 @@ public interface GameService {
 
     Game create(User user, GameCreate gameCreate);
 
+    void enter(Long gameRoomSeq);
+
     void 같이_할_사람_검색(); // TODO 현재 접속중인 인원중에 현재 게임을 진행중이지 않은 인원 ( 현재 접속여부는 다시 생각해보기 )
 }

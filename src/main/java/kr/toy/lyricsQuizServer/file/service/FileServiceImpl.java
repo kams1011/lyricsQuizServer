@@ -80,7 +80,7 @@ public class FileServiceImpl implements FileService {
         Map<String, Object> result = new HashMap<>();
 
         amazonS3.putObject(storageProperties.getS3().getBucket(), originalFilename, file.getInputStream(), metadata);
-        result.put("url", amazonS3.getUrl(storageProperties.getS3().getBucket(), originalFilename).toString());
+        result.put("url", amazonS3.getUrl(storageProperties.getS3().getBucket(), originalFilename) + "");
         result.put("id", fileDomain.getFileSeq());
         return result;
     }

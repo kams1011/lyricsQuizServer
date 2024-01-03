@@ -148,9 +148,9 @@ public class OauthProperties {
         public String getUserInfoInResponse(LoginType loginType){
             Object variable = getVariableBy(loginType);
             if (variable instanceof Map){
-                return ((Map<?, ?>) variable).get(loginType.getScope()).toString();
+                return ((Map<?, ?>) variable).get(loginType.getScope()) + "";
             } else if (variable instanceof String) {
-                return variable.toString();
+                return variable + "";
             }
             return null;
         }
