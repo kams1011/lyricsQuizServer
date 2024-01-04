@@ -1,0 +1,14 @@
+spring:
+  profiles:
+    active:
+      - local
+    group:
+      local:
+        - redis-local
+      dev:
+        - redis-dev
+    include:
+      - db
+      - oauth
+      - security
+      - storage
