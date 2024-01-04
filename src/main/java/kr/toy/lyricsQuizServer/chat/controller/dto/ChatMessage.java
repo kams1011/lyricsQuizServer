@@ -1,6 +1,7 @@
 package kr.toy.lyricsQuizServer.chat.controller.dto;
 
 
+import kr.toy.lyricsQuizServer.chat.domain.MessageType;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -10,22 +11,32 @@ public class ChatMessage {
 
     private MessageType type; // 메시지 타입
     private String roomId; // 방번호
-    private String sender; // 메시지 보낸사람
+    private String senderNickName; // 메시지 보낸사람
     private String message; // 메시지
 
     public void setMessage(String message){
         this.message = message;
     }
 
-    public enum MessageType {
-        JOIN, TALK
-    }
 
     @Builder
-    public ChatMessage(MessageType type, String roomId, String sender, String message){
+    public ChatMessage(MessageType type, String roomId, String senderNickName, String message){
         this.type = type;
         this.roomId = roomId;
-        this.sender = sender;
+        this.senderNickName = senderNickName;
         this.message = message;
+    }
+
+    public void setSender(String senderNickName){
+        this.senderNickName = senderNickName;
+    }
+
+    public ChatMessage join(String participant){
+        ChatMessage chatMessage = ChatMessage.builder()
+                .type(MessageType.ENTER)
+                .senderNickName("[알림]")
+                .message(participant + "님이 입장하셨습니다.")
+                .build();
+        return chatMessage;
     }
 }
