@@ -55,31 +55,18 @@ public class ChatServiceImpl implements ChatService {
         return gameRoom;
     }
 
-    /**
-     * 채팅방 입장 : redis에 topic을 만들고 pub/sub 통신을 하기 위해 리스너를 설정한다.
-     */
-//    public void enterGameRoom(Long gameRoomSeq) {
-//        String topicName = String.valueOf(gameRoomSeq);
-//        ChannelTopic topic = topics.get(topicName);
-//        if (topic == null) {
-//            topic = new ChannelTopic(topicName);
-//            redisMessageListener.addMessageListener(redisSubscriber, topic);
-//            topics.put(topicName, topic);
-//        }
-//    }
-
     public ChannelTopic getTopic(Long gameRoomSeq) {
-        String topicName = String.valueOf(gameRoomSeq);
+        
         return topics.get(topicName);
     }
 
-
     @Override
     public void sendMessage(ChatMessage message, User user) {
+
         message.setSender(user.getNickName());
         // 채팅방 입장시에는 대화명과 메시지를 자동으로 세팅한다.
         if (message.getType().equals(MessageType.ENTER)) {
-            message.join(user.getNickName());
+            message = message.join(user.getNickName());
         }
         // Websocket에 발행된 메시지를 redis로 발행(publish)
         // (채널 이름, 메세지)

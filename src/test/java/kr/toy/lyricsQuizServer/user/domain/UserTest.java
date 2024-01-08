@@ -1,5 +1,6 @@
 package kr.toy.lyricsQuizServer.user.domain;
 
+import kr.toy.lyricsQuizServer.chat.domain.TopicType;
 import kr.toy.lyricsQuizServer.config.ConfigurationProperties.OauthProperties;
 import kr.toy.lyricsQuizServer.config.ConfigurationProperties.SecurityProperties;
 import kr.toy.lyricsQuizServer.config.ConfigurationProperties.StorageProperties;
@@ -127,8 +128,6 @@ public class UserTest {
 
         assertThat(user.getIsBan()).isTrue();
     }
-
-
 
 }
 
