@@ -6,13 +6,15 @@ spring:
       local:
         - redis-local
         - security-local
+        - db-local
       dev:
         - redis-dev
         - security-dev
+        - db-dev
     include:
-      - db
       - security
       - redis
+      - db
   config:
     import: application-oauth.yml, application-storage.yml
   servlet:

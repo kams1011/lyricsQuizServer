@@ -56,7 +56,8 @@ public class ChatServiceImpl implements ChatService {
     }
 
     public ChannelTopic getTopic(Long gameRoomSeq) {
-        
+
+        GameRoom topicName = opsHashGameRoom.get(TopicType.GAME_ROOM.name(), gameRoomSeq);
         return topics.get(topicName);
     }
 
