@@ -1,5 +1,6 @@
 package kr.toy.lyricsQuizServer.game.controller.response;
 
+import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import kr.toy.lyricsQuizServer.game.domain.Game;
 import kr.toy.lyricsQuizServer.game.domain.GameStatus;
 import lombok.Builder;
@@ -55,6 +56,19 @@ public class GameRoom implements Serializable {
                 .attendeeCount(game.getAttendeeCount())
                 .gameStatus(game.getGameStatus())
                 .build();
+    }
+
+    public Boolean 입장가능여부(){
+        return this.attendeeLimit <= this.attendeeCount;
+    }
+
+    public Boolean 방열림상태(){
+        return this.gameStatus.isRoomOpen();
+    }
+
+    public Boolean 비밀방(){
+        //FIXME 비밀방 관련 값들이 누락됨.
+        return null;
     }
 
 
