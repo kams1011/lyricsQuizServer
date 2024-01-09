@@ -58,8 +58,7 @@
         </div> -->
         <div class="content-main">
           <div class="card-grid">
-            <article class="card" v-for="item in itemList" :key="item.gameRoomSeq">
-              <div v-if="item.gameStatus != 'FINISHED'">
+            <article class="card" v-for="item in itemList" :key="item.gameRoomSeq" @click="enter()">
               <div class="card-header">
                 <div>
                   <span><img src="https://assets.codepen.io/285131/zeplin.svg"></span>
@@ -81,7 +80,6 @@
               </div>
               <div class="card-footer">
                 <a href="#">{{ item.attendeeCount }} / {{ item.attendeeLimit }}</a>
-              </div>
               </div>
             </article>
           </div>
@@ -120,6 +118,11 @@ export default {
         console.error(error); // 오류 처리//
       });
     },
+    enter(roomSeq){
+
+      // 페이지 이동 후 /chat/message로 요청.
+      this.$router.push('/room');
+    }
   }
 
 

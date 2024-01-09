@@ -13,7 +13,7 @@ public interface GameJpaRepository extends JpaRepository<GameEntity, Long> {
 
     Page<GameEntity> findAll(Pageable pageable);
 
-    @Query("select ge from GameEntity ge where (:word is null or :word = '') or (ge.roomName like %:word%) and" +
-            "(:word is null or ge.manager.nickName like %:word%)") // FIXME N+1 확인
+    @Query("select ge from GameEntity ge where (:word is null or :word = '') or (ge.roomName like %:word%) and " +
+            "(:word is null or ge.manager.nickName like %:word%) and ge.gameStatus <> 'FINISHED'") // FIXME N+1 확인
     Page<GameEntity> findAllByRoomNameOrManager(@Param("word") String word, Pageable pageable);
 }
