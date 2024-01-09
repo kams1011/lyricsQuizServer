@@ -39,9 +39,9 @@ public class WebMVCConfig implements WebMvcConfigurer {
         resolvers.add(new JwtArgumentResolver(securityService, jwtUtils, securityProperties));
     }
 
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new AuthenticationInterceptor(securityService, securityProperties, jwtUtils));
-//                .excludePathPatterns("/css/**", "/images/**", "/js/**");
-    }
+//    @Override
+//    public void addInterceptors(InterceptorRegistry registry) {
+//        registry.addInterceptor(new AuthenticationInterceptor(securityService, securityProperties, jwtUtils));
+////                .excludePathPatterns("/css/**", "/images/**", "/js/**");
+//    }
 }

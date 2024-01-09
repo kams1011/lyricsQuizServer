@@ -2,10 +2,12 @@ package kr.toy.lyricsQuizServer.config;
 
 import kr.toy.lyricsQuizServer.config.ConfigurationProperties.SecurityProperties;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -32,35 +34,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         // FIXME NoSuchElement catch
-        String accessToken = securityService.resolveToken(request, securityProperties.cookieName().accessTokenCookieName());
-
         try {
-            Authentication authentication = authenticationManager.authenticate(new JwtAuthenticationToken(jwtUtils.getUserSeqIn(accessToken), accessToken));
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-        } catch (AuthenticationException e) {
-            e.printStackTrace();
-            refreshTokenCheck(request, response);
-            if(response.getStatus() == HttpServletResponse.SC_UNAUTHORIZED){
-                return;
-            }
-            request.setAttribute("authenticated", false);
-        } catch (Exception e){
+            String accessToken = securityService.resolveToken(request, securityProperties.cookieName().accessTokenCookieName());
+            authenticateByJwt(accessToken, request, response);
+        } catch (Exception e) {
             e.printStackTrace();
         }
         chain.doFilter(request, response);
     }
 
 
-    public String refreshTokenCheck(HttpServletRequest request, HttpServletResponse response){
+    public String refreshTokenCheck(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String refreshToken = "";
         try {
             refreshToken = securityService.resolveToken(request, securityProperties.cookieName().refreshTokenCookieName());
         } catch (JwtInvalidException | NullPointerException | NoSuchElementException e){
             SecurityContextHolder.clearContext();
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            //1. Cookie가 없을 때,  -> NullPoint
-            //2. Cookie는 있는데 안에 Jwt가 없을때, - NoSuchElementException
-            //3. Cookie도 있고 Jwt도 있는데 Jwt관련 에러들이 발생할때. - JwtInvalidException
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "인증되지 않은 사용자입니다.");
             //FIXME 로그인을 새로 하게 만드는 로직 추가.
         }
         return refreshToken;
@@ -72,4 +62,22 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return ExcludeURL.isExcludeURL(path);
     }
 
+
+    private void authenticateByJwt(String accessToken, HttpServletRequest request, HttpServletResponse response) throws IOException {
+
+        try {
+            Authentication authentication = authenticationManager.authenticate(new JwtAuthenticationToken(jwtUtils.getUserSeqIn(accessToken), accessToken));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        } catch (AuthenticationException e) {
+            renewAccessToken(request, response);
+        }
+    }
+
+    private void renewAccessToken(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String refreshToken = refreshTokenCheck(request, response);
+        if (response.getStatus() != HttpStatus.UNAUTHORIZED.value()) {
+            String accessToken = jwtUtils.accessTokenIssue(jwtUtils.getUserSeqIn(refreshToken));
+            securityService.setCookieWithToken(true, accessToken, response);
+        }
+    }
 }
