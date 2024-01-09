@@ -35,6 +35,7 @@ public class QuizContent {
 
         } else if (this.quizContentType.equals(QuizContentType.YOUTUBE)){
             detail = url.split(".be/|v=|embed/")[1].split("\\?")[0];
+            //FIXME 잘못된 URL일시 ArrayIndexOutOfBoundsException 발생하는 부분 해결.
         }
         return detail;
     }

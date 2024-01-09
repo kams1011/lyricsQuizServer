@@ -102,7 +102,7 @@ export default {
     register: function () {
       const jsonData = {
         roomName : this.$refs['roomName'].value,
-        quizSeq: this.$refs['quizSeq'].value,
+        quizSeq: Number(this.$refs['quizSeq'].value),
         isSecretRoom: this.$refs['isSecretRoom'].checked,
         password: this.$refs['password'].value,
         attendeeLimit: this.$refs['attendeeLimit'].value,
@@ -110,8 +110,12 @@ export default {
       axios.post('https://localhost:80/api/game', jsonData,
           { withCredentials : true
           }).then(response => {
-
-        console.log(response.data); // 서버 응답 처리
+        if(response.data.success){
+          alert('성공적으로 등록했습니다.');
+          this.$router.push('/');
+        } else {
+          alert('오류가 발생했습니다.');
+        }
       }).catch(error => {
         console.error(error); // 오류 처리//
       });

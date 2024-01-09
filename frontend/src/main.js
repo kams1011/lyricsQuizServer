@@ -17,7 +17,7 @@ const routes = [
     { path: '/login', component: Login },
     { path: '/login/callback', component: LoginCallback },
     { path: '/user/register/:loginType/:id', component: UserRegister },
-    { path: '/room', component: Room },
+    { path: '/room/:roomSeq', component: Room, props: true },
     { path: '/room/create', component: RoomCreate },
     { path: '/quiz/register', component: QuizRegister },
 ];

@@ -64,7 +64,7 @@ public class Quiz {
 
     public static Quiz from(QuizCreate quizCreate, QuizContent quizContent, User maker, LocalDateTime createdAt){
         return Quiz.builder()
-                .isDeleted(quizCreate.getIsDeleted())
+                .isDeleted(false)
                 .title(quizCreate.getTitle())
                 .singer(quizCreate.getSinger())
                 .information(quizCreate.getInformation())

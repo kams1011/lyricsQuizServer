@@ -58,7 +58,7 @@
         </div> -->
         <div class="content-main">
           <div class="card-grid">
-            <article class="card" v-for="item in itemList" :key="item.gameRoomSeq" @click="enter()">
+            <article class="card" v-for="item in itemList" :key="item.gameRoomSeq" @click="enter(item.gameRoomSeq)">
               <div class="card-header">
                 <div>
                   <span><img src="https://assets.codepen.io/285131/zeplin.svg"></span>
@@ -119,9 +119,7 @@ export default {
       });
     },
     enter(roomSeq){
-
-      // 페이지 이동 후 /chat/message로 요청.
-      this.$router.push('/room');
+      this.$router.push({ path: `/room/${roomSeq}` });
     }
   }
 

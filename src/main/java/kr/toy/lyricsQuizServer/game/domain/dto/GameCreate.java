@@ -2,8 +2,10 @@ package kr.toy.lyricsQuizServer.game.domain.dto;
 
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class GameCreate {
 
         private String roomName;
