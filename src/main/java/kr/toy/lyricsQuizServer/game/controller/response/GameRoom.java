@@ -5,6 +5,7 @@ import kr.toy.lyricsQuizServer.game.domain.Game;
 import kr.toy.lyricsQuizServer.game.domain.GameStatus;
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -32,8 +33,12 @@ public class GameRoom implements Serializable {
 
     private final GameStatus gameStatus;
 
+    private final Boolean isSecretRoom;
+
+    private final String password;
+
     @Builder
-    public GameRoom(Long gameRoomSeq, String roomName, LocalDateTime startedAt, String managerName, String topic, Integer attendeeLimit, Integer attendeeCount, GameStatus gameStatus) {
+    public GameRoom(Long gameRoomSeq, String roomName, LocalDateTime startedAt, String managerName, String topic, Integer attendeeLimit, Integer attendeeCount, GameStatus gameStatus, Boolean isSecretRoom, String password) {
         this.gameRoomSeq = gameRoomSeq;
         this.roomName = roomName;
         this.startedAt = startedAt;
@@ -42,6 +47,8 @@ public class GameRoom implements Serializable {
         this.attendeeLimit = attendeeLimit;
         this.attendeeCount = attendeeCount;
         this.gameStatus = gameStatus;
+        this.isSecretRoom = isSecretRoom;
+        this.password = password;
     }
 
 
@@ -55,21 +62,34 @@ public class GameRoom implements Serializable {
                 .attendeeLimit(game.getAttendeeLimit())
                 .attendeeCount(game.getAttendeeCount())
                 .gameStatus(game.getGameStatus())
+                .isSecretRoom(game.getIsSecretRoom())
+                .password(game.getPassword())
                 .build();
     }
 
-    public Boolean 입장가능여부(){
+    public Boolean isCapacityExceeded(){
         return this.attendeeLimit <= this.attendeeCount;
     }
 
-    public Boolean 방열림상태(){
-        return this.gameStatus.isRoomOpen();
+    public Boolean isReady(){
+        return this.gameStatus == GameStatus.READY;
     }
 
-    public Boolean 비밀방(){
-        //FIXME 비밀방 관련 값들이 누락됨.
-        return null;
+    public Boolean passwordCheck(String password){
+        if (!this.isSecretRoom) {
+            return true;
+        } else if (this.isSecretRoom && StringUtils.hasText(password) && this.password.equals(password)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-
+    public Boolean isRoomOpen(String password){ // FIXME 변수명 변경
+        if (!isCapacityExceeded() && passwordCheck(password) && isReady()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

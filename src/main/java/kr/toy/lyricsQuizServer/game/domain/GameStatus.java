@@ -7,10 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum GameStatus {
 
-    READY(true),
-    IN_PROGRESS(false),
-    FINISHED(false);
-
-    boolean isRoomOpen;
+    READY,
+    IN_PROGRESS,
+    FINISHED;
 
 }

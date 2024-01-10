@@ -74,18 +74,21 @@ public class ChatServiceImpl implements ChatService {
         redisTemplate.convertAndSend(channelTopic.getTopic(), message);
     }
 
-    public void temp(Long gameRoomSeq){
+    public void enter(Long gameRoomSeq, String password){
        GameRoom gameRoom = opsHashGameRoom.get(TopicType.GAME_ROOM.name(), gameRoomSeq);
 
-
-
-
+       if (gameRoom.isRoomOpen(password)) {
+           // Redis에 추가
+       } else {
+           // 에러 발생
+       }
+        // 1. 이미 다른 방에 접속중인 사용자인지 여부.
+        // 1.1 같은 방에 재접속하는 거라면 Redis 저장하지 않음.
+        // 2. 방이 가득 찼는지 여부 - Clear
+        // 3. 방이 시작됐는지 여부 - Clear
+        // 4. 비밀방인지 여부 - Clear
     }
 
 
-    // 1. 이미 다른 방에 접속중인 사용자인지 여부.
-    // 1.1 같은 방에 재접속하는 거라면 Redis 저장하지 않음.
-    // 2. 방이 가득 찼는지 여부
-    // 3. 방이 시작됐는지 여부
-    // 4. 비밀방인지 여부
+
 }
