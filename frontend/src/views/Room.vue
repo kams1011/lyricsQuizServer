@@ -116,8 +116,8 @@
       </div>
 
       <!-- Chat input -->
-      <input type="text" class="chat-input" placeholder="Send a message">
-      <button type="button" class="chat-input" @click="addChat">
+      <input type="text" class="chat-input" placeholder="Send a message" @click="send()">
+      <button type="button" class="chat-input">
         <i class="fab"></i> Click</button>
     </div>
   </div>
@@ -148,21 +148,24 @@ export default {
     sendMessage (e) {
       if(e.keyCode === 13 && this.userName !== '' && this.message !== ''){
         this.send()
-        this.message = ''
+        this.message = 'hiohi'
       }
     },
     send() {
         console.log("Send message:" + this.message);
         if (this.stompClient && this.stompClient.connected) {
           const msg = {
-            userName: this.userName,
-            content: this.message
+            type: 'TALK',
+            roomId : 2,
+            senderNickName: 'test', // 이부분 어차피 Cookie로 빼야겠네.
+            message : 4
           };
-          this.stompClient.send("/receive", JSON.stringify(msg), {});
+          this.stompClient.send("/pub/chat/message", JSON.stringify(msg), {}); // 그냥 쿠키 넣어주면 될듯?
         }
     },
     connect() {
-        const serverURL = "https://localhost:80/chat/message"
+        // const serverURL = "https://localhost:80/chat/message"
+        const serverURL = "https://localhost:80/ws-stomp"
         let socket = new SockJS(serverURL);
         this.stompClient = Stomp.over(socket);
         console.log(`소켓 연결을 시도합니다. 서버 주소: ${serverURL}`)
@@ -174,7 +177,7 @@ export default {
               console.log('소켓 연결 성공', frame);
               // 서버의 메시지 전송 endpoint를 구독합니다.
               // 이런형태를 pub sub 구조라고 합니다.
-              this.stompClient.subscribe("/send", res => {
+              this.stompClient.subscribe("/sub/chat/room/2", res => {
                 console.log('구독으로 받은 메시지 입니다.', res.body);
 
                 // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.

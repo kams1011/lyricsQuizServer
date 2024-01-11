@@ -8,6 +8,6 @@ public interface ChatService {
 
     GameRoom create(GameRoom gameRoom);
 
-    void sendMessage(ChatMessage message, User user);
+    void sendMessage(ChatMessage message);
 
 }

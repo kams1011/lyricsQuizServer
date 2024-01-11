@@ -6,8 +6,6 @@ import kr.toy.lyricsQuizServer.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
 @Controller
@@ -17,8 +15,8 @@ public class ChatController {
     private final ChatService chatService;
 
     @MessageMapping("/chat/message")
-    public void message(ChatMessage message, User user) {
-        chatService.sendMessage(message, user);
+    public void message(ChatMessage message) {
+        chatService.sendMessage(message);
     }
 
     public void 검증(){

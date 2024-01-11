@@ -62,16 +62,20 @@ public class ChatServiceImpl implements ChatService {
     }
 
     @Override
-    public void sendMessage(ChatMessage message, User user) {
+    public void sendMessage(ChatMessage message) {
 
-        message.setSender(user.getNickName());
+//        String nickName = user.getNickName();
+        String nickName = message.getSenderNickName();
+
+        message.setSender(nickName);
         // 채팅방 입장시에는 대화명과 메시지를 자동으로 세팅한다.
         if (message.getType().equals(MessageType.ENTER)) {
-            message = message.join(user.getNickName());
+            message = message.join(nickName);
         }
         // Websocket에 발행된 메시지를 redis로 발행(publish)
         // (채널 이름, 메세지)
-        redisTemplate.convertAndSend(channelTopic.getTopic(), message);
+//        redisTemplate.convertAndSend(channelTopic.getTopic(), message);
+        redisTemplate.convertAndSend("2", message);
     }
 
     public void enter(Long gameRoomSeq, String password){

@@ -4,8 +4,10 @@ package kr.toy.lyricsQuizServer.chat.controller.dto;
 import kr.toy.lyricsQuizServer.chat.domain.MessageType;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@NoArgsConstructor
 public class ChatMessage {
     // 메시지 타입 : 입장, 채팅
 
