@@ -136,7 +136,7 @@ export default {
       userName: "",
       message: "",
       recvList: [],
-      roomSeq : '',
+      roomSeq : this.$route.params.roomSeq,
     }
   },
   created() {
@@ -156,7 +156,7 @@ export default {
         if (this.stompClient && this.stompClient.connected) {
           const msg = {
             type: 'TALK',
-            roomId : 2,
+            roomId : this.roomSeq,
             senderNickName: 'test', // 이부분 어차피 Cookie로 빼야겠네.
             message : 4
           };
@@ -164,7 +164,6 @@ export default {
         }
     },
     connect() {
-        // const serverURL = "https://localhost:80/chat/message"
         const serverURL = "https://localhost:80/ws-stomp"
         let socket = new SockJS(serverURL);
         this.stompClient = Stomp.over(socket);
