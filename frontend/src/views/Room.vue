@@ -95,28 +95,19 @@
     <div class="chat-container w-2/4 float-right">
       <!-- Chat messages -->
       <div class="chat-messages">
-        <div class="chat-message">
-          <span class="username">dennisuchiha96:</span> <span class="message">I never watch that</span>
-        </div>
-        <div class="chat-message">
-          <span class="username">ajoyiovanne:</span> <span class="message">😂</span>
-        </div>
-        <div class="chat-message">
-          <span class="username">BotterBotter:</span> <span class="message">ya im not saying its a bad bike haha</span>
-        </div>
         <!-- ... other chat messages ... -->
-        <div class="chat-message">
-          <span class="username">nBattle:</span> <span class="message">ninja*</span>
+        <div class="chat-message" v-for="message in recvList">
+          <span class="username">{{message.senderNickName}} : </span> <span class="message">{{message.message}}</span>
         </div>
       </div>
 
-      <!-- Streamer info -->
-      <div class="streamer-info">
-        <span>Capp</span> 🟢 302 | Twitter: @CappTheGod | discord | Towns | windy | <span>Capp</span>
-      </div>
+<!--      &lt;!&ndash; Streamer info &ndash;&gt;-->
+<!--      <div class="streamer-info">-->
+<!--        <span>Capp</span> 🟢 302 | Twitter: @CappTheGod | discord | Towns | windy | <span>Capp</span>-->
+<!--      </div>-->
 
       <!-- Chat input -->
-      <input type="text" class="chat-input" placeholder="Send a message" @click="send()">
+      <input type="text" class="chat-input" v-model="message" placeholder="Send a message" @keydown.enter="send()">
       <button type="button" class="chat-input">
         <i class="fab"></i> Click</button>
     </div>
@@ -128,6 +119,7 @@
 <script>
 import * as Stomp from "webstomp-client";
 import * as SockJS from "sockjs-client";
+import Cookies from 'js-cookie';
 
 export default {
   name: 'App',
@@ -136,7 +128,7 @@ export default {
       userName: "",
       message: "",
       recvList: [],
-      roomSeq : this.$route.params.roomSeq,
+      roomId : this.$route.params.roomSeq,
     }
   },
   created() {
@@ -145,22 +137,23 @@ export default {
     this.connect()
   },
   methods: {
-    sendMessage (e) {
-      if(e.keyCode === 13 && this.userName !== '' && this.message !== ''){
-        this.send()
-        this.message = 'hiohi'
-      }
-    },
+    // sendMessage (e) {
+    //   if(e.keyCode === 13 && this.userName !== '' && this.message !== ''){
+    //     this.send()
+    //     this.message = 'hiohi'
+    //   }
+    // },
     send() {
         console.log("Send message:" + this.message);
         if (this.stompClient && this.stompClient.connected) {
           const msg = {
             type: 'TALK',
-            roomId : this.roomSeq,
+            roomId : this.roomId,
             senderNickName: 'test', // 이부분 어차피 Cookie로 빼야겠네.
-            message : 4
+            message : this.message
           };
           this.stompClient.send("/pub/chat/message", JSON.stringify(msg), {}); // 그냥 쿠키 넣어주면 될듯?
+          this.message = '';
         }
     },
     connect() {
@@ -176,7 +169,7 @@ export default {
               console.log('소켓 연결 성공', frame);
               // 서버의 메시지 전송 endpoint를 구독합니다.
               // 이런형태를 pub sub 구조라고 합니다.
-              this.stompClient.subscribe("/sub/chat/room/2", res => {
+              this.stompClient.subscribe("/sub/chat/room/" + this.roomId, res => {
                 console.log('구독으로 받은 메시지 입니다.', res.body);
 
                 // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
