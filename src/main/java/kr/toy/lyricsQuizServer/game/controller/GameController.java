@@ -11,6 +11,7 @@ import kr.toy.lyricsQuizServer.user.domain.User;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.data.domain.Pageable;
@@ -55,6 +56,7 @@ public class GameController {
 
     @PostMapping("")
     public ResponseEntity<Response> create(@RequestBody GameCreate gameCreate, User maker){
+
         return ResponseEntity.ok().body(Response.success(gameService.create(maker, gameCreate)));
     }
 

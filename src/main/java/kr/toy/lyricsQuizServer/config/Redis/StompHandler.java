@@ -23,6 +23,8 @@ public class StompHandler implements ChannelInterceptor {
         // websocket 연결시 헤더의 jwt token 검증
         if (StompCommand.CONNECT == accessor.getCommand()) {
 //            jwtTokenProvider.validateToken(accessor.getFirstNativeHeader("token"));
+        } else if (StompCommand.BEGIN == accessor.getCommand()) {
+            System.out.println("여기도ㅓ들어와요");
         }
         return message;
     }

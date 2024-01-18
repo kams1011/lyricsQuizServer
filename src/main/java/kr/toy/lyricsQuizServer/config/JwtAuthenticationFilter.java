@@ -33,9 +33,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-        // FIXME NoSuchElement catch
-        System.out.println("필터는?");
-        System.out.println(request.getSession().getId());
+        // FIXME NoSuchElement catch;
+
         try {
             String accessToken = securityService.resolveToken(request, securityProperties.cookieName().accessTokenCookieName());
             authenticateByJwt(accessToken, request, response);
