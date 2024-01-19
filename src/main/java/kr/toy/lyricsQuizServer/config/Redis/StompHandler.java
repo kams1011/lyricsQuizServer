@@ -20,11 +20,15 @@ public class StompHandler implements ChannelInterceptor {
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
+        accessor.getSessionId();
+
         // websocket 연결시 헤더의 jwt token 검증
         if (StompCommand.CONNECT == accessor.getCommand()) {
+            System.out.println("COOKIE");
+            System.out.println(accessor.getFirstNativeHeader("cookie"));
 //            jwtTokenProvider.validateToken(accessor.getFirstNativeHeader("token"));
         } else if (StompCommand.BEGIN == accessor.getCommand()) {
-            System.out.println("여기도ㅓ들어와요");
+
         }
         return message;
     }

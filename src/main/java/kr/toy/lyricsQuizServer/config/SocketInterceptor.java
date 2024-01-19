@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketSession;
@@ -28,18 +29,17 @@ public class SocketInterceptor implements HandshakeInterceptor {
         Matcher matcher = pattern.matcher(cookies);
         if (matcher.find()) {
             String accessToken = matcher.group(1);
-            System.out.println("MATHER!");
+            System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
             System.out.println(jwtUtils.getUserBy(accessToken));
+            System.out.println(jwtUtils.getUserBy(accessToken).getNickName());
         } else {
 
         }
 
-        WebSocketSession session;
         return true;
     }
 
     @Override
     public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Exception exception) {
-
     }
 }
