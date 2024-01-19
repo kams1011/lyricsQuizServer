@@ -19,8 +19,6 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 public class SocketInterceptor implements HandshakeInterceptor {
 
-    private final JwtUtils jwtUtils;
-
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
         String cookies = request.getHeaders().getFirst(HttpHeaders.COOKIE);
@@ -29,9 +27,6 @@ public class SocketInterceptor implements HandshakeInterceptor {
         Matcher matcher = pattern.matcher(cookies);
         if (matcher.find()) {
             String accessToken = matcher.group(1);
-            System.out.println(SecurityContextHolder.getContext().getAuthentication().getName());
-            System.out.println(jwtUtils.getUserBy(accessToken));
-            System.out.println(jwtUtils.getUserBy(accessToken).getNickName());
         } else {
 
         }
@@ -41,5 +36,11 @@ public class SocketInterceptor implements HandshakeInterceptor {
 
     @Override
     public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Exception exception) {
+
+        if (exception == null) {
+            // Handshake가 성공적으로 이루어졌을 때의 로직
+        } else {
+            // Handshake가 실패했을 때의 로직
+        }
     }
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.toy.lyricsQuizServer.chat.controller.dto.ChatMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -26,5 +27,10 @@ public class RedisSubscriber {
             e.printStackTrace();
         }
     }
+
+//    public void streamingVideo(){
+//        SimpMessagingTemplate simpleMessageTemplate;
+//        simpleMessageTemplate.convertAndSendToUser();
+//    }
 
 }

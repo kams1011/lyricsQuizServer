@@ -23,7 +23,7 @@ public class ChatController {
     }
 
     @MessageMapping("/game/start")
-    public void 영상재생(Long gameSeq){
+    public void streaming(Long gameSeq){
         // 게임 시작 할 때 검증해야하는 것??
         // 방이 존재하는가. 방장이 존재하는가. Default 검증 ( 메시지 보낼 떄도 적용)
         // 방이 존재하는가. 방이 준비단계인가. 방장이 존재하는가 ( 이중 검증 ) -> 입장 시와 공통 검증 로직.

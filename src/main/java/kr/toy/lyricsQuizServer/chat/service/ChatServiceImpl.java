@@ -63,6 +63,8 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public void sendMessage(ChatMessage message) {
+        
+        //FIXME Channel 변경
 
 //        String nickName = user.getNickName();
         String nickName = message.getSenderNickName();
@@ -92,6 +94,8 @@ public class ChatServiceImpl implements ChatService {
         // 3. 방이 시작됐는지 여부 - Clear
         // 4. 비밀방인지 여부 - Clear
     }
+
+
 
 
 

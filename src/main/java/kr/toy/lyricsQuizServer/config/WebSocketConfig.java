@@ -1,5 +1,6 @@
 package kr.toy.lyricsQuizServer.config;
 
+import kr.toy.lyricsQuizServer.chat.service.ChatServiceImpl;
 import kr.toy.lyricsQuizServer.config.Redis.StompHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +14,6 @@ import org.springframework.web.socket.config.annotation.*;
 @RequiredArgsConstructor
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-    private final JwtUtils jwtUtils;
 
 
     @Override
@@ -26,7 +26,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
 //        registry.addEndpoint("/chat/message").setAllowedOrigins("https://localhost:8080").withSockJS();
         registry.addEndpoint("/ws-stomp").setAllowedOrigins("https://localhost:8080")
-                .addInterceptors(new SocketInterceptor(jwtUtils)).withSockJS();
+                .addInterceptors(new SocketInterceptor()).withSockJS();
     }
 
     @Override

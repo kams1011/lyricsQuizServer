@@ -119,7 +119,7 @@
 <script>
 import * as Stomp from "webstomp-client";
 import * as SockJS from "sockjs-client";
-import Cookies from 'js-cookie';
+// import Cookies from 'js-cookie';
 
 export default {
   name: 'App',
@@ -183,6 +183,15 @@ export default {
             }
         );
     },
+    videoStreaming(Event){ // Start Button을 클릭 시 영상을 재생함. Event를 받아 Event에 해당하는 영상을 따로 재생함.
+      this.stompClient.connect({}, frame => {
+        this.stompClient.subscribe('/topic/video', videoData => {
+          const videoElement = document.getElementById('video');
+          videoElement.src = 'data:video/mp4;base64,' + videoData.body;
+          videoElement.play();
+        });
+      });
+    }
   },
   components: {
   }
