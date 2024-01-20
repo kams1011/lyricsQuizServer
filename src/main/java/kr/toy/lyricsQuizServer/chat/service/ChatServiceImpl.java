@@ -40,7 +40,6 @@ public class ChatServiceImpl implements ChatService {
     }
 
 //    public List<GameRoom> findAllRoom() {
-//
 //        return opsHashGameRoom.values(TopicType.GAME_ROOM.name());
 //    }
 //
@@ -65,7 +64,7 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public void sendMessage(ChatMessage message) {
-        //FIXME Channel 변경
+
 //        String nickName = user.getNickName();
         String nickName = message.getSenderNickName();
 
@@ -76,6 +75,8 @@ public class ChatServiceImpl implements ChatService {
         }
         // Websocket에 발행된 메시지를 redis로 발행(publish)
         // (채널 이름, 메세지)
+
+        //FIXME Channel 변경
 //        redisTemplate.convertAndSend(channelTopic.getTopic(), message);
         redisTemplate.convertAndSend("2", message);
     }
@@ -93,7 +94,7 @@ public class ChatServiceImpl implements ChatService {
 
 
 
-    // FIXME 이하 두 메서드 RedisUtil로 이동.
+    // FIXME 이하 두 메서드 RedisUtil로 이동. TopicType을 RedisCategory로 변경.
     public void temp(User user){
         UserInfo userInfo = UserInfo.from(user);
         opsHashUserInfo.put("USER_INFO", user.getUserSeq(), userInfo);
