@@ -110,9 +110,7 @@ public class GameRoom implements Serializable {
     }
 
     public void enter(User user){
-        if(!this.userList.contains(user)) {
-            this.userList.add(UserInfo.from(user));
-        }
+        this.userList.add(UserInfo.from(user));
     }
 
     public boolean isEntered(User user){
