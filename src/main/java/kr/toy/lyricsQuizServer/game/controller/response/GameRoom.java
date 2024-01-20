@@ -3,6 +3,8 @@ package kr.toy.lyricsQuizServer.game.controller.response;
 import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import kr.toy.lyricsQuizServer.game.domain.Game;
 import kr.toy.lyricsQuizServer.game.domain.GameStatus;
+import kr.toy.lyricsQuizServer.user.domain.User;
+import kr.toy.lyricsQuizServer.user.domain.dto.UserInfo;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.util.StringUtils;
@@ -11,6 +13,8 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 public class GameRoom implements Serializable {
@@ -37,8 +41,12 @@ public class GameRoom implements Serializable {
 
     private final String password;
 
+    private List<UserInfo> userList;
+
     @Builder
-    public GameRoom(Long gameRoomSeq, String roomName, LocalDateTime startedAt, String managerName, String topic, Integer attendeeLimit, Integer attendeeCount, GameStatus gameStatus, Boolean isSecretRoom, String password) {
+    public GameRoom(Long gameRoomSeq, String roomName, LocalDateTime startedAt, String managerName,
+                    String topic, Integer attendeeLimit, Integer attendeeCount, GameStatus gameStatus,
+                    Boolean isSecretRoom, String password, List<UserInfo> userList) {
         this.gameRoomSeq = gameRoomSeq;
         this.roomName = roomName;
         this.startedAt = startedAt;
@@ -49,6 +57,7 @@ public class GameRoom implements Serializable {
         this.gameStatus = gameStatus;
         this.isSecretRoom = isSecretRoom;
         this.password = password;
+        this.userList = userList;
     }
 
 
@@ -64,6 +73,7 @@ public class GameRoom implements Serializable {
                 .gameStatus(game.getGameStatus())
                 .isSecretRoom(game.getIsSecretRoom())
                 .password(game.getPassword())
+                .userList(userInfoListFrom(game))
                 .build();
     }
 
@@ -87,6 +97,26 @@ public class GameRoom implements Serializable {
 
     public Boolean isRoomOpen(String password){ // FIXME 변수명 변경
         if (!isCapacityExceeded() && passwordCheck(password) && isReady()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static List<UserInfo> userInfoListFrom(Game game){
+        List<UserInfo> userInfoList = new ArrayList<>(game.getAttendeeLimit());
+        userInfoList.add(UserInfo.from(game.getManager()));
+        return userInfoList;
+    }
+
+    public void enter(User user){
+        if(!this.userList.contains(user)) {
+            this.userList.add(UserInfo.from(user));
+        }
+    }
+
+    public boolean isEntered(User user){
+        if (this.userList.contains(user)) {
             return true;
         } else {
             return false;

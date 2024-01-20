@@ -13,7 +13,7 @@ public interface OauthClient {
     OauthProperties.AccessTokenResponse getAccessToken(URI uri, @RequestBody OauthProperties.AccessTokenRequest request);
 
     @GetMapping
-    OauthProperties.UserInfoDTO getUserInfo(URI uri, @RequestHeader(value = "Authorization", required = true) String accessToken);
+    OauthProperties.UserLoginInfoDTO getUserInfo(URI uri, @RequestHeader(value = "Authorization", required = true) String accessToken);
 
 
 }

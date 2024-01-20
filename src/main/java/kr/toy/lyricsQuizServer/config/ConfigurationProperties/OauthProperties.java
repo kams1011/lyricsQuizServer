@@ -134,7 +134,7 @@ public class OauthProperties {
 
     @Getter
     @Setter
-    public static class UserInfoDTO{
+    public static class UserLoginInfoDTO{
 
         String email; //GOOGLE
 
