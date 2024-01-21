@@ -18,7 +18,9 @@ public class ChatController {
     private final ChatService chatService;
 
     @MessageMapping("/chat/message")
-    public void message(ChatMessage message) {
+    public void message(ChatMessage message, User user) {
+        System.out.println("hihi");
+        System.out.println(user.getUserSeq());
         chatService.sendMessage(message);
     }
 

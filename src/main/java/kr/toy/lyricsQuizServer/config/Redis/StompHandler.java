@@ -26,17 +26,10 @@ public class StompHandler implements ChannelInterceptor {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
         //WebSocketSessionID를 받아올 수 있음.
         //WebSocketSessionID와 닉네임을 매핑하면 될듯.
-        //WebSocketSessionID 가 탈취당하는 경우?
         //FIXME WebSocketSession TIME OUT 추가
-
-//        System.out.println(accessor.getUser().getName());
-//        System.out.println(accessor.getUser());
-        //Websocket 연결시 헤더의 jwt token 검증
-
-        //FIXME ArgumentResolver 추가되는지 확인
         if (StompCommand.CONNECT == accessor.getCommand()) {
 
-        } else if (StompCommand.BEGIN == accessor.getCommand()) {
+        } else if (StompCommand.SEND == accessor.getCommand()) {
 
         }
 
