@@ -25,7 +25,7 @@ public class RedisUtil {
 
     private HashOperations<String, Long, GameRoom> opsHashGameRoom;
 
-    private HashOperations<String, Long, UserInfo> opsHashUserInfo;
+    private HashOperations<String, String, UserInfo> opsHashUserInfo;
 
 
     // 채팅방의 대화 메시지를 발행하기 위한 redis topic 정보. 서버별로 채팅방에 매치되는 topic정보를 Map에 넣어 roomId로 찾을수 있도록 한다.
@@ -48,33 +48,33 @@ public class RedisUtil {
     }
 
 
-    public void put(User user){
-        opsHashUserInfo.put(RedisCategory.USER_INFO.name(), user.getUserSeq(), UserInfo.from(user));
-    }
-
-    public void put(GameRoom gameRoom){
-        opsHashGameRoom.put(RedisCategory.GAME_ROOM.name(), gameRoom.getGameRoomSeq(), gameRoom);
-    }
+//    public void put(User user){
+//        opsHashUserInfo.put(RedisCategory.USER_INFO.name(), user.getUserSeq(), UserInfo.from(user));
+//    }
+//
+//    public void put(GameRoom gameRoom){
+//        opsHashGameRoom.put(RedisCategory.GAME_ROOM.name(), gameRoom.getGameRoomSeq(), gameRoom);
+//    }
 
     public void publish(ChatMessage message){
         redisTemplate.convertAndSend(message.getRoomId(), message);
     }
 
-    public <T> T getObject(String category, Long seq, HashOperations<String, Long, T> opsHash) {
-        return opsHash.get(category, seq);
+    public <T, K> T getObject(String category, K id, HashOperations<String, K, T> opsHash) {
+        return opsHash.get(category, id);
     }
 
-    public <T> void putObject(String category, Long seq, T data, HashOperations<String, Long, T> opsHash) {
-        opsHash.put(category, seq, data);
+    public <T, K> void putObject(String category, K id, T data, HashOperations<String, K, T> opsHash) {
+        opsHash.put(category, id, data);
     }
 
-    public GameRoom getGameRoom(Long gameRoomSeq){
-        return opsHashGameRoom.get(RedisCategory.GAME_ROOM.name(), gameRoomSeq);
-    }
-
-    public UserInfo getUserInfo(Long userSeq){
-        return opsHashUserInfo.get(RedisCategory.USER_INFO.name(), userSeq);
-    }
+//    public GameRoom getGameRoom(Long gameRoomSeq){
+//        return opsHashGameRoom.get(RedisCategory.GAME_ROOM.name(), gameRoomSeq);
+//    }
+//
+//    public UserInfo getUserInfo(Long userSeq){
+//        return opsHashUserInfo.get(RedisCategory.USER_INFO.name(), userSeq);
+//    }
 
 
 

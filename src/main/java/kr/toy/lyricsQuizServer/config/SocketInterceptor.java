@@ -25,6 +25,7 @@ public class SocketInterceptor implements HandshakeInterceptor {
         String regex = "tempAccessTokenName=([^;]+)";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(cookies);
+
         if (matcher.find()) {
             String accessToken = matcher.group(1);
         } else {

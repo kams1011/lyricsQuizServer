@@ -1,5 +1,6 @@
 package kr.toy.lyricsQuizServer.config.Redis;
 
+import kr.toy.lyricsQuizServer.chat.controller.port.ChatService;
 import kr.toy.lyricsQuizServer.chat.service.ChatServiceImpl;
 import kr.toy.lyricsQuizServer.game.controller.response.GameRoom;
 import lombok.RequiredArgsConstructor;
@@ -28,12 +29,12 @@ public class StompHandler implements ChannelInterceptor {
         //WebSocketSessionID 가 탈취당하는 경우?
         //FIXME WebSocketSession TIME OUT 추가
 
-        System.out.println(accessor.getUser().getName());
-        System.out.println(accessor.getUser()); // UserSeq가 들어옴. Redis에 로그인 시 단 한번 NickName까지 찾아서 넣어줍시당.
-        //더 느린데, 값이 안들어옴.
+//        System.out.println(accessor.getUser().getName());
+//        System.out.println(accessor.getUser());
         //Websocket 연결시 헤더의 jwt token 검증
-        if (StompCommand.CONNECT == accessor.getCommand()) {
 
+        //FIXME ArgumentResolver 추가되는지 확인
+        if (StompCommand.CONNECT == accessor.getCommand()) {
 
         } else if (StompCommand.BEGIN == accessor.getCommand()) {
 

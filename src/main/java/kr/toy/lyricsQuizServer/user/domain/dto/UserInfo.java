@@ -36,4 +36,8 @@ public class UserInfo {
     public void exit(){
         this.gameRoomSeq = null;
     }
+
+    public void isGaming(){
+        return;
+    }
 }

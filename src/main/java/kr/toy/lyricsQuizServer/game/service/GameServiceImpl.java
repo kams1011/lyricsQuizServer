@@ -44,7 +44,7 @@ public class GameServiceImpl implements GameService {
         Quiz quiz = quizRepository.getById(gameCreate.getQuizSeq());
         Game game = Game.from(gameCreate, user, quiz).create(LocalDateTime.now());
         game = gameRepository.save(user, game, quiz);
-        chatService.create(GameRoom.from(game));
+        chatService.createGameRoom(GameRoom.from(game));
         return game;
     }
 
