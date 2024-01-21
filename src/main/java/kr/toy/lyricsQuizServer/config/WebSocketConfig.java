@@ -1,5 +1,6 @@
 package kr.toy.lyricsQuizServer.config;
 
+import kr.toy.lyricsQuizServer.chat.service.ChatServiceImpl;
 import kr.toy.lyricsQuizServer.config.ConfigurationProperties.SecurityProperties;
 import kr.toy.lyricsQuizServer.config.Redis.SocketJwtArgumentResolver;
 import kr.toy.lyricsQuizServer.config.Redis.StompHandler;

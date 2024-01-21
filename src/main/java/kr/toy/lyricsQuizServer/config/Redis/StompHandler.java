@@ -13,7 +13,6 @@ import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.stereotype.Component;
-import org.springframework.web.socket.WebSocketSession;
 
 @RequiredArgsConstructor
 @Component
@@ -27,6 +26,8 @@ public class StompHandler implements ChannelInterceptor {
         //WebSocketSessionID를 받아올 수 있음.
         //WebSocketSessionID와 닉네임을 매핑하면 될듯.
         //FIXME WebSocketSession TIME OUT 추가
+        //FIXME SocketArgumentResolver 에서 JWT를 받지 못할 때 에러 핸들링.
+        //FIXME Redis와 Socket Packaging 다시하기
         if (StompCommand.CONNECT == accessor.getCommand()) {
 
         } else if (StompCommand.SEND == accessor.getCommand()) {

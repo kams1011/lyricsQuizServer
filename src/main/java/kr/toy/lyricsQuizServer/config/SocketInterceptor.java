@@ -1,7 +1,9 @@
 package kr.toy.lyricsQuizServer.config;
 
+import io.netty.util.internal.StringUtil;
 import kr.toy.lyricsQuizServer.chat.service.ChatServiceImpl;
 import kr.toy.lyricsQuizServer.config.Redis.RedisUtil;
+import kr.toy.lyricsQuizServer.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -21,32 +23,42 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 public class SocketInterceptor implements HandshakeInterceptor {
 
+    private final ChatServiceImpl chatService;
+
+    private final JwtUtils jwtUtils;
+
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
-        String cookies = request.getHeaders().getFirst(HttpHeaders.COOKIE);
-        String regex = "tempAccessTokenName=([^;]+)";
-        Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(cookies);
 
+        String accessToken = extractToken(request);
 
-        //FIXME ArgumentResolver 작동되는지 확인하고 Redis에 UserDTO를 넣기.ㅁ
-        if (matcher.find()) {
-            String accessToken = matcher.group(1);
-            attributes.put("token", accessToken);
-            return true;
+        if (StringUtil.isNullOrEmpty(accessToken)) {
+            return false;
         }
-
-        return false;
+        attributes.put("token", accessToken);
+        return true;
     }
 
     @Override
     public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Exception exception) {
-
         if (exception == null) {
-            // Handshake가 성공적으로 이루어졌을 때의 로직
-            // 여기서 넣어주면 될듯.
+            User user = jwtUtils.getUserBy(extractToken(request));
+//            chatService.putUserInfo(user, request.);
+            //FIXME SessionID 넣어주기
         } else {
             // Handshake가 실패했을 때의 로직
         }
+    }
+
+    public String extractToken(ServerHttpRequest request){
+        String cookies = request.getHeaders().getFirst(HttpHeaders.COOKIE);
+        String regex = "tempAccessTokenName=([^;]+)";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(cookies);
+        String token = "";
+        if (matcher.find()) {
+            token = matcher.group(1);
+        }
+        return token;
     }
 }

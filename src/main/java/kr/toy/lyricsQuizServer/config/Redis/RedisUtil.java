@@ -42,8 +42,6 @@ public class RedisUtil {
     @Cacheable(value = "userInfo", key = "#key")
     public void findUserInfo(){
         HashOperations<String, Long, UserInfo> ops = redisTemplate.opsForHash();
-
-
         // 사용자가 채팅방에 입장할 때 userDTO를 저장함.
     }
 

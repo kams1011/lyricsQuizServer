@@ -63,16 +63,13 @@ public class FileServiceImpl implements FileService {
         metadata.setContentLength(file.getSize());
         metadata.setContentType(file.getContentType());
 
-//        User user = userRepository.getById(securityService.resolveToken(request));
-        User user = null; //FIXME ArgsResolver로 변경
-
         File fileDomain = File.builder()
                 .name(file.getName())
                 .uniqueName(originalFilename)
                 .extension(getFileExtension(file.getContentType()))
                 .size(file.getSize())
                 .isDeleted(false)
-                .user(user)
+                .user(uploader)
                 .build();
 
         fileDomain = save(fileDomain);
