@@ -27,7 +27,6 @@ public class SocketInterceptor implements HandshakeInterceptor {
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
 
         String accessToken = extractToken(request);
-
         if (StringUtil.isNullOrEmpty(accessToken)) {
             return false;
         }

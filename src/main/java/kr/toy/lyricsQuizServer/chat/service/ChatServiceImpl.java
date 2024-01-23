@@ -67,7 +67,7 @@ public class ChatServiceImpl implements ChatService {
         }
 
         if (gameRoom.isRoomOpen(password) && !gameRoom.isEntered(user)) {
-            gameRoom.enter(user);
+            gameRoom.enter(UserInfo.from(user));
             createGameRoom(gameRoom);
             putUserInfo(UserInfo.from(user, gameRoomSeq), sessionId);
         } else {
