@@ -16,8 +16,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class ChatServiceImpl implements ChatService {
 
-//    private final RedisTemplate<String, Object> redisTemplate;
-
     private final RedisUtil redisUtil;
 
     private HashOperations<String, Long, GameRoom> opsHashGameRoom;
@@ -56,10 +54,19 @@ public class ChatServiceImpl implements ChatService {
 
     public void enter(Long gameRoomSeq, String password, User user, String sessionId){
         GameRoom gameRoom = getGameRoom(gameRoomSeq);
+        // FIXME SessionId로 UserInfo를 찾아와서 UserInfo의 GameRoomSeq를 찾는다.
+        UserInfo userInfo = redisUtil.getObject(RedisCategory.USER_INFO.name(), sessionId, opsHashUserInfo);
+
+        if (userInfo == null) {
+            System.out.println("NULL");
+        } else if (userInfo.getGameRoomSeq() != null) {
+            System.out.println("NULL2");
+        }
+
        if (gameRoom.isRoomOpen(password) && !gameRoom.isEntered(user)) {
            gameRoom.enter(user);
            createGameRoom(gameRoom);
-           putUserInfo(user, sessionId);
+           putUserInfo(UserInfo.from(user, gameRoomSeq), sessionId);
        } else {
            throw new IllegalStateException(); // 에러 발생
        }
@@ -77,18 +84,13 @@ public class ChatServiceImpl implements ChatService {
         return gameRoom;
     }
 
-    public void putUserInfo(User user, String sessionId){
-        redisUtil.putObject(RedisCategory.USER_INFO.name(), sessionId, UserInfo.from(user), opsHashUserInfo);
+    public void putUserInfo(UserInfo userInfo, String sessionId){
+        redisUtil.putObject(RedisCategory.USER_INFO.name(), sessionId, userInfo, opsHashUserInfo);
     }
 
     public GameRoom getGameRoom(Long gameRoomSeq){
         GameRoom gameRoom = redisUtil.getObject(RedisCategory.GAME_ROOM.name(), gameRoomSeq, opsHashGameRoom);
         return gameRoom;
     }
-
-
-
-
-
 
 }

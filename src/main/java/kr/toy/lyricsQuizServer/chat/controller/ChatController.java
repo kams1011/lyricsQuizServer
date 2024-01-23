@@ -18,11 +18,10 @@ public class ChatController {
     private final ChatService chatService;
 
     @MessageMapping("/chat/message")
-    public void message(ChatMessage message, User user) {
-        System.out.println("hihi");
-        System.out.println(user.getUserSeq());
+    public void message(ChatMessage message) {
         chatService.sendMessage(message);
     }
+
 
     @MessageMapping("/game/start")
     public void streaming(Long gameSeq){

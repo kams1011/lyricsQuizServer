@@ -23,10 +23,6 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 public class SocketInterceptor implements HandshakeInterceptor {
 
-    private final ChatServiceImpl chatService;
-
-    private final JwtUtils jwtUtils;
-
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
 
@@ -42,9 +38,7 @@ public class SocketInterceptor implements HandshakeInterceptor {
     @Override
     public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Exception exception) {
         if (exception == null) {
-            User user = jwtUtils.getUserBy(extractToken(request));
-//            chatService.putUserInfo(user, request.);
-            //FIXME SessionID 넣어주기
+
         } else {
             // Handshake가 실패했을 때의 로직
         }

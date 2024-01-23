@@ -20,11 +20,19 @@ public class UserInfo {
         this.gameRoomSeq = gameRoomSeq;
     }
 
-
     public static UserInfo from(User user){
         UserInfo userInfo = UserInfo.builder()
                 .userSeq(user.getUserSeq())
                 .nickName(user.getNickName())
+                .build();
+        return userInfo;
+    }
+
+    public static UserInfo from(User user, Long gameRoomSeq){
+        UserInfo userInfo = UserInfo.builder()
+                .userSeq(user.getUserSeq())
+                .nickName(user.getNickName())
+                .gameRoomSeq(gameRoomSeq)
                 .build();
         return userInfo;
     }
@@ -37,7 +45,7 @@ public class UserInfo {
         this.gameRoomSeq = null;
     }
 
-    public void isGaming(){
+    public void inGame(){
         return;
     }
 }
