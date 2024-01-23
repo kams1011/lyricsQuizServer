@@ -23,19 +23,13 @@ public class RedisUtil {
 
     private final RedisTemplate<String, Object> redisTemplate;
 
-    private HashOperations<String, Long, GameRoom> opsHashGameRoom;
-
-    private HashOperations<String, String, UserInfo> opsHashUserInfo;
-
-
     // 채팅방의 대화 메시지를 발행하기 위한 redis topic 정보. 서버별로 채팅방에 매치되는 topic정보를 Map에 넣어 roomId로 찾을수 있도록 한다.
-    private Map<String, ChannelTopic> topics;
+//    private Map<String, ChannelTopic> topics;
 
-    @PostConstruct
-    private void init() {
-        opsHashGameRoom = redisTemplate.opsForHash();
-        topics = new HashMap<>();
-    }
+//    @PostConstruct
+//    private void init() {
+//        topics = new HashMap<>();
+//    }
 
 
     // FIXME 유저 썸네일을 저장할 수도 있으니 opsForValue가 아니라 opForHash로 선언.
@@ -55,7 +49,7 @@ public class RedisUtil {
 //    }
 
     public void publish(ChatMessage message){
-        redisTemplate.convertAndSend(message.getRoomId(), message);
+        redisTemplate.convertAndSend(RedisCategory.GAME_ROOM.name(), message);
     }
 
     public <T, K> T getObject(String category, K id, HashOperations<String, K, T> opsHash) {
@@ -65,19 +59,5 @@ public class RedisUtil {
     public <T, K> void putObject(String category, K id, T data, HashOperations<String, K, T> opsHash) {
         opsHash.put(category, id, data);
     }
-
-//    public GameRoom getGameRoom(Long gameRoomSeq){
-//        return opsHashGameRoom.get(RedisCategory.GAME_ROOM.name(), gameRoomSeq);
-//    }
-//
-//    public UserInfo getUserInfo(Long userSeq){
-//        return opsHashUserInfo.get(RedisCategory.USER_INFO.name(), userSeq);
-//    }
-
-
-
-
-
-
 
 }

@@ -1,10 +1,13 @@
 package kr.toy.lyricsQuizServer.config.Redis;
 
+import kr.toy.lyricsQuizServer.game.controller.response.GameRoom;
+import kr.toy.lyricsQuizServer.user.domain.dto.UserInfo;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
@@ -15,13 +18,13 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 public class RedisConfig {
 
-
-    /**
-     * 단일 Topic 사용을 위한 Bean 설정
-     */
+//
+//    /**
+//     * 단일 Topic 사용을 위한 Bean 설정
+//     */
     @Bean
     public ChannelTopic channelTopic() {
-        return new ChannelTopic("2");
+        return new ChannelTopic(RedisCategory.GAME_ROOM.name());
     }
 
     /**
@@ -34,7 +37,7 @@ public class RedisConfig {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         container.addMessageListener(listenerAdapter, channelTopic);
-         return container;
+        return container;
     }
 
     /**
@@ -57,6 +60,17 @@ public class RedisConfig {
         redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(String.class));
         return redisTemplate;
     }
+
+    @Bean
+    public HashOperations<String, Long, GameRoom> gameRoomHashOperations(RedisTemplate<String, Object> redisTemplate) {
+        return redisTemplate.opsForHash();
+    }
+
+    @Bean
+    public HashOperations<String, String, UserInfo> userInfoHashOperations(RedisTemplate<String, Object> redisTemplate) {
+        return redisTemplate.opsForHash();
+    }
+
 
 
 

@@ -4,8 +4,12 @@ import kr.toy.lyricsQuizServer.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.io.Serializable;
+
 @Getter
-public class UserInfo {
+public class UserInfo implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     Long userSeq;
 
@@ -47,5 +51,14 @@ public class UserInfo {
 
     public void inGame(){
         return;
+    }
+
+    @Override
+    public String toString() {
+        return "UserInfo{" +
+                "userSeq=" + userSeq +
+                ", nickName='" + nickName + '\'' +
+                ", gameRoomSeq=" + gameRoomSeq +
+                '}';
     }
 }

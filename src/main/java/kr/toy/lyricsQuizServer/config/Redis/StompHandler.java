@@ -35,20 +35,21 @@ public class StompHandler implements ChannelInterceptor {
         //FIXME WebSocketSession TIME OUT 추가
         //FIXME SocketArgumentResolver 에서 JWT를 받지 못할 때 에러 핸들링.
         //FIXME Redis와 Socket Packaging 다시하기
-        System.out.println("PRESNED SESSION : " + accessor.getSessionId());
-        System.out.println("PRESNED SESSION : " + accessor.getId());
-        
-        //FIXME 해당 부분 오류 수정, ChatServiceImpl 용도에 맞게 클래스 변경
-//        if (StompCommand.CONNECT == accessor.getCommand()) {
-//            Map<String, String> attributes = (Map<String, String>)message.getHeaders().get("simpSessionAttributes");
-//            String token = attributes.get("token");
-//            User user = jwtUtils.getUserBy(token);
-//            chatService.putUserInfo(UserInfo.from(user), accessor.getSessionId());
-//            //WebSocketSession 이 이미 생성된 상태.
-//            //Redis에서 토큰과 WebSocektSession을 매치시켜주자.
-//        } else if (StompCommand.SEND == accessor.getCommand()) {
-//
-//        }
+
+        try {  //FIXME ChatServiceImpl 용도에 맞게 클래스 변경
+            if (StompCommand.CONNECT == accessor.getCommand()) {
+                Map<String, String> attributes = (Map<String, String>)message.getHeaders().get("simpSessionAttributes");
+                String token = attributes.get("token");
+                User user = jwtUtils.getUserBy(token);
+                chatService.putUserInfo(UserInfo.from(user), accessor.getSessionId());
+            } else if (StompCommand.SEND == accessor.getCommand()) {
+
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
 
         return message;
     }

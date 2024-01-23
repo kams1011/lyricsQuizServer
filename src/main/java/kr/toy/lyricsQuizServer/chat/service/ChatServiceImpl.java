@@ -10,7 +10,10 @@ import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.domain.dto.UserInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.HashOperations;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.PostConstruct;
 
 @Service
 @RequiredArgsConstructor
@@ -18,10 +21,10 @@ public class ChatServiceImpl implements ChatService {
 
     private final RedisUtil redisUtil;
 
-    private HashOperations<String, Long, GameRoom> opsHashGameRoom;
+    private final HashOperations<String, Long, GameRoom> opsHashGameRoom;
 
     /** Session 정보에 User 정보를 매핑 **/
-    private HashOperations<String, String, UserInfo> opsHashUserInfo;
+    private final HashOperations<String, String, UserInfo> opsHashUserInfo;
 
     //단일 ChannelTOpic이 아니라 다중 ChannelTopic을 사용해야함.
     //ChannelTopic 종류도 여러개 생성해야함. -> Enum으로 관리해서 각 채널토픽을 생성하는 메서드를 만들자.
@@ -63,21 +66,19 @@ public class ChatServiceImpl implements ChatService {
             System.out.println("NULL2");
         }
 
-       if (gameRoom.isRoomOpen(password) && !gameRoom.isEntered(user)) {
-           gameRoom.enter(user);
-           createGameRoom(gameRoom);
-           putUserInfo(UserInfo.from(user, gameRoomSeq), sessionId);
-       } else {
-           throw new IllegalStateException(); // 에러 발생
-       }
+        if (gameRoom.isRoomOpen(password) && !gameRoom.isEntered(user)) {
+            gameRoom.enter(user);
+            createGameRoom(gameRoom);
+            putUserInfo(UserInfo.from(user, gameRoomSeq), sessionId);
+        } else {
+            throw new IllegalStateException(); // 에러 발생
+        }
         // FIXME 이미 다른 방에 접속중인 사용자인지 여부. -> redis로 체크해야함. 방 접속 여부를.
     }
 
     /**
      * 채팅방 생성 : 서버간 채팅방 공유를 위해 redis hash에 저장한다.
      */
-
-
     @Override
     public GameRoom createGameRoom(GameRoom gameRoom) {
         redisUtil.putObject(RedisCategory.GAME_ROOM.name(), gameRoom.getGameRoomSeq(), gameRoom, opsHashGameRoom);
@@ -93,4 +94,8 @@ public class ChatServiceImpl implements ChatService {
         return gameRoom;
     }
 
+    public UserInfo getUserInfoBy(String sessionId){
+        UserInfo userInfo = redisUtil.getObject(RedisCategory.USER_INFO.name(), sessionId, opsHashUserInfo);
+        return userInfo;
+    }
 }
