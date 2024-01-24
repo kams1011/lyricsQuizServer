@@ -58,7 +58,7 @@
         </div> -->
         <div class="content-main">
           <div class="card-grid">
-            <article class="card" v-for="item in itemList" :key="item.gameRoomSeq" @click="enter(item.gameRoomSeq)">
+            <article class="card" v-for="item in itemList" :key="item.gameRoomSeq" @click="enter(item.gameRoomSeq, item.isSecretRoom)">
               <div class="card-header">
                 <div>
                   <span><img src="https://assets.codepen.io/285131/zeplin.svg"></span>
@@ -79,7 +79,7 @@
                 <p>주제 : {{ item.topic }}</p>
               </div>
               <div class="card-footer">
-                <a href="#">{{ item.attendeeCount }} / {{ item.attendeeLimit }}</a>
+                <h3>{{ item.attendeeCount }} / {{ item.attendeeLimit }}</h3>
               </div>
             </article>
           </div>
@@ -100,6 +100,7 @@ export default {
   name: "Lobby",
   data() {
     return{
+      password: '',
       itemList: [],
     }
   },
@@ -118,8 +119,18 @@ export default {
         console.error(error); // 오류 처리//
       });
     },
-    enter(roomSeq){
+    enter(roomSeq, isSecretRoom){
+      alert(isSecretRoom);
+      axios.get('https://localhost:80/room?roomId=' + roomSeq +'&password=' + this.password,
+          { withCredentials : true
+          }).then(response => {
+        console.log(response.data);
+      }).catch(error => {
+        console.error(error); // 오류 처리//
+      })
+      this.password = '';
       //FIXME 여기서 Back에 Enter 요청.
+
       this.$router.push({ path: `/room/${roomSeq}` });
     }
   }

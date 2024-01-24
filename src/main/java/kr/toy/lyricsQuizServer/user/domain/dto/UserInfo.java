@@ -54,9 +54,10 @@ public class UserInfo implements Serializable {
         this.gameRoomSeq = null;
     }
 
-    public void inGame(){
-        return;
+    public boolean inGame(){
+        return this.sessionId != null;
     }
+
 
     @Override
     public String toString() {

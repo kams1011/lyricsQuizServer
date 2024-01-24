@@ -39,15 +39,6 @@ public class RedisUtil {
         // 사용자가 채팅방에 입장할 때 userDTO를 저장함.
     }
 
-
-//    public void put(User user){
-//        opsHashUserInfo.put(RedisCategory.USER_INFO.name(), user.getUserSeq(), UserInfo.from(user));
-//    }
-//
-//    public void put(GameRoom gameRoom){
-//        opsHashGameRoom.put(RedisCategory.GAME_ROOM.name(), gameRoom.getGameRoomSeq(), gameRoom);
-//    }
-
     public void publish(ChatMessage message){
         redisTemplate.convertAndSend(RedisCategory.GAME_ROOM.name(), message);
     }

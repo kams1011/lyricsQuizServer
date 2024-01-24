@@ -29,20 +29,14 @@ public class StompHandler implements ChannelInterceptor {
 
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {
-        StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
+
         //FIXME WebSocketSession TIME OUT 추가
         //FIXME SocketArgumentResolver 에서 JWT를 받지 못할 때 에러 핸들링.
         //FIXME Redis와 Socket Packaging 다시하기
         //FIXME ChatServiceImpl 용도에 맞게 클래스 변경
-        try {
-            if (StompCommand.SUBSCRIBE == accessor.getCommand()) {
-                putUserInfo(accessor, message);
-            } else if (StompCommand.SEND == accessor.getCommand()) {
 
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        StompCommandHandling(message);
+
         return message;
     }
 
@@ -50,10 +44,8 @@ public class StompHandler implements ChannelInterceptor {
         Map<String, String> attributes = (Map<String, String>)message.getHeaders().get("simpSessionAttributes");
         String token = attributes.get("token");
         User user = jwtUtils.getUserBy(token);
-        System.out.println("SESSIONID!!!");
-        System.out.println(accessor.getSessionId());
-        System.out.println(parseDestination(accessor, "roomId"));
-        chatService.putUserInfo(UserInfo.from(user, null, accessor.getSessionId()), user.getUserSeq());
+        Long gameRoomSeq = getGameRoomSeq(accessor);
+        chatService.putUserInfo(UserInfo.from(user, gameRoomSeq, accessor.getSessionId()));
     }
 
 //    public void enterRoom(StompHeaderAccessor accessor){
@@ -68,8 +60,29 @@ public class StompHandler implements ChannelInterceptor {
     public String parseDestination(StompHeaderAccessor accessor, String key){
         UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(accessor.getDestination());
         Map<String, String> queryParams = builder.build().getQueryParams().toSingleValueMap();
-
         return queryParams.get(key);
+    }
+
+    public Long getGameRoomSeq(StompHeaderAccessor accessor){
+        try {
+            return Long.parseLong(parseDestination(accessor, "roomId"));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public void StompCommandHandling(Message<?> message){
+        StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
+        try {
+            if (StompCommand.SUBSCRIBE == accessor.getCommand()) {
+                putUserInfo(accessor, message);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            //FIXME StompHeaderAccessor로 에러 메시지 보낼 수 있는지 확인
+        }
     }
 
 }
