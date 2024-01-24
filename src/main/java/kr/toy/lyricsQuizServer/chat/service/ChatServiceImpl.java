@@ -24,7 +24,7 @@ public class ChatServiceImpl implements ChatService {
     private final HashOperations<String, Long, GameRoom> opsHashGameRoom;
 
     /** Session 정보에 User 정보를 매핑 **/
-    private final HashOperations<String, String, UserInfo> opsHashUserInfo;
+    private final HashOperations<String, Long, UserInfo> opsHashUserInfo;
 
     //단일 ChannelTOpic이 아니라 다중 ChannelTopic을 사용해야함.
     //ChannelTopic 종류도 여러개 생성해야함. -> Enum으로 관리해서 각 채널토픽을 생성하는 메서드를 만들자.
@@ -55,25 +55,18 @@ public class ChatServiceImpl implements ChatService {
         redisUtil.publish(message);
     }
 
-    public void enter(Long gameRoomSeq, String password, User user, String sessionId){
+    public void enter(Long gameRoomSeq, String password, User user){
         GameRoom gameRoom = getGameRoom(gameRoomSeq);
-        // FIXME SessionId로 UserInfo를 찾아와서 UserInfo의 GameRoomSeq를 찾는다.
-        UserInfo userInfo = redisUtil.getObject(RedisCategory.USER_INFO.name(), sessionId, opsHashUserInfo);
-
-        if (userInfo == null) {
-            System.out.println("NULL");
-        } else if (userInfo.getGameRoomSeq() != null) {
-            System.out.println("NULL2");
-        }
-
+        if (getUserInfoBy(user.getUserSeq()).getSessionId() != null) {
+            throw new IllegalStateException();
+        }  // FIXME 이미 다른 방에 접속중인 사용자인지 여부. -> redis로 체크해야함. 방 접속 여부를.
         if (gameRoom.isRoomOpen(password) && !gameRoom.isEntered(user)) {
-            gameRoom.enter(UserInfo.from(user));
+            gameRoom.enter(UserInfo.from(user, gameRoomSeq, null));
             createGameRoom(gameRoom);
-            putUserInfo(UserInfo.from(user, gameRoomSeq), sessionId);
         } else {
             throw new IllegalStateException(); // 에러 발생
         }
-        // FIXME 이미 다른 방에 접속중인 사용자인지 여부. -> redis로 체크해야함. 방 접속 여부를.
+        // SessionId로 저장하는 게 아니라 UserSeq로 저장하고 SessionId를 UserInfo에 넣어야돼
     }
 
     /**
@@ -85,8 +78,8 @@ public class ChatServiceImpl implements ChatService {
         return gameRoom;
     }
 
-    public void putUserInfo(UserInfo userInfo, String sessionId){
-        redisUtil.putObject(RedisCategory.USER_INFO.name(), sessionId, userInfo, opsHashUserInfo);
+    public void putUserInfo(UserInfo userInfo, Long userSeq){
+        redisUtil.putObject(RedisCategory.USER_INFO.name(), userSeq, userInfo, opsHashUserInfo);
     }
 
     public GameRoom getGameRoom(Long gameRoomSeq){
@@ -94,8 +87,8 @@ public class ChatServiceImpl implements ChatService {
         return gameRoom;
     }
 
-    public UserInfo getUserInfoBy(String sessionId){
-        UserInfo userInfo = redisUtil.getObject(RedisCategory.USER_INFO.name(), sessionId, opsHashUserInfo);
+    public UserInfo getUserInfoBy(Long userSeq){
+        UserInfo userInfo = redisUtil.getObject(RedisCategory.USER_INFO.name(), userSeq, opsHashUserInfo);
         return userInfo;
     }
 }

@@ -105,7 +105,7 @@ public class GameRoom implements Serializable {
 
     public static List<UserInfo> userInfoListFrom(Game game){
         List<UserInfo> userInfoList = new ArrayList<>(game.getAttendeeLimit());
-        userInfoList.add(UserInfo.from(game.getManager()));
+        userInfoList.add(UserInfo.from(game.getManager(), game.getGameRoomSeq(), null));
         return userInfoList;
     }
 

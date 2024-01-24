@@ -17,29 +17,34 @@ public class UserInfo implements Serializable {
 
     Long gameRoomSeq; // FIXME Boolean으로 변경하는게 나으면 Boolean으로 변경.
 
+    String sessionId;
+
     @Builder
-    public UserInfo(Long userSeq, String nickName, Long gameRoomSeq){
+    public UserInfo(Long userSeq, String nickName, Long gameRoomSeq, String sessionId){
         this.userSeq = userSeq;
         this.nickName = nickName;
         this.gameRoomSeq = gameRoomSeq;
+        this.sessionId = sessionId;
     }
 
-    public static UserInfo from(User user){
-        UserInfo userInfo = UserInfo.builder()
-                .userSeq(user.getUserSeq())
-                .nickName(user.getNickName())
-                .build();
-        return userInfo;
-    }
-
-    public static UserInfo from(User user, Long gameRoomSeq){
+    public static UserInfo from(User user, Long gameRoomSeq, String sessionId){
         UserInfo userInfo = UserInfo.builder()
                 .userSeq(user.getUserSeq())
                 .nickName(user.getNickName())
                 .gameRoomSeq(gameRoomSeq)
+                .sessionId(sessionId)
                 .build();
         return userInfo;
     }
+
+//    public static UserInfo from(User user, Long gameRoomSeq){
+//        UserInfo userInfo = UserInfo.builder()
+//                .userSeq(user.getUserSeq())
+//                .nickName(user.getNickName())
+//                .gameRoomSeq(gameRoomSeq)
+//                .build();
+//        return userInfo;
+//    }
 
     public void enter(Long gameRoomSeq){
         this.gameRoomSeq = gameRoomSeq;

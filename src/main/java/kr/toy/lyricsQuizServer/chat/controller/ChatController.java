@@ -2,11 +2,14 @@ package kr.toy.lyricsQuizServer.chat.controller;
 
 import kr.toy.lyricsQuizServer.chat.controller.dto.ChatMessage;
 import kr.toy.lyricsQuizServer.chat.controller.port.ChatService;
+import kr.toy.lyricsQuizServer.chat.service.ChatServiceImpl;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 
@@ -16,6 +19,14 @@ public class ChatController {
 
 
     private final ChatService chatService;
+
+    private final ChatServiceImpl chatServiceImpl;
+
+    @GetMapping("/room")
+    public void enter(@RequestParam Long roomId, @RequestParam String password, User user){
+        chatServiceImpl.enter(roomId, password, user);
+    }
+
 
     @MessageMapping("/chat/message")
     public void message(ChatMessage message) {

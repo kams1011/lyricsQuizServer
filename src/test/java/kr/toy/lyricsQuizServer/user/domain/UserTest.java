@@ -6,8 +6,12 @@ import kr.toy.lyricsQuizServer.config.ConfigurationProperties.StorageProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.LocalDateTime;
+import java.util.Map;
 
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -126,6 +130,16 @@ public class UserTest {
         assertThat(user.getIsBan()).isTrue();
     }
 
+
+
+    @Test
+    public void tmep() throws URISyntaxException {
+        String destination = "/sub/chat/room?temp=1234&tmp2=54555";
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(destination);
+        Map<String, String> queryParams = builder.build().getQueryParams().toSingleValueMap();
+        System.out.println(queryParams.get("temp"));
+        System.out.println(queryParams.get("tmp2"));
+    }
 }
 
 

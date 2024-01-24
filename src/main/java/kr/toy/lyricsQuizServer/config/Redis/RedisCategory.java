@@ -7,9 +7,6 @@ public enum RedisCategory {
 
     GAME_ROOM, USER_INFO;
 
-
-
-
     public void temp(){
 
     }

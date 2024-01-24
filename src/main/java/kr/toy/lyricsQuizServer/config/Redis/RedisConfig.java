@@ -67,7 +67,7 @@ public class RedisConfig {
     }
 
     @Bean
-    public HashOperations<String, String, UserInfo> userInfoHashOperations(RedisTemplate<String, Object> redisTemplate) {
+    public HashOperations<String, Long, UserInfo> userInfoHashOperations(RedisTemplate<String, Object> redisTemplate) {
         return redisTemplate.opsForHash();
     }
 

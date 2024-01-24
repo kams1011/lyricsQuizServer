@@ -119,6 +119,7 @@ export default {
       });
     },
     enter(roomSeq){
+      //FIXME 여기서 Back에 Enter 요청.
       this.$router.push({ path: `/room/${roomSeq}` });
     }
   }

@@ -12,7 +12,9 @@ import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.Map;
 
 @RequiredArgsConstructor
@@ -32,21 +34,15 @@ public class StompHandler implements ChannelInterceptor {
         //FIXME SocketArgumentResolver 에서 JWT를 받지 못할 때 에러 핸들링.
         //FIXME Redis와 Socket Packaging 다시하기
         //FIXME ChatServiceImpl 용도에 맞게 클래스 변경
-        //FIXME 방 비밀번호 어떻게 받을지 생각
         try {
-            if (StompCommand.CONNECT == accessor.getCommand()) {
+            if (StompCommand.SUBSCRIBE == accessor.getCommand()) {
                 putUserInfo(accessor, message);
-            } else if (StompCommand.SUBSCRIBE == accessor.getCommand()) {
-                enterRoom(accessor);
             } else if (StompCommand.SEND == accessor.getCommand()) {
 
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-
-
         return message;
     }
 
@@ -54,16 +50,26 @@ public class StompHandler implements ChannelInterceptor {
         Map<String, String> attributes = (Map<String, String>)message.getHeaders().get("simpSessionAttributes");
         String token = attributes.get("token");
         User user = jwtUtils.getUserBy(token);
-        chatService.putUserInfo(UserInfo.from(user), accessor.getSessionId());
+        System.out.println("SESSIONID!!!");
+        System.out.println(accessor.getSessionId());
+        System.out.println(parseDestination(accessor, "roomId"));
+        chatService.putUserInfo(UserInfo.from(user, null, accessor.getSessionId()), user.getUserSeq());
     }
 
-    public void enterRoom(StompHeaderAccessor accessor){
-        String roomId = accessor.getDestination().split(destination)[1];
-        UserInfo userInfo = chatService.getUserInfoBy(accessor.getSessionId());
-        GameRoom gameRoom = chatService.getGameRoom(Long.parseLong(roomId));
-        gameRoom.enter(userInfo);
-        userInfo.enter(Long.parseLong(roomId));
-        chatService.putUserInfo(userInfo, accessor.getSessionId());
+//    public void enterRoom(StompHeaderAccessor accessor){
+//        String roomId = parseDestination(accessor,"roomId");
+//        UserInfo userInfo = chatService.getUserInfoBy(Long.parseLong(accessor.getUser().getName()));
+//        GameRoom gameRoom = chatService.getGameRoom(Long.parseLong(roomId));
+//        gameRoom.enter(userInfo);
+//        userInfo.enter(Long.parseLong(roomId));
+//        chatService.putUserInfo(userInfo, Long.parseLong(accessor.getUser().getName()));
+//    }
+
+    public String parseDestination(StompHeaderAccessor accessor, String key){
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(accessor.getDestination());
+        Map<String, String> queryParams = builder.build().getQueryParams().toSingleValueMap();
+
+        return queryParams.get(key);
     }
 
 }
