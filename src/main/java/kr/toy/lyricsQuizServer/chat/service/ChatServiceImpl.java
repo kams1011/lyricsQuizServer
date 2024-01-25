@@ -31,6 +31,7 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public void sendMessage(ChatMessage message) {
+        System.out.println("여기?");
         String nickName = message.getSenderNickName();
         message.setSender(nickName);
         // 채팅방 입장시에는 대화명과 메시지를 자동으로 세팅한다.

@@ -6,6 +6,7 @@ import kr.toy.lyricsQuizServer.game.controller.port.GameService;
 import kr.toy.lyricsQuizServer.game.controller.response.GameRoom;
 import kr.toy.lyricsQuizServer.game.domain.Game;
 import kr.toy.lyricsQuizServer.game.domain.dto.GameCreate;
+import kr.toy.lyricsQuizServer.game.domain.dto.GamePassword;
 import kr.toy.lyricsQuizServer.game.infrastructure.GameEntity;
 import kr.toy.lyricsQuizServer.game.service.port.GameRepository;
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
@@ -46,6 +47,16 @@ public class GameServiceImpl implements GameService {
         game = gameRepository.save(user, game, quiz);
         chatService.createGameRoom(GameRoom.from(game));
         return game;
+    }
+
+    @Override
+    public void checkPassword(GamePassword gamePassword) {
+        Game game = gameRepository.findById(gamePassword.getRoomId());
+        if (!game.getIsSecretRoom()){
+            throw new IllegalStateException("비밀 방이 아닙니다.");
+        } else if (!game.getPassword().equals(gamePassword.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
     }
 
     @Override

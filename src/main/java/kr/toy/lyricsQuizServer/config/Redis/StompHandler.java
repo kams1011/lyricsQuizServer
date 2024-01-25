@@ -74,6 +74,7 @@ public class StompHandler implements ChannelInterceptor {
 
     public void StompCommandHandling(Message<?> message){
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
+        System.out.println(accessor.toString());
         try {
             if (StompCommand.SUBSCRIBE == accessor.getCommand()) {
                 putUserInfo(accessor, message);

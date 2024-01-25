@@ -9,6 +9,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
@@ -29,7 +30,8 @@ public class ChatController {
 
 
     @MessageMapping("/chat/message")
-    public void message(ChatMessage message) {
+    public void message(ChatMessage message, User user) {
+        //FIXME ArgumentResolver로 가져오기는 하나 RedisCache로 관리하는 편이 나아보임.
         chatService.sendMessage(message);
     }
 
@@ -47,9 +49,6 @@ public class ChatController {
         
     }
 
-    public void 비밀번호_일치_여부_확인(){
-        
-    }
 
 
     

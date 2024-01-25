@@ -5,6 +5,7 @@ import kr.toy.lyricsQuizServer.config.SecurityService;
 import kr.toy.lyricsQuizServer.game.controller.port.GameService;
 import kr.toy.lyricsQuizServer.game.controller.response.GameRoom;
 import kr.toy.lyricsQuizServer.game.domain.dto.GameCreate;
+import kr.toy.lyricsQuizServer.game.domain.dto.GamePassword;
 import kr.toy.lyricsQuizServer.quiz.controller.port.QuizService;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizDetailToCreateRoom;
 import kr.toy.lyricsQuizServer.user.domain.User;
@@ -58,6 +59,19 @@ public class GameController {
     public ResponseEntity<Response> create(@RequestBody GameCreate gameCreate, User maker){
 
         return ResponseEntity.ok().body(Response.success(gameService.create(maker, gameCreate)));
+    }
+
+
+    @PostMapping("/password")
+    public ResponseEntity<Response> checkPassword(@RequestBody GamePassword gamePassword){
+        try {
+            gameService.checkPassword(gamePassword);
+        } catch (IllegalStateException | IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Response.fail(e.getMessage(), null, null));
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return ResponseEntity.ok().body(Response.success("유효한 비밀번호입니다."));
     }
 
     public ResponseEntity<Response> join(){

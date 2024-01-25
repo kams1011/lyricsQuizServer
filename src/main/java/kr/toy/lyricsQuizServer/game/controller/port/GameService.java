@@ -3,6 +3,7 @@ package kr.toy.lyricsQuizServer.game.controller.port;
 import kr.toy.lyricsQuizServer.game.domain.Game;
 import kr.toy.lyricsQuizServer.game.domain.dto.GameCreate;
 
+import kr.toy.lyricsQuizServer.game.domain.dto.GamePassword;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import org.springframework.data.domain.Pageable;
 import java.util.List;
@@ -14,6 +15,8 @@ public interface GameService {
     List<Game> getGameListByWord(String word, Pageable pageable);
 
     Game create(User user, GameCreate gameCreate);
+
+    void checkPassword(GamePassword gamePassword);
 
     void enter(Long gameRoomSeq);
 

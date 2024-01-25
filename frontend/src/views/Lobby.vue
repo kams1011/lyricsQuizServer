@@ -58,7 +58,7 @@
         </div> -->
         <div class="content-main">
           <div class="card-grid">
-            <article class="card" v-for="item in itemList" :key="item.gameRoomSeq" @click="enter(item.gameRoomSeq, item.isSecretRoom)">
+            <article class="card" v-for="item in itemList" :key="item.gameRoomSeq" @click="secretRoomCheck(item.isSecretRoom, item.gameRoomSeq)">
               <div class="card-header">
                 <div>
                   <span><img src="https://assets.codepen.io/285131/zeplin.svg"></span>
@@ -70,10 +70,6 @@
                 <div v-if="item.gameStatus === 'IN_PROGRES'">
                   진행중
                 </div>
-                <!-- <label class="toggle">
-                  <input type="checkbox" checked>
-                  <span></span>
-                </label> -->
               </div>
               <div class="card-body">
                 <p>주제 : {{ item.topic }}</p>
@@ -85,6 +81,15 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- 비밀번호를 입력받는 모달 창 -->
+    <div v-if="showPasswordModal" class="modal">
+      <div class="modal-content flex justify-between">
+        <input placeholder="비밀번호를 입력하세요" type="password" v-model="password" />
+        <button @click="submitPassword">확인</button>
+      </div>
+
     </div>
   </main>
   <!-- partial -->
@@ -101,6 +106,8 @@ export default {
   data() {
     return{
       password: '',
+      roomId:'',
+      showPasswordModal : false,
       itemList: [],
     }
   },
@@ -113,25 +120,49 @@ export default {
       axios.get('https://localhost:80/api/game?keyword=' + keyword,
           { withCredentials : true
           }).then(response => {
-            console.log(response.data);
         this.itemList = response.data.data;
       }).catch(error => {
-        console.error(error); // 오류 처리//
+        console.error(error);
       });
     },
-    enter(roomSeq, isSecretRoom){
-      alert(isSecretRoom);
+    secretRoomCheck(isSecretRoom, roomSeq){
+      this.roomId = roomSeq;
+      if (isSecretRoom) {
+        this.showPasswordModal = true;
+      } else {
+        this.enter(roomSeq);
+      }
+    },
+    enter(roomSeq){
       axios.get('https://localhost:80/room?roomId=' + roomSeq +'&password=' + this.password,
           { withCredentials : true
           }).then(response => {
-        console.log(response.data);
-      }).catch(error => {
-        console.error(error); // 오류 처리//
-      })
-      this.password = '';
-      //FIXME 여기서 Back에 Enter 요청.
 
+      }).catch(error => {
+
+      })
+      //FIXME 여기서 Back에 Enter 요청.
       this.$router.push({ path: `/room/${roomSeq}` });
+    },
+    submitPassword() {
+      const jsonData = {
+        roomId : this.roomId,
+        password: this.password,
+      };
+      // 비밀번호 확인 로직 추가
+      axios.post('https://localhost:80/api/game/password', jsonData,
+          { withCredentials : true
+          }).then(response => {
+        this.enter(this.roomId);
+      }).catch(error => {
+        alert("비밀번호가 일치하지 않습니다.");
+        this.initialize();
+      });
+    },
+    initialize(){
+      this.roomId = '';
+      this.showPasswordModal = false;
+      this.password = '';
     }
   }
 
@@ -141,4 +172,29 @@ export default {
 
 <style scoped>
 @import '../assets/css/style.css';
+
+.modal {
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  padding: 15px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 350px; /* 모달의 최대 너비 설정 */
+  position: relative;
+}
+
 </style>
