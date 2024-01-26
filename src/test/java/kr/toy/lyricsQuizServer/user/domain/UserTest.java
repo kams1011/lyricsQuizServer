@@ -132,14 +132,6 @@ public class UserTest {
 
 
 
-    @Test
-    public void tmep() throws URISyntaxException {
-        String destination = "/sub/chat/room?temp=1234&tmp2=54555";
-        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(destination);
-        Map<String, String> queryParams = builder.build().getQueryParams().toSingleValueMap();
-        System.out.println(queryParams.get("temp"));
-        System.out.println(queryParams.get("tmp2"));
-    }
 }
 
 

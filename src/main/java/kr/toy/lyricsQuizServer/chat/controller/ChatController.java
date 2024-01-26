@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.security.Principal;
 
@@ -24,6 +25,7 @@ public class ChatController {
     private final ChatServiceImpl chatServiceImpl;
 
     @GetMapping("/room")
+    @ResponseBody
     public void enter(@RequestParam Long roomId, @RequestParam String password, User user){
         chatServiceImpl.enter(roomId, password, user);
     }
@@ -32,7 +34,7 @@ public class ChatController {
     @MessageMapping("/chat/message")
     public void message(ChatMessage message, User user) {
         //FIXME ArgumentResolver로 가져오기는 하나 RedisCache로 관리하는 편이 나아보임.
-        chatService.sendMessage(message);
+        chatService.sendMessage(message, user);
     }
 
 

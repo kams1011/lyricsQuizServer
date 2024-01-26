@@ -12,6 +12,7 @@ import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
@@ -58,9 +59,14 @@ public class StompHandler implements ChannelInterceptor {
 //    }
 
     public String parseDestination(StompHeaderAccessor accessor, String key){
-        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(accessor.getDestination());
-        Map<String, String> queryParams = builder.build().getQueryParams().toSingleValueMap();
-        return queryParams.get(key);
+        UriComponents components = UriComponentsBuilder.fromUriString(accessor.getDestination()).build();
+        String destination = "";
+        if (components.getQueryParams().isEmpty()) {
+            destination = components.getPathSegments().get(components.getPathSegments().size()-1);
+        } else {
+            destination = components.getQueryParams().toSingleValueMap().get("roomId");
+        }
+        return destination;
     }
 
     public Long getGameRoomSeq(StompHeaderAccessor accessor){

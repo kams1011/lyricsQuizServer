@@ -6,7 +6,7 @@ import kr.toy.lyricsQuizServer.user.domain.User;
 
 public interface ChatService {
 
-    void sendMessage(ChatMessage message);
+    void sendMessage(ChatMessage message, User user);
 
     GameRoom createGameRoom(GameRoom gameRoom);
 }
