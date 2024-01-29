@@ -39,9 +39,20 @@ public class ChatMessage {
     public ChatMessage join(String participant){
         ChatMessage chatMessage = ChatMessage.builder()
                 .type(MessageType.ENTER)
+                .roomId(roomId)
                 .senderNickName("[알림]")
                 .message(participant + "님이 입장하셨습니다.")
                 .build();
         return chatMessage;
+    }
+
+    @Override
+    public String toString() {
+        return "ChatMessage{" +
+                "type=" + type +
+                ", roomId='" + roomId + '\'' +
+                ", senderNickName='" + senderNickName + '\'' +
+                ", message='" + message + '\'' +
+                '}';
     }
 }

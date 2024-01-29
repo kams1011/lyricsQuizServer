@@ -107,7 +107,7 @@
 <!--      </div>-->
 
       <!-- Chat input -->
-      <input type="text" class="chat-input" v-model="message" placeholder="Send a message" @keydown.enter="send()">
+      <input type="text" class="chat-input" v-model="message" placeholder="Send a message" @keydown.enter="send('TALK')">
       <button type="button" class="chat-input">
         <i class="fab"></i> Click</button>
     </div>
@@ -137,19 +137,13 @@ export default {
     this.connect()
   },
   methods: {
-    // sendMessage (e) {
-    //   if(e.keyCode === 13 && this.userName !== '' && this.message !== ''){
-    //     this.send()
-    //     this.message = 'hiohi'
-    //   }
-    // },
-    send() {
+    send(type) {
         console.log("Send message:" + this.message);
         if (this.stompClient && this.stompClient.connected) {
           const msg = {
-            type: 'TALK',
+            type: type,
             roomId : this.roomId,
-            senderNickName: 'test', // 이부분 어차피 Cookie로 빼야겠네.
+            // senderNickName: 'test',
             message : this.message
           };
           this.stompClient.send("/pub/chat/message", JSON.stringify(msg), {}); // 그냥 쿠키 넣어주면 될듯?
@@ -165,9 +159,10 @@ export default {
             frame => {
               this.connected = true;
               console.log('소켓 연결 성공', frame);
-              this.stompClient.subscribe("/sub/chat/room/" + this.roomId, res => {
+              const subscribe = this.stompClient.subscribe("/sub/chat/room/" + this.roomId, res => {
                 this.recvList.push(JSON.parse(res.body))
               });
+              this.send('ENTER');
             },
             error => {
               console.log('소켓 연결 실패', error);

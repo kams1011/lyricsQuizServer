@@ -36,25 +36,20 @@ public class ChatServiceImpl implements ChatService {
     public void sendMessage(ChatMessage message, User user) {
         String nickName = user.getNickName();
         message.setSender(nickName);
-        // 채팅방 입장시에는 대화명과 메시지를 자동으로 세팅한다.
         if (message.getType().equals(MessageType.ENTER)) {
             message = message.join(nickName);
         }
-        // Websocket에 발행된 메시지를 redis로 발행(publish)
-        // (채널 이름, 메세지)
-
         redisUtil.publish(message);
     }
 
     public void enter(Long gameRoomSeq, String password, User user){
         GameRoom gameRoom = getGameRoom(gameRoomSeq);
         UserInfo userInfo = findUserInfoOrCreate(user, gameRoomSeq);
-        //FIXME 여기서 누락된 SessionID를 StompHandler에서 넣어줘야함.
         if (isRoomEnterAllowed(gameRoom, password, user, userInfo)) {
             gameRoom.enter(userInfo);
             createGameRoom(gameRoom);
         } else {
-            throw new IllegalStateException(); // 에러 발생
+            throw new IllegalStateException("방 입장이 불가능합니다.");
         }
     }
 
@@ -66,6 +61,12 @@ public class ChatServiceImpl implements ChatService {
         redisUtil.putObject(RedisCategory.GAME_ROOM.name(), gameRoom.getGameRoomSeq(), gameRoom, opsHashGameRoom);
         return gameRoom;
     }
+
+//    public void publishEntryMessage(User user){
+//        ChatMessage chatMessage = new ChatMessage();
+//        chatMessage = chatMessage.join(user.getNickName());
+//        sendMessage(chatMessage, user);
+//    }
 
     public UserInfo putUserInfo(UserInfo userInfo){
         redisUtil.putObject(RedisCategory.USER_INFO.name(), userInfo.getUserSeq(), userInfo, opsHashUserInfo);
@@ -99,4 +100,6 @@ public class ChatServiceImpl implements ChatService {
 
         return userInfo;
     }
+
+
 }
