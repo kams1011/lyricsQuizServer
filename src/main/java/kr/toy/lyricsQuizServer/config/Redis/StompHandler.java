@@ -41,6 +41,18 @@ public class StompHandler implements ChannelInterceptor {
         return message;
     }
 
+    public void StompCommandHandling(Message<?> message){
+        StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
+        try {
+            if (StompCommand.SUBSCRIBE == accessor.getCommand()) {
+                putUserInfo(accessor, message);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            //FIXME StompHeaderAccessor로 에러 메시지 보낼 수 있는지 확인
+        }
+    }
+
     public void putUserInfo(StompHeaderAccessor accessor, Message<?> message){
         Map<String, String> attributes = (Map<String, String>)message.getHeaders().get("simpSessionAttributes");
         String token = attributes.get("token");
@@ -48,15 +60,6 @@ public class StompHandler implements ChannelInterceptor {
         Long gameRoomSeq = getGameRoomSeq(accessor);
         chatService.putUserInfo(UserInfo.from(user, gameRoomSeq, accessor.getSessionId()));
     }
-
-//    public void enterRoom(StompHeaderAccessor accessor){
-//        String roomId = parseDestination(accessor,"roomId");
-//        UserInfo userInfo = chatService.getUserInfoBy(Long.parseLong(accessor.getUser().getName()));
-//        GameRoom gameRoom = chatService.getGameRoom(Long.parseLong(roomId));
-//        gameRoom.enter(userInfo);
-//        userInfo.enter(Long.parseLong(roomId));
-//        chatService.putUserInfo(userInfo, Long.parseLong(accessor.getUser().getName()));
-//    }
 
     public String parseDestination(StompHeaderAccessor accessor, String key){
         UriComponents components = UriComponentsBuilder.fromUriString(accessor.getDestination()).build();
@@ -78,18 +81,6 @@ public class StompHandler implements ChannelInterceptor {
         }
     }
 
-    public void StompCommandHandling(Message<?> message){
-        StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
-        System.out.println(accessor.toString());
-        try {
-            if (StompCommand.SUBSCRIBE == accessor.getCommand()) {
-                putUserInfo(accessor, message);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
 
-            //FIXME StompHeaderAccessor로 에러 메시지 보낼 수 있는지 확인
-        }
-    }
 
 }
