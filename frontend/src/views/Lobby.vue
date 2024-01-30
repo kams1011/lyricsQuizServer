@@ -137,11 +137,12 @@ export default {
       axios.get('https://localhost:80/room?roomId=' + roomSeq +'&password=' + this.password,
           { withCredentials : true
           }).then(response => {
-
+        this.$router.push({ path: `/room/${roomSeq}` });
       }).catch(error => {
-
+        alert(error.response.data.message);
+        window.location.reload();
       })
-      this.$router.push({ path: `/room/${roomSeq}` });
+
     },
     submitPassword() {
       const jsonData = {

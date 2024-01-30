@@ -4,14 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Post Submission Form</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <component is="script" src="https://cdn.tailwindcss.com"></component>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
-    <style>
-      /* Ensure that the form elements have full width */
-      .form-input, .form-textarea, .form-select, .form-multiselect, .form-checkbox, .form-radio {
-        width: 100%;
-      }
-    </style>
   </head>
   <body>
   <div class="bg-gray-100 p-6 max-w-2xl mx-auto my-8 rounded-lg shadow">
@@ -148,5 +142,8 @@ export default {
 </script>
 
 <style scoped>
-
+/* Ensure that the form elements have full width */
+.form-input, .form-textarea, .form-select, .form-multiselect, .form-checkbox, .form-radio {
+  width: 100%;
+}
 </style>

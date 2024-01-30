@@ -4,93 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Stream Chat Interface</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-      body {
-        background-color: #0e0e10;
-        font-family: Arial, sans-serif;
-      }
-      .flex-container {
-        display: flex;
-        height: 100vh;
-      }
-      .video-container {
-        flex: 1;
-        background-color: #18181b;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .video-placeholder {
-        width: 80%;
-        height: 60%;
-        background-color: #0e0e10;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #d1d1d1;
-        font-size: 24px;
-      }
-      .chat-container {
-        width: 400px;
-        background-color: #18181b;
-        color: #d1d1d1;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-      }
-      .chat-messages {
-        overflow-y: auto;
-        padding: 16px;
-      }
-      .chat-message {
-        background-color: #0e0e10;
-        padding: 8px 16px;
-        border-radius: 4px;
-        margin-bottom: 4px;
-        font-size: 14px;
-      }
-      .chat-message span {
-        font-weight: bold;
-      }
-      .chat-message .username {
-        color: #efeff1;
-      }
-      .chat-message .message {
-        color: #a7a7a7;
-      }
-      .chat-input {
-        border: none;
-        padding: 12px 16px;
-        font-size: 16px;
-        color: #d1d1d1;
-        width: 100%;
-        box-sizing: border-box;
-      }
-      .chat-input::placeholder {
-        color: #4b4b4b;
-      }
-      .streamer-info {
-        color: #a7a7a7;
-        font-size: 12px;
-        text-align: center;
-        padding: 12px 0;
-      }
-      .streamer-info span {
-        color: #efeff1;
-      }
-    </style>
+    <component is="script" src="https://cdn.tailwindcss.com"></component>
   </head>
   <body>
   <div class="flex-container">
     <!-- Video container -->
-    <div class="video-container w-2/4 h-60 float-left">
+    <div class="video-container w-2/4 h-80 float-left">
       <div class="video-placeholder">
         <i class="fas fa-play-circle"></i> Video Player
       </div>
     </div>
-
     <!-- Chat container -->
     <div class="chat-container w-2/4 float-right">
       <!-- Chat messages -->
@@ -189,4 +112,79 @@ export default {
 
 <style scoped>
 @import '../assets/css/room.css';
+body {
+  background-color: #0e0e10;
+  font-family: Arial, sans-serif;
+}
+.flex-container {
+  display: flex;
+  height: 100vh;
+}
+.video-container {
+  flex: 1;
+  background-color: #18181b;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.video-placeholder {
+  width: 80%;
+  height: 60%;
+  background-color: #0e0e10;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #d1d1d1;
+  font-size: 24px;
+}
+.chat-container {
+  width: 400px;
+  background-color: #18181b;
+  color: #d1d1d1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.chat-messages {
+  overflow-y: auto;
+  background-color: white;
+  padding: 16px;
+}
+.chat-message {
+  background-color: #0e0e10;
+  padding: 8px 16px;
+  border-radius: 4px;
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+.chat-message span {
+  font-weight: bold;
+}
+.chat-message .username {
+  color: #efeff1;
+}
+.chat-message .message {
+  color: #a7a7a7;
+}
+.chat-input {
+  border: none;
+  padding: 12px 16px;
+  font-size: 16px;
+  color: #d1d1d1;
+  width: 100%;
+  box-sizing: border-box;
+}
+.chat-input::placeholder {
+  color: #4b4b4b;
+}
+.streamer-info {
+  color: #a7a7a7;
+  font-size: 12px;
+  text-align: center;
+  padding: 12px 0;
+}
+.streamer-info span {
+  color: #efeff1;
+}
 </style>

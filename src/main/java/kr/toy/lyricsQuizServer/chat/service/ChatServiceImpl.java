@@ -48,8 +48,6 @@ public class ChatServiceImpl implements ChatService {
         if (isRoomEnterAllowed(gameRoom, password, user, userInfo)) {
             gameRoom.enter(userInfo);
             createGameRoom(gameRoom);
-        } else {
-            throw new IllegalStateException("방 입장이 불가능합니다.");
         }
     }
 
@@ -87,8 +85,17 @@ public class ChatServiceImpl implements ChatService {
         return userInfo;
     }
 
-    public boolean isRoomEnterAllowed(GameRoom gameRoom, String password, User user, UserInfo userInfo){
-        return gameRoom.isRoomOpen(password) && !gameRoom.isEntered(user) && !userInfo.inGame();
+    public boolean isRoomEnterAllowed(GameRoom gameRoom, String password, User user, UserInfo userInfo) {
+        if (!gameRoom.isRoomOpen(password)) {
+            throw new IllegalStateException("비밀번호가 맞지 않습니다.");
+        }
+        if (gameRoom.isEntered(user)) {
+            throw new IllegalStateException("이미 입장한 방입니다.");
+        }
+        if (userInfo.inGame()) {
+            throw new IllegalStateException("다른 방에 입장한 유저입니다.");
+        }
+        return true;
     }
 
     public UserInfo findUserInfoOrCreate(User user, Long gameRoomSeq){

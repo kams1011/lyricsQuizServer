@@ -3,8 +3,11 @@ package kr.toy.lyricsQuizServer.chat.controller;
 import kr.toy.lyricsQuizServer.chat.controller.dto.ChatMessage;
 import kr.toy.lyricsQuizServer.chat.controller.port.ChatService;
 import kr.toy.lyricsQuizServer.chat.service.ChatServiceImpl;
+import kr.toy.lyricsQuizServer.common.domain.Response;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -26,8 +29,14 @@ public class ChatController {
 
     @GetMapping("/room")
     @ResponseBody
-    public void enter(@RequestParam Long roomId, @RequestParam String password, User user){
-        chatServiceImpl.enter(roomId, password, user);
+    public ResponseEntity<Response> enter(@RequestParam Long roomId, @RequestParam String password, User user){
+        try {
+            chatServiceImpl.enter(roomId, password, user);
+        } catch (IllegalStateException e){
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(false, e.getMessage(), null, null));
+        }
+        return ResponseEntity.ok().body(new Response(true, null, null, null));
+
     }
 
 
