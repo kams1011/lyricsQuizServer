@@ -2,6 +2,7 @@ package kr.toy.lyricsQuizServer.config.Redis;
 
 import kr.toy.lyricsQuizServer.config.JwtUtils;
 import kr.toy.lyricsQuizServer.user.domain.User;
+import kr.toy.lyricsQuizServer.user.domain.dto.UserInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.messaging.Message;
@@ -13,9 +14,11 @@ public class SocketJwtArgumentResolver implements HandlerMethodArgumentResolver 
 
     private final JwtUtils jwtUtils;
 
+    private final RedisUtil redisUtil;
+
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
-        return parameter.getParameterType().equals(User.class);
+        return parameter.getParameterType().equals(UserInfo.class);
     }
 
     @Override
@@ -23,7 +26,7 @@ public class SocketJwtArgumentResolver implements HandlerMethodArgumentResolver 
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
         String accessToken = accessor.getSessionAttributes().get("token").toString();
 
-        User user = jwtUtils.getUserBy(accessToken);
-        return user;
+        Long userSeq = jwtUtils.getUserSeqIn(accessToken);
+        return redisUtil.findUserInfo(userSeq);
     }
 }

@@ -3,6 +3,7 @@ package kr.toy.lyricsQuizServer.user.domain.dto;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 

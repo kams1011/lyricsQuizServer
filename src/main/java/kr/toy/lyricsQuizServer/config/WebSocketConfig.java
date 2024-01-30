@@ -2,6 +2,7 @@ package kr.toy.lyricsQuizServer.config;
 
 import kr.toy.lyricsQuizServer.chat.service.ChatServiceImpl;
 import kr.toy.lyricsQuizServer.config.ConfigurationProperties.SecurityProperties;
+import kr.toy.lyricsQuizServer.config.Redis.RedisUtil;
 import kr.toy.lyricsQuizServer.config.Redis.SocketJwtArgumentResolver;
 import kr.toy.lyricsQuizServer.config.Redis.StompHandler;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,8 @@ import java.util.List;
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     private final JwtUtils jwtUtils;
+
+    private final RedisUtil redisUtil;
 
     private final ChatServiceImpl chatService;
 
@@ -44,7 +47,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> argumentResolvers) {
-        argumentResolvers.add(new SocketJwtArgumentResolver(jwtUtils));
+        argumentResolvers.add(new SocketJwtArgumentResolver(jwtUtils, redisUtil));
     }
 
 }

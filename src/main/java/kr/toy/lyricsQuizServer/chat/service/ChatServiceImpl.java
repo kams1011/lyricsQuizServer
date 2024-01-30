@@ -33,7 +33,7 @@ public class ChatServiceImpl implements ChatService {
     //ChannelTopic 종류도 여러개 생성해야함. -> Enum으로 관리해서 각 채널토픽을 생성하는 메서드를 만들자.
 
     @Override
-    public void sendMessage(ChatMessage message, User user) {
+    public void sendMessage(ChatMessage message, UserInfo user) {
         String nickName = user.getNickName();
         message.setSender(nickName);
         if (message.getType().equals(MessageType.ENTER)) {
@@ -95,6 +95,10 @@ public class ChatServiceImpl implements ChatService {
         if (userInfo.inGame()) {
             throw new IllegalStateException("다른 방에 입장한 유저입니다.");
         }
+        //FIXME 방이 존재하는가 여부
+        //FIXME 방장이 존재하는가 여부
+        //FIXME 방장이 존재하지 않으면 방을 종료하는 로직.
+        //FIXME 모든 인원이 준비를 마쳤는데 1분 내에 게임을 실행하지 않으면 방을 종료하는 로직.
         return true;
     }
 
@@ -106,6 +110,22 @@ public class ChatServiceImpl implements ChatService {
         }
 
         return userInfo;
+    }
+
+
+    public boolean commonValid(){
+
+        return true;
+    }
+
+    public boolean gameStartValid(){
+
+        return true;
+    }
+
+    public boolean enterValid(){
+
+        return true;
     }
 
 
