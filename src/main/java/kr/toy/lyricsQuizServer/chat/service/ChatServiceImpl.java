@@ -5,7 +5,9 @@ import kr.toy.lyricsQuizServer.chat.controller.port.ChatService;
 import kr.toy.lyricsQuizServer.chat.domain.MessageType;
 import kr.toy.lyricsQuizServer.config.Redis.RedisCategory;
 import kr.toy.lyricsQuizServer.config.Redis.RedisUtil;
+import kr.toy.lyricsQuizServer.game.controller.port.GameService;
 import kr.toy.lyricsQuizServer.game.controller.response.GameRoom;
+import kr.toy.lyricsQuizServer.game.domain.Game;
 import kr.toy.lyricsQuizServer.game.service.port.GameRepository;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.domain.dto.UserInfo;
@@ -42,13 +44,21 @@ public class ChatServiceImpl implements ChatService {
         redisUtil.publish(message);
     }
 
+
     public void enter(Long gameRoomSeq, String password, User user){
         GameRoom gameRoom = getGameRoom(gameRoomSeq);
         UserInfo userInfo = findUserInfoOrCreate(user, gameRoomSeq);
         if (isRoomEnterAllowed(gameRoom, password, user, userInfo)) {
             gameRoom.enter(userInfo);
             createGameRoom(gameRoom);
+            addAttendeeCount(gameRoomSeq);
         }
+    }
+
+    public void addAttendeeCount(Long gameRoomSeq){
+        Game game = gameRepository.findById(gameRoomSeq);
+        game.join();
+        gameRepository.save(game.getManager(),game, game.getQuiz());
     }
 
     /**

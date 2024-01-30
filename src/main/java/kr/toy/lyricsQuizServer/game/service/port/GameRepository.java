@@ -19,5 +19,4 @@ public interface GameRepository {
 
     Game save(User user, Game game, Quiz quiz);
 
-
 }
