@@ -12,6 +12,7 @@ import kr.toy.lyricsQuizServer.game.service.port.GameRepository;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.domain.dto.UserInfo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
@@ -45,7 +46,7 @@ public class ChatServiceImpl implements ChatService {
     }
 
 
-    public void enter(Long gameRoomSeq, String password, User user){
+    public void enter(Long gameRoomSeq, String password, User user) throws InvalidDataAccessApiUsageException{
         GameRoom gameRoom = getGameRoom(gameRoomSeq);
         UserInfo userInfo = findUserInfoOrCreate(user, gameRoomSeq);
         if (isRoomEnterAllowed(gameRoom, password, user, userInfo)) {
@@ -81,9 +82,10 @@ public class ChatServiceImpl implements ChatService {
         return userInfo;
     }
 
-    public GameRoom getGameRoom(Long gameRoomSeq){
+    public GameRoom getGameRoom(Long gameRoomSeq) throws InvalidDataAccessApiUsageException{
         GameRoom gameRoom = redisUtil.getObject(RedisCategory.GAME_ROOM.name(), gameRoomSeq, opsHashGameRoom);
         if (gameRoom == null) {
+            //FIXME InvalidDataAccessApiUsageException 정리하기.
             gameRoom = GameRoom.from(gameRepository.findById(gameRoomSeq));
             createGameRoom(gameRoom);
         }
@@ -96,6 +98,9 @@ public class ChatServiceImpl implements ChatService {
     }
 
     public boolean isRoomEnterAllowed(GameRoom gameRoom, String password, User user, UserInfo userInfo) {
+        if (gameRoom == null) {
+            throw new IllegalStateException("존재하지 않는 방입니다.");
+        }
         if (!gameRoom.isRoomOpen(password)) {
             throw new IllegalStateException("비밀번호가 맞지 않습니다.");
         }

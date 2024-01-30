@@ -142,7 +142,6 @@ export default {
         alert(error.response.data.message);
         window.location.reload();
       })
-
     },
     submitPassword() {
       const jsonData = {

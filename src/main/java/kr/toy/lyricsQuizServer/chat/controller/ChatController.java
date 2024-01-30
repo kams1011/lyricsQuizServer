@@ -7,6 +7,7 @@ import kr.toy.lyricsQuizServer.common.domain.Response;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.domain.dto.UserInfo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -28,11 +29,11 @@ public class ChatController {
 
     @GetMapping("/room")
     @ResponseBody
-    public ResponseEntity<Response> enter(@RequestParam Long roomId, @RequestParam String password, User user) {
+    public ResponseEntity<Response> enter(@RequestParam Long roomId, @RequestParam(required = false) String password, User user) {
         try {
             chatServiceImpl.enter(roomId, password, user);
             return ResponseEntity.ok().body(new Response(true, null, null, null));
-        } catch (IllegalStateException e) {
+        } catch (IllegalStateException | InvalidDataAccessApiUsageException e) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(false, e.getMessage(), null, null));
         }
     }

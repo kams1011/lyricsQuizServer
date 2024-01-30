@@ -22,7 +22,9 @@ public class GameRepositoryImpl implements GameRepository {
 
     @Override
     public Game findById(Long gameSeq) {
-        return gameJpaRepository.findById(gameSeq).orElseThrow(IllegalArgumentException::new).toModel();
+        return gameJpaRepository.findById(gameSeq)
+                .map(GameEntity::toModel)
+                .orElseThrow(() -> new IllegalArgumentException("게임을 찾을 수 없습니다."));
     }
 
     @Override

@@ -42,6 +42,7 @@
 <script>
 import * as Stomp from "webstomp-client";
 import * as SockJS from "sockjs-client";
+import axios from "axios";
 // import Cookies from 'js-cookie';
 
 export default {
@@ -73,6 +74,7 @@ export default {
           this.message = '';
         }
     },
+
     connect() {
         const serverURL = "https://localhost:80/ws-stomp"
         let socket = new SockJS(serverURL);
