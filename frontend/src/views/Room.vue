@@ -90,7 +90,7 @@ export default {
               this.send('ENTER');
             },
             error => {
-              console.log('소켓 연결 실패', error);
+              console.log('소켓 연결 실패', error.headers);
               alert('방에 접속할 수 없습니다.');
               this.connected = false;
               window.location.href ='/';

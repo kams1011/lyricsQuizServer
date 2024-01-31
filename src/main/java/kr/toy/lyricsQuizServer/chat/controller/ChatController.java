@@ -10,11 +10,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.support.ErrorMessage;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -38,13 +39,10 @@ public class ChatController {
         }
     }
 
-
-
     @MessageMapping("/chat/message")
     public void message(ChatMessage message, UserInfo user) {
         chatService.sendMessage(message, user);
     }
-
 
     @MessageMapping("/game/start")
     public void streaming(Long gameSeq){
