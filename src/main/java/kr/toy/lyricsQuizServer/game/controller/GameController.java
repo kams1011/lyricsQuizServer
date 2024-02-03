@@ -11,6 +11,8 @@ import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizDetailToCreateRoom;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
@@ -74,9 +76,15 @@ public class GameController {
         return ResponseEntity.ok().body(Response.success("유효한 비밀번호입니다."));
     }
 
-    public ResponseEntity<Response> join(){
-
-        return null;
+    @GetMapping("/room")
+    @ResponseBody
+    public ResponseEntity<Response> enter(@RequestParam Long roomId, @RequestParam(required = false) String password, User user) {
+        try {
+            gameService.enter(roomId, password, user);
+            return ResponseEntity.ok().body(new Response(true, null, null, null));
+        } catch (IllegalStateException | InvalidDataAccessApiUsageException e) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(false, e.getMessage(), null, null));
+        }
     }
 
 }

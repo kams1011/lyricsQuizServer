@@ -2,6 +2,8 @@ package kr.toy.lyricsQuizServer.config.Redis;
 
 import kr.toy.lyricsQuizServer.chat.controller.dto.ChatMessage;
 import kr.toy.lyricsQuizServer.game.controller.response.GameRoom;
+import kr.toy.lyricsQuizServer.memory.RedisMemoryGameRoomService;
+import kr.toy.lyricsQuizServer.memory.RedisMemoryUserInfoService;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.domain.dto.UserInfo;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,14 @@ public class RedisUtil {
 
     private final RedisTemplate<String, Object> redisTemplate;
 
+    private final RedisMemoryGameRoomService<GameRoom, Long> memoryGameRoomService;
+
+    private final RedisMemoryUserInfoService<UserInfo, Long> memoryUserInfoService;
+
+    private final HashOperations<String, Long, GameRoom> opsHashGameRoom;
+
+    private final HashOperations<String, Long, UserInfo> opsHashUserInfo;
+
     // 채팅방의 대화 메시지를 발행하기 위한 redis topic 정보. 서버별로 채팅방에 매치되는 topic정보를 Map에 넣어 roomId로 찾을수 있도록 한다.
 //    private Map<String, ChannelTopic> topics;
 
@@ -36,20 +46,26 @@ public class RedisUtil {
 
     @Cacheable(value = "USER_INFO", key = "#key")
     public UserInfo findUserInfo(Long key){
-        HashOperations<String, Long, UserInfo> ops = redisTemplate.opsForHash();
-        return ops.get(RedisCategory.USER_INFO.name(), key);
+        return opsHashUserInfo.get(RedisCategory.USER_INFO.name(), key);
     }
 
     public void publish(ChatMessage message){
         redisTemplate.convertAndSend(RedisCategory.GAME_ROOM.name(), message);
     }
 
-    public <T, K> T getObject(String category, K id, HashOperations<String, K, T> opsHash) {
-        return opsHash.get(category, id);
+    public void putGameRoomInRedis(Long id, GameRoom gameRoom){
+        memoryGameRoomService.putObject(id, gameRoom, opsHashGameRoom);
+    }
+    public void putUserInfoInRedis(Long id, UserInfo userInfo){
+        memoryUserInfoService.putObject(id, userInfo, opsHashUserInfo);
     }
 
-    public <T, K> void putObject(String category, K id, T data, HashOperations<String, K, T> opsHash) {
-        opsHash.put(category, id, data);
+    public GameRoom getGameRoomFromRedis(Long id){
+        return memoryGameRoomService.getObject(id, opsHashGameRoom);
+    }
+
+    public UserInfo getUserInfoFromRedis(Long id){
+        return memoryUserInfoService.getObject(id, opsHashUserInfo);
     }
 
 }

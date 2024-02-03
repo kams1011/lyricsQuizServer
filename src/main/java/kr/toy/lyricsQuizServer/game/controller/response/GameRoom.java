@@ -15,6 +15,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Getter
 public class GameRoom implements Serializable {
@@ -27,7 +28,9 @@ public class GameRoom implements Serializable {
 
     private final LocalDateTime startedAt;
 
-    private final String managerName;
+    private final String hostName;
+
+    private final Long hostSeq;
 
     private final String topic;
 
@@ -44,13 +47,14 @@ public class GameRoom implements Serializable {
     private List<UserInfo> userList;
 
     @Builder
-    public GameRoom(Long gameRoomSeq, String roomName, LocalDateTime startedAt, String managerName,
+    public GameRoom(Long gameRoomSeq, String roomName, LocalDateTime startedAt, String hostName, Long hostSeq,
                     String topic, Integer attendeeLimit, Integer attendeeCount, GameStatus gameStatus,
                     Boolean isSecretRoom, String password, List<UserInfo> userList) {
         this.gameRoomSeq = gameRoomSeq;
         this.roomName = roomName;
         this.startedAt = startedAt;
-        this.managerName = managerName;
+        this.hostName = hostName;
+        this.hostSeq = hostSeq;
         this.topic = topic;
         this.attendeeLimit = attendeeLimit;
         this.attendeeCount = attendeeCount;
@@ -67,7 +71,8 @@ public class GameRoom implements Serializable {
                 .roomName(game.getRoomName())
                 .topic(game.getQuiz().getTitle()) //FIXME Query 확인하기
                 .startedAt(game.getStartedAt())
-                .managerName(game.getManager().getNickName())
+                .hostName(game.getHost().getNickName())
+                .hostSeq(game.getHost().getUserSeq())
                 .attendeeLimit(game.getAttendeeLimit())
                 .attendeeCount(game.getAttendeeCount())
                 .gameStatus(game.getGameStatus())
@@ -105,7 +110,7 @@ public class GameRoom implements Serializable {
 
     public static List<UserInfo> userInfoListFrom(Game game){
         List<UserInfo> userInfoList = new ArrayList<>(game.getAttendeeLimit());
-        userInfoList.add(UserInfo.from(game.getManager(), game.getGameRoomSeq(), null));
+        userInfoList.add(UserInfo.from(game.getHost(), game.getGameRoomSeq(), null));
         return userInfoList;
     }
 
@@ -120,4 +125,10 @@ public class GameRoom implements Serializable {
             return false;
         }
     }
+    public void isUserPresent(User user){
+        if (!this.userList.contains(user)) {
+            throw new NoSuchElementException("유저가 존재하지 않습니다.");
+        }
+    }
+
 }

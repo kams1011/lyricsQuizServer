@@ -36,7 +36,7 @@ public class GameRepositoryImpl implements GameRepository {
 
     @Override
     public List<Game> findAllByRoomNameOrManagerName(String word, Pageable pageable) {
-        return gameJpaRepository.findAllByRoomNameOrManager(word, pageable)
+        return gameJpaRepository.findAllByRoomNameOrHost(word, pageable)
                 .stream().map(GameEntity::toModel)
                 .collect(Collectors.toList());
     }

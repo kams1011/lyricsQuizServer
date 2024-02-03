@@ -27,7 +27,7 @@ public class GameEntity {
 
     @ManyToOne
     @JoinColumn(name = "userSeq")
-    private UserEntity manager;
+    private UserEntity host;
 
     private String roomName;
 
@@ -54,11 +54,11 @@ public class GameEntity {
 
 
     @Builder
-    public GameEntity(Long gameRoomSeq, UserEntity manager, String roomName, Boolean isSecretRoom, String password,
+    public GameEntity(Long gameRoomSeq, UserEntity host, String roomName, Boolean isSecretRoom, String password,
                       Integer attendeeLimit, Integer attendeeCount, LocalDateTime createdAt, LocalDateTime startedAt,
                       LocalDateTime endedAt, QuizEntity quiz, GameStatus gameStatus){
         this.gameRoomSeq = gameRoomSeq;
-        this.manager = manager;
+        this.host = host;
         this.roomName = roomName;
         this.isSecretRoom = isSecretRoom;
         this.password = password;
@@ -74,7 +74,7 @@ public class GameEntity {
     public Game toModel(){
         return Game.builder()
                 .gameRoomSeq(gameRoomSeq)
-                .manager(manager.toModel())
+                .host(host.toModel())
                 .roomName(roomName)
                 .isSecretRoom(isSecretRoom)
                 .password(password)
@@ -88,10 +88,10 @@ public class GameEntity {
                 .build();
     }
 
-    public static GameEntity fromModel(User manager, Game game, Quiz quiz){
+    public static GameEntity fromModel(User host, Game game, Quiz quiz){
         return GameEntity.builder()
                 .gameRoomSeq(game.getGameRoomSeq())
-                .manager(UserEntity.fromModel(manager))
+                .host(UserEntity.fromModel(host))
                 .roomName(game.getRoomName())
                 .isSecretRoom(game.getIsSecretRoom())
                 .password(game.getPassword())

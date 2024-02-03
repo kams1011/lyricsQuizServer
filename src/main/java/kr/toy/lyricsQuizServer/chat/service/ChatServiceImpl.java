@@ -3,21 +3,16 @@ package kr.toy.lyricsQuizServer.chat.service;
 import kr.toy.lyricsQuizServer.chat.controller.dto.ChatMessage;
 import kr.toy.lyricsQuizServer.chat.controller.port.ChatService;
 import kr.toy.lyricsQuizServer.chat.domain.MessageType;
-import kr.toy.lyricsQuizServer.config.Redis.RedisCategory;
 import kr.toy.lyricsQuizServer.config.Redis.RedisUtil;
-import kr.toy.lyricsQuizServer.game.controller.port.GameService;
 import kr.toy.lyricsQuizServer.game.controller.response.GameRoom;
-import kr.toy.lyricsQuizServer.game.domain.Game;
 import kr.toy.lyricsQuizServer.game.service.port.GameRepository;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.domain.dto.UserInfo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
-import org.springframework.data.redis.core.HashOperations;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -27,10 +22,6 @@ public class ChatServiceImpl implements ChatService {
 
     private final GameRepository gameRepository;
 
-    private final HashOperations<String, Long, GameRoom> opsHashGameRoom;
-
-    /** Session 정보에 User 정보를 매핑 **/
-    private final HashOperations<String, Long, UserInfo> opsHashUserInfo;
 
     //단일 ChannelTOpic이 아니라 다중 ChannelTopic을 사용해야함.
     //ChannelTopic 종류도 여러개 생성해야함. -> Enum으로 관리해서 각 채널토픽을 생성하는 메서드를 만들자.
@@ -45,29 +36,12 @@ public class ChatServiceImpl implements ChatService {
         redisUtil.publish(message);
     }
 
-
-    public void enter(Long gameRoomSeq, String password, User user) throws InvalidDataAccessApiUsageException{
-        GameRoom gameRoom = getGameRoom(gameRoomSeq);
-        UserInfo userInfo = findUserInfoOrCreate(user, gameRoomSeq);
-        if (isRoomEnterAllowed(gameRoom, password, user, userInfo)) {
-            gameRoom.enter(userInfo);
-            createGameRoom(gameRoom);
-            addAttendeeCount(gameRoomSeq);
-        }
-    }
-
-    public void addAttendeeCount(Long gameRoomSeq){
-        Game game = gameRepository.findById(gameRoomSeq);
-        game.join();
-        gameRepository.save(game.getManager(),game, game.getQuiz());
-    }
-
     /**
      * 채팅방 생성 : 서버간 채팅방 공유를 위해 redis hash에 저장한다.
      */
     @Override
     public GameRoom createGameRoom(GameRoom gameRoom) {
-        redisUtil.putObject(RedisCategory.GAME_ROOM.name(), gameRoom.getGameRoomSeq(), gameRoom, opsHashGameRoom);
+        redisUtil.putGameRoomInRedis(gameRoom.getGameRoomSeq(), gameRoom);
         return gameRoom;
     }
 
@@ -77,13 +51,8 @@ public class ChatServiceImpl implements ChatService {
 //        sendMessage(chatMessage, user);
 //    }
 
-    public UserInfo putUserInfo(UserInfo userInfo){
-        redisUtil.putObject(RedisCategory.USER_INFO.name(), userInfo.getUserSeq(), userInfo, opsHashUserInfo);
-        return userInfo;
-    }
-
-    public GameRoom getGameRoom(Long gameRoomSeq) throws InvalidDataAccessApiUsageException{
-        GameRoom gameRoom = redisUtil.getObject(RedisCategory.GAME_ROOM.name(), gameRoomSeq, opsHashGameRoom);
+    public GameRoom getGameRoom(Long gameRoomSeq) {
+        GameRoom gameRoom = redisUtil.getGameRoomFromRedis(gameRoomSeq);
         if (gameRoom == null) {
             //FIXME InvalidDataAccessApiUsageException 정리하기.
             gameRoom = GameRoom.from(gameRepository.findById(gameRoomSeq));
@@ -92,33 +61,26 @@ public class ChatServiceImpl implements ChatService {
         return gameRoom;
     }
 
-    public UserInfo getUserInfoBy(Long userSeq){
-        UserInfo userInfo = redisUtil.getObject(RedisCategory.USER_INFO.name(), userSeq, opsHashUserInfo);
+    public UserInfo putUserInfo(UserInfo userInfo){
+        redisUtil.putUserInfoInRedis(userInfo.getUserSeq(), userInfo);
         return userInfo;
     }
 
-    public boolean isRoomEnterAllowed(GameRoom gameRoom, String password, User user, UserInfo userInfo) {
-        if (gameRoom == null) {
-            throw new IllegalStateException("존재하지 않는 방입니다.");
+    public UserInfo getUserInfoBy(Long userSeq){
+        UserInfo userInfo = redisUtil.getUserInfoFromRedis(userSeq);
+        return userInfo;
+    }
+
+    public void isHostPresent(GameRoom gameRoom, User host){
+        try {
+            gameRoom.isUserPresent(host);
+        } catch (NoSuchElementException e) {
+            throw new NoSuchElementException("방장이 존재하지 않습니다.");
         }
-        if (!gameRoom.isRoomOpen(password)) {
-            throw new IllegalStateException("비밀번호가 맞지 않습니다.");
-        }
-        if (gameRoom.isEntered(user)) {
-            throw new IllegalStateException("이미 입장한 방입니다.");
-        }
-        if (userInfo.inGame()) {
-            throw new IllegalStateException("다른 방에 입장한 유저입니다.");
-        }
-        //FIXME 방이 존재하는가 여부
-        //FIXME 방장이 존재하는가 여부
-        //FIXME 방장이 존재하지 않으면 방을 종료하는 로직.
-        //FIXME 모든 인원이 준비를 마쳤는데 1분 내에 게임을 실행하지 않으면 방을 종료하는 로직.
-        return true;
     }
 
     public UserInfo findUserInfoOrCreate(User user, Long gameRoomSeq){
-        UserInfo userInfo = getUserInfoBy(user.getUserSeq());
+        UserInfo userInfo = redisUtil.findUserInfo(user.getUserSeq());
 
         if (userInfo == null) {
             userInfo = putUserInfo(UserInfo.from(user, gameRoomSeq, null));
@@ -126,22 +88,5 @@ public class ChatServiceImpl implements ChatService {
 
         return userInfo;
     }
-
-
-    public boolean commonValid(){
-
-        return true;
-    }
-
-    public boolean gameStartValid(){
-
-        return true;
-    }
-
-    public boolean enterValid(){
-
-        return true;
-    }
-
 
 }

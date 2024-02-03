@@ -25,14 +25,12 @@ public class EmbeddedRedisConfig {
 
     @PostConstruct
     public void redisServer() {
-
         try{
             redisServer = new RedisServer(redisProperties.port);
             redisServer.start();
         }catch (Exception e){
             e.printStackTrace();
         }
-
     }
 
     @PreDestroy

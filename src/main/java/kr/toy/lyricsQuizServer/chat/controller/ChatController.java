@@ -28,16 +28,6 @@ public class ChatController {
 
     private final ChatServiceImpl chatServiceImpl;
 
-    @GetMapping("/room")
-    @ResponseBody
-    public ResponseEntity<Response> enter(@RequestParam Long roomId, @RequestParam(required = false) String password, User user) {
-        try {
-            chatServiceImpl.enter(roomId, password, user);
-            return ResponseEntity.ok().body(new Response(true, null, null, null));
-        } catch (IllegalStateException | InvalidDataAccessApiUsageException e) {
-            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(false, e.getMessage(), null, null));
-        }
-    }
 
     @MessageMapping("/chat/message")
     public void message(ChatMessage message, UserInfo user) {

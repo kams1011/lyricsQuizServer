@@ -14,7 +14,7 @@ public class Game {
 
     private Long gameRoomSeq;
 
-    private User manager;
+    private User host;
 
     private String roomName;
 
@@ -38,10 +38,10 @@ public class Game {
 
 
     @Builder
-    public Game(Long gameRoomSeq, User manager, String roomName, Boolean isSecretRoom, String password, Integer attendeeLimit, Integer attendeeCount, LocalDateTime createdAt, LocalDateTime startedAt,
+    public Game(Long gameRoomSeq, User host, String roomName, Boolean isSecretRoom, String password, Integer attendeeLimit, Integer attendeeCount, LocalDateTime createdAt, LocalDateTime startedAt,
                 LocalDateTime endedAt, Quiz quiz, GameStatus gameStatus){
         this.gameRoomSeq = gameRoomSeq;
-        this.manager = manager;
+        this.host = host;
         this.roomName = roomName;
         this.isSecretRoom = isSecretRoom;
         this.password = password;
@@ -55,9 +55,9 @@ public class Game {
     }
 
 
-    public static Game from(GameCreate gameCreate, User manager, Quiz quiz){
+    public static Game from(GameCreate gameCreate, User host, Quiz quiz){
         return Game.builder()
-                .manager(manager)
+                .host(host)
                 .roomName(gameCreate.getRoomName())
                 .isSecretRoom(gameCreate.getIsSecretRoom())
                 .password(gameCreate.getPassword())
@@ -76,9 +76,11 @@ public class Game {
     public void start(LocalDateTime dateTime){
         this.startedAt = dateTime;
     }
+
     public void end(LocalDateTime dateTime){
         this.endedAt = dateTime;
     }
+
     public void join(){
         isAccessibleGameCheck();
         if (this.attendeeCount < this.attendeeLimit) {
@@ -87,9 +89,22 @@ public class Game {
             throw new IllegalStateException("입장 인원을 초과했습니다.");
         }
     }
+
     public void isAccessibleGameCheck(){
         if (!this.gameStatus.isAccessible()) {
             throw new IllegalStateException("게임이 준비상태가 이닙니다.");
+        }
+    }
+
+    public void isHostCheck(User host){
+        if (this.host != host) {
+            throw new IllegalArgumentException("방장이 아닙니다.");
+        }
+    }
+
+    public void checkPlayerCount(){
+        if (attendeeCount  <= 1) {
+            throw new IllegalStateException("게임 시작 인원이 너무 적습니다.");
         }
     }
 }
