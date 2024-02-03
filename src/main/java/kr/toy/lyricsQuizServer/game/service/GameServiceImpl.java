@@ -2,23 +2,18 @@ package kr.toy.lyricsQuizServer.game.service;
 
 
 import kr.toy.lyricsQuizServer.chat.controller.port.ChatService;
-import kr.toy.lyricsQuizServer.chat.service.ChatServiceImpl;
 import kr.toy.lyricsQuizServer.config.Redis.RedisUtil;
 import kr.toy.lyricsQuizServer.game.controller.port.GameService;
 import kr.toy.lyricsQuizServer.game.controller.response.GameRoom;
 import kr.toy.lyricsQuizServer.game.domain.Game;
 import kr.toy.lyricsQuizServer.game.domain.dto.GameCreate;
 import kr.toy.lyricsQuizServer.game.domain.dto.GamePassword;
-import kr.toy.lyricsQuizServer.game.infrastructure.GameEntity;
 import kr.toy.lyricsQuizServer.game.service.port.GameRepository;
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
 import kr.toy.lyricsQuizServer.quiz.service.QuizRepository;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.domain.dto.UserInfo;
-import kr.toy.lyricsQuizServer.user.service.port.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
-import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Pageable;
@@ -31,8 +26,12 @@ import java.util.List;
 public class GameServiceImpl implements GameService {
 
     private final GameRepository gameRepository;
+
     private final QuizRepository quizRepository;
+
     private final ChatService chatService;
+
+    private final RedisUtil redisUtil;
 
 
     @Override
@@ -46,11 +45,11 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public Game create(User user, GameCreate gameCreate) { //FIXME 혼자는 시작할 수 없게 수정.
+    public Game create(User user, GameCreate gameCreate) {
         Quiz quiz = quizRepository.getById(gameCreate.getQuizSeq());
         Game game = Game.from(gameCreate, user, quiz).create(LocalDateTime.now());
         game = gameRepository.save(user, game, quiz);
-        chatService.createGameRoom(GameRoom.from(game));
+        saveGameInRedis(GameRoom.from(game));
         return game;
     }
 
@@ -66,14 +65,95 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public void enter(Long gameRoomSeq, String password, User user) {
-        GameRoom gameRoom = chatService.getGameRoom(gameRoomSeq);
-        UserInfo userInfo = chatService.findUserInfoOrCreate(user, gameRoomSeq);
-        if (isRoomEnterAllowed(gameRoom, password, user, userInfo)) {
+
+        GameRoom gameRoom = getGameRoom(gameRoomSeq);
+        UserInfo userInfo = findUserInfo(user);
+        if (isRoomEnterAllowed(gameRoom, password, userInfo)) {
             gameRoom.enter(userInfo);
-            chatService.createGameRoom(gameRoom);
+            saveGameInRedis(gameRoom);
             addAttendeeCount(gameRoomSeq);
         }
-    } // FIXME ChatService에서 enter와 GameService에서의 enter가 동시에 존재하니 정리 필요.
+    }
+
+    @Override
+    public void ready(Long gameRoomSeq, User user) {
+        GameRoom gameRoom = getGameRoom(gameRoomSeq);
+        UserInfo userInfo = findUserInfo(user);
+        gameRoom.isUserPresent(userInfo);
+        gameRoom.ready(userInfo);
+        saveGameInRedis(gameRoom);
+    }
+
+    @Override
+    public void start(Long gameRoomSeq, User host) {
+        GameRoom gameRoom = getGameRoom(gameRoomSeq);
+        UserInfo hostInfo = findUserInfo(host);
+
+        Game game = gameRepository.findById(gameRoom.getGameRoomSeq());
+        game.start(LocalDateTime.now());
+        gameRoom.isEveryoneReady(hostInfo); // 방장 이외의 인원이 전부 준비완료 상태인가.
+        gameRoom.isHostPresent(hostInfo); // 시작 버튼을 누르는게 방장인가, 방장이 존재하는가.
+        gameRoom.checkPlayerCount();
+        gameRoom.start(LocalDateTime.now());
+        saveGameInRedis(gameRoom);
+        gameRepository.save(game.getHost(), game, game.getQuiz());
+    }
+
+    @Override
+    public void invite(){ //FIXME 초대기능 추가
+
+    }
+
+    @Override
+    public void acceptInvitation(){
+
+    }
+
+
+    @Override
+    public void 같이_할_사람_검색() {
+
+    }
+
+    @Override
+    public GameRoom getGameRoom(Long gameRoomSeq){
+        GameRoom gameRoom = redisUtil.getGameRoomFromRedis(gameRoomSeq);
+        return gameRoom;
+    }
+
+    @Override
+    public GameRoom getGameRoomOrCreate(Long gameRoomSeq) {
+        GameRoom gameRoom = getGameRoom(gameRoomSeq);
+        if (gameRoom == null) { //FIXME InvalidDataAccessApiUsageException 정리하기.
+            gameRoom = GameRoom.from(gameRepository.findById(gameRoomSeq));
+            saveGameInRedis(gameRoom);
+        }
+        return gameRoom;
+    }
+
+    @Override
+    public UserInfo findUserInfo(User user){
+        UserInfo userInfo = redisUtil.getUserInfoFromRedis(user.getUserSeq());
+        return userInfo;
+    }
+
+    @Override
+    public UserInfo findUserInfoOrCreate(User user, Long gameRoomSeq){
+        UserInfo userInfo = findUserInfo(user);
+        if (userInfo == null) {
+            userInfo = UserInfo.from(user, gameRoomSeq, null);
+            putUserInfo(userInfo);
+        }
+
+        return userInfo;
+    }
+
+    @Override
+    public UserInfo putUserInfo(UserInfo userInfo){
+        redisUtil.putUserInfoInRedis(userInfo.getUserSeq(), userInfo);
+        return userInfo;
+    }
+
 
     public void addAttendeeCount(Long gameRoomSeq){
         Game game = gameRepository.findById(gameRoomSeq);
@@ -81,14 +161,14 @@ public class GameServiceImpl implements GameService {
         gameRepository.save(game.getHost(),game, game.getQuiz());
     }
 
-    public boolean isRoomEnterAllowed(GameRoom gameRoom, String password, User user, UserInfo userInfo) {
+    public boolean isRoomEnterAllowed(GameRoom gameRoom, String password, UserInfo userInfo) {
         if (gameRoom == null) {
             throw new IllegalStateException("존재하지 않는 방입니다.");
         }
         if (!gameRoom.isRoomOpen(password)) {
             throw new IllegalArgumentException("비밀번호가 맞지 않습니다.");
         }
-        if (gameRoom.isEntered(user)) {
+        if (gameRoom.isEntered(userInfo)) {
             throw new IllegalStateException("이미 입장한 방입니다.");
         }
         if (userInfo.inGame()) {
@@ -100,39 +180,12 @@ public class GameServiceImpl implements GameService {
         return true;
     }
 
-
-    @Override
-    public void 같이_할_사람_검색() {
-
+    public GameRoom saveGameInRedis(GameRoom gameRoom) {
+        redisUtil.putGameRoomInRedis(gameRoom.getGameRoomSeq(), gameRoom);
+        return gameRoom;
     }
 
-    public void ready(Long gameRoomSeq, User user){
-        gameRepository.findById(gameRoomSeq);
-    }
 
-    public void validate(){
-
-    }
-    // 준비완료 상태를 보내야될듯? 방장 이외의 인원이 전부 준비완료 상태인가.
-
-    public void entryValidate(Long gameRoomSeq, User user){
-        Game game = gameRepository.findById(gameRoomSeq);
-        game.join(); // 방이 준비단계인가 + 입장 시 로직이므로 Redis에 추가해주기. << 기존 Enter메서드와 통합필요
-    }
-
-    public void readyValidate(User user){
-        //1. Game에 접속한 유저인가.
-    }
-
-    public void startValidate(Long gameRoomSeq, User user) {
-        Game game = gameRepository.findById(gameRoomSeq);
-        //방장이 존재하는가.
-        game.isHostCheck(user); // 시작 버튼을 누르는게 방장인가.
-        game.checkPlayerCount(); // 방장 이외에 인원이 존재하는가.
-
-        // 방장 이외의 인원이 전부 준비완료 상태인가.
-    }
-
-    //FIXME 초대기능 추가
     //FIXME Game 생성 용 QuizSummary List 메서드 추가.
+
 }

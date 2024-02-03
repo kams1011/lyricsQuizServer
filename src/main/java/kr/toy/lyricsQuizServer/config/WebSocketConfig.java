@@ -5,6 +5,7 @@ import kr.toy.lyricsQuizServer.config.ConfigurationProperties.SecurityProperties
 import kr.toy.lyricsQuizServer.config.Redis.RedisUtil;
 import kr.toy.lyricsQuizServer.config.Redis.SocketJwtArgumentResolver;
 import kr.toy.lyricsQuizServer.config.Redis.StompHandler;
+import kr.toy.lyricsQuizServer.game.controller.port.GameService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.ChannelRegistration;
@@ -24,7 +25,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     private final RedisUtil redisUtil;
 
-    private final ChatServiceImpl chatService;
+    private final GameService gameService;
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
@@ -41,7 +42,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.interceptors(new StompHandler(jwtUtils, chatService));
+        registration.interceptors(new StompHandler(jwtUtils, gameService));
     }
 
 

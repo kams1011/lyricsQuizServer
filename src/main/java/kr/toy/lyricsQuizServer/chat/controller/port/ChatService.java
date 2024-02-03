@@ -9,9 +9,4 @@ public interface ChatService {
 
     void sendMessage(ChatMessage message, UserInfo user);
 
-    GameRoom createGameRoom(GameRoom gameRoom);
-
-    GameRoom getGameRoom(Long gameRoomSeq);
-
-    UserInfo findUserInfoOrCreate(User user, Long gameRoomSeq);
 }

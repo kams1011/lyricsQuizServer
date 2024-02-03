@@ -18,14 +18,17 @@ public class UserInfo implements Serializable {
 
     Long gameRoomSeq; // FIXME Boolean으로 변경하는게 나으면 Boolean으로 변경.
 
+    boolean ready;
+
     String sessionId;
 
     @Builder
-    public UserInfo(Long userSeq, String nickName, Long gameRoomSeq, String sessionId){
+    public UserInfo(Long userSeq, String nickName, Long gameRoomSeq, String sessionId, boolean ready){
         this.userSeq = userSeq;
         this.nickName = nickName;
         this.gameRoomSeq = gameRoomSeq;
         this.sessionId = sessionId;
+        this.ready = ready;
     }
 
     public static UserInfo from(User user, Long gameRoomSeq, String sessionId){
@@ -34,6 +37,7 @@ public class UserInfo implements Serializable {
                 .nickName(user.getNickName())
                 .gameRoomSeq(gameRoomSeq)
                 .sessionId(sessionId)
+                .ready(false)
                 .build();
         return userInfo;
     }
@@ -53,12 +57,16 @@ public class UserInfo implements Serializable {
 
     public void exit(){
         this.gameRoomSeq = null;
+        this.ready = false;
+    }
+
+    public void ready(){
+        this.ready = true;
     }
 
     public boolean inGame(){
         return this.sessionId != null;
     }
-
 
     @Override
     public String toString() {
@@ -66,6 +74,8 @@ public class UserInfo implements Serializable {
                 "userSeq=" + userSeq +
                 ", nickName='" + nickName + '\'' +
                 ", gameRoomSeq=" + gameRoomSeq +
+                ", ready=" + ready +
+                ", sessionId='" + sessionId + '\'' +
                 '}';
     }
 }

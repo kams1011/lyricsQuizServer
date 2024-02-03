@@ -96,15 +96,4 @@ public class Game {
         }
     }
 
-    public void isHostCheck(User host){
-        if (this.host != host) {
-            throw new IllegalArgumentException("방장이 아닙니다.");
-        }
-    }
-
-    public void checkPlayerCount(){
-        if (attendeeCount  <= 1) {
-            throw new IllegalStateException("게임 시작 인원이 너무 적습니다.");
-        }
-    }
 }

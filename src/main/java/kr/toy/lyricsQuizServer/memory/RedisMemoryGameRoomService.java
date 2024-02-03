@@ -10,18 +10,18 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class RedisMemoryGameRoomService<GameRoom, Long> implements MemoryService<GameRoom, Long>{
 
-    private final HashOperations<String, Long, GameRoom> opsHashGameRoom;
+    private final HashOperations<String, Long, GameRoom> gameRoomHashOperations;
 
     private final String key = RedisCategory.GAME_ROOM.name();
 
     @Override
-    public GameRoom getObject(Long id, HashOperations<String, Long, GameRoom> opsHash) {
-        return opsHashGameRoom.get(key, id);
+    public GameRoom getObject(Long id) {
+        return gameRoomHashOperations.get(key, id);
     }
 
     @Override
-    public void putObject(Long id, GameRoom data, HashOperations<String, Long, GameRoom> opsHash) {
-        opsHashGameRoom.put(key, id, data);
+    public void putObject(Long id, GameRoom data) {
+        gameRoomHashOperations.put(key, id, data);
     }
 
 }

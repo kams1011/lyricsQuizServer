@@ -2,6 +2,7 @@ package kr.toy.lyricsQuizServer.config.Redis;
 
 import kr.toy.lyricsQuizServer.chat.service.ChatServiceImpl;
 import kr.toy.lyricsQuizServer.config.JwtUtils;
+import kr.toy.lyricsQuizServer.game.controller.port.GameService;
 import kr.toy.lyricsQuizServer.game.controller.response.GameRoom;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.domain.dto.UserInfo;
@@ -31,7 +32,8 @@ public class StompHandler implements ChannelInterceptor {
 
     private final JwtUtils jwtUtils;
 
-    private final ChatServiceImpl chatService;
+    private final GameService gameService;
+
 
     private final String destination = "/sub/chat/room/";
 
@@ -58,12 +60,6 @@ public class StompHandler implements ChannelInterceptor {
         return message;
     }
 
-    @Override
-    public void postSend(Message<?> message, MessageChannel channel, boolean sent) {
-        StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
-        System.out.println("COMMAND : " + accessor.getCommand());
-    }
-
     public void StompCommandHandling(Message<?> message) throws IllegalArgumentException, IllegalAccessException {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
 
@@ -76,7 +72,7 @@ public class StompHandler implements ChannelInterceptor {
     public void putUserInfo(StompHeaderAccessor accessor, Message<?> message){
         User user = getUserFrom(message);
         Long gameRoomSeq = getGameRoomSeq(accessor);
-        chatService.putUserInfo(UserInfo.from(user, gameRoomSeq, accessor.getSessionId()));
+        gameService.putUserInfo(UserInfo.from(user, gameRoomSeq, accessor.getSessionId()));
     }
 
     public String parseDestination(StompHeaderAccessor accessor, String key) throws IllegalArgumentException{
@@ -108,9 +104,11 @@ public class StompHandler implements ChannelInterceptor {
     }
 
     public void notEnteredUserCheck(StompHeaderAccessor accessor, Message<?> message) throws IllegalAccessException, IllegalArgumentException {
-        GameRoom gameRoom = chatService.getGameRoom(getGameRoomSeq(accessor));
+        Long gameRoomSeq = getGameRoomSeq(accessor);
+        GameRoom gameRoom = gameService.getGameRoomOrCreate(gameRoomSeq);
         User user = getUserFrom(message);
-        if (gameRoom.isEntered(user)) {
+        UserInfo userInfo = gameService.findUserInfo(user);
+        if (gameRoom.isEntered(userInfo)) {
             throw new IllegalAccessException("정상적인 접근이 아닌 유저입니다.");
         }
     }

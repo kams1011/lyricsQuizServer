@@ -16,39 +16,38 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Getter
 public class GameRoom implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final Long gameRoomSeq;
+    private Long gameRoomSeq;
 
-    private final String roomName;
+    private String roomName;
 
-    private final LocalDateTime startedAt;
+    private LocalDateTime startedAt;
 
-    private final String hostName;
+    private String hostName;
 
-    private final Long hostSeq;
+    private Long hostSeq;
 
-    private final String topic;
+    private String topic;
 
-    private final Integer attendeeLimit;
+    private Integer attendeeLimit;
 
-    private final Integer attendeeCount;
+    private GameStatus gameStatus;
 
-    private final GameStatus gameStatus;
+    private Boolean isSecretRoom;
 
-    private final Boolean isSecretRoom;
-
-    private final String password;
+    private String password;
 
     private List<UserInfo> userList;
 
     @Builder
     public GameRoom(Long gameRoomSeq, String roomName, LocalDateTime startedAt, String hostName, Long hostSeq,
-                    String topic, Integer attendeeLimit, Integer attendeeCount, GameStatus gameStatus,
+                    String topic, Integer attendeeLimit, GameStatus gameStatus,
                     Boolean isSecretRoom, String password, List<UserInfo> userList) {
         this.gameRoomSeq = gameRoomSeq;
         this.roomName = roomName;
@@ -57,13 +56,11 @@ public class GameRoom implements Serializable {
         this.hostSeq = hostSeq;
         this.topic = topic;
         this.attendeeLimit = attendeeLimit;
-        this.attendeeCount = attendeeCount;
         this.gameStatus = gameStatus;
         this.isSecretRoom = isSecretRoom;
         this.password = password;
         this.userList = userList;
     }
-
 
     public static GameRoom from(Game game){
         return GameRoom.builder()
@@ -74,7 +71,6 @@ public class GameRoom implements Serializable {
                 .hostName(game.getHost().getNickName())
                 .hostSeq(game.getHost().getUserSeq())
                 .attendeeLimit(game.getAttendeeLimit())
-                .attendeeCount(game.getAttendeeCount())
                 .gameStatus(game.getGameStatus())
                 .isSecretRoom(game.getIsSecretRoom())
                 .password(game.getPassword())
@@ -83,7 +79,7 @@ public class GameRoom implements Serializable {
     }
 
     public Boolean isCapacityExceeded(){
-        return this.attendeeLimit <= this.attendeeCount;
+        return this.attendeeLimit <= this.userList.size();
     }
 
     public Boolean isReady(){
@@ -118,17 +114,59 @@ public class GameRoom implements Serializable {
         this.userList.add(userInfo);
     }
 
-    public boolean isEntered(User user){
+    public boolean isEntered(UserInfo user){
         if (this.userList.contains(user)) {
             return true;
         } else {
             return false;
         }
     }
-    public void isUserPresent(User user){
+    public void isUserPresent(UserInfo user){
         if (!this.userList.contains(user)) {
             throw new NoSuchElementException("유저가 존재하지 않습니다.");
         }
     }
+
+    public void isHostPresent(UserInfo host){
+        if (!this.userList.contains(host) || !isHost(host)) {
+            throw new NoSuchElementException("호스트가 존재하지 않습니다.");
+        }
+    }
+
+    public void isEveryoneReady(UserInfo host){
+        if (getUserList().stream().filter(user -> !user.isReady() && !user.equals(host)).findAny().isPresent()) {
+            throw new IllegalStateException("준비완료 되지 않은 참여자가 있습니다.");
+        }
+    }
+
+    public void ready(UserInfo user) {
+        if (isHost(user)) {
+            throw new IllegalArgumentException("호스트는 준비완료 할 수 없습니다.");
+        }
+        findUser(user)
+                .ifPresent(data -> data.ready());
+    }
+
+    private boolean isHost(UserInfo user) {
+        return user.getUserSeq() == hostSeq;
+    }
+
+    private Optional<UserInfo> findUser(UserInfo user) {
+        return userList.stream()
+                .filter(data -> data.equals(user))
+                .findFirst();
+    }
+
+    public void checkPlayerCount(){
+        if (userList.size()  <= 1) {
+            throw new IllegalStateException("게임 시작 인원이 너무 적습니다.");
+        }
+    }
+
+    public void start(LocalDateTime startedAt){
+        this.gameStatus = GameStatus.IN_PROGRESS;
+        this.startedAt = startedAt;
+    }
+
 
 }

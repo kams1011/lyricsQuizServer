@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import org.springframework.data.domain.Pageable;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Repository
@@ -46,5 +47,7 @@ public class GameRepositoryImpl implements GameRepository {
         GameEntity gameEntity = GameEntity.fromModel(user, game, quiz);
         return gameJpaRepository.save(gameEntity).toModel();
     }
+
+
 
 }

@@ -27,6 +27,6 @@ public class SocketJwtArgumentResolver implements HandlerMethodArgumentResolver 
         String accessToken = accessor.getSessionAttributes().get("token").toString();
 
         Long userSeq = jwtUtils.getUserSeqIn(accessToken);
-        return redisUtil.findUserInfo(userSeq);
+        return redisUtil.getUserInfoFromRedis(userSeq);
     }
 }
