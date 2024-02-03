@@ -9,7 +9,12 @@
   <body>
   <div class="flex-container">
     <!-- Video container -->
-    <div class="video-container w-2/4 h-80 float-left">
+    <div class="video-container relative w-2/4 float-left">
+      <div id="waiting-box" class="absolute top-0 left-0 w-full h-full z-10 bg-white bg-opacity-25 grid place-items-center">
+        <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-16 px-32 rounded inline-flex items-center" v-on:click="ready()">
+          <span class="text-6xl">READY</span>
+        </button>
+      </div>
       <div class="video-placeholder">
         <i class="fas fa-play-circle"></i> Video Player
       </div>
@@ -61,6 +66,12 @@ export default {
     this.connect()
   },
   methods: {
+
+    ready(){
+      alert("준비완료")
+      const box = document.getElementById('waiting-box');
+      box.remove();
+    },
     send(type) {
         console.log("Send message:" + this.message);
         if (this.stompClient && this.stompClient.connected) {

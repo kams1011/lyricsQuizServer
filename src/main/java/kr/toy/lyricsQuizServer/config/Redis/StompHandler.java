@@ -48,6 +48,8 @@ public class StompHandler implements ChannelInterceptor {
             StompCommandHandling(message);
         } catch (IllegalAccessException | IllegalArgumentException | InvalidDataAccessApiUsageException e) {
             //FIXME 어떤 이유로 에러가 발생했는지 클라이언트 단에서 띄워주기.
+            //FIXME CONNNECTION을 좀 더 안전한 방법으로 끊기.
+            e.printStackTrace();
             throw new RuntimeException(e.getCause().getMessage());
         } catch (Exception e){
             e.printStackTrace();
@@ -108,7 +110,7 @@ public class StompHandler implements ChannelInterceptor {
     public void notEnteredUserCheck(StompHeaderAccessor accessor, Message<?> message) throws IllegalAccessException, IllegalArgumentException {
         GameRoom gameRoom = chatService.getGameRoom(getGameRoomSeq(accessor));
         User user = getUserFrom(message);
-        if (!gameRoom.isEntered(user)) {
+        if (gameRoom.isEntered(user)) {
             throw new IllegalAccessException("정상적인 접근이 아닌 유저입니다.");
         }
     }

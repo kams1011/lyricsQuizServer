@@ -11,4 +11,11 @@ public enum GameStatus {
     IN_PROGRESS,
     FINISHED;
 
+    public Boolean isAccessible(){
+        if (this.name() == READY.name()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

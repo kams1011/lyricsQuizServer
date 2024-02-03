@@ -80,10 +80,16 @@ public class Game {
         this.endedAt = dateTime;
     }
     public void join(){
+        isAccessibleGameCheck();
         if (this.attendeeCount < this.attendeeLimit) {
             this.attendeeCount++;
         } else {
-            throw new IllegalStateException();
+            throw new IllegalStateException("입장 인원을 초과했습니다.");
+        }
+    }
+    public void isAccessibleGameCheck(){
+        if (!this.gameStatus.isAccessible()) {
+            throw new IllegalStateException("게임이 준비상태가 이닙니다.");
         }
     }
 }

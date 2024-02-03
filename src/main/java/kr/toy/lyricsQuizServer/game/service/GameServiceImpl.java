@@ -75,6 +75,36 @@ public class GameServiceImpl implements GameService {
 
     }
 
+    public void ready(Long gameRoomSeq, User user){
+
+        gameRepository.findById(gameRoomSeq);
+
+        // 준비완료 상태를 보내야될듯?
+    }
+
+    public void validate(){
+
+    }
+
+    public void baseValidate(){ //FIXME 변수명 변경
+        // 방장이 존재하는가.( 메시지 보낼 떄도 적용)
+        // -> StompHandler에서 검증하고 성능상 문제가 있다면 삭제해도 될듯.
+    }
+
+    public void entryValidate(Long gameRoomSeq, User user){
+        Game game = gameRepository.findById(gameRoomSeq);
+        baseValidate();
+        game.join(); // 입장 시 로직이므로 Redis에 추가해주기. << 기존 Enter메서드와 통합필요
+    }
+
+    public void readyValidate(){
+        //1. Game에 접속한 유저인가.
+
+    }
+
+    public void startValidate() {
+        //방장 이외에 인원이 존재하는가. 시작 버튼을 누르는게 방장인가. 방장 이외의 인원이 전부 준비완료 상태인가.
+    }
 
     //FIXME 초대기능 추가
     //FIXME Game 생성 용 QuizSummary List 메서드 추가.
