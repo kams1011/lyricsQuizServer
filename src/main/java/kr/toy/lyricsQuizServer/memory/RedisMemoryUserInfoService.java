@@ -1,6 +1,6 @@
 package kr.toy.lyricsQuizServer.memory;
 
-import kr.toy.lyricsQuizServer.config.Redis.RedisCategory;
+import kr.toy.lyricsQuizServer.memory.Redis.RedisCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Service;

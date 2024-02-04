@@ -1,4 +1,4 @@
-package kr.toy.lyricsQuizServer.config.Redis;
+package kr.toy.lyricsQuizServer.memory.Redis;
 
 import lombok.Getter;
 

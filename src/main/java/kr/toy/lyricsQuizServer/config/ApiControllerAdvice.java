@@ -1,6 +1,7 @@
 package kr.toy.lyricsQuizServer.config;
 
 import kr.toy.lyricsQuizServer.common.domain.Response;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @RestControllerAdvice
 public class ApiControllerAdvice {
@@ -40,6 +42,15 @@ public class ApiControllerAdvice {
         return ResponseEntity.badRequest().body(Response.fail(e.getMessage(), null, null));
 
     }
+
+    @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class,
+            NoSuchElementException.class})
+    public ResponseEntity<Response> handleException(Exception e){
+
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Response.fail(e.getMessage(), null, null));
+    }
+
+
 
 
 }

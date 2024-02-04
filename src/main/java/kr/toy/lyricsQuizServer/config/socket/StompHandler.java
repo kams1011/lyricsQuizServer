@@ -1,29 +1,21 @@
-package kr.toy.lyricsQuizServer.config.Redis;
+package kr.toy.lyricsQuizServer.config.socket;
 
-import kr.toy.lyricsQuizServer.chat.service.ChatServiceImpl;
 import kr.toy.lyricsQuizServer.config.JwtUtils;
 import kr.toy.lyricsQuizServer.game.controller.port.GameService;
 import kr.toy.lyricsQuizServer.game.controller.response.GameRoom;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.domain.dto.UserInfo;
 import lombok.RequiredArgsConstructor;
-import org.apache.http.ConnectionClosedException;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
-import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.simp.stomp.StompCommand;
 import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
-import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.messaging.support.ChannelInterceptor;
-import org.springframework.messaging.support.ErrorMessage;
-import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.net.ConnectException;
-import java.net.URI;
 import java.util.Map;
 
 @RequiredArgsConstructor

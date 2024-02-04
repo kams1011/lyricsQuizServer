@@ -1,18 +1,12 @@
-package kr.toy.lyricsQuizServer.config;
+package kr.toy.lyricsQuizServer.config.socket;
 
 import io.netty.util.internal.StringUtil;
-import kr.toy.lyricsQuizServer.chat.service.ChatServiceImpl;
-import kr.toy.lyricsQuizServer.config.Redis.RedisUtil;
-import kr.toy.lyricsQuizServer.user.domain.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.WebSocketHandler;
-import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.server.HandshakeInterceptor;
 
 import java.util.Map;

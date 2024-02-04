@@ -1,4 +1,4 @@
-package kr.toy.lyricsQuizServer.config.Redis;
+package kr.toy.lyricsQuizServer.memory.Redis;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

@@ -1,7 +1,7 @@
-package kr.toy.lyricsQuizServer.config.Redis;
+package kr.toy.lyricsQuizServer.config.socket;
 
 import kr.toy.lyricsQuizServer.config.JwtUtils;
-import kr.toy.lyricsQuizServer.user.domain.User;
+import kr.toy.lyricsQuizServer.memory.Redis.RedisUtil;
 import kr.toy.lyricsQuizServer.user.domain.dto.UserInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;

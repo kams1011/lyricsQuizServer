@@ -2,7 +2,7 @@ package kr.toy.lyricsQuizServer.game.service;
 
 
 import kr.toy.lyricsQuizServer.chat.controller.port.ChatService;
-import kr.toy.lyricsQuizServer.config.Redis.RedisUtil;
+import kr.toy.lyricsQuizServer.memory.Redis.RedisUtil;
 import kr.toy.lyricsQuizServer.game.controller.port.GameService;
 import kr.toy.lyricsQuizServer.game.controller.response.GameRoom;
 import kr.toy.lyricsQuizServer.game.domain.Game;
@@ -65,7 +65,6 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public void enter(Long gameRoomSeq, String password, User user) {
-
         GameRoom gameRoom = getGameRoom(gameRoomSeq);
         UserInfo userInfo = findUserInfo(user);
         if (isRoomEnterAllowed(gameRoom, password, userInfo)) {

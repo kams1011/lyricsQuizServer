@@ -1,4 +1,4 @@
-package kr.toy.lyricsQuizServer.config.Redis;
+package kr.toy.lyricsQuizServer.memory.Redis;
 
 import kr.toy.lyricsQuizServer.chat.controller.dto.ChatMessage;
 import kr.toy.lyricsQuizServer.game.controller.response.GameRoom;

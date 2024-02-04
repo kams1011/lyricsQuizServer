@@ -1,10 +1,9 @@
-package kr.toy.lyricsQuizServer.config.Redis;
+package kr.toy.lyricsQuizServer.memory.Redis;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.toy.lyricsQuizServer.chat.controller.dto.ChatMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor

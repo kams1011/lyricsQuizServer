@@ -1,10 +1,7 @@
-package kr.toy.lyricsQuizServer.config;
+package kr.toy.lyricsQuizServer.config.socket;
 
-import kr.toy.lyricsQuizServer.chat.service.ChatServiceImpl;
-import kr.toy.lyricsQuizServer.config.ConfigurationProperties.SecurityProperties;
-import kr.toy.lyricsQuizServer.config.Redis.RedisUtil;
-import kr.toy.lyricsQuizServer.config.Redis.SocketJwtArgumentResolver;
-import kr.toy.lyricsQuizServer.config.Redis.StompHandler;
+import kr.toy.lyricsQuizServer.config.JwtUtils;
+import kr.toy.lyricsQuizServer.memory.Redis.RedisUtil;
 import kr.toy.lyricsQuizServer.game.controller.port.GameService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
