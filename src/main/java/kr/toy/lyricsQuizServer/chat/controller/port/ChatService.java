@@ -9,4 +9,6 @@ public interface ChatService {
 
     void sendMessage(ChatMessage message, UserInfo user);
 
+    void exit();
+
 }

@@ -53,4 +53,12 @@ public class RedisUtil {
         return memoryUserInfoService.getObject(id);
     }
 
+    public void deleteGameRoomInRedis(Long id){
+        memoryGameRoomService.deleteObject(id);
+    }
+
+    public void deleteUserInfoInRedis(Long id){
+        memoryUserInfoService.deleteObject(id);
+    }
+
 }

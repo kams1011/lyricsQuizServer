@@ -28,7 +28,10 @@ public class ChatServiceImpl implements ChatService {
         redisUtil.publish(message);
     }
 
+    @Override
+    public void exit() { // Session을 제거해주기.
 
+    }
 
 
 }

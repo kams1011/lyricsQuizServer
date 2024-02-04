@@ -41,4 +41,6 @@ public interface GameService {
     void invite();
 
     void acceptInvitation();
+
+    void exit(Long gameRoomSeq, User user);
 }

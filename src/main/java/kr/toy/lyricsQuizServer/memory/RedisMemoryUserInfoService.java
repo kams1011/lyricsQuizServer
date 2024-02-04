@@ -23,4 +23,9 @@ public class RedisMemoryUserInfoService<UserInfo, Long> implements MemoryService
         userInfoHashOperations.put(key, id, data);
     }
 
+    @Override
+    public void deleteObject(Long id) {
+        userInfoHashOperations.delete(key, id);
+    }
+
 }

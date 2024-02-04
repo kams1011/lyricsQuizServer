@@ -2,7 +2,6 @@ package kr.toy.lyricsQuizServer.game.infrastructure;
 
 import kr.toy.lyricsQuizServer.game.domain.Game;
 import kr.toy.lyricsQuizServer.game.domain.GameStatus;
-import kr.toy.lyricsQuizServer.game.domain.dto.GameCreate;
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
 import kr.toy.lyricsQuizServer.quiz.infrastructure.QuizEntity;
 import kr.toy.lyricsQuizServer.user.domain.User;
@@ -52,11 +51,14 @@ public class GameEntity {
     @Enumerated(value = EnumType.STRING)
     private GameStatus gameStatus;
 
+    @Column(columnDefinition = "boolean DEFAULT false")
+    private boolean isDeleted;
+
 
     @Builder
     public GameEntity(Long gameRoomSeq, UserEntity host, String roomName, Boolean isSecretRoom, String password,
                       Integer attendeeLimit, Integer attendeeCount, LocalDateTime createdAt, LocalDateTime startedAt,
-                      LocalDateTime endedAt, QuizEntity quiz, GameStatus gameStatus){
+                      LocalDateTime endedAt, QuizEntity quiz, GameStatus gameStatus, boolean isDeleted){
         this.gameRoomSeq = gameRoomSeq;
         this.host = host;
         this.roomName = roomName;
@@ -69,6 +71,7 @@ public class GameEntity {
         this.endedAt = endedAt;
         this.quiz = quiz;
         this.gameStatus = gameStatus;
+        this.isDeleted = isDeleted;
     }
 
     public Game toModel(){
@@ -85,6 +88,7 @@ public class GameEntity {
                 .endedAt(endedAt)
                 .quiz(quiz.toModel())
                 .gameStatus(gameStatus)
+                .isDeleted(isDeleted)
                 .build();
     }
 
@@ -102,15 +106,8 @@ public class GameEntity {
                 .endedAt(game.getEndedAt())
                 .quiz(QuizEntity.fromModel(quiz))
                 .gameStatus(game.getGameStatus())
+                .isDeleted(game.isDeleted())
                 .build();
     }
 
-
-    public void start(){
-        this.gameStatus = GameStatus.IN_PROGRESS;
-    }
-
-    public void over(){
-        this.gameStatus = GameStatus.FINISHED;
-    }
 }

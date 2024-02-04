@@ -36,10 +36,12 @@ public class Game {
 
     private Quiz quiz;
 
+    private boolean isDeleted;
+
 
     @Builder
     public Game(Long gameRoomSeq, User host, String roomName, Boolean isSecretRoom, String password, Integer attendeeLimit, Integer attendeeCount, LocalDateTime createdAt, LocalDateTime startedAt,
-                LocalDateTime endedAt, Quiz quiz, GameStatus gameStatus){
+                LocalDateTime endedAt, Quiz quiz, GameStatus gameStatus, boolean isDeleted){
         this.gameRoomSeq = gameRoomSeq;
         this.host = host;
         this.roomName = roomName;
@@ -52,6 +54,7 @@ public class Game {
         this.endedAt = endedAt;
         this.quiz = quiz;
         this.gameStatus = gameStatus;
+        this.isDeleted = isDeleted;
     }
 
 
@@ -64,6 +67,7 @@ public class Game {
                 .attendeeLimit(gameCreate.getAttendeeLimit())
                 .quiz(quiz)
                 .gameStatus(GameStatus.READY)
+                .isDeleted(false)
                 .build();
     }
 
@@ -75,10 +79,12 @@ public class Game {
 
     public void start(LocalDateTime dateTime){
         this.startedAt = dateTime;
+        this.gameStatus = GameStatus.IN_PROGRESS;
     }
 
     public void end(LocalDateTime dateTime){
         this.endedAt = dateTime;
+        this.gameStatus = GameStatus.FINISHED;
     }
 
     public void join(){
@@ -88,6 +94,13 @@ public class Game {
         } else {
             throw new IllegalStateException("입장 인원을 초과했습니다.");
         }
+    }
+
+    public void exit(){
+        if (attendeeCount == 1) {
+            this.isDeleted = true;
+        }
+        this.attendeeCount--;
     }
 
     public void isAccessibleGameCheck(){

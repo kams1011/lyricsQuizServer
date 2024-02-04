@@ -168,5 +168,13 @@ public class GameRoom implements Serializable {
         this.startedAt = startedAt;
     }
 
+    public void removeUser(UserInfo userInfo){
+        this.userList.remove(userInfo);
+    }
+
+    public boolean roomEmpty(){
+        return this.getUserList().isEmpty();
+    }
+
 
 }

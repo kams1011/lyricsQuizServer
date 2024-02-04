@@ -19,6 +19,6 @@ public interface GameRepository {
 
     List<Game> findAllByRoomNameOrManagerName(String word, Pageable pageable);
 
-    Game save(User user, Game game, Quiz quiz);
+    Game save(User host, Game game, Quiz quiz);
 
 }

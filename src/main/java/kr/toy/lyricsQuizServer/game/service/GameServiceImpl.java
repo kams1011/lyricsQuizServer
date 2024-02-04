@@ -29,8 +29,6 @@ public class GameServiceImpl implements GameService {
 
     private final QuizRepository quizRepository;
 
-    private final ChatService chatService;
-
     private final RedisUtil redisUtil;
 
 
@@ -46,6 +44,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public Game create(User user, GameCreate gameCreate) {
+        //FIXME 다른 방에 참여하고 있는가 여부 (방장여부와 관계없이)
         Quiz quiz = quizRepository.getById(gameCreate.getQuizSeq());
         Game game = Game.from(gameCreate, user, quiz).create(LocalDateTime.now());
         game = gameRepository.save(user, game, quiz);
@@ -108,6 +107,17 @@ public class GameServiceImpl implements GameService {
 
     }
 
+    @Override
+    public void exit(Long gameRoomSeq, User user) {
+        GameRoom gameRoom = getGameRoom(gameRoomSeq);
+        UserInfo userInfo = findUserInfo(user);
+        gameRoom.removeUser(userInfo);
+        if (gameRoom.roomEmpty()) {
+            roomClose(gameRoomSeq);
+        } else {
+            saveGameInRedis(gameRoom);
+        }
+    }
 
     @Override
     public void 같이_할_사람_검색() {
@@ -182,6 +192,13 @@ public class GameServiceImpl implements GameService {
     public GameRoom saveGameInRedis(GameRoom gameRoom) {
         redisUtil.putGameRoomInRedis(gameRoom.getGameRoomSeq(), gameRoom);
         return gameRoom;
+    }
+
+    public void roomClose(Long roomSeq){
+        Game game = gameRepository.findById(roomSeq);
+        game.exit();
+        gameRepository.save(game.getHost(), game, game.getQuiz());
+        redisUtil.deleteGameRoomInRedis(roomSeq);
     }
 
 

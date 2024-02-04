@@ -23,4 +23,9 @@ public class RedisMemoryGameRoomService<GameRoom, Long> implements MemoryService
         gameRoomHashOperations.put(key, id, data);
     }
 
+    @Override
+    public void deleteObject(Long id) {
+        gameRoomHashOperations.delete(key, id);
+    }
+
 }

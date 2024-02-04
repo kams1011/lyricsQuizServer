@@ -7,4 +7,6 @@ public interface MemoryService<T, K> {
 
     void putObject(K id, T data);
 
+    void deleteObject(K id);
+
 }
