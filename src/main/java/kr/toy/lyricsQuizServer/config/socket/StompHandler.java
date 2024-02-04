@@ -27,7 +27,7 @@ public class StompHandler implements ChannelInterceptor {
     private final GameService gameService;
 
 
-    private final String destination = "/sub/chat/room/";
+//    private final String destination = "/sub/chat/room/";
 
     @Override
     public Message<?> preSend(Message<?> message, MessageChannel channel) {

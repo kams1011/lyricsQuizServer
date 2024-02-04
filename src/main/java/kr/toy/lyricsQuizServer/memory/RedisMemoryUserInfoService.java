@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class RedisMemoryUserInfoService<UserInfo, Long> implements MemoryService<UserInfo, Long>{
@@ -16,6 +18,11 @@ public class RedisMemoryUserInfoService<UserInfo, Long> implements MemoryService
     @Override
     public UserInfo getObject(Long id) {
         return userInfoHashOperations.get(key, id);
+    }
+
+    @Override
+    public List<UserInfo> getAll() {
+        throw new RuntimeException("잘못된 호출입니다.");
     }
 
     @Override

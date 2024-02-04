@@ -5,7 +5,7 @@ import lombok.Getter;
 @Getter
 public enum RedisCategory {
 
-    GAME_ROOM, USER_INFO;
+    GAME_ROOM, USER_INFO, INVITE_PENDING;
 
     public void temp(){
 

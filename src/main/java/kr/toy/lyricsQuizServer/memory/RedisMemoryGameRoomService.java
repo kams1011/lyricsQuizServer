@@ -5,6 +5,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class RedisMemoryGameRoomService<GameRoom, Long> implements MemoryService<GameRoom, Long>{
@@ -16,6 +18,11 @@ public class RedisMemoryGameRoomService<GameRoom, Long> implements MemoryService
     @Override
     public GameRoom getObject(Long id) {
         return gameRoomHashOperations.get(key, id);
+    }
+
+    @Override
+    public List<GameRoom> getAll() {
+        throw new RuntimeException("잘못된 호출입니다.");
     }
 
     @Override

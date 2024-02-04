@@ -31,7 +31,7 @@ public class GameRoom implements Serializable {
 
     private String hostName;
 
-    private Long hostSeq;
+    private final Long hostSeq;
 
     private String topic;
 
@@ -147,7 +147,7 @@ public class GameRoom implements Serializable {
                 .ifPresent(data -> data.ready());
     }
 
-    private boolean isHost(UserInfo user) {
+    public boolean isHost(UserInfo user) {
         return user.getUserSeq() == hostSeq;
     }
 

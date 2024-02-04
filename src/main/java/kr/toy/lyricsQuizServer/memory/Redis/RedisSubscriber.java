@@ -25,6 +25,19 @@ public class RedisSubscriber {
         }
     }
 
+    public void invite(String publishMessage){
+        // 접속한 모든 인원이 초대 메세지를 보내는 건 너무 비효율적임.
+        // 초대 받기 모드를 설정하면 초대 Topic을 구독하는 걸로 하는게 나을듯.
+        // 구독할 때 Redis에 초대 인원 목록을 추가함.
+        // 그럼 초대시에 해당 Redis에서 값을 가져오면 됨.
+        try {
+//            ChatMessage chatMessage = objectMapper.readValue(publishMessage, ChatMessage.class);
+//            messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessage.getRoomId(), chatMessage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 //    public void streamingVideo(){
 //        SimpMessagingTemplate simpleMessageTemplate;
 //        simpleMessageTemplate.convertAndSendToUser();
