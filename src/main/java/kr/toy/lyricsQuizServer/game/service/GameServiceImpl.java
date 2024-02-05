@@ -135,6 +135,16 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    public boolean getMyInvitationInfo(User user) {
+        Long index = redisUtil.getInvitePendingInfoFromRedis(user.getUserSeq());
+        if (index == -1 ) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    @Override
     public void getInvitableUsers() {
         List<Long> userSeqList = redisUtil.getAllInvitePendingInfoFromRedis();
         List<UserInvitationInfo> userInvitationInfoList = userSeqList.stream()

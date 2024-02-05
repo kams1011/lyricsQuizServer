@@ -7,6 +7,7 @@ import org.springframework.data.redis.core.ListOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -17,8 +18,14 @@ public class RedisMemoryInvitePendingService implements MemoryService{
     private final String key = RedisCategory.INVITE_PENDING.name();
 
     @Override
-    public Object getObject(Object userInfoSeq) {
-        throw new RuntimeException("잘못된 호출입니다.");
+    public Object getObject(Object userInfoSeq) { //FIXME 수정필요
+//        Long index = invitePendingListOperations.indexOf(key, userInfoSeq); // RedisVersion문제로 현재는 작동되지 않음.
+        Long index = Long.valueOf(getAll().indexOf(String.valueOf(userInfoSeq)));
+        if (index == -1) {
+            throw new NoSuchElementException("초대 허용 정보가 없습니다.");
+        } else {
+            return index;
+        }
     }
 
     @Override

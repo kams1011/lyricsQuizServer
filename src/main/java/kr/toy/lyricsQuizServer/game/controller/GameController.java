@@ -84,8 +84,23 @@ public class GameController {
 
     @PatchMapping("/invitation")
     public ResponseEntity<Response> allowInvitation(@RequestParam boolean isAllowed, User user){
-        gameService.allowInvitation(user, isAllowed);
-        return ResponseEntity.ok().body(new Response(true, null, null, null));
+        try{
+            gameService.allowInvitation(user, isAllowed);
+            return ResponseEntity.ok().body(new Response(true, null, null, null));
+        }catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(new Response(true, e.getMessage(), null, null));
+        }
+    }
+
+    @GetMapping("/invitation")
+    public ResponseEntity<Response> getInvitationInfo(User user) {
+        try{
+            return ResponseEntity.ok().body(new Response(true, null, gameService.getMyInvitationInfo(user), null));
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(new Response(false, e.getMessage(), null, null));
+        }
     }
 
 }

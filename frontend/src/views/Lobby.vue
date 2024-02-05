@@ -113,11 +113,21 @@ export default {
     }
   },
   mounted() {
-
+      this.initInvitationInfo();
     //FIXME isAllowed값을 받아와서 초기화해주는 로직이 필요.
     this.getList();
   },
   methods: {
+    initInvitationInfo : function () {
+      axios.get('https://localhost:80/api/game/invitation',
+          { withCredentials : true
+          }).then(response => {
+            console.log("init!!! " + response.data);
+        // this.itemList = response.data
+      }).catch(error => {
+        console.error(error);
+      });
+    },
     allowInvitation(){
       this.isAllowed = !this.isAllowed;
       axios.patch('https://localhost:80/api/game/invitation?isAllowed=' + this.isAllowed, {},{ withCredentials : true})

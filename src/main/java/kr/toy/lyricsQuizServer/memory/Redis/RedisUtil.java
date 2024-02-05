@@ -59,9 +59,14 @@ public class RedisUtil {
         return memoryGameRoomService.getObject(id);
     }
 
-    @Cacheable(value = "USER_INFO", key = "#key")
+    @Cacheable(value = "USER_INFO", key = "#id")
     public UserInfo getUserInfoFromRedis(Long id){
         return memoryUserInfoService.getObject(id);
+    }
+
+    @Cacheable(value = "INVITE_PENDING", key = "#id")
+    public Long getInvitePendingInfoFromRedis(Long id){
+        return (Long)memoryInvitePendingService.getObject(id);
     }
 
     public List<Long> getAllInvitePendingInfoFromRedis(){

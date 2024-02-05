@@ -43,4 +43,6 @@ public interface GameService {
     void exit(Long gameRoomSeq, User user);
 
     void allowInvitation(User user, boolean isAllowed);
+
+    boolean getMyInvitationInfo(User user);
 }
