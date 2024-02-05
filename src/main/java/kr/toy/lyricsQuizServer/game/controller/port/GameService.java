@@ -45,4 +45,6 @@ public interface GameService {
     void allowInvitation(User user, boolean isAllowed);
 
     boolean getMyInvitationInfo(User user);
+
+    boolean isHost(Long roomId, User user);
 }

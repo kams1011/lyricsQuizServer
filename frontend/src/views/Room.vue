@@ -57,16 +57,27 @@ export default {
       userName: "",
       message: "",
       recvList: [],
+      readyButton : false,
       roomId : this.$route.params.roomSeq,
     }
   },
   created() {
     this.roomSeq = this.$route.params.roomSeq;
     // App.vue가 생성되면 소켓 연결을 시도합니다.
-    this.connect()
+    this.isHostCheck();
+    this.connect();
   },
   methods: {
-
+    isHostCheck(){
+      axios.get('https://localhost:80/api/game/host',
+          { withCredentials : true
+          }).then(response => {
+            console.log("RESPONSE####");
+        console.log(response);
+      }).catch(error => {
+        console.error(error);
+      });
+    },
     ready(){
       alert("준비완료")
       const box = document.getElementById('waiting-box');

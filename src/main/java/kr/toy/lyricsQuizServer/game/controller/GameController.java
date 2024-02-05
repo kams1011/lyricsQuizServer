@@ -72,7 +72,16 @@ public class GameController {
         return ResponseEntity.ok().body(Response.success("유효한 비밀번호입니다."));
     }
 
-    @GetMapping("/room")
+    @GetMapping("/host")
+    public ResponseEntity<Response> isHost(@RequestParam Long roomId, User user) {
+        try {
+            return ResponseEntity.ok().body(new Response(true, null, gameService.isHost(roomId, user), null));
+        } catch (IllegalStateException | InvalidDataAccessApiUsageException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new Response(false, e.getMessage(), null, null));
+        }
+    }
+
+    @PatchMapping("/room")
     public ResponseEntity<Response> enter(@RequestParam Long roomId, @RequestParam(required = false) String password, User user) {
         try {
             gameService.enter(roomId, password, user);
@@ -94,7 +103,7 @@ public class GameController {
     }
 
     @GetMapping("/invitation")
-    public ResponseEntity<Response> getInvitationInfo(User user) {
+    public ResponseEntity<Response> getMyInvitationStatus(User user) {
         try{
             return ResponseEntity.ok().body(new Response(true, null, gameService.getMyInvitationInfo(user), null));
         } catch (Exception e){

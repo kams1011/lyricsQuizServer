@@ -18,7 +18,8 @@
         </div>
       </div>
       <div class="horizontal-tabs">
-        <a href="#" v-on:click="allowInvitation()">초대 허용</a>
+
+        <a href="#" class="button" v-on:click="allowInvitation()">{{ this.isAllowed ? '초대 허용중' : '초대 거부중' }}</a>
         <!-- <a href="#">Profile</a>
         <a href="#">Password</a> -->
         <!-- <a href="#">Team</a>
@@ -108,7 +109,7 @@ export default {
       password: '',
       roomId:'',
       showPasswordModal : false,
-      isAllowed:false,
+      isAllowed : false,
       itemList: [],
     }
   },
@@ -122,23 +123,21 @@ export default {
       axios.get('https://localhost:80/api/game/invitation',
           { withCredentials : true
           }).then(response => {
-            console.log("init!!! " + response.data);
-        // this.itemList = response.data
+            this.isAllowed = response.data.data;
       }).catch(error => {
         console.error(error);
       });
     },
     allowInvitation(){
-      this.isAllowed = !this.isAllowed;
-      axios.patch('https://localhost:80/api/game/invitation?isAllowed=' + this.isAllowed, {},{ withCredentials : true})
+      axios.patch('https://localhost:80/api/game/invitation?isAllowed=' + !this.isAllowed, {},{ withCredentials : true})
           .then(response => {
+            this.isAllowed = !this.isAllowed;
             if (this.isAllowed) {
               alert('초대를 허용했습니다.');
             } else {
               alert('초대를 거부했습니다.');
             }
           }).catch(error => {
-            console.log(error.response.data.message);
             alert('초대 허용에 실패했습니다. 사유 : ' + error.response.data.message);
           });
     },
@@ -161,9 +160,7 @@ export default {
       }
     },
     enter(roomSeq){
-      axios.get('https://localhost:80/room?roomId=' + roomSeq +'&password=' + this.password,
-          { withCredentials : true
-          }).then(response => {
+      axios.patch('https://localhost:80/api/game/room?roomId=' + roomSeq +'&password=' + this.password, {},{ withCredentials : true}).then(response => {
         this.$router.push({ path: `/room/${roomSeq}` });
       }).catch(error => {
         alert(error.response.data.message);

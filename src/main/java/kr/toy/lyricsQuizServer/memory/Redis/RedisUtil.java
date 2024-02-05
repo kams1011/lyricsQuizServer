@@ -54,17 +54,18 @@ public class RedisUtil {
         memoryInvitePendingService.putObject(null, userSeq);
     }
 
-    @Cacheable(value = "GAME_ROOM", key = "#id")
+    @Cacheable(value = "GAME_ROOM", key = "#id", unless = "#result == null" )
     public GameRoom getGameRoomFromRedis(Long id){
+        System.out.println("GAMEROOM ID : " + id);
         return memoryGameRoomService.getObject(id);
     }
 
-    @Cacheable(value = "USER_INFO", key = "#id")
-    public UserInfo getUserInfoFromRedis(Long id){
+    @Cacheable(value = "USER_INFO", key = "#id", unless = "#result == null")
+    public UserInfo getUserInfoFromRedis(Long id){ 
         return memoryUserInfoService.getObject(id);
     }
 
-    @Cacheable(value = "INVITE_PENDING", key = "#id")
+    @Cacheable(value = "INVITE_PENDING", key = "#id", unless = "#result == null")
     public Long getInvitePendingInfoFromRedis(Long id){
         return (Long)memoryInvitePendingService.getObject(id);
     }

@@ -91,7 +91,6 @@ public class GameServiceImpl implements GameService {
     public void start(Long gameRoomSeq, User host) {
         GameRoom gameRoom = getGameRoom(gameRoomSeq);
         UserInfo hostInfo = findUserInfo(host);
-
         Game game = gameRepository.findById(gameRoom.getGameRoomSeq());
         game.start(LocalDateTime.now());
         gameRoom.isEveryoneReady(hostInfo); // 방장 이외의 인원이 전부 준비완료 상태인가.
@@ -131,7 +130,6 @@ public class GameServiceImpl implements GameService {
         } else {
             redisUtil.deleteInvitedPendingInfoInRedis(user.getUserSeq());
         }
-
     }
 
     @Override
@@ -145,6 +143,12 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
+    public boolean isHost(Long roomId, User user) {
+        GameRoom gameRoom = getGameRoom(roomId);
+        return gameRoom.isHost(UserInfo.from(user, roomId, null));
+    }
+
+    @Override
     public void getInvitableUsers() {
         List<Long> userSeqList = redisUtil.getAllInvitePendingInfoFromRedis();
         List<UserInvitationInfo> userInvitationInfoList = userSeqList.stream()
@@ -155,7 +159,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public GameRoom getGameRoom(Long gameRoomSeq){
-        GameRoom gameRoom = redisUtil.getGameRoomFromRedis(gameRoomSeq);
+        GameRoom gameRoom = redisUtil.getGameRoomFromRedis(gameRoomSeq); // FIXME Redis 데이터 정합성 해결 필요.
         return gameRoom;
     }
 
