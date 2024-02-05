@@ -18,7 +18,7 @@
         </div>
       </div>
       <div class="horizontal-tabs">
-        <a href="#">같이 할 사람을 찾아보세요</a>
+        <a href="#" v-on:click="allowInvitation()">초대 허용</a>
         <!-- <a href="#">Profile</a>
         <a href="#">Password</a> -->
         <!-- <a href="#">Team</a>
@@ -108,13 +108,30 @@ export default {
       password: '',
       roomId:'',
       showPasswordModal : false,
+      isAllowed:false,
       itemList: [],
     }
   },
   mounted() {
+
+    //FIXME isAllowed값을 받아와서 초기화해주는 로직이 필요.
     this.getList();
   },
   methods: {
+    allowInvitation(){
+      this.isAllowed = !this.isAllowed;
+      axios.patch('https://localhost:80/api/game/invitation?isAllowed=' + this.isAllowed, {},{ withCredentials : true})
+          .then(response => {
+            if (this.isAllowed) {
+              alert('초대를 허용했습니다.');
+            } else {
+              alert('초대를 거부했습니다.');
+            }
+          }).catch(error => {
+            console.log(error.response.data.message);
+            alert('초대 허용에 실패했습니다. 사유 : ' + error.response.data.message);
+          });
+    },
     getList: function () {
       const keyword = '';
       axios.get('https://localhost:80/api/game?keyword=' + keyword,

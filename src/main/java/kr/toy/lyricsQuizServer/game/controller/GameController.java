@@ -73,7 +73,6 @@ public class GameController {
     }
 
     @GetMapping("/room")
-    @ResponseBody
     public ResponseEntity<Response> enter(@RequestParam Long roomId, @RequestParam(required = false) String password, User user) {
         try {
             gameService.enter(roomId, password, user);
@@ -81,6 +80,12 @@ public class GameController {
         } catch (IllegalStateException | InvalidDataAccessApiUsageException e) {
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(new Response(false, e.getMessage(), null, null));
         }
+    }
+
+    @PatchMapping("/invitation")
+    public ResponseEntity<Response> allowInvitation(@RequestParam boolean isAllowed, User user){
+        gameService.allowInvitation(user, isAllowed);
+        return ResponseEntity.ok().body(new Response(true, null, null, null));
     }
 
 }

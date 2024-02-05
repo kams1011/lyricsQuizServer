@@ -125,8 +125,13 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void allowInvitation(User user) {
-        redisUtil.putInvitePendingInfoInRedis(user.getUserSeq());
+    public void allowInvitation(User user, boolean isAllowed) {
+        if (isAllowed){
+            redisUtil.putInvitePendingInfoInRedis(user.getUserSeq());
+        } else {
+            redisUtil.deleteInvitedPendingInfoInRedis(user.getUserSeq());
+        }
+
     }
 
     @Override
@@ -136,8 +141,6 @@ public class GameServiceImpl implements GameService {
                 .map(data -> userRepository.getById(data))
                 .map(data -> UserInvitationInfo.from(data))
                 .collect(Collectors.toList());
-
-
     }
 
     @Override
