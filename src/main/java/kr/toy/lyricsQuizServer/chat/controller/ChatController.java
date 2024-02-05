@@ -2,31 +2,16 @@ package kr.toy.lyricsQuizServer.chat.controller;
 
 import kr.toy.lyricsQuizServer.chat.controller.dto.ChatMessage;
 import kr.toy.lyricsQuizServer.chat.controller.port.ChatService;
-import kr.toy.lyricsQuizServer.chat.service.ChatServiceImpl;
-import kr.toy.lyricsQuizServer.common.domain.Response;
-import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.domain.dto.UserInfo;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.MessageExceptionHandler;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.support.ErrorMessage;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 @RequiredArgsConstructor
 @Controller
 public class ChatController {
 
-
     private final ChatService chatService;
-
-    private final ChatServiceImpl chatServiceImpl;
 
 
     @MessageMapping("/chat/message")

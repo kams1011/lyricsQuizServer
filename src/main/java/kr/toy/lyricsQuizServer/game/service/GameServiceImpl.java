@@ -2,6 +2,7 @@ package kr.toy.lyricsQuizServer.game.service;
 
 
 import kr.toy.lyricsQuizServer.chat.controller.port.ChatService;
+import kr.toy.lyricsQuizServer.game.controller.response.UserInvitationInfo;
 import kr.toy.lyricsQuizServer.memory.Redis.RedisUtil;
 import kr.toy.lyricsQuizServer.game.controller.port.GameService;
 import kr.toy.lyricsQuizServer.game.controller.response.GameRoom;
@@ -13,6 +14,7 @@ import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
 import kr.toy.lyricsQuizServer.quiz.service.QuizRepository;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.domain.dto.UserInfo;
+import kr.toy.lyricsQuizServer.user.service.port.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -28,6 +31,8 @@ public class GameServiceImpl implements GameService {
     private final GameRepository gameRepository;
 
     private final QuizRepository quizRepository;
+
+    private final UserRepository userRepository;
 
     private final RedisUtil redisUtil;
 
@@ -103,10 +108,8 @@ public class GameServiceImpl implements GameService {
         if (!gameRoom.isHost(UserInfo.from(host, gameRoomSeq, null))){
             throw new RuntimeException("초대는 호스트만 가능합니다."); // 내가 그 방 방장인지 여부를 확인한다.
         }
-
         // 어떤 방에 누구를 초대한다.
         // 초대 여부를 저장하지 않으니 초대 수락은 삭제하고 alert창에서 확인을 누르면 바로 입장할 수 있도록 변경.
-
     }
 
     @Override
@@ -122,7 +125,18 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void 같이_할_사람_검색() {
+    public void allowInvitation(User user) {
+        redisUtil.putInvitePendingInfoInRedis(user.getUserSeq());
+    }
+
+    @Override
+    public void getInvitableUsers() {
+        List<Long> userSeqList = redisUtil.getAllInvitePendingInfoFromRedis();
+        List<UserInvitationInfo> userInvitationInfoList = userSeqList.stream()
+                .map(data -> userRepository.getById(data))
+                .map(data -> UserInvitationInfo.from(data))
+                .collect(Collectors.toList());
+
 
     }
 

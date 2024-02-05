@@ -35,4 +35,5 @@ public class RedisMemoryInvitePendingService implements MemoryService{
     public void deleteObject(Object userInfoSeq) {
         invitePendingListOperations.remove(key, 1, userInfoSeq);
     }
+
 }

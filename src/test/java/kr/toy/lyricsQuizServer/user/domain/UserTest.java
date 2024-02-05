@@ -5,6 +5,9 @@ import kr.toy.lyricsQuizServer.config.ConfigurationProperties.SecurityProperties
 import kr.toy.lyricsQuizServer.config.ConfigurationProperties.StorageProperties;
 import kr.toy.lyricsQuizServer.game.controller.port.GameService;
 import kr.toy.lyricsQuizServer.game.infrastructure.GameJpaRepository;
+import kr.toy.lyricsQuizServer.memory.MemoryService;
+import kr.toy.lyricsQuizServer.memory.Redis.RedisUtil;
+import kr.toy.lyricsQuizServer.user.domain.dto.UserInfo;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -35,7 +38,10 @@ public class UserTest {
     StorageProperties storageProperties;
 
     @Autowired
-    GameJpaRepository gameJpaRepository;
+    RedisUtil redisUtil;
+
+
+
 
     @Test
     void 사용자는_로그인_할_수_있다(){
@@ -136,6 +142,10 @@ public class UserTest {
     }
 
 
+    @Test
+    public void temp(){
+        redisUtil.test();
+    }
 
 }
 

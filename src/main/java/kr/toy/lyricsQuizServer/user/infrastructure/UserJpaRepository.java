@@ -17,4 +17,6 @@ public interface UserJpaRepository extends JpaRepository<UserEntity, Long> {
     Optional<UserEntity> findByEmailAndLoginType(String email, LoginType loginType);
 
     Optional<UserEntity> findByNickName(@Param("nickName") String nickName);
+
+    Optional<UserEntity> findByUserSeqAndIsDeletedIsFalseAndIsBanIsFalse(Long userSeq);
 }

@@ -1,16 +1,12 @@
 package kr.toy.lyricsQuizServer.game.controller.response;
 
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import kr.toy.lyricsQuizServer.game.domain.Game;
 import kr.toy.lyricsQuizServer.game.domain.GameStatus;
-import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.domain.dto.UserInfo;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.util.StringUtils;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;

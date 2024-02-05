@@ -17,7 +17,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User getById(Long id) {
-        return userJpaRepository.findById(id).orElseThrow(NoSuchElementException::new).toModel();
+        return userJpaRepository.findByUserSeqAndIsDeletedIsFalseAndIsBanIsFalse(id).orElseThrow(NoSuchElementException::new).toModel();
     }
 
     @Override
