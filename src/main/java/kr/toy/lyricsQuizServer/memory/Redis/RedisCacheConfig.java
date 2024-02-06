@@ -18,7 +18,7 @@ public class RedisCacheConfig {
     @Bean
     public RedisCacheManager cacheManager(RedisConnectionFactory connectionFactory) {
         RedisCacheConfiguration configuration = RedisCacheConfiguration.defaultCacheConfig()
-//                .disableCachingNullValues()
+                .disableCachingNullValues()
                 .entryTtl(Duration.ofSeconds(10))   // 기본 TTL
                 .computePrefixWith(CacheKeyPrefix.simple())
                 .serializeKeysWith(
@@ -26,8 +26,10 @@ public class RedisCacheConfig {
                 );
 
         HashMap<String, RedisCacheConfiguration> configMap = new HashMap<>();
-        configMap.put(RedisCategory.USER_INFO.name(), RedisCacheConfiguration.defaultCacheConfig()
-                .entryTtl(Duration.ofSeconds(30)));  // 특정 캐시에 대한 TTL
+        configMap.put(RedisCategory.USER_INFO.name(),
+                RedisCacheConfiguration.defaultCacheConfig()
+                .entryTtl(Duration.ofSeconds(30)));
+        configMap.put(RedisCategory.GAME_ROOM.name(), RedisCacheConfiguration.defaultCacheConfig());// 특정 캐시에 대한 TTL
 
         return RedisCacheManager
                 .RedisCacheManagerBuilder

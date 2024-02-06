@@ -30,5 +30,6 @@ server:
     key-alias: bns-ssl
   port: 80
 
-
-
+logging:
+  level:
+    org.springframework.cache: DEBUG

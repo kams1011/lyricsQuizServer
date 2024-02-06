@@ -9,6 +9,8 @@ import kr.toy.lyricsQuizServer.user.domain.dto.UserInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.data.redis.cache.RedisCache;
+import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -22,12 +24,12 @@ public class RedisUtil {
 
     private final RedisTemplate<String, Object> redisTemplate;
 
+    private final RedisCacheManager cacheManager;
 
-    
     //FIXME MemoryService로 사용할 수 있는 지 한 번 더 확인
-    private final RedisMemoryGameRoomService<GameRoom, Long> memoryGameRoomService;
+    private final RedisMemoryGameRoomService memoryGameRoomService;
 
-    private final RedisMemoryUserInfoService<UserInfo, Long> memoryUserInfoService;
+    private final RedisMemoryUserInfoService memoryUserInfoService;
 
     private final RedisMemoryInvitePendingService memoryInvitePendingService;
 
@@ -54,14 +56,13 @@ public class RedisUtil {
         memoryInvitePendingService.putObject(null, userSeq);
     }
 
-    @Cacheable(value = "GAME_ROOM", key = "#id", unless = "#result == null" )
+    @Cacheable(value = "GAME_ROOM", key = "#id", unless = "#result == null")
     public GameRoom getGameRoomFromRedis(Long id){
-        System.out.println("GAMEROOM ID : " + id);
         return memoryGameRoomService.getObject(id);
     }
 
     @Cacheable(value = "USER_INFO", key = "#id", unless = "#result == null")
-    public UserInfo getUserInfoFromRedis(Long id){ 
+    public UserInfo getUserInfoFromRedis(Long id){
         return memoryUserInfoService.getObject(id);
     }
 

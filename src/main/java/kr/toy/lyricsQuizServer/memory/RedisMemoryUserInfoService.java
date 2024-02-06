@@ -1,6 +1,7 @@
 package kr.toy.lyricsQuizServer.memory;
 
 import kr.toy.lyricsQuizServer.memory.Redis.RedisCategory;
+import kr.toy.lyricsQuizServer.user.domain.dto.UserInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Service;
@@ -9,7 +10,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class RedisMemoryUserInfoService<UserInfo, Long> implements MemoryService<UserInfo, Long>{
+public class RedisMemoryUserInfoService implements MemoryService<UserInfo, Long>{
 
     private final HashOperations<String, Long, UserInfo> userInfoHashOperations;
 

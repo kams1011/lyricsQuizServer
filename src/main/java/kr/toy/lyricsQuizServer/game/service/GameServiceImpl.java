@@ -22,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -69,8 +70,8 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public void enter(Long gameRoomSeq, String password, User user) {
-        GameRoom gameRoom = getGameRoom(gameRoomSeq);
-        UserInfo userInfo = findUserInfo(user);
+        GameRoom gameRoom = getGameRoomOrCreate(gameRoomSeq);
+        UserInfo userInfo = findUserInfoOrCreate(user, gameRoomSeq); // Redis 서버가 꺼졌을 때를 방지
         if (isRoomEnterAllowed(gameRoom, password, userInfo)) {
             gameRoom.enter(userInfo);
             saveGameInRedis(gameRoom);
@@ -165,12 +166,15 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public GameRoom getGameRoomOrCreate(Long gameRoomSeq) {
-        GameRoom gameRoom = getGameRoom(gameRoomSeq);
-        if (gameRoom == null) { //FIXME InvalidDataAccessApiUsageException 정리하기.
-            gameRoom = GameRoom.from(gameRepository.findById(gameRoomSeq));
-            saveGameInRedis(gameRoom);
-        }
-        return gameRoom;
+        return Optional.ofNullable(getGameRoom(gameRoomSeq))
+                .orElseGet(() -> { //FIXME InvalidDataAccessApiUsageException 정리하기.
+                    GameRoom gameRoom = GameRoom.from(gameRepository.findById(gameRoomSeq));
+                    if (!gameRoom.isReady()) {
+                        throw new IllegalStateException("방이 준비상태가 아닙니다.");
+                    }
+                    saveGameInRedis(gameRoom);
+                    return gameRoom;
+                });
     }
 
     @Override
@@ -181,13 +185,12 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public UserInfo findUserInfoOrCreate(User user, Long gameRoomSeq){
-        UserInfo userInfo = findUserInfo(user);
-        if (userInfo == null) {
-            userInfo = UserInfo.from(user, gameRoomSeq, null);
-            putUserInfo(userInfo);
-        }
-
-        return userInfo;
+        return Optional.ofNullable(findUserInfo(user))
+                .orElseGet(() -> {
+                    UserInfo userInfo = UserInfo.from(user, gameRoomSeq, null);
+                    putUserInfo(userInfo);
+                    return userInfo;
+                });
     }
 
     @Override

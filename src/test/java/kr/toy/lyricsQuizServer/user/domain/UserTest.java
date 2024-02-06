@@ -6,6 +6,7 @@ import kr.toy.lyricsQuizServer.config.ConfigurationProperties.StorageProperties;
 import kr.toy.lyricsQuizServer.game.controller.port.GameService;
 import kr.toy.lyricsQuizServer.game.infrastructure.GameJpaRepository;
 import kr.toy.lyricsQuizServer.memory.MemoryService;
+import kr.toy.lyricsQuizServer.memory.Redis.RedisCategory;
 import kr.toy.lyricsQuizServer.memory.Redis.RedisUtil;
 import kr.toy.lyricsQuizServer.user.domain.dto.UserInfo;
 import org.junit.jupiter.api.Test;
@@ -142,10 +143,6 @@ public class UserTest {
     }
 
 
-    @Test
-    public void temp(){
-        redisUtil.test();
-    }
 
 }
 

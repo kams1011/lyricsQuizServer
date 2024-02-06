@@ -1,6 +1,7 @@
 package kr.toy.lyricsQuizServer.game.service.port;
 
 import kr.toy.lyricsQuizServer.game.domain.Game;
+import kr.toy.lyricsQuizServer.game.domain.GameStatus;
 import kr.toy.lyricsQuizServer.game.domain.dto.GameCreate;
 import kr.toy.lyricsQuizServer.game.infrastructure.GameEntity;
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
