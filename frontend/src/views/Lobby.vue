@@ -40,9 +40,13 @@
             <i class="ph-faders-bold"></i>
             <span>Filters</span>
           </a>
-          <a href="#" class="button">
+          <a href="/room/create" class="button">
             <i class="ph-plus-bold"></i>
             <span>방 만들기</span>
+          </a>
+          <a href="/quiz/register" class="button">
+            <i class="ph-plus-bold"></i>
+            <span>문제 등록하기</span>
           </a>
         </div>
       </div>
@@ -115,14 +119,15 @@ export default {
   },
   mounted() {
       this.initInvitationInfo();
-    //FIXME isAllowed값을 받아와서 초기화해주는 로직이 필요.
-    this.getList();
+      this.getList();
   },
   methods: {
     initInvitationInfo : function () {
       axios.get('https://localhost:80/api/game/invitation',
           { withCredentials : true
           }).then(response => {
+            console.log('hihi');
+            console.log(response);
             this.isAllowed = response.data.data;
       }).catch(error => {
         console.error(error);

@@ -150,12 +150,14 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void getInvitableUsers() {
+    public List<UserInvitationInfo> getInvitableUsers(int pageNumber) { //FIXME 페이징 추가 + 방장은 제외하고 가져오기
         List<Long> userSeqList = redisUtil.getAllInvitePendingInfoFromRedis();
         List<UserInvitationInfo> userInvitationInfoList = userSeqList.stream()
                 .map(data -> userRepository.getById(data))
                 .map(data -> UserInvitationInfo.from(data))
                 .collect(Collectors.toList());
+
+        return userInvitationInfoList;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package kr.toy.lyricsQuizServer.game.controller.port;
 
 import kr.toy.lyricsQuizServer.game.controller.response.GameRoom;
+import kr.toy.lyricsQuizServer.game.controller.response.UserInvitationInfo;
 import kr.toy.lyricsQuizServer.game.domain.Game;
 import kr.toy.lyricsQuizServer.game.domain.dto.GameCreate;
 
@@ -32,7 +33,7 @@ public interface GameService {
 
     UserInfo putUserInfo(UserInfo userInfo);
 
-    void getInvitableUsers(); // TODO 현재 접속중인 인원중에 현재 게임을 진행중이지 않은 인원 ( 현재 접속여부는 다시 생각해보기 )
+    List<UserInvitationInfo> getInvitableUsers(int pageNumber); // TODO 현재 접속중인 인원중에 현재 게임을 진행중이지 않은 인원 ( 현재 접속여부는 다시 생각해보기 )
 
     void ready(Long gameRoomSeq, User user);
 
@@ -47,4 +48,5 @@ public interface GameService {
     boolean getMyInvitationInfo(User user);
 
     boolean isHost(Long roomId, User user);
+
 }

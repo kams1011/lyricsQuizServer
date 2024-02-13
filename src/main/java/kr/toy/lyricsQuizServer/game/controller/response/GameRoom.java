@@ -144,7 +144,7 @@ public class GameRoom implements Serializable {
     }
 
     public boolean isHost(UserInfo user) {
-        return user.getUserSeq() == hostSeq;
+        return user.getUserSeq().equals(hostSeq);
     }
 
     private Optional<UserInfo> findUser(UserInfo user) {
@@ -172,5 +172,20 @@ public class GameRoom implements Serializable {
         return this.getUserList().isEmpty();
     }
 
-
+    @Override
+    public String toString() {
+        return "GameRoom{" +
+                "gameRoomSeq=" + gameRoomSeq +
+                ", roomName='" + roomName + '\'' +
+                ", startedAt=" + startedAt +
+                ", hostName='" + hostName + '\'' +
+                ", hostSeq=" + hostSeq +
+                ", topic='" + topic + '\'' +
+                ", attendeeLimit=" + attendeeLimit +
+                ", gameStatus=" + gameStatus +
+                ", isSecretRoom=" + isSecretRoom +
+                ", password='" + password + '\'' +
+                ", userList=" + userList +
+                '}';
+    }
 }

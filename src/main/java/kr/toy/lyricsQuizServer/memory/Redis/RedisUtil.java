@@ -9,8 +9,6 @@ import kr.toy.lyricsQuizServer.user.domain.dto.UserInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.EnableCaching;
-import org.springframework.data.redis.cache.RedisCache;
-import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
@@ -23,8 +21,6 @@ import java.util.List;
 public class RedisUtil {
 
     private final RedisTemplate<String, Object> redisTemplate;
-
-    private final RedisCacheManager cacheManager;
 
     //FIXME MemoryService로 사용할 수 있는 지 한 번 더 확인
     private final RedisMemoryGameRoomService memoryGameRoomService;
@@ -66,7 +62,7 @@ public class RedisUtil {
         return memoryUserInfoService.getObject(id);
     }
 
-    @Cacheable(value = "INVITE_PENDING", key = "#id", unless = "#result == null")
+//    @Cacheable(value = "INVITE_PENDING", key = "#id", unless = "#result == null")
     public Long getInvitePendingInfoFromRedis(Long id){
         return (Long)memoryInvitePendingService.getObject(id);
     }

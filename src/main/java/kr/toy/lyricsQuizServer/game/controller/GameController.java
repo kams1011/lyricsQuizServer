@@ -111,5 +111,21 @@ public class GameController {
             return ResponseEntity.internalServerError().body(new Response(false, e.getMessage(), null, null));
         }
     }
+    @PatchMapping("/start")
+    public ResponseEntity<Response> start(@RequestParam Long roomId, User user){
+        try {
+            gameService.start(roomId, user);
+            return ResponseEntity.ok().body(new Response(true, null, null, null));
+        } catch (Exception e){
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().body(new Response(false, e.getMessage(), null, null));
+        }
+    }
+
+    @GetMapping("/")
+    public ResponseEntity<Response> getInvitableUsers(){
+
+        return null;
+    }
 
 }

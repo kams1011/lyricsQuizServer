@@ -11,8 +11,8 @@
     <!-- Video container -->
     <div class="video-container relative w-2/4 float-left">
       <div id="waiting-box" class="absolute top-0 left-0 w-full h-full z-10 bg-white bg-opacity-25 grid place-items-center">
-        <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-16 px-32 rounded inline-flex items-center" v-on:click="ready()">
-          <span class="text-6xl">READY</span>
+        <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-16 px-32 rounded inline-flex items-center" v-on:click="ready(this.isHost)">
+          <span class="text-6xl">{{ this.isHost ? 'START' : 'READY' }}</span>
         </button>
       </div>
       <div class="video-placeholder">
@@ -57,7 +57,7 @@ export default {
       userName: "",
       message: "",
       recvList: [],
-      readyButton : false,
+      isHost : false,
       roomId : this.$route.params.roomSeq,
     }
   },
@@ -69,17 +69,20 @@ export default {
   },
   methods: {
     isHostCheck(){
-      axios.get('https://localhost:80/api/game/host',
+      axios.get('https://localhost:80/api/game/host?roomId=' + this.roomSeq,
           { withCredentials : true
           }).then(response => {
-            console.log("RESPONSE####");
-        console.log(response);
+        this.isHost = response.data.data;
       }).catch(error => {
         console.error(error);
       });
     },
-    ready(){
-      alert("준비완료")
+    ready(isHost){
+      if (isHost) {
+
+      } else {
+
+      }
       const box = document.getElementById('waiting-box');
       box.remove();
     },
@@ -96,7 +99,9 @@ export default {
           this.message = '';
         }
     },
+    start(){
 
+    },
     connect() {
         const serverURL = "https://localhost:80/ws-stomp"
         let socket = new SockJS(serverURL);

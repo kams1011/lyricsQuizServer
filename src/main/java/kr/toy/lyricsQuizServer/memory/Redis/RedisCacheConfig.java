@@ -30,6 +30,7 @@ public class RedisCacheConfig {
                 RedisCacheConfiguration.defaultCacheConfig()
                 .entryTtl(Duration.ofSeconds(30)));
         configMap.put(RedisCategory.GAME_ROOM.name(), RedisCacheConfiguration.defaultCacheConfig());// 특정 캐시에 대한 TTL
+        configMap.put(RedisCategory.INVITE_PENDING.name(), RedisCacheConfiguration.defaultCacheConfig().entryTtl(Duration.ofDays(1L)));// 특정 캐시에 대한 TTL
 
         return RedisCacheManager
                 .RedisCacheManagerBuilder
