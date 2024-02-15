@@ -36,8 +36,8 @@
 
       <!-- Chat input -->
       <input type="text" class="chat-input" v-model="message" placeholder="Send a message" @keydown.enter="send('TALK')">
-      <button type="button" class="chat-input">
-        <i class="fab"></i> Click</button>
+      <button type="button" class="chat-input" v-on:click="getInvitableUsers(this.isHost)">
+        <i class="fab"></i>{{ this.isHost ? '초대하기' : 'Click' }}</button>
     </div>
   </div>
   </body>
@@ -58,6 +58,7 @@ export default {
       message: "",
       recvList: [],
       isHost : false,
+      ready : false,
       roomId : this.$route.params.roomSeq,
     }
   },
@@ -68,6 +69,23 @@ export default {
     this.connect();
   },
   methods: {
+    getInvitableUsers(isHost){
+      if(isHost){
+        axios.get('https://localhost:80/api/game/invitation/users',
+            { withCredentials : true
+            }).then(response => {
+          console.log('success!!');
+          console.log(response);
+        }).catch(error => {
+          alert('초대 유저 불러오기에 실패했습니다.');
+        });
+      } else {
+        alert('잘못된 접근입니다.');
+      }
+    },
+    invite(){
+
+    },
     isHostCheck(){
       axios.get('https://localhost:80/api/game/host?roomId=' + this.roomSeq,
           { withCredentials : true
@@ -77,14 +95,15 @@ export default {
         console.error(error);
       });
     },
-    ready(isHost){
-      if (isHost) {
-
-      } else {
-
-      }
+    readyOrStart(){
       const box = document.getElementById('waiting-box');
-      box.remove();
+      if (this.isHost) {
+        alert("게임을 시작합니다.");
+        //FIXME AXIOS
+      } else {
+        alert("준비 완료");
+        box.remove();
+      }
     },
     send(type) {
         console.log("Send message:" + this.message);
@@ -98,9 +117,6 @@ export default {
           this.stompClient.send("/pub/chat/message", JSON.stringify(msg), {}); // 그냥 쿠키 넣어주면 될듯?
           this.message = '';
         }
-    },
-    start(){
-
     },
     connect() {
         const serverURL = "https://localhost:80/ws-stomp"

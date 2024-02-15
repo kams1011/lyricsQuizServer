@@ -33,7 +33,7 @@ public interface GameService {
 
     UserInfo putUserInfo(UserInfo userInfo);
 
-    List<UserInvitationInfo> getInvitableUsers(int pageNumber); // TODO 현재 접속중인 인원중에 현재 게임을 진행중이지 않은 인원 ( 현재 접속여부는 다시 생각해보기 )
+    List<UserInvitationInfo> getInvitableUsers(Pageable pageable);
 
     void ready(Long gameRoomSeq, User user);
 

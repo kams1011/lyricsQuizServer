@@ -122,9 +122,19 @@ public class GameController {
         }
     }
 
-    @GetMapping("/")
-    public ResponseEntity<Response> getInvitableUsers(){
+    @GetMapping("/invitation/users")
+    public ResponseEntity<Response> getInvitableUsers(Pageable pageable){
+        return ResponseEntity.ok().body(
+                new Response(true, null, gameService.getInvitableUsers(pageable), null));
+    }
 
+    public ResponseEntity<Response> ready(){
+
+        return null;
+    }
+
+    public ResponseEntity<Response> start(){
+        //FIXME 시작하는 사람 유효성 검사 필요
         return null;
     }
 

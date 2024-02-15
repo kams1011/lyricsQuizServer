@@ -1,5 +1,6 @@
 package kr.toy.lyricsQuizServer.memory;
 
+import kr.toy.lyricsQuizServer.game.controller.response.UserInvitationInfo;
 import kr.toy.lyricsQuizServer.memory.Redis.RedisCategory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.HashOperations;
@@ -20,9 +21,9 @@ public class RedisMemoryInvitePendingService implements MemoryService{
     private static final int PAGE_SIZE = 10;
 
     @Override
-    public Object getObject(Object userInfoSeq) { //FIXME 수정필요
+    public Object getObject(Object userInvitationInfo) { //FIXME 수정필요
 //        Long index = invitePendingListOperations.indexOf(key, userInfoSeq); // RedisVersion문제로 현재는 작동되지 않음.
-        Long index = Long.valueOf(getAll().indexOf(String.valueOf(userInfoSeq)));
+        Long index = Long.valueOf(getAll().indexOf(userInvitationInfo));
         return index;
     }
 
@@ -37,8 +38,8 @@ public class RedisMemoryInvitePendingService implements MemoryService{
     }
 
     @Override
-    public void putObject(Object id, Object userInfoSeq) {
-        invitePendingListOperations.rightPush(key, userInfoSeq);
+    public void putObject(Object id, Object invitationInfo) {
+        invitePendingListOperations.rightPush(key, invitationInfo);
     }
 
     @Override

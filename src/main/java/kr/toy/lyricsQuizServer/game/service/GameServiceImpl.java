@@ -126,17 +126,18 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public void allowInvitation(User user, boolean isAllowed) {
+        UserInvitationInfo userInvitationInfo = UserInvitationInfo.from(user);
         if (isAllowed){
-            redisUtil.putInvitePendingInfoInRedis(user.getUserSeq());
+            redisUtil.putInvitePendingInfoInRedis(userInvitationInfo);
         } else {
-            redisUtil.deleteInvitedPendingInfoInRedis(user.getUserSeq());
+            redisUtil.deleteInvitedPendingInfoInRedis(userInvitationInfo);
         }
     }
 
     @Override
     public boolean getMyInvitationInfo(User user) {
-        Long index = redisUtil.getInvitePendingInfoFromRedis(user.getUserSeq());
-        if (index == -1 ) {
+        Long index = redisUtil.getInvitePendingInfoFromRedis(UserInvitationInfo.from(user));
+        if (index == -1) {
             return false;
         } else {
             return true;
@@ -150,14 +151,8 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public List<UserInvitationInfo> getInvitableUsers(int pageNumber) { //FIXME 페이징 추가 + 방장은 제외하고 가져오기
-        List<Long> userSeqList = redisUtil.getAllInvitePendingInfoFromRedis();
-        List<UserInvitationInfo> userInvitationInfoList = userSeqList.stream()
-                .map(data -> userRepository.getById(data))
-                .map(data -> UserInvitationInfo.from(data))
-                .collect(Collectors.toList());
-
-        return userInvitationInfoList;
+    public List<UserInvitationInfo> getInvitableUsers(Pageable pageable) { //FIXME 페이징 추가 + 방장은 제외하고 가져오기
+        return redisUtil.getAllInvitePendingInfoFromRedis();
     }
 
     @Override

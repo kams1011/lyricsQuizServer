@@ -2,6 +2,7 @@ package kr.toy.lyricsQuizServer.memory.Redis;
 
 import kr.toy.lyricsQuizServer.chat.controller.dto.ChatMessage;
 import kr.toy.lyricsQuizServer.game.controller.response.GameRoom;
+import kr.toy.lyricsQuizServer.game.controller.response.UserInvitationInfo;
 import kr.toy.lyricsQuizServer.memory.RedisMemoryGameRoomService;
 import kr.toy.lyricsQuizServer.memory.RedisMemoryInvitePendingService;
 import kr.toy.lyricsQuizServer.memory.RedisMemoryUserInfoService;
@@ -48,8 +49,8 @@ public class RedisUtil {
     public void putUserInfoInRedis(Long id, UserInfo userInfo){
         memoryUserInfoService.putObject(id, userInfo);
     }
-    public void putInvitePendingInfoInRedis(Long userSeq){
-        memoryInvitePendingService.putObject(null, userSeq);
+    public void putInvitePendingInfoInRedis(UserInvitationInfo invitationInfo){
+        memoryInvitePendingService.putObject(null, invitationInfo);
     }
 
     @Cacheable(value = "GAME_ROOM", key = "#id", unless = "#result == null")
@@ -63,11 +64,11 @@ public class RedisUtil {
     }
 
 //    @Cacheable(value = "INVITE_PENDING", key = "#id", unless = "#result == null")
-    public Long getInvitePendingInfoFromRedis(Long id){
-        return (Long)memoryInvitePendingService.getObject(id);
+    public Long getInvitePendingInfoFromRedis(UserInvitationInfo userInvitationInfo){
+        return (Long)memoryInvitePendingService.getObject(userInvitationInfo);
     }
 
-    public List<Long> getAllInvitePendingInfoFromRedis(){
+    public List<UserInvitationInfo> getAllInvitePendingInfoFromRedis(){
         return memoryInvitePendingService.getAll();
     }
 
@@ -78,8 +79,9 @@ public class RedisUtil {
     public void deleteUserInfoInRedis(Long id){
         memoryUserInfoService.deleteObject(id);
     }
-    public void deleteInvitedPendingInfoInRedis(Long id){
-        memoryInvitePendingService.deleteObject(id);
+
+    public void deleteInvitedPendingInfoInRedis(UserInvitationInfo userInvitationInfo){
+        memoryInvitePendingService.deleteObject(userInvitationInfo);
     }
 
 

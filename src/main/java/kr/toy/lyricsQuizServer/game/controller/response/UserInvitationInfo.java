@@ -5,8 +5,10 @@ import kr.toy.lyricsQuizServer.user.domain.dto.UserInfo;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.io.Serializable;
+
 @Getter
-public class UserInvitationInfo {
+public class UserInvitationInfo implements Serializable {
 
     Long userSeq;
 
