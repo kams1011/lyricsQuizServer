@@ -24,21 +24,23 @@ public class RedisConfig {
 //    /**
 //     * 단일 Topic 사용을 위한 Bean 설정
 //     */
-    @Bean
-    public ChannelTopic channelTopic() {
-        return new ChannelTopic(RedisCategory.GAME_ROOM.name());
-    }
+//    @Bean
+//    public ChannelTopic channelTopic() {
+//        return new ChannelTopic(RedisCategory.GAME_ROOM.name());
+//    }
 
     /**
      * redis에 발행(publish)된 메시지 처리를 위한 리스너 설정
      */
     @Bean
     public RedisMessageListenerContainer redisMessageListener(RedisConnectionFactory connectionFactory,
-                                                              MessageListenerAdapter listenerAdapter,
+                                                              MessageListenerAdapter sendMessageListenerAdapter,
+                                                              MessageListenerAdapter inviteListenerAdapter,
                                                               ChannelTopic channelTopic) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        container.addMessageListener(listenerAdapter, channelTopic);
+        container.addMessageListener(sendMessageListenerAdapter, channelTopic);
+        container.addMessageListener(inviteListenerAdapter, channelTopic);
         return container;
     }
 
@@ -46,9 +48,15 @@ public class RedisConfig {
      * RedisSubscriber 클래스의  sendMessage 클래스 가 호출됨.
      */
     @Bean
-    public MessageListenerAdapter listenerAdapter(RedisSubscriber subscriber) {
+    public MessageListenerAdapter sendMessageListenerAdapter(RedisSubscriber subscriber) {
 
         return new MessageListenerAdapter(subscriber, "sendMessage");
+    }
+
+    @Bean
+    public MessageListenerAdapter inviteListenerAdapter(RedisSubscriber subscriber) {
+
+        return new MessageListenerAdapter(subscriber, "invite");
     }
 
     /**
