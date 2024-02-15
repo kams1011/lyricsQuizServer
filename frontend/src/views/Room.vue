@@ -39,6 +39,14 @@
       <button type="button" class="chat-input" v-on:click="getInvitableUsers(this.isHost)">
         <i class="fab"></i>{{ this.isHost ? '초대하기' : 'Click' }}</button>
     </div>
+
+    <div v-if="showInvitableUsersModal" class="modal">
+      <div class="modal-content flex justify-between" v-for="item in invitableUsers" :key="item.userSeq">
+        <div class="w-full flex p-3 pl-4 items-center hover:bg-gray-300 rounded-lg cursor-pointer">
+          <h3>닉네임 : {{ item.nickName }} </h3>
+        </div>
+      </div>
+    </div>
   </div>
   </body>
   </html>
@@ -59,7 +67,9 @@ export default {
       recvList: [],
       isHost : false,
       ready : false,
+      showInvitableUsersModal : false,
       roomId : this.$route.params.roomSeq,
+      invitableUsers : [],
     }
   },
   created() {
@@ -71,11 +81,10 @@ export default {
   methods: {
     getInvitableUsers(isHost){
       if(isHost){
-        axios.get('https://localhost:80/api/game/invitation/users',
-            { withCredentials : true
-            }).then(response => {
-          console.log('success!!');
-          console.log(response);
+        axios.get('https://localhost:80/api/game/invitation/users', { withCredentials : true})
+        .then(response => {
+              this.invitableUsers = response.data.data;
+              this.showInvitableUsersModal = true;
         }).catch(error => {
           alert('초대 유저 불러오기에 실패했습니다.');
         });

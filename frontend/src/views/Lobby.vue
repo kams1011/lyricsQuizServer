@@ -94,7 +94,6 @@
         <input placeholder="비밀번호를 입력하세요" type="password" v-model="password" />
         <button @click="submitPassword">확인</button>
       </div>
-
     </div>
   </main>
   <!-- partial -->
@@ -126,8 +125,6 @@ export default {
       axios.get('https://localhost:80/api/game/invitation',
           { withCredentials : true
           }).then(response => {
-            console.log('hihi');
-            console.log(response);
             this.isAllowed = response.data.data;
       }).catch(error => {
         console.error(error);
