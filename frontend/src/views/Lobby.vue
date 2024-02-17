@@ -137,26 +137,25 @@ export default {
           .then(response => {
             this.isAllowed = !this.isAllowed;
             if (this.isAllowed) { // FIXME 구독 부분 수정
-                const serverURL = "https://localhost:80/ws-stomp"
-                let socket = new SockJS(serverURL);
-                this.stompClient = Stomp.over(socket);
-                this.stompClient.connect(
-                    {},
-                    frame => {
-                      this.connected = true;
-                      console.log('소켓 연결 성공', frame);
-                      const subscribe = this.stompClient.subscribe("/sub/chat/room/" + this.roomId, res => {
-                        this.recvList.push(JSON.parse(res.body))
-                      });
-                      this.send('ENTER');
-                    },
-                    error => {
-                      alert('초대를 허용할 수 없습니다.');
-                      this.connected = false;
-                    }
-                );
-              }
-              alert('초대를 허용했습니다.');
+                // const serverURL = "https://localhost:80/ws-stomp"
+                // let socket = new SockJS(serverURL);
+                // this.stompClient = Stomp.over(socket);
+                // this.stompClient.connect(
+                //     {},
+                //     frame => {
+                //       this.connected = true;
+                //       console.log('소켓 연결 성공', frame);
+                //       const subscribe = this.stompClient.subscribe("/sub/chat/room/" + this.roomId, res => {
+                //         this.recvList.push(JSON.parse(res.body))
+                //       });
+                //       this.send('ENTER');
+                //     },
+                //     error => {
+                //       alert('초대를 허용할 수 없습니다.');
+                //       this.connected = false;
+                //     }
+                // );
+              alert('초대를 허용했습니다. 초대는 로비에 있을 때만 받을 수 있습니다.');
             } else {
               alert('초대를 거부했습니다.');
             }

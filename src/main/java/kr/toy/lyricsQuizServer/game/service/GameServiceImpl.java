@@ -1,8 +1,10 @@
 package kr.toy.lyricsQuizServer.game.service;
 
 
+import kr.toy.lyricsQuizServer.chat.controller.dto.ChatMessage;
 import kr.toy.lyricsQuizServer.chat.controller.port.ChatService;
 import kr.toy.lyricsQuizServer.game.controller.response.UserInvitationInfo;
+import kr.toy.lyricsQuizServer.memory.Redis.RedisCategory;
 import kr.toy.lyricsQuizServer.memory.Redis.RedisUtil;
 import kr.toy.lyricsQuizServer.game.controller.port.GameService;
 import kr.toy.lyricsQuizServer.game.controller.response.GameRoom;
@@ -30,11 +32,7 @@ import java.util.stream.Collectors;
 public class GameServiceImpl implements GameService {
 
     private final GameRepository gameRepository;
-
     private final QuizRepository quizRepository;
-
-    private final UserRepository userRepository;
-
     private final RedisUtil redisUtil;
 
 
@@ -103,13 +101,16 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void invite(Long gameRoomSeq, User host, Long invitedUserSeq){ //FIXME 초대기능 추가
+    public void invite(Long gameRoomSeq, User host, Long invitedUserSeq){
         GameRoom gameRoom = getGameRoom(gameRoomSeq);
         if (!gameRoom.isHost(UserInfo.from(host, gameRoomSeq, null))){
             throw new RuntimeException("초대는 호스트만 가능합니다."); // 내가 그 방 방장인지 여부를 확인한다.
         }
-        // 어떤 방에 누구를 초대한다.
-        // 초대 여부를 저장하지 않으니 초대 수락은 삭제하고 alert창에서 확인을 누르면 바로 입장할 수 있도록 변경.
+        UserInfo userInfo = redisUtil.getUserInfoFromRedis(invitedUserSeq);
+        if (isRoomEnterAllowed(gameRoom, null, userInfo)) {
+            String hostName = host.getNickName();
+            redisUtil.publish(RedisCategory.INVITE_PENDING, new ChatMessage().invite(hostName));
+        }
     }
 
     @Override

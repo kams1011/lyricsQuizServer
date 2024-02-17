@@ -9,6 +9,8 @@ public interface ChatService {
 
     void sendMessage(ChatMessage message, UserInfo user);
 
+    void invite(ChatMessage message, UserInfo user);
+
     void exit();
 
 }

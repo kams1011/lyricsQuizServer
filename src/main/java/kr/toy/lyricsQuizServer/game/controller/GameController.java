@@ -128,6 +128,14 @@ public class GameController {
                 new Response(true, null, gameService.getInvitableUsers(pageable), null));
     }
 
+    @PostMapping("/invitation")
+    public ResponseEntity<Response> invite(User user, @RequestParam Long invitedUserSeq, @RequestParam Long roomId){
+
+        gameService.invite(roomId, user, invitedUserSeq);
+        return ResponseEntity.ok().body(
+                new Response(true, null, invitedUserSeq, null));
+    }
+
     public ResponseEntity<Response> ready(){
 
         return null;

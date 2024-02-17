@@ -38,8 +38,8 @@ public class RedisUtil {
 //        topics = new HashMap<>();
 //    }
 
-    public void publish(ChatMessage message){
-        redisTemplate.convertAndSend(RedisCategory.GAME_ROOM.name(), message);
+    public void publish(RedisCategory redisCategory, ChatMessage message){
+        redisTemplate.convertAndSend(redisCategory.name(), message);
     }
 
     public void putGameRoomInRedis(Long id, GameRoom gameRoom){

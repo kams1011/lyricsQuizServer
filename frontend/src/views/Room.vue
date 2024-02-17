@@ -11,7 +11,7 @@
     <!-- Video container -->
     <div class="video-container relative w-2/4 float-left">
       <div id="waiting-box" class="absolute top-0 left-0 w-full h-full z-10 bg-white bg-opacity-25 grid place-items-center">
-        <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-16 px-32 rounded inline-flex items-center" v-on:click="ready(this.isHost)">
+        <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-16 px-32 rounded inline-flex items-center" v-on:click="readyOrStart(this.isHost)">
           <span class="text-6xl">{{ this.isHost ? 'START' : 'READY' }}</span>
         </button>
       </div>
@@ -41,8 +41,8 @@
     </div>
 
     <div v-if="showInvitableUsersModal" class="modal">
-      <div class="modal-content flex justify-between" v-for="item in invitableUsers" :key="item.userSeq">
-        <div class="w-full flex p-3 pl-4 items-center hover:bg-gray-300 rounded-lg cursor-pointer">
+      <div class="modal-content flex justify-between" v-for="item in invitableUsers" :key="item.userSeq" v-on:click="invite(item.nickName, item.userSeq)">
+        <div class="w-full flex p-3 pl-4 items-center hover:bg-gray-300 rounded-lg cursor-pointer" >
           <h3>닉네임 : {{ item.nickName }} </h3>
         </div>
       </div>
@@ -83,8 +83,13 @@ export default {
       if(isHost){
         axios.get('https://localhost:80/api/game/invitation/users', { withCredentials : true})
         .then(response => {
-              this.invitableUsers = response.data.data;
-              this.showInvitableUsersModal = true;
+          console.log(response);
+          if (response.data.data.length == 0) {
+            alert('초대가능한 유저가 없습니다.');
+          } else {
+            this.invitableUsers = response.data.data;
+            this.showInvitableUsersModal = true;
+          }
         }).catch(error => {
           alert('초대 유저 불러오기에 실패했습니다.');
         });
@@ -92,8 +97,17 @@ export default {
         alert('잘못된 접근입니다.');
       }
     },
-    invite(){
-
+    invite(nickName, userSeq){
+      let isConfirmed = confirm(nickName + '님을 초대하시겠습니까?');
+      if (isConfirmed) {
+        axios.post('https://localhost:80/api/game/invitation?roomId=' + this.roomSeq + '&invitedUserSeq=' + userSeq,{},
+            { withCredentials : true})
+            .then(response => {
+              alert('초대에 성공했습니다.');
+        }).catch(error => {
+          alert('초대에 실패했습니다.');
+        });
+      }
     },
     isHostCheck(){
       axios.get('https://localhost:80/api/game/host?roomId=' + this.roomSeq,

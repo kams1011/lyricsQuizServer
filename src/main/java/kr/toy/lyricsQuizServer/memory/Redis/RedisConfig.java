@@ -15,7 +15,9 @@ import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Configuration
 public class RedisConfig {
@@ -24,10 +26,13 @@ public class RedisConfig {
 //    /**
 //     * 단일 Topic 사용을 위한 Bean 설정
 //     */
-//    @Bean
-//    public ChannelTopic channelTopic() {
-//        return new ChannelTopic(RedisCategory.GAME_ROOM.name());
-//    }
+    @Bean
+    public Map<String, ChannelTopic> channelTopic() {
+        Map<String, ChannelTopic> map = new HashMap<>();
+        map.put(RedisCategory.GAME_ROOM.name(), new ChannelTopic(RedisCategory.GAME_ROOM.name()));
+        map.put(RedisCategory.INVITE_PENDING.name(), new ChannelTopic(RedisCategory.INVITE_PENDING.name()));
+        return map;
+    }
 
     /**
      * redis에 발행(publish)된 메시지 처리를 위한 리스너 설정
@@ -36,11 +41,11 @@ public class RedisConfig {
     public RedisMessageListenerContainer redisMessageListener(RedisConnectionFactory connectionFactory,
                                                               MessageListenerAdapter sendMessageListenerAdapter,
                                                               MessageListenerAdapter inviteListenerAdapter,
-                                                              ChannelTopic channelTopic) {
+                                                              Map<String, ChannelTopic> channelTopic) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        container.addMessageListener(sendMessageListenerAdapter, channelTopic);
-        container.addMessageListener(inviteListenerAdapter, channelTopic);
+        container.addMessageListener(sendMessageListenerAdapter, channelTopic.get(RedisCategory.GAME_ROOM.name()));
+        container.addMessageListener(inviteListenerAdapter, channelTopic.get(RedisCategory.INVITE_PENDING.name()));
         return container;
     }
 

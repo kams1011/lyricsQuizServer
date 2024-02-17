@@ -25,7 +25,7 @@ public class RedisSubscriber {
         }
     }
 
-    public void invite(String publishMessage){
+    public void invite(String publishMessage){ // FIXME ChatMessage로 쓰는게 아니라 Invite 객체를 새로 만들기.
         try {
             ChatMessage chatMessage = objectMapper.readValue(publishMessage, ChatMessage.class);
             messagingTemplate.convertAndSend("/sub/invitation/" + chatMessage.getRoomId(), chatMessage);

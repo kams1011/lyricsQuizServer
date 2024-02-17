@@ -46,6 +46,16 @@ public class ChatMessage {
         return chatMessage;
     }
 
+    public ChatMessage invite(String hostName){
+        ChatMessage chatMessage = ChatMessage.builder()
+                .type(MessageType.INVITE)
+                .roomId(roomId)
+                .senderNickName("[알림]")
+                .message(hostName + "님이 초대하셨습니다.") // FIXME 추후 방 제목 추가해주자.
+                .build();
+        return chatMessage;
+    }
+
     @Override
     public String toString() {
         return "ChatMessage{" +

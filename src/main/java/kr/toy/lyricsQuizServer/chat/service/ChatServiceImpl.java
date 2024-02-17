@@ -3,6 +3,7 @@ package kr.toy.lyricsQuizServer.chat.service;
 import kr.toy.lyricsQuizServer.chat.controller.dto.ChatMessage;
 import kr.toy.lyricsQuizServer.chat.controller.port.ChatService;
 import kr.toy.lyricsQuizServer.chat.domain.MessageType;
+import kr.toy.lyricsQuizServer.memory.Redis.RedisCategory;
 import kr.toy.lyricsQuizServer.memory.Redis.RedisUtil;
 import kr.toy.lyricsQuizServer.user.domain.dto.UserInfo;
 import lombok.RequiredArgsConstructor;
@@ -25,8 +26,14 @@ public class ChatServiceImpl implements ChatService {
         if (message.getType().equals(MessageType.ENTER)) {
             message = message.join(nickName);
         }
-        redisUtil.publish(message);
+        redisUtil.publish(RedisCategory.GAME_ROOM, message);
     }
+
+    @Override
+    public void invite(ChatMessage message, UserInfo user){
+
+    }
+
 
     @Override
     public void exit() { // Session을 제거해주기.
