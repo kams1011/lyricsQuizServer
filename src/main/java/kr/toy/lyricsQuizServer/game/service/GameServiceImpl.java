@@ -3,6 +3,7 @@ package kr.toy.lyricsQuizServer.game.service;
 
 import kr.toy.lyricsQuizServer.chat.controller.dto.ChatMessage;
 import kr.toy.lyricsQuizServer.chat.controller.port.ChatService;
+import kr.toy.lyricsQuizServer.chat.domain.InvitationInfo;
 import kr.toy.lyricsQuizServer.game.controller.response.UserInvitationInfo;
 import kr.toy.lyricsQuizServer.memory.Redis.RedisCategory;
 import kr.toy.lyricsQuizServer.memory.Redis.RedisUtil;
@@ -109,7 +110,8 @@ public class GameServiceImpl implements GameService {
         UserInfo userInfo = redisUtil.getUserInfoFromRedis(invitedUserSeq);
         if (isRoomEnterAllowed(gameRoom, null, userInfo)) {
             String hostName = host.getNickName();
-            redisUtil.publish(RedisCategory.INVITE_PENDING, new ChatMessage().invite(hostName));
+            redisUtil.invite(RedisCategory.INVITE_PENDING, InvitationInfo.init(host.getUserSeq(), hostName, gameRoomSeq,
+                    gameRoom.getRoomName(), invitedUserSeq));
         }
     }
 
@@ -126,13 +128,14 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public void allowInvitation(User user, boolean isAllowed) {
+    public UserInvitationInfo allowInvitation(User user, boolean isAllowed) {
         UserInvitationInfo userInvitationInfo = UserInvitationInfo.from(user);
         if (isAllowed){
             redisUtil.putInvitePendingInfoInRedis(userInvitationInfo);
         } else {
             redisUtil.deleteInvitedPendingInfoInRedis(userInvitationInfo);
         }
+        return userInvitationInfo;
     }
 
     @Override

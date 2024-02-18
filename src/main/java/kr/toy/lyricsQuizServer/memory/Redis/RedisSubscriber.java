@@ -2,6 +2,7 @@ package kr.toy.lyricsQuizServer.memory.Redis;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.toy.lyricsQuizServer.chat.controller.dto.ChatMessage;
+import kr.toy.lyricsQuizServer.chat.domain.InvitationInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
@@ -25,10 +26,10 @@ public class RedisSubscriber {
         }
     }
 
-    public void invite(String publishMessage){ // FIXME ChatMessage로 쓰는게 아니라 Invite 객체를 새로 만들기.
+    public void invite(String publishMessage){
         try {
-            ChatMessage chatMessage = objectMapper.readValue(publishMessage, ChatMessage.class);
-            messagingTemplate.convertAndSend("/sub/invitation/" + chatMessage.getRoomId(), chatMessage);
+            InvitationInfo invitationInfo = objectMapper.readValue(publishMessage, InvitationInfo.class);
+            messagingTemplate.convertAndSend("/sub/invitation/" +invitationInfo.getInvitedUserSeq() , invitationInfo);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -1,6 +1,7 @@
 package kr.toy.lyricsQuizServer.memory.Redis;
 
 import kr.toy.lyricsQuizServer.chat.controller.dto.ChatMessage;
+import kr.toy.lyricsQuizServer.chat.domain.InvitationInfo;
 import kr.toy.lyricsQuizServer.game.controller.response.GameRoom;
 import kr.toy.lyricsQuizServer.game.controller.response.UserInvitationInfo;
 import kr.toy.lyricsQuizServer.memory.RedisMemoryGameRoomService;
@@ -40,6 +41,10 @@ public class RedisUtil {
 
     public void publish(RedisCategory redisCategory, ChatMessage message){
         redisTemplate.convertAndSend(redisCategory.name(), message);
+    }
+
+    public void invite(RedisCategory redisCategory, InvitationInfo invitationInfo){
+        redisTemplate.convertAndSend(redisCategory.name(), invitationInfo);
     }
 
     public void putGameRoomInRedis(Long id, GameRoom gameRoom){

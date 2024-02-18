@@ -136,32 +136,36 @@ export default {
       axios.patch('https://localhost:80/api/game/invitation?isAllowed=' + !this.isAllowed, {},{ withCredentials : true})
           .then(response => {
             this.isAllowed = !this.isAllowed;
-            if (this.isAllowed) { // FIXME 구독 부분 수정
-                // const serverURL = "https://localhost:80/ws-stomp"
-                // let socket = new SockJS(serverURL);
-                // this.stompClient = Stomp.over(socket);
-                // this.stompClient.connect(
-                //     {},
-                //     frame => {
-                //       this.connected = true;
-                //       console.log('소켓 연결 성공', frame);
-                //       const subscribe = this.stompClient.subscribe("/sub/chat/room/" + this.roomId, res => {
-                //         this.recvList.push(JSON.parse(res.body))
-                //       });
-                //       this.send('ENTER');
-                //     },
-                //     error => {
-                //       alert('초대를 허용할 수 없습니다.');
-                //       this.connected = false;
-                //     }
-                // );
-              alert('초대를 허용했습니다. 초대는 로비에 있을 때만 받을 수 있습니다.');
+            if (this.isAllowed) {
+
+              this.inviteNotice(response.data.data.userSeq);
             } else {
               alert('초대를 거부했습니다.');
             }
           }).catch(error => {
             alert('초대 허용에 실패했습니다. 사유 : ' + error.response.data.message);
           });
+    },
+    inviteNotice(userSeq) {
+      const serverURL = "https://localhost:80/ws-stomp"
+      let socket = new SockJS(serverURL);
+      this.stompClient = Stomp.over(socket);
+      this.stompClient.connect(
+          {},
+          frame => {
+            this.connected = true;
+            console.log('소켓 연결 성공', frame);
+            const subscribe = this.stompClient.subscribe("/sub/invitation/" + userSeq, res => {
+              alert('초대를 허용했습니다. 초대는 로비에 있을 때만 받을 수 있습니다.');
+              let confirm = confirm(JSON.parse(res.body)); // FIXME 여기부터
+            });
+          },
+          error => {
+            console.log('초대 구독 실패', error.headers);
+            alert('방에 접속할 수 없습니다.');
+            this.connected = false;
+          }
+      );
     },
     getList: function () {
       const keyword = '';
