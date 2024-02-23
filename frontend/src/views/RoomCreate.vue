@@ -86,12 +86,6 @@ export default {
     };
   },
 
-
-  //FIXME 게임 생성 완료 시 게임 방으로 넘어가는 로직 구현.
-
-
-
-
   methods: {
     register: function () {
       const jsonData = {
@@ -106,7 +100,7 @@ export default {
           }).then(response => {
         if(response.data.success){
           alert('성공적으로 등록했습니다.');
-          this.$router.push('/');
+          this.$router.push('/room/' + response.data.data.gameRoomSeq);
         } else {
           alert('오류가 발생했습니다.');
         }

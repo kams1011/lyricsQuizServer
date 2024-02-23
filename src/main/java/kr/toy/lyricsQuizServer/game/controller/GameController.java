@@ -59,7 +59,6 @@ public class GameController {
         return ResponseEntity.ok().body(Response.success(gameService.create(maker, gameCreate)));
     }
 
-
     @PostMapping("/password")
     public ResponseEntity<Response> checkPassword(@RequestBody GamePassword gamePassword){
         try {
@@ -124,20 +123,11 @@ public class GameController {
                 new Response(true, null, invitedUserSeq, null));
     }
 
-
-    @GetMapping("/temp")
-    public ResponseEntity<Response> temp(User user){
-        gameService.invite(8L, user, 21L);
-        return ResponseEntity.ok().body(
-                new Response(true, null, 21L, null));
-    }
     @PatchMapping("/ready")
     public ResponseEntity<Response> ready(@RequestParam Long roomId, User user){
         gameService.ready(roomId, user);
         return ResponseEntity.ok().body(new Response(true, null, null, null));
     }
-
-
 
     public ResponseEntity<Response> start(){
         //FIXME 시작하는 사람 유효성 검사 필요
