@@ -107,13 +107,8 @@ public class GameController {
     }
     @PatchMapping("/start")
     public ResponseEntity<Response> start(@RequestParam Long roomId, User user){
-        try {
-            gameService.start(roomId, user);
-            return ResponseEntity.ok().body(new Response(true, null, null, null));
-        } catch (Exception e){
-            e.printStackTrace();
-            return ResponseEntity.internalServerError().body(new Response(false, e.getMessage(), null, null));
-        }
+        gameService.start(roomId, user);
+        return ResponseEntity.ok().body(new Response(true, null, null, null));
     }
 
     @GetMapping("/invitation/users")
@@ -124,16 +119,25 @@ public class GameController {
 
     @PostMapping("/invitation")
     public ResponseEntity<Response> invite(User user, @RequestParam Long invitedUserSeq, @RequestParam Long roomId){
-
         gameService.invite(roomId, user, invitedUserSeq);
         return ResponseEntity.ok().body(
                 new Response(true, null, invitedUserSeq, null));
     }
 
-    public ResponseEntity<Response> ready(){
 
-        return null;
+    @GetMapping("/temp")
+    public ResponseEntity<Response> temp(User user){
+        gameService.invite(8L, user, 21L);
+        return ResponseEntity.ok().body(
+                new Response(true, null, 21L, null));
     }
+    @PatchMapping("/ready")
+    public ResponseEntity<Response> ready(@RequestParam Long roomId, User user){
+        gameService.ready(roomId, user);
+        return ResponseEntity.ok().body(new Response(true, null, null, null));
+    }
+
+
 
     public ResponseEntity<Response> start(){
         //FIXME 시작하는 사람 유효성 검사 필요

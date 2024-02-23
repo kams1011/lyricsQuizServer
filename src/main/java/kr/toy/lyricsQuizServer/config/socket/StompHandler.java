@@ -54,8 +54,8 @@ public class StompHandler implements ChannelInterceptor {
 
     public void StompCommandHandling(Message<?> message) throws IllegalArgumentException, IllegalAccessException {
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
-
-        if (StompCommand.SUBSCRIBE == accessor.getCommand()) {
+        //FIXME 초대 버튼 수신은 어떤 검사 해야할지 생각
+        if (StompCommand.SUBSCRIBE == accessor.getCommand() && accessor.getDestination().startsWith("/sub/chat/room")) {
             notEnteredUserCheck(accessor, message);
             putUserInfo(accessor, message);
         }

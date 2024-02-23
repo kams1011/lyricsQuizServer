@@ -147,6 +147,7 @@ export default {
           });
     },
     inviteNotice(userSeq) {
+      alert('초대용');
       const serverURL = "https://localhost:80/ws-stomp"
       let socket = new SockJS(serverURL);
       this.stompClient = Stomp.over(socket);
@@ -157,12 +158,14 @@ export default {
             console.log('소켓 연결 성공', frame);
             const subscribe = this.stompClient.subscribe("/sub/invitation/" + userSeq, res => {
               alert('초대를 허용했습니다. 초대는 로비에 있을 때만 받을 수 있습니다.');
+              console.log('return값입니다.');
+              console.log(res);
               let confirm = confirm(JSON.parse(res.body)); // FIXME 여기부터
             });
           },
           error => {
             console.log('초대 구독 실패', error.headers);
-            alert('방에 접속할 수 없습니다.');
+            alert('초대 허용 에러입니다.');
             this.connected = false;
           }
       );
