@@ -106,7 +106,7 @@ public class GameRoom implements Serializable {
         return userInfoList;
     }
 
-    public void enter(UserInfo userInfo){
+    public void enterUser(UserInfo userInfo){
         this.userList.add(userInfo);
     }
 

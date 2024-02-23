@@ -1,5 +1,6 @@
 package kr.toy.lyricsQuizServer.user.domain.dto;
 
+import kr.toy.lyricsQuizServer.game.controller.response.GameRoom;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -51,13 +52,18 @@ public class UserInfo implements Serializable {
 //        return userInfo;
 //    }
 
-    public void enter(Long gameRoomSeq){
+    public void enterGameRoom(Long gameRoomSeq){
         this.gameRoomSeq = gameRoomSeq;
+    }
+
+    public boolean isUserInGameRoom(GameRoom gameRoom){
+        return this.gameRoomSeq == gameRoom.getGameRoomSeq();
     }
 
     public void exit(){
         this.gameRoomSeq = null;
         this.ready = false;
+        this.sessionId = null;
     }
 
     public void ready(){

@@ -72,7 +72,8 @@ public class GameServiceImpl implements GameService {
         GameRoom gameRoom = getGameRoomOrCreate(gameRoomSeq);
         UserInfo userInfo = findUserInfoOrCreate(user, gameRoomSeq); // Redis 서버가 꺼졌을 때를 방지
         if (isRoomEnterAllowed(gameRoom, password, userInfo)) {
-            gameRoom.enter(userInfo);
+            gameRoom.enterUser(userInfo);
+            userInfo.enterGameRoom(gameRoomSeq);
             saveGameInRedis(gameRoom);
             addAttendeeCount(gameRoomSeq);
         }
@@ -216,11 +217,9 @@ public class GameServiceImpl implements GameService {
         }
         if (gameRoom.isEntered(userInfo)) {
             throw new IllegalStateException("이미 입장한 방입니다.");
-        }
-        if (userInfo.inGame()) {
+        } else if (userInfo.inGame()) {
             throw new IllegalStateException("다른 방에 입장한 유저입니다.");
         }
-
         //FIXME 방장이 존재하지 않으면 방을 종료하는 로직.
         //FIXME 모든 인원이 준비를 마쳤는데 1분 내에 게임을 실행하지 않으면 방을 종료하는 로직.
         return true;
@@ -229,6 +228,11 @@ public class GameServiceImpl implements GameService {
     public GameRoom saveGameInRedis(GameRoom gameRoom) {
         redisUtil.putGameRoomInRedis(gameRoom.getGameRoomSeq(), gameRoom);
         return gameRoom;
+    }
+
+    public UserInfo saveUserInfoInRedis(UserInfo userInfo) {
+        redisUtil.putUserInfoInRedis(userInfo.getUserSeq(), userInfo);
+        return userInfo;
     }
 
     public void roomClose(Long roomSeq){
