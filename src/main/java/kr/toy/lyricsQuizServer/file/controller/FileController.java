@@ -16,7 +16,6 @@ import java.net.URI;
 import java.util.Map;
 
 @RestController
-@Builder
 @RequestMapping("/api/file")
 @RequiredArgsConstructor
 public class FileController {

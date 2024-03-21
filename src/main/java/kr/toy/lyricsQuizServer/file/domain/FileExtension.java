@@ -24,7 +24,6 @@ public enum FileExtension {
     private final int[] code;
     private final String type;
 
-
     public boolean checkAVIFileSignature(MultipartFile file) throws IOException {
         boolean valid = true;
         for (int i=0; i<file.getBytes().length; i++) {

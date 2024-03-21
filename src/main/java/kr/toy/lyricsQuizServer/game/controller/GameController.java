@@ -21,7 +21,6 @@ import org.springframework.data.domain.Pageable;
 import java.util.stream.Collectors;
 
 @RestController
-@Builder
 @RequestMapping("/api/game")
 @RequiredArgsConstructor
 public class GameController {
