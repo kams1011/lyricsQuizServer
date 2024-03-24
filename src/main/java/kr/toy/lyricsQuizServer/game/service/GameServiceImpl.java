@@ -19,13 +19,20 @@ import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.domain.dto.UserInfo;
 import kr.toy.lyricsQuizServer.user.service.port.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.ResourceRegion;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Pageable;
 
+import java.io.IOException;
+import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -240,6 +247,10 @@ public class GameServiceImpl implements GameService {
         game.exit();
         gameRepository.save(game.getHost(), game, game.getQuiz());
         redisUtil.deleteGameRoomInRedis(roomSeq);
+    }
+
+    public void streaming() {
+
     }
 
 

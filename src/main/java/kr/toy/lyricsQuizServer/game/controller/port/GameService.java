@@ -9,6 +9,10 @@ import kr.toy.lyricsQuizServer.game.domain.dto.GamePassword;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.domain.dto.UserInfo;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
+
+import java.io.IOException;
 import java.util.List;
 
 public interface GameService {
@@ -48,5 +52,7 @@ public interface GameService {
     boolean getMyInvitationInfo(User user);
 
     boolean isHost(Long roomId, User user);
+
+    void streaming();
 
 }

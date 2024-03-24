@@ -12,12 +12,13 @@ import kr.toy.lyricsQuizServer.user.domain.User;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.data.domain.Pageable;
 
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @RestController
@@ -105,6 +106,7 @@ public class GameController {
     }
     @PatchMapping("/start")
     public ResponseEntity<Response> start(@RequestParam Long roomId, User user){
+        System.out.println("시작들어옴");
         gameService.start(roomId, user);
         return ResponseEntity.ok().body(new Response(true, null, null, null));
     }
@@ -124,12 +126,19 @@ public class GameController {
 
     @PatchMapping("/ready")
     public ResponseEntity<Response> ready(@RequestParam Long roomId, User user){
+        System.out.println("레디들어옴");
         gameService.ready(roomId, user);
         return ResponseEntity.ok().body(new Response(true, null, null, null));
     }
 
     public ResponseEntity<Response> start(){
         //FIXME 시작하는 사람 유효성 검사 필요
+        return null;
+    }
+
+    @GetMapping("/temp")
+    public ResponseEntity<Response> streaming(@RequestHeader HttpHeaders headers) throws IOException {
+
         return null;
     }
 

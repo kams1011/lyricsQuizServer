@@ -20,6 +20,7 @@
       <div class="horizontal-tabs">
 
         <a href="#" class="button" v-on:click="allowInvitation()">{{ this.isAllowed ? '초대 허용중' : '초대 거부중' }}</a>
+
         <!-- <a href="#">Profile</a>
         <a href="#">Password</a> -->
         <!-- <a href="#">Team</a>
