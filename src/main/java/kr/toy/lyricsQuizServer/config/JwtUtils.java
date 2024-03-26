@@ -14,8 +14,7 @@ import org.springframework.stereotype.Component;
 import java.util.Collections;
 import java.util.Date;
 
-import static javax.management.timer.Timer.ONE_MINUTE;
-import static javax.management.timer.Timer.ONE_WEEK;
+import static javax.management.timer.Timer.*;
 
 @Component
 @RequiredArgsConstructor
@@ -47,7 +46,8 @@ public class JwtUtils {
                 .setSubject(user.getEmail())
                 .setClaims(claims)
                 .setIssuedAt(now)
-                .setExpiration(new Date(now.getTime() + ONE_MINUTE * expireMinute))
+//                .setExpiration(new Date(now.getTime() + ONE_MINUTE * expireMinute))
+                .setExpiration(new Date(now.getTime() + ONE_SECOND * expireMinute))
                 .signWith(Keys.hmacShaKeyFor(securityProperties.jwtSecret().getBytes()))
                 .compact();
     }

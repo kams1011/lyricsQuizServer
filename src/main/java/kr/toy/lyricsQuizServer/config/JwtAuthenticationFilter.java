@@ -34,8 +34,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws IOException, ServletException {
         // FIXME NoSuchElement catch;
-
-
         try {
             String accessToken = securityService.resolveToken(request, securityProperties.cookieName().accessTokenCookieName());
             authenticateByJwt(accessToken, request, response);
@@ -82,7 +80,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String refreshToken = refreshTokenCheck(request, response);
         if (response.getStatus() != HttpStatus.UNAUTHORIZED.value()) {
             String accessToken = jwtUtils.accessTokenIssue(jwtUtils.getUserSeqIn(refreshToken));
-            securityService.setCookieWithToken(true, accessToken, response);
+            securityService.setCookieWithToken(false, accessToken, response);
         }
     }
 }

@@ -106,6 +106,7 @@ public class GameServiceImpl implements GameService {
         gameRoom.checkPlayerCount();
         gameRoom.start(LocalDateTime.now());
         saveGameInRedis(gameRoom);
+        
         gameRepository.save(game.getHost(), game, game.getQuiz());
     }
 
