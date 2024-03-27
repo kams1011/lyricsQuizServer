@@ -12,7 +12,8 @@
     <!-- Video container -->
     <div class="video-container relative w-2/4 float-left">
       <div id="waiting-box" class="absolute top-0 left-0 w-full h-full z-10 bg-white bg-opacity-25 grid place-items-center">
-        <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-16 px-32 rounded inline-flex items-center" v-on:click="buttonClicked()">
+<!--        <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-16 px-32 rounded inline-flex items-center" v-on:click="buttonClicked()">-->
+        <button class="bg-gray-30 hover:bg-gray-400 text-gray-800 font-bold py-16 px-32 rounded inline-flex items-center" v-on:click="buttonClicked()">
           <span class="text-6xl">{{ this.isHost ? 'START' : 'READY' }}</span>
         </button>
       </div>
@@ -60,7 +61,7 @@ import * as SockJS from "sockjs-client";
 import axios from "axios";
 // import Cookies from 'js-cookie';
 import VideoPlayer from '@/components/VideoPlayer.vue';
-import 'video.js/dist/video-js.css'
+// import 'video.js/dist/video-js.css'
 
 export default {
   name: 'App',
@@ -84,7 +85,7 @@ export default {
         sources: [
           {
             src: "",
-            type: "video/mp4",
+            type: "video/webm",
           }
         ]
       }
@@ -138,18 +139,16 @@ export default {
     },
     buttonClicked() {
       const box = document.getElementById('waiting-box');
-      box.remove();
-      this.videoOptions.sources[0].src = "https://www.shutterstock.com/shutterstock/videos/1075423076/preview/stock-footage-collage-of-eyes-beautiful-people-of-different-ages-and-multiethnic-close-up-montage-of-positive.webm";
-      this.$refs["video-player"].play(this.videoOptions);
-      // if (this.isHost) {
-      //   this.readyOrStart("start", "게임을 시작합니다.");
-      // } else {
-      //   this.readyOrStart("ready", "준비 완료");
-      //   box.remove();
-      // }
+      if (this.isHost) {
+        this.readyOrStart("start", "게임을 시작합니다.");
+      } else {
+        this.readyOrStart("ready", "준비 완료");
+      }
+
     },
     readyOrStart(action, message) {
       alert(message);
+
       this.sendActionToServer([action]);
     },
     sendActionToServer(action) {
@@ -159,12 +158,14 @@ export default {
             this.videoStreaming();
           })
           .catch(error => {
-            console.log(error);
+            console.log(error); // FIXME 준비 안한 인원 리턴해주기
             alert('에러가 발생했습니다.');
           });
     },
     videoStreaming(){
-      alert('스트리밍을 시작합니다.');
+      //FIXME 중간에 5초 카운트다운 하는 영상 추가해주는 방법도 있음
+      box.remove();
+      this.$refs["video-player"].play(this.videoOptions);
     },
     send(type) {
         console.log("Send message:" + this.message);
