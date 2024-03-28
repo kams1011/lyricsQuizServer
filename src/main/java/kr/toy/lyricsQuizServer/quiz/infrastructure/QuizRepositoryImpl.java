@@ -4,6 +4,7 @@ import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
 import kr.toy.lyricsQuizServer.quiz.domain.QuizContent;
 import kr.toy.lyricsQuizServer.quiz.service.QuizRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
@@ -34,10 +35,10 @@ public class QuizRepositoryImpl implements QuizRepository {
     }
 
     @Override
-    public List<Quiz> getList(String keyword, Pageable pageable) {
+    public PageImpl<Quiz> getList(String keyword, Pageable pageable) {
         keyword = keyword == null ? "" : keyword;
-        return quizJpaRepository.findAllByTitleContainingAndIsDeletedIsFalse(keyword, pageable)
-                .stream().map(data -> data.toModel()).collect(Collectors.toList());
+        PageImpl<QuizEntity> pages = quizJpaRepository.findAllByTitleContainingAndIsDeletedIsFalse(keyword, pageable);
+        return new PageImpl<>(pages.stream().map(data -> data.toModel()).collect(Collectors.toList()), pageable, pages.getTotalElements());
     }
 
     @Override

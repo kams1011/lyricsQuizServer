@@ -7,6 +7,8 @@ import kr.toy.lyricsQuizServer.game.infrastructure.GameEntity;
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
 import kr.toy.lyricsQuizServer.user.domain.User;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 
@@ -16,9 +18,9 @@ public interface GameRepository {
 
     Game findById(Long gameSeq);
 
-    List<Game> findAll(Pageable pageable);
+    PageImpl<Game> findAll(Pageable pageable);
 
-    List<Game> findAllByRoomNameOrManagerName(String word, Pageable pageable);
+    PageImpl<Game> findAllByRoomNameOrManagerName(String word, Pageable pageable);
 
     Game save(User host, Game game, Quiz quiz);
 

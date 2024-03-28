@@ -9,6 +9,8 @@ import kr.toy.lyricsQuizServer.quiz.service.QuizRepository;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.service.port.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.domain.Pageable;
@@ -30,17 +32,15 @@ public class GameRepositoryImpl implements GameRepository {
     }
 
     @Override
-    public List<Game> findAll(Pageable pageable) {
-        return gameJpaRepository.findAll(pageable)
-                .stream().map(GameEntity::toModel)
-                .collect(Collectors.toList());
+    public PageImpl findAll(Pageable pageable) {
+        Page<GameEntity> pages = gameJpaRepository.findAll(pageable);
+        return new PageImpl<>(pages.stream().map(GameEntity::toModel).collect(Collectors.toList()), pageable, pages.getTotalElements());
     }
 
     @Override
-    public List<Game> findAllByRoomNameOrManagerName(String word, Pageable pageable) {
-        return gameJpaRepository.findAllByRoomNameOrHost(word, pageable)
-                .stream().map(GameEntity::toModel)
-                .collect(Collectors.toList());
+    public PageImpl<Game> findAllByRoomNameOrManagerName(String word, Pageable pageable) {
+        Page<GameEntity> pages = gameJpaRepository.findAllByRoomNameOrHost(word, pageable);
+        return new PageImpl<>(pages.stream().map(GameEntity::toModel).collect(Collectors.toList()), pageable, pages.getTotalElements());
     }
 
     @Override

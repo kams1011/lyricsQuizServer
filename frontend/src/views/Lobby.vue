@@ -89,6 +89,8 @@
       </div>
     </div>
 
+
+    <Pagination :total-items="50" :page="5" :page-size="5"/>
     <!-- 비밀번호를 입력받는 모달 창 -->
     <div v-if="showPasswordModal" class="modal">
       <div class="modal-content flex justify-between">
@@ -107,9 +109,11 @@
 import axios from "axios";
 import * as SockJS from "sockjs-client";
 import * as Stomp from "webstomp-client";
+import Pagination from "@/components/Pagination";
 
 export default {
   name: "Lobby",
+  components: {Pagination},
   data() {
     return{
       password: '',

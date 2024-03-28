@@ -4,6 +4,7 @@ import kr.toy.lyricsQuizServer.common.domain.Response;
 import kr.toy.lyricsQuizServer.config.SecurityService;
 import kr.toy.lyricsQuizServer.game.controller.port.GameService;
 import kr.toy.lyricsQuizServer.game.controller.response.GameRoom;
+import kr.toy.lyricsQuizServer.game.domain.Game;
 import kr.toy.lyricsQuizServer.game.domain.dto.GameCreate;
 import kr.toy.lyricsQuizServer.game.domain.dto.GamePassword;
 import kr.toy.lyricsQuizServer.quiz.controller.port.QuizService;
@@ -12,6 +13,7 @@ import kr.toy.lyricsQuizServer.user.domain.User;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,8 +42,7 @@ public class GameController {
     public ResponseEntity<Response> getGameList(@RequestParam(required = false) String keyword, Pageable pageable){
         return ResponseEntity.ok()
                 .body(Response.success(
-                        gameService.getGameListByWord(keyword, pageable)
-                        .stream().map(data -> GameRoom.from(data))
+                        gameService.getGameListByWord(keyword, pageable).stream().map(data -> GameRoom.from(data))
                         .collect(Collectors.toList())));
     }
 

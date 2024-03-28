@@ -17,6 +17,7 @@ import kr.toy.lyricsQuizServer.quiz.infrastructure.QuizEntity;
 import kr.toy.lyricsQuizServer.user.controller.port.UserService;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +40,7 @@ public class QuizServiceImpl implements QuizService {
     private final FileService fileService;
 
     @Override
-    public List<Quiz> getList(String keyword, Pageable pageable) {
+    public PageImpl<Quiz> getList(String keyword, Pageable pageable) {
         return quizRepository.getList(keyword, pageable);
     }
 

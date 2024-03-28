@@ -1,5 +1,6 @@
 package kr.toy.lyricsQuizServer.quiz.infrastructure;
 
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -11,5 +12,5 @@ public interface QuizJpaRepository extends JpaRepository<QuizEntity, Long> {
     Optional<QuizEntity> findByQuizSeqAndIsDeletedIsFalse(Long quizSeq);
 
 
-    List<QuizEntity> findAllByTitleContainingAndIsDeletedIsFalse(String title, Pageable pageable);
+    PageImpl<QuizEntity> findAllByTitleContainingAndIsDeletedIsFalse(String title, Pageable pageable);
 }

@@ -8,6 +8,7 @@ import kr.toy.lyricsQuizServer.game.domain.dto.GameCreate;
 import kr.toy.lyricsQuizServer.game.domain.dto.GamePassword;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.domain.dto.UserInfo;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
@@ -17,9 +18,9 @@ import java.util.List;
 
 public interface GameService {
 
-    List<Game> getGameList(Pageable pageable); // 진행중인 상태 필요(시작 전, 진행중). 종료된 방은 안나오게.
+    PageImpl<Game> getGameList(Pageable pageable); // 진행중인 상태 필요(시작 전, 진행중). 종료된 방은 안나오게.
 
-    List<Game> getGameListByWord(String word, Pageable pageable);
+    PageImpl<Game> getGameListByWord(String word, Pageable pageable);
 
     Game create(User user, GameCreate gameCreate);
 
@@ -37,7 +38,7 @@ public interface GameService {
 
     UserInfo putUserInfo(UserInfo userInfo);
 
-    List<UserInvitationInfo> getInvitableUsers(Pageable pageable);
+    List<UserInvitationInfo> getInvitableUsers(Pageable pageable); // FIXME Redis Paging
 
     void ready(Long gameRoomSeq, User user);
 

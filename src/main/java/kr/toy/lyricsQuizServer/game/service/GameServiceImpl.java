@@ -22,6 +22,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.ResourceRegion;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 
@@ -45,12 +47,12 @@ public class GameServiceImpl implements GameService {
 
 
     @Override
-    public List<Game> getGameList(Pageable pageable) {
+    public PageImpl<Game> getGameList(Pageable pageable) {
         return gameRepository.findAll(pageable);
     }
 
     @Override
-    public List<Game> getGameListByWord(String word, Pageable pageable) {
+    public PageImpl<Game> getGameListByWord(String word, Pageable pageable) {
         return gameRepository.findAllByRoomNameOrManagerName(word, pageable);
     }
 

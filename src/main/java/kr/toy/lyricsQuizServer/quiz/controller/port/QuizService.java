@@ -6,6 +6,7 @@ import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizContentCreate;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizCreate;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizDetailToCreateRoom;
 import kr.toy.lyricsQuizServer.user.domain.User;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import javax.transaction.Transactional;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public interface QuizService {
 
-    List<Quiz> getList(String keyword, Pageable pageable);
+    PageImpl<Quiz> getList(String keyword, Pageable pageable);
 
     Quiz find(Long quizSeq);
 
