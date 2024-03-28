@@ -2,8 +2,8 @@
   <div>
   <el-pagination
       layout="prev, pager, next"
-      :current-page=page
-      :page-size=pageSize
+      :current-page = page
+      :page-size = pageSize
       :total=totalItems
       @current-change="setPage"
   >
@@ -14,16 +14,17 @@
 <script>
 export default {
   props: {
-    page: '',
     pageSize: '',
     totalItems: '',
   },
   data() {
     return {
+      page: 1,
     };
   },
   methods: {
     setPage(val) {
+      this.$emit('page-change', val);
       this.page = val;
     },
   },

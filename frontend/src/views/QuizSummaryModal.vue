@@ -16,7 +16,7 @@
           </div>
         </div>
       </div>
-
+      <Pagination :total-items="this.totalPage" :page-size="this.pageSize" @page-change="handlePageChange"/>
       <slot></slot>
     </div>
   </div>
@@ -24,13 +24,18 @@
 
 <script>
 import axios from "axios";
+import Pagination from "@/components/Pagination";
 
 export default {
   name: "QuizSummaryModal",
+  components: {Pagination},
   data() {
     return {
       quizSummary: [],
       quizSeq : '',
+      currentPage : 1,
+      totalPage: '',
+      pageSize: 4,
     }
   },
   props: {
@@ -43,12 +48,17 @@ export default {
     close() {
       this.$emit('close');
     },
-    getQuizList: function () {
+    handlePageChange(currentPage) {
+      this.getQuizList(currentPage);
+    },
+    getQuizList: function (currentPage) {
+      currentPage = currentPage == undefined ? 0 : currentPage - 1;
       const keyword = this.$refs['keyword'].value;
-      axios.get('https://localhost:80/api/game/quiz?keyword=' + keyword,
+      axios.get('https://localhost:80/api/game/quiz?size=' + this.pageSize + '&page=' + currentPage + '&keyword=' + keyword,
           { withCredentials : true
           }).then(response => {
-            this.quizSummary = response.data.data;
+        this.quizSummary = response.data.data.content;
+        this.totalPage = response.data.data.totalElements;
         console.log(response.data); // 서버 응답 처리
       }).catch(error => {
         console.error(error); // 오류 처리//

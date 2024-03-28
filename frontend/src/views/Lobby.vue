@@ -90,7 +90,7 @@
     </div>
 
 
-    <Pagination :total-items="50" :page="5" :page-size="5"/>
+    <Pagination :total-items="this.totalPage" :page-size="this.pageSize" @page-change="handlePageChange"/>
     <!-- 비밀번호를 입력받는 모달 창 -->
     <div v-if="showPasswordModal" class="modal">
       <div class="modal-content flex justify-between">
@@ -120,6 +120,9 @@ export default {
       roomId:'',
       showPasswordModal : false,
       isAllowed : false,
+      currentPage : 1,
+      totalPage: '',
+      pageSize: 9,
       itemList: [],
     }
   },
@@ -128,6 +131,9 @@ export default {
       this.getList();
   },
   methods: {
+    handlePageChange(currentPage) {
+      this.getList(currentPage);
+    },
     initInvitationInfo : function () {
       axios.get('https://localhost:80/api/game/invitation',
           { withCredentials : true
@@ -175,12 +181,14 @@ export default {
           }
       );
     },
-    getList: function () {
+    getList: function (currentPage) {
       const keyword = '';
-      axios.get('https://localhost:80/api/game?keyword=' + keyword,
+      currentPage = currentPage == undefined ? 0 : currentPage - 1;
+      axios.get('https://localhost:80/api/game?size=' + this.pageSize + '&page=' + currentPage + '&keyword=' + keyword,
           { withCredentials : true
           }).then(response => {
-        this.itemList = response.data.data;
+        this.itemList = response.data.data.content;
+        this.totalPage = response.data.data.totalElements;
       }).catch(error => {
         console.error(error);
       });
@@ -222,8 +230,6 @@ export default {
       this.password = '';
     }
   }
-
-
 }
 </script>
 

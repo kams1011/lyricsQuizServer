@@ -8,6 +8,7 @@ import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizCreate;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizDetailToCreateRoom;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,8 +47,9 @@ public class QuizController {
 
     @GetMapping("")
     public ResponseEntity<Response> getList(@RequestParam(required = false) String keyword, Pageable pageable){
+        PageImpl<Quiz> pages = quizService.getList(keyword, pageable);
         return ResponseEntity.ok()
-                .body(Response.success(quizService.getList(keyword, pageable)));
+                .body(Response.success(new PageImpl(pages.toList(), pageable, pages.getTotalElements())));
     }
 
     @GetMapping("/{quizSeq}")
