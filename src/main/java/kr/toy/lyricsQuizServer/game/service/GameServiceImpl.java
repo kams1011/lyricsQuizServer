@@ -108,6 +108,7 @@ public class GameServiceImpl implements GameService {
         saveGameInRedis(gameRoom);
         
         gameRepository.save(game.getHost(), game, game.getQuiz());
+
     }
 
     @Override
@@ -250,8 +251,14 @@ public class GameServiceImpl implements GameService {
         redisUtil.deleteGameRoomInRedis(roomSeq);
     }
 
-    public void streaming() {
-
+    @Override
+    public String getStreamingURL() {
+        GameRoom gameRoom = null;
+        Game game = gameRepository.findById(gameRoom.getGameRoomSeq());
+        // File upload시 S3에서 URL가져오는 로직.
+        // File과 Quiz와 Game을 매핑하는 로직.
+        // Quiz 정보로 Game에서 잘라오는 로직.
+        return null;
     }
 
 

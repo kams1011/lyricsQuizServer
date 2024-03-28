@@ -4,6 +4,7 @@ import kr.toy.lyricsQuizServer.config.ConfigurationProperties.OauthProperties;
 import kr.toy.lyricsQuizServer.config.ConfigurationProperties.SecurityProperties;
 import kr.toy.lyricsQuizServer.config.ConfigurationProperties.StorageProperties;
 import kr.toy.lyricsQuizServer.game.controller.port.GameService;
+import kr.toy.lyricsQuizServer.game.controller.response.GameRoom;
 import kr.toy.lyricsQuizServer.game.infrastructure.GameJpaRepository;
 import kr.toy.lyricsQuizServer.memory.MemoryService;
 import kr.toy.lyricsQuizServer.memory.Redis.RedisCategory;
@@ -40,9 +41,6 @@ public class UserTest {
 
     @Autowired
     RedisUtil redisUtil;
-
-
-
 
     @Test
     void 사용자는_로그인_할_수_있다(){

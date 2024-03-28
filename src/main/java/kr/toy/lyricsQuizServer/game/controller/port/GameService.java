@@ -53,6 +53,6 @@ public interface GameService {
 
     boolean isHost(Long roomId, User user);
 
-    void streaming();
+    String getStreamingURL();
 
 }

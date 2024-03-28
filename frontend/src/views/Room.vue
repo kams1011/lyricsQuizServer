@@ -138,33 +138,34 @@ export default {
       });
     },
     buttonClicked() {
-      const box = document.getElementById('waiting-box');
       if (this.isHost) {
         this.readyOrStart("start", "게임을 시작합니다.");
       } else {
         this.readyOrStart("ready", "준비 완료");
       }
-
     },
     readyOrStart(action, message) {
       alert(message);
-
       this.sendActionToServer([action]);
     },
     sendActionToServer(action) {
       const url = `https://localhost:80/api/game/${action}?roomId=${this.roomSeq}`;
       axios.patch(url, {}, { withCredentials: true })
           .then(response => {
-            this.videoStreaming();
+            const box = document.getElementById('waiting-box');
+            box.remove();
+            if (this.isHost){
+
+              this.videoStreaming();
+            }
           })
           .catch(error => {
-            console.log(error); // FIXME 준비 안한 인원 리턴해주기
+            console.log(error);
             alert('에러가 발생했습니다.');
           });
     },
     videoStreaming(){
       //FIXME 중간에 5초 카운트다운 하는 영상 추가해주는 방법도 있음
-      box.remove();
       this.$refs["video-player"].play(this.videoOptions);
     },
     send(type) {

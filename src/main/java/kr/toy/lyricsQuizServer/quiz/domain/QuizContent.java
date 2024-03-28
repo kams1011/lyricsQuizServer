@@ -12,7 +12,6 @@ public class QuizContent {
 
     private Long quizContentSeq;
 
-
     private QuizContentType quizContentType;
 
     private String detail; // URL을 변환해서 뒤의 detail만 받으면 됨.

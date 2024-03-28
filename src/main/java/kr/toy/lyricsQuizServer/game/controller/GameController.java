@@ -106,7 +106,6 @@ public class GameController {
     }
     @PatchMapping("/start")
     public ResponseEntity<Response> start(@RequestParam Long roomId, User user){
-        System.out.println("시작들어옴");
         gameService.start(roomId, user);
         return ResponseEntity.ok().body(new Response(true, null, null, null));
     }

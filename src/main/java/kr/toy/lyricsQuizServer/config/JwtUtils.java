@@ -46,8 +46,7 @@ public class JwtUtils {
                 .setSubject(user.getEmail())
                 .setClaims(claims)
                 .setIssuedAt(now)
-//                .setExpiration(new Date(now.getTime() + ONE_MINUTE * expireMinute))
-                .setExpiration(new Date(now.getTime() + ONE_SECOND * expireMinute))
+                .setExpiration(new Date(now.getTime() + ONE_MINUTE * expireMinute))
                 .signWith(Keys.hmacShaKeyFor(securityProperties.jwtSecret().getBytes()))
                 .compact();
     }
