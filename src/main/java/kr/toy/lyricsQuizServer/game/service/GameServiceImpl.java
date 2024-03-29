@@ -52,8 +52,11 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public PageImpl<Game> getGameListByWord(String word, Pageable pageable) {
-        return gameRepository.findAllByRoomNameOrManagerName(word, pageable);
+    public PageImpl<GameRoom> getGameListByWord(String word, Pageable pageable) {
+        PageImpl<Game> pages = gameRepository.findAllByRoomNameOrManagerName(word, pageable);
+
+        List<GameRoom> gameRooms = pages.stream().map(data -> redisUtil.getGameRoomFromRedis(data.getGameRoomSeq())).collect(Collectors.toList());
+        return new PageImpl<>(gameRooms, pageable, pages.getTotalElements());
     }
 
     @Override

@@ -70,7 +70,7 @@ public class GameRoom implements Serializable {
                 .gameStatus(game.getGameStatus())
                 .isSecretRoom(game.getIsSecretRoom())
                 .password(game.getPassword())
-                .userList(userInfoListFrom(game))
+                .userList(userInfoListInitFrom(game))
                 .build();
     }
 
@@ -100,7 +100,7 @@ public class GameRoom implements Serializable {
         }
     }
 
-    public static List<UserInfo> userInfoListFrom(Game game){
+    public static List<UserInfo> userInfoListInitFrom(Game game){
         List<UserInfo> userInfoList = new ArrayList<>(game.getAttendeeLimit());
         userInfoList.add(UserInfo.from(game.getHost(), game.getGameRoomSeq(), null));
         return userInfoList;

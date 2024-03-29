@@ -20,7 +20,7 @@ public interface GameService {
 
     PageImpl<Game> getGameList(Pageable pageable); // 진행중인 상태 필요(시작 전, 진행중). 종료된 방은 안나오게.
 
-    PageImpl<Game> getGameListByWord(String word, Pageable pageable);
+    PageImpl<GameRoom> getGameListByWord(String word, Pageable pageable);
 
     Game create(User user, GameCreate gameCreate);
 

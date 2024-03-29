@@ -81,7 +81,7 @@
                 <p>주제 : {{ item.topic }}</p>
               </div>
               <div class="card-footer">
-                <h3>{{ item.attendeeCount }} / {{ item.attendeeLimit }}</h3>
+                <h3>{{ item.userList.length }} / {{ item.attendeeLimit }}</h3>
               </div>
             </article>
           </div>

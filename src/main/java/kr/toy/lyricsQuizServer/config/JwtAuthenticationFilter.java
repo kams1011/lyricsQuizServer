@@ -1,5 +1,6 @@
 package kr.toy.lyricsQuizServer.config;
 
+import kr.toy.lyricsQuizServer.common.domain.ErrorCode;
 import kr.toy.lyricsQuizServer.config.ConfigurationProperties.SecurityProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         try {
             String accessToken = securityService.resolveToken(request, securityProperties.cookieName().accessTokenCookieName());
             authenticateByJwt(accessToken, request, response);
+        } catch (NoSuchElementException e) {
+            response.sendError(401, ErrorCode.COOKIE_NOT_FOUND.getMessage());
         } catch (Exception e) {
             e.printStackTrace();
         }

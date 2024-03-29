@@ -41,13 +41,8 @@ public class GameController {
     //그렇다면 화면에 나올 데이터를 뿌려주는 dto는 프레젠테이션 영역인 컨트롤러에서 하는게 계층별 역할분리에 부합한다.
     @GetMapping("")
     public ResponseEntity<Response> getGameList(@RequestParam(required = false) String keyword, Pageable pageable){
-        PageImpl<Game> pages = gameService.getGameListByWord(keyword, pageable);
         return ResponseEntity.ok()
-                .body(Response.success(
-                        new PageImpl<>(
-                                pages.stream().map(data -> GameRoom.from(data)).collect(Collectors.toList()),
-                                pageable,
-                                pages.getTotalElements())));
+                .body(Response.success(gameService.getGameListByWord(keyword, pageable)));
     }
 
     @GetMapping("/quiz")
