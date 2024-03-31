@@ -124,13 +124,15 @@ public class GameRoom implements Serializable {
     }
 
     public void isHostPresent(UserInfo host){
+        System.out.println(host.toString()); // FIXME 여긴 세션아이디가 있음
+        System.out.println(this.userList.get(0).toString()); // FIXME  여긴 세션아이디가 없음.
         if (!this.userList.contains(host) || !isHost(host)) {
             throw new NoSuchElementException("호스트가 존재하지 않습니다.");
         }
     }
 
     public void isEveryoneReady(UserInfo host){
-        if (getUserList().stream().filter(user -> !user.isReady() && !user.equals(host)).findAny().isPresent()) {
+        if (getUserList().stream().filter(user -> !user.isReady() && !isHost(host)).findAny().isPresent()) {
             throw new IllegalStateException("준비완료 되지 않은 참여자가 있습니다.");
         }
     }
