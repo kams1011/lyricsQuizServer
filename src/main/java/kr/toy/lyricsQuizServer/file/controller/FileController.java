@@ -31,4 +31,12 @@ public class FileController {
         return ResponseEntity.created(URI.create(String.valueOf(result.get("url")))).body(Response.success("업로드에 성공했습니다", result));
 
     }
+
+
+    @PostMapping("/convert")
+    public ResponseEntity convertFileEndpoint(){
+
+        // 1. 파일을 업로드한다. 파일과
+        return null;
+    }
 }

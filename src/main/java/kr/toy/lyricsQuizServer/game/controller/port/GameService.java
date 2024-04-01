@@ -56,4 +56,7 @@ public interface GameService {
 
     String getStreamingURL();
 
+    void setUserSessionId(UserInfo userinfo, GameRoom gameRoom, String sessionId);
+
+
 }

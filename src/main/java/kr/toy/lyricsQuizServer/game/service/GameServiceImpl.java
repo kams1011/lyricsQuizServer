@@ -239,6 +239,16 @@ public class GameServiceImpl implements GameService {
         return true;
     }
 
+    @Override
+    public void setUserSessionId(UserInfo userinfo, GameRoom gameRoom, String sessionId){
+        gameRoom.getUserList()
+                .stream()
+                .filter(data -> data.getUserSeq().equals(userinfo.getUserSeq()))
+                .findFirst()
+                .ifPresent(data -> data.setSessionId(sessionId));
+        saveGameInRedis(gameRoom);
+    }
+
     public GameRoom saveGameInRedis(GameRoom gameRoom) {
         redisUtil.putGameRoomInRedis(gameRoom.getGameRoomSeq(), gameRoom);
         return gameRoom;

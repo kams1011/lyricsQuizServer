@@ -128,7 +128,6 @@ public class GameController {
 
     @PatchMapping("/ready")
     public ResponseEntity<Response> ready(@RequestParam Long roomId, User user){
-        System.out.println("레디들어옴");
         gameService.ready(roomId, user);
         return ResponseEntity.ok().body(new Response(true, null, null, null));
     }

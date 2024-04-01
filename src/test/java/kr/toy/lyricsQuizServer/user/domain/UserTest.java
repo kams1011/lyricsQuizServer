@@ -42,6 +42,10 @@ public class UserTest {
     @Autowired
     RedisUtil redisUtil;
 
+    @Autowired
+    GameService gameService;
+
+
     @Test
     void 사용자는_로그인_할_수_있다(){
         User user = User.builder()

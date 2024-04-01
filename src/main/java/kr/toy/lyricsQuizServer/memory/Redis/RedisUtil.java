@@ -58,12 +58,12 @@ public class RedisUtil {
         memoryInvitePendingService.putObject(null, invitationInfo);
     }
 
-    @Cacheable(value = "GAME_ROOM", key = "#id", unless = "#result == null")
+//    @Cacheable(value = "GAME_ROOM", key = "#id", unless = "#result == null")
     public GameRoom getGameRoomFromRedis(Long id){
         return memoryGameRoomService.getObject(id);
     }
 
-    @Cacheable(value = "USER_INFO", key = "#id", unless = "#result == null")
+//    @Cacheable(value = "USER_INFO", key = "#id", unless = "#result == null")
     public UserInfo getUserInfoFromRedis(Long id){
         return memoryUserInfoService.getObject(id);
     }

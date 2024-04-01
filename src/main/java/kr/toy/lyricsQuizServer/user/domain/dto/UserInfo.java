@@ -56,6 +56,10 @@ public class UserInfo implements Serializable {
         this.gameRoomSeq = gameRoomSeq;
     }
 
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+
     public boolean isUserInGameRoom(GameRoom gameRoom){
         return this.gameRoomSeq == gameRoom.getGameRoomSeq();
     }
@@ -73,6 +77,7 @@ public class UserInfo implements Serializable {
     public boolean inGame(){
         return this.sessionId != null;
     }
+
 
     @Override
     public String toString() {

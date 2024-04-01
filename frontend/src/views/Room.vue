@@ -159,9 +159,9 @@ export default {
               this.videoStreaming();
             }
           })
-          .catch(error => {
-            console.log(error);
-            alert('에러가 발생했습니다.');
+          .catch(error => { // FIXME 전역에러로 잡고있어서 해당 부분 제거
+            // console.log(error);
+            // alert('에러가 발생했습니다.');
           });
     },
     videoStreaming(){

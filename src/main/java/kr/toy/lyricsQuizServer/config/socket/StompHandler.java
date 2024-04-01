@@ -64,7 +64,10 @@ public class StompHandler implements ChannelInterceptor {
     public void putUserInfo(StompHeaderAccessor accessor, Message<?> message){
         User user = getUserFrom(message);
         Long gameRoomSeq = getGameRoomSeq(accessor);
-        gameService.putUserInfo(UserInfo.from(user, gameRoomSeq, accessor.getSessionId()));
+        String sessionId = accessor.getSessionId();
+        UserInfo userInfo = UserInfo.from(user, gameRoomSeq, sessionId);
+        gameService.setUserSessionId(userInfo, gameService.getGameRoom(gameRoomSeq), sessionId);
+        gameService.putUserInfo(userInfo);
     }
 
     public String parseDestination(StompHeaderAccessor accessor, String key) throws IllegalArgumentException{
