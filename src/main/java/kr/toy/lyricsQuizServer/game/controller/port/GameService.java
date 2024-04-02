@@ -6,6 +6,7 @@ import kr.toy.lyricsQuizServer.game.domain.Game;
 import kr.toy.lyricsQuizServer.game.domain.dto.GameCreate;
 
 import kr.toy.lyricsQuizServer.game.domain.dto.GamePassword;
+import kr.toy.lyricsQuizServer.quiz.domain.dto.StreamingInfo;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.domain.dto.UserInfo;
 import org.springframework.data.domain.PageImpl;
@@ -54,7 +55,7 @@ public interface GameService {
 
     boolean isHost(Long roomId, User user);
 
-    String getStreamingURL();
+    StreamingInfo getStreamingInfo(Long roomId);
 
     void setUserSessionId(UserInfo userinfo, GameRoom gameRoom, String sessionId);
 

@@ -16,6 +16,8 @@ public class QuizContent {
 
     private String detail; // URL을 변환해서 뒤의 detail만 받으면 됨.
 
+    private final String YoutubeURL = "https://www.youtube.com/watch?v=";
+
     @Builder
     public QuizContent(Long quizContentSeq, QuizContentType quizContentType, String detail){
         this.quizContentSeq = quizContentSeq;
@@ -37,5 +39,13 @@ public class QuizContent {
             //FIXME 잘못된 URL일시 ArrayIndexOutOfBoundsException 발생하는 부분 해결.
         }
         return detail;
+    }
+
+    public String getStreamingURL(){
+        if (this.quizContentType.equals(QuizContentType.FILE)) {
+            return YoutubeURL + "https://www.youtube.com/watch?v=" + this.detail;
+        } else {
+            return null;
+        }
     }
 }

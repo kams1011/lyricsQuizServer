@@ -1,8 +1,6 @@
 package kr.toy.lyricsQuizServer.game.service;
 
 
-import kr.toy.lyricsQuizServer.chat.controller.dto.ChatMessage;
-import kr.toy.lyricsQuizServer.chat.controller.port.ChatService;
 import kr.toy.lyricsQuizServer.chat.domain.InvitationInfo;
 import kr.toy.lyricsQuizServer.game.controller.response.UserInvitationInfo;
 import kr.toy.lyricsQuizServer.memory.Redis.RedisCategory;
@@ -14,27 +12,21 @@ import kr.toy.lyricsQuizServer.game.domain.dto.GameCreate;
 import kr.toy.lyricsQuizServer.game.domain.dto.GamePassword;
 import kr.toy.lyricsQuizServer.game.service.port.GameRepository;
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
+import kr.toy.lyricsQuizServer.quiz.domain.QuizContent;
+import kr.toy.lyricsQuizServer.quiz.domain.dto.StreamingInfo;
+import kr.toy.lyricsQuizServer.quiz.service.QuizContentRepository;
 import kr.toy.lyricsQuizServer.quiz.service.QuizRepository;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.domain.dto.UserInfo;
-import kr.toy.lyricsQuizServer.user.service.port.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.support.ResourceRegion;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Pageable;
 
-import java.io.IOException;
-import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,6 +35,7 @@ public class GameServiceImpl implements GameService {
 
     private final GameRepository gameRepository;
     private final QuizRepository quizRepository;
+    private final QuizContentRepository quizContentRepository;
     private final RedisUtil redisUtil;
 
 
@@ -267,13 +260,15 @@ public class GameServiceImpl implements GameService {
     }
 
     @Override
-    public String getStreamingURL() {
-        GameRoom gameRoom = null;
-        Game game = gameRepository.findById(gameRoom.getGameRoomSeq());
+    public StreamingInfo getStreamingInfo(Long roomId) {
+        Game game = gameRepository.findById(roomId);
+        Quiz quiz = game.getQuiz();
+        QuizContent quizContent = quizContentRepository.getById(quiz.getQuizSeq());
+        StreamingInfo streamingInfo = StreamingInfo.from(quiz, quizContent);
         // File upload시 S3에서 URL가져오는 로직.
         // File과 Quiz와 Game을 매핑하는 로직.
         // Quiz 정보로 Game에서 잘라오는 로직.
-        return null;
+        return streamingInfo;
     }
 
 

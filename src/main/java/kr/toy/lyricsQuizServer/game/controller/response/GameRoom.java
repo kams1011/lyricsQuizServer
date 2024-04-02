@@ -124,7 +124,11 @@ public class GameRoom implements Serializable {
     }
 
     public void isHostPresent(UserInfo host){
-        if (!this.userList.contains(host) || !isHost(host)) {
+        boolean attendeeList = this.userList.stream()
+                .filter(data -> data.getUserSeq().equals(hostSeq))
+                .findFirst()
+                .isPresent();
+        if (!attendeeList || !isHost(host)) {
             throw new NoSuchElementException("호스트가 존재하지 않습니다.");
         }
     }
@@ -154,9 +158,10 @@ public class GameRoom implements Serializable {
     }
 
     public void checkPlayerCount(){
-        if (userList.size()  <= 1) {
-            throw new IllegalStateException("게임 시작 인원이 너무 적습니다.");
-        }
+        //FIXME 배포 시 해당 부분 수정해서 배포하기
+//        if (userList.size()  <= 1) {
+//            throw new IllegalStateException("게임 시작 인원이 너무 적습니다.");
+//        }
     }
 
     public void start(LocalDateTime startedAt){

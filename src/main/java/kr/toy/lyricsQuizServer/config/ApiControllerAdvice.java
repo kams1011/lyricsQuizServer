@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.naming.AuthenticationException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,6 +33,13 @@ public class ApiControllerAdvice {
     public ResponseEntity<Response> handleIOExceptions(IOException e){
 
         return ResponseEntity.badRequest().body(Response.fail(e.getMessage(), null, null));
+
+    }
+
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<Response> AuthenticationException(IOException e){
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Response.fail(e.getMessage(), null, null));
 
     }
 

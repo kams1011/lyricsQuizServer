@@ -10,6 +10,7 @@ import kr.toy.lyricsQuizServer.game.domain.dto.GamePassword;
 import kr.toy.lyricsQuizServer.quiz.controller.port.QuizService;
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizDetailToCreateRoom;
+import kr.toy.lyricsQuizServer.quiz.domain.dto.StreamingInfo;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import lombok.Builder;
 import lombok.RequiredArgsConstructor;
@@ -109,8 +110,14 @@ public class GameController {
     }
     @PatchMapping("/start")
     public ResponseEntity<Response> start(@RequestParam Long roomId, User user){
-        gameService.start(roomId, user);
-        return ResponseEntity.ok().body(new Response(true, null, null, null));
+        StreamingInfo streamingInfo = null;
+        try{
+            gameService.start(roomId, user);
+            streamingInfo = gameService.getStreamingInfo(roomId);
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        return ResponseEntity.ok().body(new Response(true, null, streamingInfo, null));
     }
 
     @GetMapping("/invitation/users")
