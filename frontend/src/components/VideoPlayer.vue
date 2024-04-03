@@ -21,15 +21,18 @@ export default {
     }
   },
   methods: {
-    play(option){
-      console.log(this.options.sources[0].src);
-      this.player.src({ src: option.sources[0].src, type: option.sources[0].type });
-      this.player.play();
-    },
-    playerSetting(options){
-      this.player = videojs(this.$refs.videoPlayer, options, () => {
+    // play(option){
+    //   this.player.src({ src: option.sources[0].src, type: option.sources[0].type });
+    //   this.player.play();
+    // },
+    playerSetting(){
+      console.log('option!');
+      console.log(this.options);
+      this.player = videojs(this.$refs.videoPlayer, this.options, () => {
         this.player.log('onPlayerReady', this);
+        this.player.play();
       });
+
     }
   },
   data() {
@@ -37,7 +40,7 @@ export default {
       player: null
     }
   },
-  mounted() {
+  mounted(options) {
     this.playerSetting();
   },
   beforeDestroy() {

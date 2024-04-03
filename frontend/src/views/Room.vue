@@ -19,7 +19,7 @@
       </div>
       <div class="video-placeholder">
 <!--        <i class="fas fa-play-circle"></i> Video Player-->
-        <video-player ref="video-player" :options="videoOptions" />
+        <video-player ref="video-player" :key="key" :options="videoOptions" />
       </div>
     </div>
     <!-- Chat container -->
@@ -70,6 +70,7 @@ export default {
   },
   data() {
     return {
+      key : 0,
       userName: "",
       message: "",
       recvList: [],
@@ -85,7 +86,7 @@ export default {
         sources: [
           {
             src: "",
-            type: "video/webm",
+            type: "",
           }
         ]
       }
@@ -155,8 +156,7 @@ export default {
             const box = document.getElementById('waiting-box');
             box.remove();
             if (this.isHost){
-
-              this.videoStreaming();
+              this.videoStreaming(response);
             }
           })
           .catch(error => { // FIXME 전역에러로 잡고있어서 해당 부분 제거
@@ -164,9 +164,24 @@ export default {
             // alert('에러가 발생했습니다.');
           });
     },
-    videoStreaming(){
+    videoStreaming(response){
+      let sources = '';
+      let type = '';
+      if (response.data.data.quizContentType === 'YOUTUBE') {
+        type = "video/youtube";
+      } else {
+        type =  "video/webm";
+      }
+      sources = {
+          // src: response.data.data.url,
+          src: 'http://vjs.zencdn.net/v/oceans.mp4',
+          type: 'video/mp4',
+          // type: type,
+        };
+      this.videoOptions.sources[0] = sources;
       //FIXME 중간에 5초 카운트다운 하는 영상 추가해주는 방법도 있음
-      this.$refs["video-player"].play(this.videoOptions);
+      this.key++;
+      // this.$refs["video-player"].play(this.videoOptions);
     },
     send(type) {
         console.log("Send message:" + this.message);

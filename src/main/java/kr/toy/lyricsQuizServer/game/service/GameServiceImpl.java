@@ -263,8 +263,7 @@ public class GameServiceImpl implements GameService {
     public StreamingInfo getStreamingInfo(Long roomId) {
         Game game = gameRepository.findById(roomId);
         Quiz quiz = game.getQuiz();
-        QuizContent quizContent = quizContentRepository.getById(quiz.getQuizSeq());
-        StreamingInfo streamingInfo = StreamingInfo.from(quiz, quizContent);
+        StreamingInfo streamingInfo = StreamingInfo.from(quiz, quiz.getQuizContent());
         // File upload시 S3에서 URL가져오는 로직.
         // File과 Quiz와 Game을 매핑하는 로직.
         // Quiz 정보로 Game에서 잘라오는 로직.

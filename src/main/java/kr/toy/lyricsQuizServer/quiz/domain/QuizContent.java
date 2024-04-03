@@ -42,10 +42,21 @@ public class QuizContent {
     }
 
     public String getStreamingURL(){
-        if (this.quizContentType.equals(QuizContentType.FILE)) {
-            return YoutubeURL + "https://www.youtube.com/watch?v=" + this.detail;
+        if (this.quizContentType.equals(QuizContentType.YOUTUBE)) {
+            return YoutubeURL + this.detail;
         } else {
             return null;
         }
+    }
+
+
+    @Override
+    public String toString() {
+        return "QuizContent{" +
+                "quizContentSeq=" + quizContentSeq +
+                ", quizContentType=" + quizContentType +
+                ", detail='" + detail + '\'' +
+                ", YoutubeURL='" + YoutubeURL + '\'' +
+                '}';
     }
 }
