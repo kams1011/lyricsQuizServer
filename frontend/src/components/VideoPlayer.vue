@@ -31,14 +31,14 @@ export default {
     //   this.player.play();
     // },
     playerSetting(){
-      console.log('option!');
-      console.log(this.options);
       this.player = videojs(this.$refs.videoPlayer, this.options, () => {
         this.player.log('onPlayerReady', this);
-        this.player.play();
       });
-
-    }
+      this.player.one('loadedmetadata', function (){
+        this.currentTime(60);
+        this.play();
+      })
+    },
   },
   data() {
     return {

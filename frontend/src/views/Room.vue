@@ -80,8 +80,8 @@ export default {
       invitableUsers : [],
       techOrder: ['youtube'],
       videoOptions: {
-        autoplay: true,
-        controls: true,
+        // autoplay: true,
+        controls: false,
         fullscreen : true,
         sources: [
           {
@@ -173,13 +173,10 @@ export default {
         type =  "video/webm";
       }
       sources = {
-          // src: response.data.data.url,
-          src: 'http://vjs.zencdn.net/v/oceans.mp4',
-          // src: 'https://www.youtube.com/watch?v=xjS6SftYQaQ',
-          type: 'video/mp4',
-          // type: 'video/youtube',
-          // type: type,
+          src: response.data.data.url,
+          type: type,
         };
+      this.videoOptions.streamingStart = true;
       this.videoOptions.sources[0] = sources;
       //FIXME 중간에 5초 카운트다운 하는 영상 추가해주는 방법도 있음
       this.key++;
