@@ -59,9 +59,8 @@
 import * as Stomp from "webstomp-client";
 import * as SockJS from "sockjs-client";
 import axios from "axios";
-// import Cookies from 'js-cookie';
 import VideoPlayer from '@/components/VideoPlayer.vue';
-// import 'video.js/dist/video-js.css'
+
 
 export default {
   name: 'App',
@@ -79,6 +78,7 @@ export default {
       showInvitableUsersModal : false,
       roomId : this.$route.params.roomSeq,
       invitableUsers : [],
+      techOrder: ['youtube'],
       videoOptions: {
         autoplay: true,
         controls: true,
@@ -175,7 +175,9 @@ export default {
       sources = {
           // src: response.data.data.url,
           src: 'http://vjs.zencdn.net/v/oceans.mp4',
+          // src: 'https://www.youtube.com/watch?v=xjS6SftYQaQ',
           type: 'video/mp4',
+          // type: 'video/youtube',
           // type: type,
         };
       this.videoOptions.sources[0] = sources;

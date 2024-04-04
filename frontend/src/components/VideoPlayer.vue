@@ -1,13 +1,18 @@
 <template>
 
   <div ref="videoArea">
+<!--    <video ref="videoPlayer" class="video-js" data-setup='{ "techOrder": ["youtube"]}'></video>-->
     <video ref="videoPlayer" class="video-js"></video>
   </div>
 </template>
 
+
+
 <script>
 import videojs from 'video.js';
+require('videojs-youtube'); // add any plugin first and then
 import 'video.js/dist/video-js.css';
+// import { videoPlayer } from 'vue-video-player';
 
 
 export default {

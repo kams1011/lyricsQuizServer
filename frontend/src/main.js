@@ -14,6 +14,7 @@ import QuizRegister from "@/views/QuizRegister";
 import RoomCreate from "@/views/RoomCreate";
 import ElementPlus from 'element-plus'
 import axios from 'axios';
+import VueVideoPlayer from 'vue-video-player'
 import 'element-plus/dist/index.css'
 
 const routes = [
@@ -67,5 +68,6 @@ app.config.globalProperties.$http = axios;
 app.use(router);
 app.use(store); // Vuex 스토어 등록
 app.use(ElementPlus);
+app.use(VueVideoPlayer);
 
 app.mount('#app');
