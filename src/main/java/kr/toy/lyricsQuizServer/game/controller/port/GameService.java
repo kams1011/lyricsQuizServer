@@ -59,5 +59,7 @@ public interface GameService {
 
     void setUserSessionId(UserInfo userinfo, GameRoom gameRoom, String sessionId);
 
+    void streamingComplete(Long roomId, User player);
+
 
 }

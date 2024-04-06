@@ -9,10 +9,7 @@ import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+import java.util.*;
 
 @Getter
 public class GameRoom implements Serializable {
@@ -41,10 +38,12 @@ public class GameRoom implements Serializable {
 
     private List<UserInfo> userList;
 
+    private Set<Long> streamingCompleteUserList;
+
     @Builder
     public GameRoom(Long gameRoomSeq, String roomName, LocalDateTime startedAt, String hostName, Long hostSeq,
                     String topic, Integer attendeeLimit, GameStatus gameStatus,
-                    Boolean isSecretRoom, String password, List<UserInfo> userList) {
+                    Boolean isSecretRoom, String password, List<UserInfo> userList, Set<Long> streamingCompleteUserList) {
         this.gameRoomSeq = gameRoomSeq;
         this.roomName = roomName;
         this.startedAt = startedAt;
@@ -56,6 +55,7 @@ public class GameRoom implements Serializable {
         this.isSecretRoom = isSecretRoom;
         this.password = password;
         this.userList = userList;
+        this.streamingCompleteUserList = streamingCompleteUserList;
     }
 
     public static GameRoom from(Game game){
@@ -143,18 +143,18 @@ public class GameRoom implements Serializable {
         if (isHost(user)) {
             throw new IllegalArgumentException("호스트는 준비완료 할 수 없습니다.");
         }
-        findUser(user)
-                .ifPresent(data -> data.ready());
+        findUser(user.getUserSeq()).ready();
     }
 
     public boolean isHost(UserInfo user) {
         return user.getUserSeq().equals(hostSeq);
     }
 
-    private Optional<UserInfo> findUser(UserInfo user) {
+    private UserInfo findUser(Long userSeq) {
         return userList.stream()
-                .filter(data -> data.equals(user))
-                .findFirst();
+                .filter(data -> data.getUserSeq().equals(userSeq))
+                .findFirst()
+                .orElseThrow(NoSuchElementException::new);
     }
 
     public void checkPlayerCount(){
@@ -162,6 +162,29 @@ public class GameRoom implements Serializable {
 //        if (userList.size()  <= 1) {
 //            throw new IllegalStateException("게임 시작 인원이 너무 적습니다.");
 //        }
+    }
+
+    public void streamingComplete(Long userSeq){
+        isUserPresent(findUser(userSeq));
+
+        if (!isGameStart()) {
+            throw new IllegalStateException("게임이 시작되지 않았습니다.");
+        }
+
+        this.streamingCompleteUserList.add(userSeq);
+    }
+
+    public boolean isGameStart(){
+        return this.gameStatus == GameStatus.IN_PROGRESS;
+    }
+
+    public void streamingFail(Long userSeq){
+        this.streamingCompleteUserList.remove(userSeq);
+    }
+
+    public boolean isAllMemberStreamingComplete(){
+         return this.userList.stream()
+                .allMatch(data -> this.streamingCompleteUserList.contains(data.getUserSeq()));
     }
 
     public void start(LocalDateTime startedAt){

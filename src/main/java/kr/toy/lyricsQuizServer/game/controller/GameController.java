@@ -139,15 +139,9 @@ public class GameController {
         return ResponseEntity.ok().body(new Response(true, null, null, null));
     }
 
-    public ResponseEntity<Response> start(){
-        //FIXME 시작하는 사람 유효성 검사 필요
-        return null;
+    @PatchMapping("/streaming/complete/{roomId}")
+    public ResponseEntity<Response> streamingComplete(@PathVariable Long roomId, User player){
+        gameService.streamingComplete(roomId, player);
+        return ResponseEntity.ok().body(new Response(true, null, null, null));
     }
-
-    @GetMapping("/temp")
-    public ResponseEntity<Response> streaming(@RequestHeader HttpHeaders headers) throws IOException {
-
-        return null;
-    }
-
 }

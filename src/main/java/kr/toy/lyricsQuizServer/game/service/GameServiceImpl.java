@@ -242,6 +242,13 @@ public class GameServiceImpl implements GameService {
         saveGameInRedis(gameRoom);
     }
 
+    @Override
+    public void streamingComplete(Long roomId, User player) {
+        GameRoom gameRoom = redisUtil.getGameRoomFromRedis(roomId);
+        gameRoom.streamingComplete(player.getUserSeq());
+        redisUtil.putGameRoomInRedis(roomId, gameRoom);
+    }
+
     public GameRoom saveGameInRedis(GameRoom gameRoom) {
         redisUtil.putGameRoomInRedis(gameRoom.getGameRoomSeq(), gameRoom);
         return gameRoom;

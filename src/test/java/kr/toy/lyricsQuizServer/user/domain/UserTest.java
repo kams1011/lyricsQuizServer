@@ -18,7 +18,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
-import java.util.Map;
+import java.util.*;
 
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -45,6 +45,34 @@ public class UserTest {
     @Autowired
     GameService gameService;
 
+
+
+
+    @Test
+    public void 스트리밍_완료된_유저를_확인할_수_있다(){
+
+        List<UserInfo> userInfoList = new ArrayList<>();
+        userInfoList.add(UserInfo.builder().userSeq(1L).build());
+        userInfoList.add(UserInfo.builder().userSeq(2L).build());
+        userInfoList.add(UserInfo.builder().userSeq(3L).build());
+        userInfoList.add(UserInfo.builder().userSeq(4L).build());
+        userInfoList.add(UserInfo.builder().userSeq(5L).build());
+        userInfoList.add(UserInfo.builder().userSeq(6L).build());
+
+
+        Set<Long> streamingCompleteList = new HashSet<>();
+        streamingCompleteList.add(1L);
+        streamingCompleteList.add(2L);
+        streamingCompleteList.add(3L);
+        streamingCompleteList.add(4L);
+        streamingCompleteList.add(5L);
+        streamingCompleteList.add(6L);
+
+        GameRoom gameRoom = GameRoom.builder().userList(userInfoList).streamingCompleteUserList(streamingCompleteList).build();
+
+        assertThat(gameRoom.isAllMemberStreamingComplete()).isFalse();
+
+    }
 
     @Test
     void 사용자는_로그인_할_수_있다(){
