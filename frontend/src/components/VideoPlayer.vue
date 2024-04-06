@@ -35,10 +35,30 @@ export default {
         this.player.log('onPlayerReady', this);
       });
       this.player.one('loadedmetadata', function (){
-        this.currentTime(60);
+        this.currentTime(this.stringToSeconds(this.options.sources[0].startTime));
         this.play();
       })
+      this.player.on('timeupdate', function (){
+        if(this.currentTime() > this.stringToSeconds(this.options.sources[0].endTime)) {
+          this.pause();
+
+          //FIXME 여기서 Redis에 재생 완료된걸 호출.
+        }
+      })
     },
+
+    stringToSeconds(string) {
+      let timeParts = string.split(':');
+
+      let minutes = parseInt(timeParts[1], 10);
+      let seconds = parseInt(timeParts[2], 10);
+
+      let totalSeconds = minutes * 60 + seconds;
+
+      return totalSeconds;
+    }
+
+
   },
   data() {
     return {
@@ -55,3 +75,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.video-js .vjs-tech {
+  pointer-events: none;
+}
+</style>

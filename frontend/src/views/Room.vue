@@ -80,13 +80,14 @@ export default {
       invitableUsers : [],
       techOrder: ['youtube'],
       videoOptions: {
-        // autoplay: true,
         controls: false,
         fullscreen : true,
         sources: [
           {
             src: "",
             type: "",
+            startTime : "",
+            endTime : "",
           }
         ]
       }
@@ -175,12 +176,14 @@ export default {
       sources = {
           src: response.data.data.url,
           type: type,
-        };
+
+      };
       this.videoOptions.streamingStart = true;
       this.videoOptions.sources[0] = sources;
+      this.videoOptions.sources[0].startTime = response.data.data.startTime;
+      this.videoOptions.sources[0].endTime = response.data.data.endTime;
       //FIXME 중간에 5초 카운트다운 하는 영상 추가해주는 방법도 있음
       this.key++;
-      // this.$refs["video-player"].play(this.videoOptions);
     },
     send(type) {
         console.log("Send message:" + this.message);
