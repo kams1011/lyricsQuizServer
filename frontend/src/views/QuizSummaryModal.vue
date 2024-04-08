@@ -4,7 +4,7 @@
       <div class="mb-8"><span @click="close" class="close mr-2">&times;</span></div>
 <!--      <input type="search" class="w-full px-4 py-1 text-gray-800 rounded-full focus:outline-none border-gray-300" name="q">-->
       <input type="text" placeholder="제목을 입력하세요" class="rounded-none rounded-r-lg bg-gray-50 border text-gray-900 focus:ring-blue-500 focus:border-blue-500 flex-1 min-w-0 w-5/6 text-sm border-gray-300 p-2.5  dark:bg-gray-700 dark:border-gray-600
-      dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-5 ml-4 mr-4" ref="keyword">
+      dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 mb-5 ml-4 mr-4" v-model="keyword">
       <span @click="getQuizList" class="button">검색</span>
       <div class="w-full flex p-3 pl-4 items-center hover:bg-gray-300 rounded-lg cursor-pointer" v-for="item in quizSummary" :key="item.quizSeq" @click="choice(item.quizSeq, item.title, item.singer)">
         <div>
@@ -36,6 +36,7 @@ export default {
       currentPage : 1,
       totalPage: '',
       pageSize: 4,
+      keyword : '',
     }
   },
   props: {
@@ -53,8 +54,7 @@ export default {
     },
     getQuizList: function (currentPage) {
       currentPage = currentPage == undefined ? 0 : currentPage - 1;
-      const keyword = this.$refs['keyword'].value;
-      axios.get('https://localhost:80/api/game/quiz?size=' + this.pageSize + '&page=' + currentPage + '&keyword=' + keyword,
+      axios.get('https://localhost:80/api/game/quiz?size=' + this.pageSize + '&page=' + currentPage + '&keyword=' + this.keyword,
           { withCredentials : true
           }).then(response => {
         this.quizSummary = response.data.data.content;

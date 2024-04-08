@@ -50,6 +50,10 @@
         </div>
       </div>
     </div>
+
+    <div v-if="showAnswerModal">
+      <GameAnswerInput/>
+    </div>
   </div>
   </body>
   </html>
@@ -60,12 +64,15 @@ import * as Stomp from "webstomp-client";
 import * as SockJS from "sockjs-client";
 import axios from "axios";
 import VideoPlayer from '@/components/VideoPlayer.vue';
-
+import Input from '@/components/Input.vue';
+import GameAnswerInput from "@/components/GameAnswerInput";
 
 export default {
   name: 'App',
   components: {
-    VideoPlayer
+    GameAnswerInput,
+    VideoPlayer,
+    Input
   },
   data() {
     return {
@@ -75,6 +82,7 @@ export default {
       recvList: [],
       isHost : false,
       ready : false,
+      showAnswerModal: false,
       showInvitableUsersModal : false,
       roomId : this.$route.params.roomSeq,
       invitableUsers : [],
@@ -223,12 +231,16 @@ export default {
       const url = `https://localhost:80/api/game/streaming/complete/` + this.roomId;
       axios.patch(url, {}, { withCredentials: true })
           .then(response => {
-            //FIXME
+            this.showAnswerModal = true; // FIXME 이부분 구현중
           })
           .catch(error => { // FIXME 전역에러로 잡고있어서 해당 부분 제거
             // console.log(error);
             // alert('에러가 발생했습니다.');
           });
+    },
+    checkAnswer(answer){
+      console.log('hihi4454441')
+      console.log(answer);
     }
   },
 }
