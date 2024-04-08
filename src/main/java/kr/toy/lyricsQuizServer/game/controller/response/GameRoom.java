@@ -38,12 +38,12 @@ public class GameRoom implements Serializable {
 
     private List<UserInfo> userList;
 
-    private Set<Long> streamingCompleteUserList;
+    private Set<Long> streamingCompleteUserSet;
 
     @Builder
     public GameRoom(Long gameRoomSeq, String roomName, LocalDateTime startedAt, String hostName, Long hostSeq,
                     String topic, Integer attendeeLimit, GameStatus gameStatus,
-                    Boolean isSecretRoom, String password, List<UserInfo> userList, Set<Long> streamingCompleteUserList) {
+                    Boolean isSecretRoom, String password, List<UserInfo> userList, Set<Long> streamingCompleteUserSet) {
         this.gameRoomSeq = gameRoomSeq;
         this.roomName = roomName;
         this.startedAt = startedAt;
@@ -55,7 +55,7 @@ public class GameRoom implements Serializable {
         this.isSecretRoom = isSecretRoom;
         this.password = password;
         this.userList = userList;
-        this.streamingCompleteUserList = streamingCompleteUserList;
+        this.streamingCompleteUserSet = streamingCompleteUserSet;
     }
 
     public static GameRoom from(Game game){
@@ -71,6 +71,7 @@ public class GameRoom implements Serializable {
                 .isSecretRoom(game.getIsSecretRoom())
                 .password(game.getPassword())
                 .userList(userInfoListInitFrom(game))
+                .streamingCompleteUserSet(new HashSet<>())
                 .build();
     }
 
@@ -171,7 +172,7 @@ public class GameRoom implements Serializable {
             throw new IllegalStateException("게임이 시작되지 않았습니다.");
         }
 
-        this.streamingCompleteUserList.add(userSeq);
+        this.streamingCompleteUserSet.add(userSeq);
     }
 
     public boolean isGameStart(){
@@ -179,12 +180,12 @@ public class GameRoom implements Serializable {
     }
 
     public void streamingFail(Long userSeq){
-        this.streamingCompleteUserList.remove(userSeq);
+        this.streamingCompleteUserSet.remove(userSeq);
     }
 
     public boolean isAllMemberStreamingComplete(){
          return this.userList.stream()
-                .allMatch(data -> this.streamingCompleteUserList.contains(data.getUserSeq()));
+                .allMatch(data -> this.streamingCompleteUserSet.contains(data.getUserSeq()));
     }
 
     public void start(LocalDateTime startedAt){

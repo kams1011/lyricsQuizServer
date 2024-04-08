@@ -19,7 +19,7 @@
       </div>
       <div class="video-placeholder">
 <!--        <i class="fas fa-play-circle"></i> Video Player-->
-        <video-player ref="video-player" :key="key" :options="videoOptions" />
+        <video-player ref="video-player" :key="key" :options="videoOptions" @streaming-complete="streamingComplete()"/>
       </div>
     </div>
     <!-- Chat container -->
@@ -220,6 +220,17 @@ export default {
             }
         );
     },
+    streamingComplete(){
+      const url = `https://localhost:80/api/game/streaming/complete/` + this.roomId;
+      axios.patch(url, {}, { withCredentials: true })
+          .then(response => {
+            //FIXME
+          })
+          .catch(error => { // FIXME 전역에러로 잡고있어서 해당 부분 제거
+            // console.log(error);
+            // alert('에러가 발생했습니다.');
+          });
+    }
   },
 }
 </script>

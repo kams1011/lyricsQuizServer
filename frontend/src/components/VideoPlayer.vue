@@ -12,6 +12,7 @@
 import videojs from 'video.js';
 require('videojs-youtube'); // add any plugin first and then
 import 'video.js/dist/video-js.css';
+import axios from "axios";
 // import { videoPlayer } from 'vue-video-player';
 
 
@@ -30,21 +31,26 @@ export default {
     //   this.player.src({ src: option.sources[0].src, type: option.sources[0].type });
     //   this.player.play();
     // },
+
+
     playerSetting(){
       this.player = videojs(this.$refs.videoPlayer, this.options, () => {
         this.player.log('onPlayerReady', this);
       });
-      this.player.one('loadedmetadata', function (){
-        this.currentTime(this.stringToSeconds(this.options.sources[0].startTime));
-        this.play();
+      this.player.one('loadedmetadata', () => {
+        this.player.currentTime(this.stringToSeconds(this.options.sources[0].startTime));
+        this.player.play();
       })
-      this.player.on('timeupdate', function (){
-        if(this.currentTime() > this.stringToSeconds(this.options.sources[0].endTime)) {
-          this.pause();
-
-          //FIXME 여기서 Redis에 재생 완료된걸 호출.
+      this.player.on('timeupdate',  () => {
+        if(this.player.currentTime() > this.stringToSeconds(this.options.sources[0].endTime)) {
+          this.player.pause();
+          this.streamingComplete();
+          return; // FIXME 여러번 실행되는 부분 해결
         }
       })
+    },
+    streamingComplete(){
+      this.$emit('streaming-complete');
     },
 
     stringToSeconds(string) {
@@ -56,7 +62,9 @@ export default {
       let totalSeconds = minutes * 60 + seconds;
 
       return totalSeconds;
-    }
+    },
+
+
 
 
   },
