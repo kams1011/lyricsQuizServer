@@ -176,7 +176,6 @@ export default {
       sources = {
           src: response.data.data.url,
           type: type,
-
       };
       this.videoOptions.streamingStart = true;
       this.videoOptions.sources[0] = sources;

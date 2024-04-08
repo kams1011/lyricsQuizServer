@@ -10,10 +10,9 @@
 
 <script>
 import videojs from 'video.js';
+import _ from 'lodash';
 require('videojs-youtube'); // add any plugin first and then
 import 'video.js/dist/video-js.css';
-import axios from "axios";
-// import { videoPlayer } from 'vue-video-player';
 
 
 export default {
@@ -41,13 +40,14 @@ export default {
         this.player.currentTime(this.stringToSeconds(this.options.sources[0].startTime));
         this.player.play();
       })
-      this.player.on('timeupdate',  () => {
+
+      const throttledTimeUpdateHandler = _.throttle(() => {
         if(this.player.currentTime() > this.stringToSeconds(this.options.sources[0].endTime)) {
           this.player.pause();
           this.streamingComplete();
-          return; // FIXME 여러번 실행되는 부분 해결
         }
-      })
+      }, 1000, { trailing : false});
+      this.player.on('timeupdate', throttledTimeUpdateHandler);
     },
     streamingComplete(){
       this.$emit('streaming-complete');
