@@ -52,7 +52,9 @@
     </div>
 
     <div v-if="showAnswerModal">
-      <GameAnswerInput/>
+      <GameAnswerInput
+          @onClick="checkAnswer"
+      />
     </div>
   </div>
   </body>
@@ -239,8 +241,14 @@ export default {
           });
     },
     checkAnswer(answer){
-      console.log('hihi4454441')
-      console.log(answer);
+      //FIXME 여기부터
+      axios.post('https://localhost:80/api/quiz/solve/',{answer},
+          { withCredentials : true})
+          .then(response => {
+            alert('초대에 성공했습니다.');
+          }).catch(error => {
+        alert('초대에 실패했습니다.');
+      });
     }
   },
 }

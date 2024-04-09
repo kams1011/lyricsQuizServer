@@ -36,13 +36,13 @@ public class QuizController {
                 .body(Response.success(quizService.delete(quizSeq)));
     }
 
-    @GetMapping("/solve/{quizSeq}")
+    @PostMapping("/solve/{quizSeq}")
     public ResponseEntity<Response> solve(@PathVariable Long quizSeq,
-                                      @RequestParam String answer){
+                                      @RequestBody String answer){
 
         return ResponseEntity.ok()
                 .body(Response.success(quizService.solve(quizSeq, answer)));
-    } //FIXME Answer 가 너무 길어질 가능성 확인.
+    } //FIXME Body로받자
 
 
     @GetMapping("")
