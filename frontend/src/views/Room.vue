@@ -241,13 +241,17 @@ export default {
           });
     },
     checkAnswer(answer){
-      //FIXME 여기부터
-      axios.post('https://localhost:80/api/quiz/solve/',{answer},
+      axios.post('https://localhost:80/api/game/answer/' + this.roomId,{answer},
           { withCredentials : true})
           .then(response => {
-            alert('초대에 성공했습니다.');
+            if (response.data.data) {
+              alert('정답입니다.');
+            } else {
+              alert('오답입니다.');
+            }
           }).catch(error => {
-        alert('초대에 실패했습니다.');
+            console.log(error);
+            alert('에러가 발생했습니다.');
       });
     }
   },

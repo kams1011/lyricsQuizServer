@@ -249,6 +249,13 @@ public class GameServiceImpl implements GameService {
         redisUtil.putGameRoomInRedis(roomId, gameRoom);
     }
 
+    @Override
+    public boolean checkAnswer(Long roomId, String answer) {
+        Game game = gameRepository.findById(roomId);
+        Quiz quiz = game.getQuiz();
+        return quiz.isCorrect(answer);
+    }
+
     public GameRoom saveGameInRedis(GameRoom gameRoom) {
         redisUtil.putGameRoomInRedis(gameRoom.getGameRoomSeq(), gameRoom);
         return gameRoom;

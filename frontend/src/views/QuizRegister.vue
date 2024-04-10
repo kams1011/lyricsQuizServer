@@ -46,10 +46,21 @@
       <textarea placeholder="곡 정보" class="form-textarea border-2 border-gray-300 p-2 rounded mx-auto w-full" rows="4" ref="information"></textarea>
     </div>
     <div class="mb-4 mx-auto justify-center">
-      <input type="text" placeholder="재생 시작 분" class="form-input border-2 border-gray-300 p-1 rounded w-1/5 mr-2 ml-2" ref="startMinutes"> :
-      <input type="text" placeholder="재생 시작 초" class="form-input border-2 border-gray-300 p-1 rounded w-1/5 ml-2 mr-2" ref="startSeconds"> ~
-      <input type="text" placeholder="재생 끝 분" class="form-input border-2 border-gray-300 p-1 rounded w-1/5 mr-2 ml-2" ref="endMinutes"> :
-      <input type="text" placeholder="재생 끝 초" class="form-input border-2 border-gray-300 p-1 rounded w-1/5 ml-2 mr-2" ref="endSeconds">
+
+      <div class="text-center">문제 시작 시간</div>
+        <div class="flex justify-center items-center">
+          <TimeSelector :placeholder="'분'" ref="startMinutes"></TimeSelector> :
+          <TimeSelector :placeholder="'초'" ref="startSeconds"></TimeSelector>
+        </div>
+      <div class="text-center">문제 끝 시간</div>
+        <div class="flex justify-center items-center">
+          <TimeSelector :placeholder="'분'" ref="endMinutes"></TimeSelector> :
+          <TimeSelector :placeholder="'초'" ref="endSeconds"></TimeSelector>
+        </div>
+<!--      <input type="text" placeholder="재생 시작 분" class="form-input border-2 border-gray-300 p-1 rounded w-1/5 mr-2 ml-2" @keydown="validateInput" ref="startMinutes"> :-->
+<!--      <input type="text" placeholder="재생 시작 초" class="form-input border-2 border-gray-300 p-1 rounded w-1/5 ml-2 mr-2" @keydown="validateInput" ref="startSeconds"> ~-->
+<!--      <input type="text" placeholder="재생 끝 분" class="form-input border-2 border-gray-300 p-1 rounded w-1/5 mr-2 ml-2" @keydown="validateInput" ref="endMinutes"> :-->
+<!--      <input type="text" placeholder="재생 끝 초" class="form-input border-2 border-gray-300 p-1 rounded w-1/5 ml-2 mr-2" @keydown="validateInput" ref="endSeconds">-->
     </div>
     <div class="mb-4">
       <textarea placeholder="이전 가사" class="form-textarea border-2 border-gray-300 p-2 rounded mx-auto w-full" rows="4" ref="beforeLyrics"></textarea>
@@ -76,13 +87,16 @@
 
 <script>
 import axios from "axios";
+import TimeSelector from "@/components/TimeSelector";
 
 export default {
   name: "QuizRegister",
+  components: {TimeSelector},
   data() {
     return {
       fileSeq : null,
       type: 'FILE',
+      pattern : /^[1-9][0-9]*$/,
     };
   },
   mounted() {
@@ -142,12 +156,19 @@ export default {
       }
     },
     register: function () { //FIXME 이부분 정확히 수정하기.
-      let startDate = '00:' +
-              this.fillZero(this.$refs['startMinutes'].value) + ':' +
-              this.fillZero(this.$refs['startSeconds'].value);
+      const startMinutes = this.$refs['startMinutes'].selectedValue;
+      const startSeconds = this.$refs['startSeconds'].selectedValue;
+      const endMinutes = this.$refs['endMinutes'].selectedValue;
+      const endSeconds = this.$refs['endSeconds'].selectedValue;
+
+      if (!startMinutes || !startSeconds || !endMinutes || !endSeconds) {
+          alert('시간을 채워주세요');
+          return;
+      }
+        let startDate = '00:' +
+              this.fillZero(startMinutes) + ':' + this.fillZero(startSeconds);
       let endDate = '00:' +
-          this.fillZero(this.$refs['endMinutes'].value) + ':' +
-          this.fillZero(this.$refs['endSeconds'].value);
+          this.fillZero(endMinutes) + ':' + this.fillZero(endSeconds);
       const jsonData = {
         title : this.$refs['title'].value,
         singer: this.$refs['singer'].value,
@@ -173,9 +194,19 @@ export default {
               alert('오류가 발생했습니다.');
             }
           }).catch(error => {
+            alert(error.response.data.message);
             console.error(error); // 오류 처리//
           });
     },
+
+    validateInput(event) {
+      // const inputValue = event.key;
+      // console.log(inputValue);
+      // console.log(event);
+      // if (!this.pattern.test(inputValue)) {
+      //   event.preventDefault();
+      // }
+    }
   }
 }
 

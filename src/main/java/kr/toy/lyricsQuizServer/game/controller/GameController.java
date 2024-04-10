@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Pageable;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
@@ -143,5 +144,13 @@ public class GameController {
     public ResponseEntity<Response> streamingComplete(@PathVariable Long roomId, User player){
         gameService.streamingComplete(roomId, player);
         return ResponseEntity.ok().body(new Response(true, null, null, null));
+    }
+
+    @PostMapping("/answer/{roomId}")
+    public ResponseEntity<Response> checkAnswer(@PathVariable Long roomId,
+                                          @RequestBody Map<String, String> answer){
+        System.out.println("통신두번함?");
+        return ResponseEntity.ok()
+                .body(Response.success(gameService.checkAnswer(roomId, answer.get("answer"))));
     }
 }

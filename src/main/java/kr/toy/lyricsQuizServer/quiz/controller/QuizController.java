@@ -36,15 +36,6 @@ public class QuizController {
                 .body(Response.success(quizService.delete(quizSeq)));
     }
 
-    @PostMapping("/solve/{quizSeq}")
-    public ResponseEntity<Response> solve(@PathVariable Long quizSeq,
-                                      @RequestBody String answer){
-
-        return ResponseEntity.ok()
-                .body(Response.success(quizService.solve(quizSeq, answer)));
-    } //FIXME Body로받자
-
-
     @GetMapping("")
     public ResponseEntity<Response> getList(@RequestParam(required = false) String keyword, Pageable pageable){
         PageImpl<Quiz> pages = quizService.getList(keyword, pageable);
