@@ -1,6 +1,8 @@
 package kr.toy.lyricsQuizServer.config;
 
 import kr.toy.lyricsQuizServer.common.domain.Response;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -36,9 +38,9 @@ public class ApiControllerAdvice {
 
     }
 
-    @ExceptionHandler(AuthenticationException.class)
+    @ExceptionHandler({AuthenticationException.class})
     public ResponseEntity<Response> AuthenticationException(IOException e){
-
+        System.out.println("아마 이쪽으로들어올거");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Response.fail(e.getMessage(), null, null));
 
     }
@@ -54,7 +56,6 @@ public class ApiControllerAdvice {
     @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class,
             NoSuchElementException.class, RuntimeException.class, NullPointerException.class})
     public ResponseEntity<Response> handleException(Exception e){
-
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Response.fail(e.getMessage(), null, null));
     }
 
