@@ -100,7 +100,6 @@ jobs:
       - name: Permission granting to gradlew
         run: chmod +x ./gradlew
 
-
       # gradle build
       - name: Build with Gradle
         run: ./gradlew build -x test
