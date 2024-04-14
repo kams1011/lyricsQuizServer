@@ -103,7 +103,8 @@ node {
 	 * package.json 파일과 node_modules 디렉토리가 있는 곳
 	 * "저는 프로젝트 Root 아래 vue 프로젝트를 생성하였으므로 아래와 같이 주소를 작성해주었습니다."
 	 */
-	nodeProjectDir = file("${project.projectDir}/vue-project")
+//	nodeProjectDir = file("${project.projectDir}/vue-project")
+	nodeProjectDir = file("${project.projectDir}/frontend")
 
 	// Whether the plugin automatically should add the proxy configuration to npm and yarn commands
 	// according the proxy configuration defined for Gradle
