@@ -91,6 +91,10 @@ jobs:
           echo "${{ secrets.YML_STORAGE }}" > ./application-storage.yml
         shell: bash
 
+      # permission granting
+      - name: Permission granting to gradlew
+        run: chmod +x ./gradlew
+
 
       # gradle build
       - name: Build with Gradle
