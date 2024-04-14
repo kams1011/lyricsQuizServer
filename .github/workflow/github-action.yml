@@ -1,5 +1,5 @@
 # github repository actions 페이지에 나타날 이름
-name: CI/CD using Github Actions & AWS CodeDeploy
+name: lyricsQuiz github-action CI/CD
 
 # event trigger
 # main이나 develop 브랜치에 push가 되었을 때 실행
