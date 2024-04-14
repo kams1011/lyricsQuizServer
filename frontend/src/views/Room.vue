@@ -245,7 +245,8 @@ export default {
           { withCredentials : true})
           .then(response => {
             if (response.data.data) {
-              alert('정답입니다.');
+              alert('정답입니다. 게임을 종료합니다.');
+              this.$router.push('/');
             } else {
               alert('오답입니다.');
             }
