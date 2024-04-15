@@ -209,7 +209,7 @@ tasks.named('test') {
  * - vue-project의 기존 빌드 결과물을 제거하기 위한 task
  */
 task deleteVueBuildFiles(type: Delete) {
-	delete "src/main/resources/static/static", "src/main/resources/static/index.html", "${project.projectDir}/vue-project/node_modules"
+	delete "src/main/resources/static/static", "src/main/resources/static/index.html", "${project.projectDir}/frontend/node_modules"
 }
 
 
