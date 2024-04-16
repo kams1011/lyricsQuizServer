@@ -11,6 +11,7 @@ public class WebController {
 
     /**
      * Vue Project
+     *
      * @return
      */
     @RequestMapping(value = "/")
