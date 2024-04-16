@@ -40,7 +40,6 @@ public class ApiControllerAdvice {
 
     @ExceptionHandler({AuthenticationException.class})
     public ResponseEntity<Response> AuthenticationException(IOException e){
-        System.out.println("아마 이쪽으로들어올거");
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Response.fail(e.getMessage(), null, null));
 
     }
