@@ -135,7 +135,7 @@ export default {
       this.getList(currentPage);
     },
     initInvitationInfo : function () {
-      axios.get('https://localhost:80/api/game/invitation',
+      axios.get('https://lyricsquizkaams.site/api/game/invitation',
           { withCredentials : true
           }).then(response => {
             this.isAllowed = response.data.data;
@@ -144,7 +144,7 @@ export default {
       });
     },
     allowInvitation(){
-      axios.patch('https://localhost:80/api/game/invitation?isAllowed=' + !this.isAllowed, {},{ withCredentials : true})
+      axios.patch('https://lyricsquizkaams.site/api/game/invitation?isAllowed=' + !this.isAllowed, {},{ withCredentials : true})
           .then(response => {
             this.isAllowed = !this.isAllowed;
             if (this.isAllowed) {
@@ -158,7 +158,7 @@ export default {
           });
     },
     inviteNotice(userSeq) {
-      const serverURL = "https://localhost:80/ws-stomp"
+      const serverURL = "https://lyricsquizkaams.site/ws-stomp"
       let socket = new SockJS(serverURL);
       this.stompClient = Stomp.over(socket);
       this.stompClient.connect(
@@ -184,7 +184,7 @@ export default {
     getList: function (currentPage) {
       const keyword = '';
       currentPage = currentPage == undefined ? 0 : currentPage - 1;
-      axios.get('https://localhost:80/api/game?size=' + this.pageSize + '&page=' + currentPage + '&keyword=' + keyword,
+      axios.get('https://lyricsquizkaams.site/api/game?size=' + this.pageSize + '&page=' + currentPage + '&keyword=' + keyword,
           { withCredentials : true
           }).then(response => {
         this.itemList = response.data.data.content;
@@ -202,7 +202,7 @@ export default {
       }
     },
     enter(roomSeq){
-      axios.patch('https://localhost:80/api/game/room?roomId=' + roomSeq +'&password=' + this.password, {},{ withCredentials : true}).then(response => {
+      axios.patch('https://lyricsquizkaams.site/api/game/room?roomId=' + roomSeq +'&password=' + this.password, {},{ withCredentials : true}).then(response => {
         this.$router.push({ path: `/room/${roomSeq}` });
       }).catch(error => {
         alert(error.response.data.message);
@@ -215,7 +215,7 @@ export default {
         password: this.password,
       };
       // 비밀번호 확인 로직 추가
-      axios.post('https://localhost:80/api/game/password', jsonData,
+      axios.post('https://lyricsquizkaams.site/api/game/password', jsonData,
           { withCredentials : true
           }).then(response => {
         this.enter(this.roomId);

@@ -96,6 +96,15 @@ jobs:
           echo "${{ secrets.YML_STORAGE }}" > ./application-storage.yml
         shell: bash
 
+      # 환경별 env 파일 생성(6) - env
+      - name: make .env
+        if: contains(github.ref, 'dev')
+        run: |
+          cd ./frontend
+          touch ./env
+          echo "${{ secrets.ENV }}" > ./env
+        shell: bash
+
       # permission granting
       - name: Permission granting to gradlew
         run: chmod +x ./gradlew

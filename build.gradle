@@ -19,22 +19,13 @@ java {
 }
 
 configurations {
+	asciidoctorExt
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
 }
 
-asciidoctor {
-	dependsOn test    // gradle build 시 test -> asciidoctor 순으로 수행
-}
 
-bootJar {
-	archiveFileName = 'lyricsQuizServer.jar'
-	dependsOn asciidoctor // (1)
-	from("${asciidoctor.outputDir}") { // (2)
-		into 'static/docs'
-	}
-}
 
 repositories {
 	mavenCentral()
@@ -42,6 +33,8 @@ repositories {
 
 ext {
 	set('springCloudVersion', "2021.0.4")
+	set('snippetsDir', file("build/generated-snippets"))
+	// snippetsDir : 테스트 실행시 생성되는 응답을 저장할 디렉토리 지정
 }
 
 dependencyManagement {
@@ -114,6 +107,7 @@ node {
 }
 
 configurations {
+	asciidoctorExtensions
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
@@ -143,6 +137,7 @@ dependencies {
 
 	//Spring Rest Docs
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+	asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 
 	//WebSocket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
@@ -201,7 +196,31 @@ dependencies {
 apply plugin: 'com.github.node-gradle.node'
 
 tasks.named('test') {
+	outputs.dir snippetsDir
 	useJUnitPlatform()
+}
+
+tasks.named('asciidoctor') {
+	configurations "asciidoctorExtensions"
+	inputs.dir snippetsDir
+	dependsOn test
+}
+
+task copyDocument(type: Copy) {
+	dependsOn asciidoctor            // (8-1)
+	from file("${asciidoctor.outputDir}")   // (8-2)
+	into file("src/main/resources/static/docs")   // (8-3)
+}
+
+build {
+	dependsOn copyDocument  // (9) 빌드되기전 copyDocument task 실행
+}
+
+bootJar {
+	dependsOn copyDocument    // (10-1) bootJar 실행되기전 copyDocument task 실행
+	from ("${asciidoctor.outputDir}") {  // (10-2) bootJar에 asciidoctor task에서 생성된 html 파일 추가
+		into 'static/docs'     // (10-3) bootJar에 추가될 경로
+	}
 }
 
 /**

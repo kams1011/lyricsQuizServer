@@ -1,4 +1,4 @@
-= User API
+RestDocumentationResultHandler = User API
 :snippets: build/generated-snippets
 :doctype: book
 :icons: font

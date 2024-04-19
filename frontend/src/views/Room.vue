@@ -112,7 +112,7 @@ export default {
   methods: {
     getInvitableUsers(isHost){
       if(isHost){
-        axios.get('https://localhost:80/api/game/invitation/users', { withCredentials : true})
+        axios.get('https://lyricsquizkaams.site/api/game/invitation/users', { withCredentials : true})
         .then(response => {
           console.log(response);
           if (response.data.data.length == 0) {
@@ -131,7 +131,7 @@ export default {
     invite(nickName, userSeq){
       let isConfirmed = confirm(nickName + '님을 초대하시겠습니까?');
       if (isConfirmed) {
-        axios.post('https://localhost:80/api/game/invitation?roomId=' + this.roomSeq + '&invitedUserSeq=' + userSeq,{},
+        axios.post('https://lyricsquizkaams.site/api/game/invitation?roomId=' + this.roomSeq + '&invitedUserSeq=' + userSeq,{},
             { withCredentials : true})
             .then(response => {
               alert('초대에 성공했습니다.');
@@ -141,7 +141,7 @@ export default {
       }
     },
     isHostCheck(){
-      axios.get('https://localhost:80/api/game/host?roomId=' + this.roomSeq,
+      axios.get('https://lyricsquizkaams.site/api/game/host?roomId=' + this.roomSeq,
           { withCredentials : true
           }).then(response => {
         this.isHost = response.data.data;
@@ -161,7 +161,7 @@ export default {
       this.sendActionToServer([action]);
     },
     sendActionToServer(action) {
-      const url = `https://localhost:80/api/game/${action}?roomId=${this.roomSeq}`;
+      const url = `https://lyricsquizkaams.site/api/game/${action}?roomId=${this.roomSeq}`;
       axios.patch(url, {}, { withCredentials: true })
           .then(response => {
             const box = document.getElementById('waiting-box');
@@ -208,7 +208,7 @@ export default {
         }
     },
     connect() {
-        const serverURL = "https://localhost:80/ws-stomp"
+        const serverURL = "https://lyricsquizkaams.site/ws-stomp"
         let socket = new SockJS(serverURL);
         this.stompClient = Stomp.over(socket);
         this.stompClient.connect(
@@ -230,7 +230,7 @@ export default {
         );
     },
     streamingComplete(){
-      const url = `https://localhost:80/api/game/streaming/complete/` + this.roomId;
+      const url = `https://lyricsquizkaams.site/api/game/streaming/complete/` + this.roomId;
       axios.patch(url, {}, { withCredentials: true })
           .then(response => {
             this.showAnswerModal = true; // FIXME 이부분 구현중
@@ -241,7 +241,7 @@ export default {
           });
     },
     checkAnswer(answer){
-      axios.post('https://localhost:80/api/game/answer/' + this.roomId,{answer},
+      axios.post('https://lyricsquizkaams.site/api/game/answer/' + this.roomId,{answer},
           { withCredentials : true})
           .then(response => {
             if (response.data.data) {

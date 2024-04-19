@@ -10,7 +10,7 @@ module.exports = defineConfig({
     proxy: {
       '/api': {
         // '/api'로 들어오면 포트 80(스프링 서버)로 보낸다
-        target: 'https://localhost:80',
+        target: 'https://lyricsquizkaams.site',
         changeOrigin: true, // cross origin 허용
       }
     },
