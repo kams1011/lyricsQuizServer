@@ -24,7 +24,7 @@ configurations {
 		extendsFrom annotationProcessor
 	}
 }
-
+asciidoctor
 
 
 repositories {
@@ -196,6 +196,7 @@ dependencies {
 apply plugin: 'com.github.node-gradle.node'
 
 tasks.named('test') {
+	println 'Running test task...'
 	outputs.dir snippetsDir
 	useJUnitPlatform()
 }
