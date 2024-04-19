@@ -100,7 +100,12 @@ jobs:
       - name: make .env
         if: contains(github.ref, 'dev')
         run: |
-          cd ../../../frontend
+          cd ..
+          ls
+          cd ..
+          ls
+          cd ..
+          ls
           touch ./.env
           echo "${{ secrets.ENV }}" > ./.env
         shell: bash
