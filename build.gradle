@@ -15,7 +15,7 @@ group = 'kr.toy'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = 'VERSION_1_8'
+	sourceCompatibility = '1.8'
 }
 
 configurations {
