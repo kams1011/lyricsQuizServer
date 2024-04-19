@@ -101,8 +101,8 @@ jobs:
         if: contains(github.ref, 'dev')
         run: |
           cd ./frontend
-          touch ./env
-          echo "${{ secrets.ENV }}" > ./env
+          touch ./.env
+          echo "${{ secrets.ENV }}" > ./.env
         shell: bash
 
       # permission granting
