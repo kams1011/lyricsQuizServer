@@ -94,5 +94,12 @@ public class UserControllerTest {
 //
 
 
+    @Test
+    public void temp(){
+
+        System.out.println("hi");
+    }
+
+
 
 }
