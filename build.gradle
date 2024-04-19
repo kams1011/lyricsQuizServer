@@ -15,7 +15,7 @@ group = 'kr.toy'
 version = '0.0.1-SNAPSHOT'
 
 java {
-	sourceCompatibility = 'VERSION_1_8'
+	sourceCompatibility = '1.8'
 }
 
 configurations {
@@ -201,14 +201,15 @@ tasks.named('test') {
 }
 
 tasks.named('asciidoctor') {
+	dependsOn test
 	configurations "asciidoctorExtensions"
 	inputs.dir snippetsDir
-	dependsOn test
 }
 
 task copyDocument(type: Copy) {
 	dependsOn asciidoctor            // (8-1)
-	from file("${asciidoctor.outputDir}")   // (8-2)
+	from file("build/docs/asciidoc")  // (8-2)
+//	from file("${asciidoctor.outputDir}")   // (8-2)
 	into file("src/main/resources/static/docs")   // (8-3)
 }
 
