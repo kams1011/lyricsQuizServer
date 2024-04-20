@@ -19,7 +19,7 @@ java {
 }
 
 configurations {
-	asciidoctorExt
+	asciidoctorExtensions
 	compileOnly {
 		extendsFrom annotationProcessor
 	}
