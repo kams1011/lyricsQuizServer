@@ -59,6 +59,12 @@ public class UserController {
     }
 
 
+    @GetMapping("/temp")
+    public ResponseEntity temp(){
+        return ResponseEntity.status(200).body("success");
+    }
+
+
 
 
 }

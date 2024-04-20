@@ -35,6 +35,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureRestDocs
 public class UserControllerTest {
 
+
+    @Autowired
+    private WebApplicationContext context;
+
+
+
 //    @Autowired
 //    private MockMvc mockMvc;
 //
@@ -97,7 +103,6 @@ public class UserControllerTest {
     @Test
     public void temp(){
 
-        System.out.println("hi");
     }
 
 

@@ -200,6 +200,8 @@ test {
 }
 
 asciidoctor {
+	println 'asciidoctor start!!!'
+	ls
 	dependsOn test
 	// config 추가
 	configurations 'asciidoctorExtensions'
