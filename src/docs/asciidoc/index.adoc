@@ -4,16 +4,16 @@ endif::[]
 
 == REQUEST
 
-include::{snippets}/members/http-request.adoc[]
+include::{snippets}/user/http-request.adoc[]
 
 == RESPONSE
 
-include::{snippets}/members/http-response.adoc[]
+include::{snippets}/user/http-response.adoc[]
 
 == RESPONSE HEADER
 
-include::{snippets}/members/response-headers.adoc[]
+include::{snippets}/user/response-headers.adoc[]
 
 == RESPONSE FIEDL
 
-include::{snippets}/members/response-fields.adoc[]
+include::{snippets}/user/response-fields.adoc[]
