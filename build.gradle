@@ -24,8 +24,6 @@ configurations {
 		extendsFrom annotationProcessor
 	}
 }
-asciidoctor
-
 
 repositories {
 	mavenCentral()
@@ -33,7 +31,7 @@ repositories {
 
 ext {
 	set('springCloudVersion', "2021.0.4")
-	set('snippetsDir', file("build/generated-snippets"))
+	snippetsDir = file('build/generated-snippets')
 	// snippetsDir : 테스트 실행시 생성되는 응답을 저장할 디렉토리 지정
 }
 
@@ -195,16 +193,29 @@ dependencies {
  */
 apply plugin: 'com.github.node-gradle.node'
 
-tasks.named('test') {
+test {
 	println 'Running test task...'
 	outputs.dir snippetsDir
 	useJUnitPlatform()
 }
 
-tasks.named('asciidoctor') {
+asciidoctor {
 	dependsOn test
-	configurations "asciidoctorExtensions"
+	// config 추가
+	configurations 'asciidoctorExtensions'
 	inputs.dir snippetsDir
+
+	// 변환할 adoc들을 명시한다.
+	sources{
+		include("**/*.adoc")
+	}
+
+	// include 연산을 사용할 때 base 디렉터리를 지정해줍니다.
+	baseDirFollowsSourceFile()
+}
+
+asciidoctor.doFirst {
+	delete file('src/main/resources/static/docs')
 }
 
 task copyDocument(type: Copy) {
