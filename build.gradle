@@ -218,9 +218,9 @@ asciidoctor {
 	inputs.dir snippetsDir
 
 	// 변환할 adoc들을 명시한다.
-	sources{
-		include("**/*.adoc")
-	}
+//	sources{
+//		include("**/*.adoc")
+//	}
 
 	// include 연산을 사용할 때 base 디렉터리를 지정해줍니다.
 	baseDirFollowsSourceFile()
