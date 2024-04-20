@@ -185,6 +185,9 @@ dependencies {
 
 	//FFmpeg
 	implementation 'net.bramp.ffmpeg:ffmpeg:0.6.2'
+
+	testCompileOnly 'org.projectlombok:lombok:1.18.22' //테스트 환경에서 주입
+	testAnnotationProcessor 'org.projectlombok:lombok:1.18.24'	//테스트환경의 어노테이션 주입
 }
 
 /**
@@ -200,9 +203,6 @@ test {
 }
 
 asciidoctor {
-	println 'asciidoctor start!!!'
-	def currentDir = new File('.').canonicalPath
-	println currentDir
 	dependsOn test
 	// config 추가
 	configurations 'asciidoctorExtensions'

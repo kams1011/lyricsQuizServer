@@ -1,11 +1,7 @@
 package kr.toy.lyricsQuizServer.config;
 
 
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.security.Keys;
 import kr.toy.lyricsQuizServer.config.ConfigurationProperties.SecurityProperties;
-import kr.toy.lyricsQuizServer.user.domain.User;
-import kr.toy.lyricsQuizServer.user.service.port.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
