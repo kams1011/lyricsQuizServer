@@ -244,7 +244,8 @@ build {
 bootJar {
 	dependsOn copyDocument    // (10-1) bootJar 실행되기전 copyDocument task 실행
 	from ("${asciidoctor.outputDir}") {  // (10-2) bootJar에 asciidoctor task에서 생성된 html 파일 추가
-		into 'static/docs'     // (10-3) bootJar에 추가될 경로
+//		into 'static/docs'     // (10-3) bootJar에 추가될 경로
+		into 'BOOT-INF/classes/static/docs'     // (10-3) bootJar에 추가될 경로
 	}
 }
 
