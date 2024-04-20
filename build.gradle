@@ -216,6 +216,7 @@ asciidoctor {
 	// config 추가
 	configurations 'asciidoctorExtensions'
 	inputs.dir snippetsDir
+	outputDir file('build/docs/asciidoc')
 
 	// 변환할 adoc들을 명시한다.
 //	sources{
