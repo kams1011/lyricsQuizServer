@@ -201,7 +201,8 @@ test {
 
 asciidoctor {
 	println 'asciidoctor start!!!'
-	ls
+	def currentDir = new File('.').canonicalPath
+	println currentDir
 	dependsOn test
 	// config 추가
 	configurations 'asciidoctorExtensions'
