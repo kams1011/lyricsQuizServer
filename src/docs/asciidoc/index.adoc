@@ -1,4 +1,19 @@
-= Spring REST Docs
+ifndef::snippets[]
+:snippets: ./build/generated-snippets
+endif::[]
 
-include::http-request.adoc[]
-include::http-response.adoc[]
+== REQUEST
+
+include::{snippets}/members/http-request.adoc[]
+
+== RESPONSE
+
+include::{snippets}/members/http-response.adoc[]
+
+== RESPONSE HEADER
+
+include::{snippets}/members/response-headers.adoc[]
+
+== RESPONSE FIEDL
+
+include::{snippets}/members/response-fields.adoc[]

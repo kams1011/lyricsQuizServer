@@ -203,6 +203,7 @@ test {
 }
 
 asciidoctor {
+
 	dependsOn test
 	// config 추가
 	configurations 'asciidoctorExtensions'
