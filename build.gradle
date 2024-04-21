@@ -204,8 +204,6 @@ test {
 
 asciidoctor {
 
-
-
 	def snippetsDir = file("build/generated-snippets")
 	if (!snippetsDir.exists()) {
 		snippetsDir.mkdirs()
@@ -216,15 +214,9 @@ asciidoctor {
 
 	dependsOn test
 	// config 추가
-	println "${indent}${asciidoctor.outputDir}/"
-	dir.listFiles().each { file ->
-		if (file.isDirectory()) {
-			printDirectoryContents(file, "${indent}  ")
-		} else {
-			println "${indent}  ${file.name}"
-		}
-	}
 	configurations 'asciidoctorExtensions'
+	println('ls!!')
+	ls
 	inputs.dir snippetsDir
 	outputDir file('build/docs/asciidoc')
 
