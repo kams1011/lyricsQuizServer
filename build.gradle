@@ -204,6 +204,8 @@ test {
 
 asciidoctor {
 
+
+
 	def snippetsDir = file("build/generated-snippets")
 	if (!snippetsDir.exists()) {
 		snippetsDir.mkdirs()
@@ -214,6 +216,14 @@ asciidoctor {
 
 	dependsOn test
 	// config 추가
+	println "${indent}${asciidoctor.outputDir}/"
+	dir.listFiles().each { file ->
+		if (file.isDirectory()) {
+			printDirectoryContents(file, "${indent}  ")
+		} else {
+			println "${indent}  ${file.name}"
+		}
+	}
 	configurations 'asciidoctorExtensions'
 	inputs.dir snippetsDir
 	outputDir file('build/docs/asciidoc')
@@ -243,8 +253,6 @@ build {
 }
 
 bootJar {
-	println("bootJAR!!!!@@@@")
-	println(asciidoctor.outputDir);
 	dependsOn copyDocument    // (10-1) bootJar 실행되기전 copyDocument task 실행
 	from ("${asciidoctor.outputDir}") {  // (10-2) bootJar에 asciidoctor task에서 생성된 html 파일 추가
 		into 'static/docs'     // (10-3) bootJar에 추가될 경로
