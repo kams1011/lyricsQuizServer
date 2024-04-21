@@ -4,12 +4,11 @@ endif::[]
 
 == REQUEST
 
-include::{docdir}/src/docs/asciidocs/user/http-request.adoc[]
+include::{docdir}/user/http-request.adoc[]
 
 == RESPONSE
 
-//include::{snippets}/user/http-response.adoc[]
-include::{docdir}/src/docs/asciidocs/user/http-response.adoc[]
+include::{docdir}/user/http-response.adoc[]
 
 // == RESPONSE HEADER
 //
