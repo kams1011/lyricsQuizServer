@@ -90,7 +90,7 @@ public class UserControllerTest {
 
         perform.andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("user44",
+                .andDo(document("user",
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()))
 //                        requestParameters(
