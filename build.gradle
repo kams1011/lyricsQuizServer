@@ -215,9 +215,12 @@ asciidoctor {
 	dependsOn test
 	// config 추가
 	configurations 'asciidoctorExtensions'
-	println('ls!!')
-	ls
 	inputs.dir snippetsDir
+
+	println "출력시작";
+	snippetsDir.eachFile { file ->
+		println file.name
+	}
 	outputDir file('build/docs/asciidoc')
 
 	// 변환할 adoc들을 명시한다.
