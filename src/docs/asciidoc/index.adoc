@@ -4,13 +4,13 @@ endif::[]
 
 == REQUEST
 
-include::user/http-request.adoc[]
-//include::{snippets}/user/http-request.adoc[]
+//include::user/http-request.adoc[]
+include::{snippets}/user/http-request.adoc[]
 
 == RESPONSE
 
-include::user/http-response.adoc[]
-//include::{snippets}/user/http-response.adoc[]
+//include::user/http-response.adoc[]
+include::{snippets}/user/http-response.adoc[]
 
 // == RESPONSE HEADER
 //
