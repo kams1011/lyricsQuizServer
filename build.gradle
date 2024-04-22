@@ -198,7 +198,25 @@ apply plugin: 'com.github.node-gradle.node'
 
 test {
 	println 'Running test task...'
-	outputs.dir snippetsDir
+	// 출력 디렉토리 확인
+	def snippetsDir = file("build/generated-snippets")
+	if (snippetsDir.exists()) {
+		println "Directory exists: $snippetsDir"
+		println "Files in directory: ${snippetsDir.listFiles()}"
+		println "Number of files: ${snippetsDir.listFiles().length}"
+
+		// 특정 파일이 존재하는지 확인
+		def specificFile = file("build/generated-snippets/specific-file.txt")
+		if (specificFile.exists()) {
+			println "Specific file exists: $specificFile"
+		} else {
+			println "Specific file does not exist: $specificFile"
+		}
+	} else {
+		println "Directory does not exist: $snippetsDir"
+	}
+
+	// JUnit Platform 사용 설정
 	useJUnitPlatform()
 }
 
