@@ -198,25 +198,7 @@ apply plugin: 'com.github.node-gradle.node'
 
 test {
 	println 'Running test task...'
-	// 출력 디렉토리 확인
-	def snippetsDir = file("build/generated-snippets")
-	if (snippetsDir.exists()) {
-		println "Directory exists: $snippetsDir"
-		println "Files in directory: ${snippetsDir.listFiles()}"
-		println "Number of files: ${snippetsDir.listFiles().length}"
-
-		// 특정 파일이 존재하는지 확인
-		def specificFile = file("build/generated-snippets/specific-file.txt")
-		if (specificFile.exists()) {
-			println "Specific file exists: $specificFile"
-		} else {
-			println "Specific file does not exist: $specificFile"
-		}
-	} else {
-		println "Directory does not exist: $snippetsDir"
-	}
-
-	// JUnit Platform 사용 설정
+	outputs.dir snippetsDir
 	useJUnitPlatform()
 }
 
@@ -235,10 +217,6 @@ asciidoctor {
 	configurations 'asciidoctorExtensions'
 	inputs.dir snippetsDir
 
-	println "출력시작";
-	snippetsDir.eachFile { file ->
-		println file.name
-	}
 	outputDir file('build/docs/asciidoc')
 
 	// 변환할 adoc들을 명시한다.
@@ -248,6 +226,13 @@ asciidoctor {
 
 	// include 연산을 사용할 때 base 디렉터리를 지정해줍니다.
 	baseDirFollowsSourceFile()
+
+
+	println "출력시작";
+	snippetsDir.eachFile { file ->
+		println file.name
+	}
+	println "출력완료";
 }
 
 asciidoctor.doFirst {
