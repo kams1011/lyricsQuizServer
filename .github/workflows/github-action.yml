@@ -112,7 +112,7 @@ jobs:
 
       # gradle build
       - name: Build with Gradle
-        run: ./gradlew build -x test
+        run: ./gradlew build -x
 
       # make zip file
       - name: Make zip file
