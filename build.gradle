@@ -284,6 +284,7 @@ task npmBuild(type: NpmTask, dependsOn: ['deleteVueBuildFiles', 'npmInstall']) {
  * 입니다.
  */
 
+test.finalizedBy asciidoctor
 processResources.dependsOn 'npmBuild'
 
 
