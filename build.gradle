@@ -215,18 +215,24 @@ asciidoctor {
 	// include 연산을 사용할 때 base 디렉터리를 지정해줍니다.
 	baseDirFollowsSourceFile()
 
+
+
 }
 
 asciidoctor.doFirst {
 	delete file('src/main/resources/static/docs')
 }
 
+
+
 task copyDocument(type: Copy) {
-	dependsOn asciidoctor            // (8-1)
-//	from file("build/docs/asciidoc")  // (8-2)
+//	dependsOn asciidoctor            // (8-1)
 	from file("${asciidoctor.outputDir}")   // (8-2)
 	into file("src/main/resources/static/docs")   // (8-3)
 }
+
+copyDocument.mustRunAfter asciidoctor
+
 
 build {
 	dependsOn copyDocument  // (9) 빌드되기전 copyDocument task 실행
@@ -277,6 +283,7 @@ task npmBuild(type: NpmTask, dependsOn: ['deleteVueBuildFiles', 'npmInstall']) {
  * 4) processResources
  * 입니다.
  */
-//processResources.dependsOn 'copyDocument'
+
 processResources.dependsOn 'npmBuild'
+
 
