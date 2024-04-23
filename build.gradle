@@ -285,6 +285,5 @@ task npmBuild(type: NpmTask, dependsOn: ['deleteVueBuildFiles', 'npmInstall']) {
  */
 
 processResources.dependsOn 'npmBuild'
-processResources.dependsOn 'copyDocument'
 
 
