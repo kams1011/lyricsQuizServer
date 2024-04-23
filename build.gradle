@@ -229,8 +229,7 @@ asciidoctor {
 
 task copyDocument(type: Copy) {
 	dependsOn asciidoctor            // (8-1)
-//	from file("${asciidoctor.outputDir}")   // (8-2)
-	from file("build/docs/asciidoc/")   // (8-2)
+	from file("${asciidoctor.outputDir}")   // (8-2)
 	into file("src/main/resources/static/docs")  // (8-3)
 }
 
