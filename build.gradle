@@ -217,6 +217,10 @@ asciidoctor {
 
 }
 
+tasks.resolveMainClassName {
+	dependsOn 'copyDocument'
+}
+
 //asciidoctor.doFirst {
 //	delete file('src/main/resources/static/docs')
 //}
