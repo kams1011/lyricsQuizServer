@@ -39,6 +39,9 @@ public class SecurityConfig {
 //                .anyRequest().permitAll();
         http.cors();
         http
+                .authorizeRequests()
+                .antMatchers("/favicon.ico", "/js/**", "/css/**").permitAll()
+                .and()
 //                .addFilter(corsConfig.corsFilter())
                 .csrf().disable()
 //                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -61,12 +64,12 @@ public class SecurityConfig {
     }
 
 
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring()
-                .mvcMatchers("/favicon.io", "/js/*", "/css/*")
-                .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
-    }
+    //    @Bean
+    //    public WebSecurityCustomizer webSecurityCustomizer() {
+    //        return (web) -> web.ignoring()
+    //                .mvcMatchers("/favicon.io", "/js/*", "/css/*")
+    //                .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
+    //    }
 
 
 }
