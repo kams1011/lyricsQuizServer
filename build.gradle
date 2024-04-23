@@ -190,36 +190,38 @@ dependencies {
 apply plugin: 'com.github.node-gradle.node'
 
 test {
+	dependsOn processResources
 	println 'Running test task...'
 	outputs.dir snippetsDir
 	useJUnitPlatform()
 }
 
-asciidoctor {
+sourceSets {
+	test {
+		resources {
+			srcDir 'src/test/java' // 테스트 리소스 디렉토리 경로 지정
+		}
+	}
+}
 
-	def snippetsDir = file("build/generated-snippets")
+asciidoctor {
+	dependsOn test
+
+//	def snippetsDir = file("build/generated-snippets")
 	if (!snippetsDir.exists()) {
 		snippetsDir.mkdirs()
 		println "build/generated-snippets 폴더를 생성했습니다."
 	} else {
 		println "build/generated-snippets 폴더가 이미 존재합니다."
 	}
-
-	dependsOn test
 	// config 추가
 	configurations 'asciidoctorExtensions'
 	inputs.dir snippetsDir
-
 	outputDir file('build/docs/asciidoc')
-
 	// include 연산을 사용할 때 base 디렉터리를 지정해줍니다.
 	baseDirFollowsSourceFile()
-
 }
 
-tasks.resolveMainClassName {
-	dependsOn 'copyDocument'
-}
 
 //asciidoctor.doFirst {
 //	delete file('src/main/resources/static/docs')
