@@ -2,6 +2,9 @@ spring:
   profiles:
     active:
       - dev
+--- # default 설정
+spring:
+  profiles:
     group:
       local:
         - redis-local
@@ -23,7 +26,22 @@ spring:
       max-request-size: 10MB
 server:
   port: 8080
-
 logging:
   level:
     org.springframework.cache: DEBUG
+
+--- # local 설정
+spring:
+  config:
+    activate:
+      on-profile: local
+server:
+  port: 80
+--- # dev 설정
+spring:
+  config:
+    activate:
+      on-profile: dev
+server:
+  port: 8080
+

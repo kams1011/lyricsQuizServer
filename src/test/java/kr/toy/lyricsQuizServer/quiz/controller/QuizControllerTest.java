@@ -1,6 +1,7 @@
 package kr.toy.lyricsQuizServer.quiz.controller;
 
 import kr.toy.lyricsQuizServer.quiz.controller.port.QuizService;
+import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizContentCreate;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizCreate;
 import kr.toy.lyricsQuizServer.user.controller.UserController;
 import kr.toy.lyricsQuizServer.user.domain.Role;
@@ -51,27 +52,31 @@ public class QuizControllerTest {
     }
 
 
-//
+
 //    @Test
 //    void create_메서드를_통해_Quiz를_생성할_수_있다() throws Exception {
 //
 //        QuizCreate quizCreate = QuizCreate.builder()
-//                .title("동서남북")
-//                .information()
-//                .beforeLyrics()
-//                .afterLyrics()
-//                .answer()
-//                .userSeq(1L)
+//                .title("좋은밤좋은꿈")
+//                .information("좋은밤좋은꿈")
+//                .beforeLyrics("좋은")
+//                .afterLyrics("밤")
+//                .answer("좋은밤좋은꿈")
+//                .singer("너드커넥션")
+//                .quizContentCreate()
+//                .build();
+//        QuizContentCreate quizContentCreate = QuizContentCreate.builder()
+//                .quizContentType()
+//                .fileSeq()
+//                .url()
 //                .build();
 //
 //
-//        given(quizService.create())
-//                .willReturn();
+//        given(quizService.create()).willReturn();
 //
 //        ResultActions perform = this.mockMvc.perform(
 //                RestDocumentationRequestBuilders.get(requestMapping + "1")
 //        );
-//
 //        perform.andExpect(status().isOk())
 //                .andDo(print())
 //                .andDo(document("user",
@@ -90,7 +95,7 @@ public class QuizControllerTest {
 //
 //
 //    }
-//
+
 
 
 }

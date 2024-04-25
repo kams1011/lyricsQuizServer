@@ -20,13 +20,17 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
+import static javax.persistence.EnumType.STRING;
 import static kr.toy.lyricsQuizServer.user.domain.LoginType.KAKAO;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -83,6 +87,7 @@ public class UserControllerTest {
 //                        .createdAt(LocalDateTime.parse("2023-08-18T00:00:00"))
 //                        .updatedAt(LocalDateTime.parse("2023-08-18T00:00:00"))
 //                        .build());
+
 
         ResultActions perform = this.mockMvc.perform(
                 RestDocumentationRequestBuilders.get("/api/users/" + "1234")
