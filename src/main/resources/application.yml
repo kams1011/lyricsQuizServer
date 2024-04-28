@@ -26,7 +26,7 @@ spring:
       max-request-size: 10MB
 logging:
   level:
-    org.springframework.cache: DEBUG
+    org.springframework.cache: INFO
 
 --- # local 설정
 spring:
@@ -41,6 +41,9 @@ server:
     key-store-type: PKCS12
     key-alias: bns-ssl
   port: 80
+logging:
+  level:
+    root : DEBUG
 --- # dev 설정
 spring:
   config:

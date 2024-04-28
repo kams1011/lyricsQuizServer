@@ -59,8 +59,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
 	//JSON
-	implementation 'com.fasterxml.jackson.core:jackson-core:2.10.2'
-	implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.2'
+//	implementation 'com.fasterxml.jackson.core:jackson-core:2.10.2'
+//	implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.2'
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+
 
 	//Configuration
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'

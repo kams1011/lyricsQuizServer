@@ -48,8 +48,8 @@ public class QuizCreate {
 //                      Boolean isDeleted,
                       @JsonProperty("singer") String singer,
                       @JsonProperty("information") String information,
-//                      @JsonProperty("startTime") LocalTime startTime,
-//                      @JsonProperty("endTime") LocalTime endTime,
+                      @JsonProperty("startTime") LocalTime startTime,
+                      @JsonProperty("endTime") LocalTime endTime,
                       @JsonProperty("beforeLyrics") String beforeLyrics,
                       @JsonProperty("afterLyrics") String afterLyrics,
                       @JsonProperty("answer") String answer,
@@ -58,8 +58,8 @@ public class QuizCreate {
         this.isDeleted = isDeleted;
         this.singer = singer;
         this.information = information;
-//        this.startTime = startTime;
-//        this.endTime = endTime;
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.beforeLyrics = beforeLyrics;
         this.afterLyrics = afterLyrics;
         this.answer = answer;
