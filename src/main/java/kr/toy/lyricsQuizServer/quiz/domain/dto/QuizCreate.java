@@ -55,7 +55,7 @@ public class QuizCreate {
                       @JsonProperty("answer") String answer,
                       @JsonProperty("quizContentCreate") QuizContentCreate quizContentCreate){
         this.title = title;
-        this.isDeleted = isDeleted;
+//        this.isDeleted = isDeleted;
         this.singer = singer;
         this.information = information;
         this.startTime = startTime;

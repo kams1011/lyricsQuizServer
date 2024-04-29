@@ -1,5 +1,6 @@
 package kr.toy.lyricsQuizServer.quiz.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import kr.toy.lyricsQuizServer.file.domain.File;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizContentCreate;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizCreate;
@@ -29,14 +30,18 @@ public class Quiz {
 
     private String answer;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime createdAt;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
     private LocalDateTime updatedAt; // JPAAuditing 사용하면 어떻게 변경할지 생각
 
     private User maker;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private LocalTime startTime; // 노래 구간 정보.
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     private LocalTime endTime;
 
     private QuizContent quizContent;

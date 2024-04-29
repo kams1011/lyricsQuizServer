@@ -1,0 +1,20 @@
+package kr.toy.lyricsQuizServer.docs;
+
+import org.springframework.boot.test.context.TestConfiguration;
+import org.springframework.context.annotation.Bean;
+import org.springframework.restdocs.mockmvc.MockMvcRestDocumentation;
+import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
+import org.springframework.restdocs.operation.preprocess.Preprocessors;
+
+@TestConfiguration
+public class RestDocConfig {
+
+    @Bean
+    public RestDocumentationResultHandler restDocumentationResultHandler() {
+        return MockMvcRestDocumentation.document(
+                "{class-name}/{method-name}", 									// 출력폴더와 method명을 자동화시킴.
+                Preprocessors.preprocessRequest(Preprocessors.prettyPrint()),
+                Preprocessors.preprocessResponse(Preprocessors.prettyPrint())
+        );
+    }
+}
