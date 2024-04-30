@@ -27,7 +27,9 @@ spring:
 logging:
   level:
     org.springframework.cache: INFO
-
+server:
+  tomcat:
+    connection-timeout: 180000
 --- # local 설정
 spring:
   config:
