@@ -1,21 +1,21 @@
+== LyricsQuiz API
+:doctype: book
+:source-highlighter: highlightjs
+:toc: left
+:toclevels: 2
+:seclinks:
+
+
 ifndef::snippets[]
 :snippets: build/generated-snippets
 endif::[]
 
-== REQUEST
 
-//include::user/http-request.adoc[]
-include::{snippets}/user/http-request.adoc[]
+include::overview.adoc[]
 
-== RESPONSE
 
-//include::user/http-response.adoc[]
-include::{snippets}/user/http-response.adoc[]
+[[API-LIST]]
+== APIs
 
-// == RESPONSE HEADER
-//
-// include::{snippets}/user/response-headers.adoc[]
-//
-// == RESPONSE FIEDL
-//
-// include::{snippets}/user/response-fields.adoc[]
+[[QuizAPI]]
+* link:quiz.html[quizAPI, window=blank]

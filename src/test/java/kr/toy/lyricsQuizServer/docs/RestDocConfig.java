@@ -12,7 +12,7 @@ public class RestDocConfig {
     @Bean
     public RestDocumentationResultHandler restDocumentationResultHandler() {
         return MockMvcRestDocumentation.document(
-                "{class-name}/{method-name}", 									// 출력폴더와 method명을 자동화시킴.
+                "{class-name}/{method-name}",
                 Preprocessors.preprocessRequest(Preprocessors.prettyPrint()),
                 Preprocessors.preprocessResponse(Preprocessors.prettyPrint())
         );

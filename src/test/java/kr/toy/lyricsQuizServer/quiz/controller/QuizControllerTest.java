@@ -38,7 +38,7 @@ public class QuizControllerTest extends QuizRestDocs {
 
 
     @Test
-    void create_를_통해_Quiz를_생성할_수_있다() throws Exception {
+    void quiz_create_test() throws Exception {
         //given
         QuizContentCreate quizContentCreate = QuizContentCreate.builder()
                 .quizContentType(QuizContentType.YOUTUBE)
@@ -114,7 +114,7 @@ public class QuizControllerTest extends QuizRestDocs {
 
 
     @Test
-    public void delete_를_통해_quiz를_삭제_할_수_있다() throws Exception { // FIXME 공통코드 분리
+    public void quiz_delete_test() throws Exception { // FIXME 공통코드 분리
         //given
         QuizContentCreate quizContentCreate = QuizContentCreate.builder()
                 .quizContentType(QuizContentType.YOUTUBE)
@@ -140,7 +140,7 @@ public class QuizControllerTest extends QuizRestDocs {
 
 
     @Test
-    public void getList_를_통해_list를_불러_올_수_있다() throws Exception {
+    public void quiz_getList_test() throws Exception {
 
         List<Quiz> quizList = initializeDummyDataList();
 
@@ -163,7 +163,7 @@ public class QuizControllerTest extends QuizRestDocs {
     }
 
     @Test
-    public void getDetail_을_통해_quiz_를_조회_할_수_있다() throws Exception {
+    public void quiz_get_test() throws Exception {
 
         Quiz quiz = initializeDummyData();
 
