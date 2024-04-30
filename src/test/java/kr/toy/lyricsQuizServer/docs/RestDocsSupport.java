@@ -63,8 +63,11 @@ public abstract class RestDocsSupport {
     @Autowired
     protected MockMvc mockMvc;
 
+    protected abstract <T> Object initializeDummyData();
+
     @BeforeEach
     public void setup(RestDocumentationContextProvider restDocumentation) throws Exception {
+        initializeDummyData();
         when(jwtArgumentResolver.supportsParameter(any())).thenReturn(true);
         when(jwtArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(true);
         this.mockMvc = MockMvcBuilders.standaloneSetup(getController())
@@ -80,7 +83,7 @@ public abstract class RestDocsSupport {
         return new FieldDescriptor[] {
                 fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
                 fieldWithPath("message").type(JsonFieldType.STRING).description("메시지").optional(),
-//                subsectionWithPath("data").type(JsonFieldType.OBJECT).description("데이터가 없는 메서드도 있음.").optional(),
+                subsectionWithPath("data").type(JsonFieldType.OBJECT).description("데이터가 없는 메서드도 있음.").optional(),
                 fieldWithPath("errorCode").type(JsonFieldType.STRING).description("에러코드").optional()
         };
     }

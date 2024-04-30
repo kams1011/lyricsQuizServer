@@ -1,25 +1,17 @@
 package kr.toy.lyricsQuizServer.quiz.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import kr.toy.lyricsQuizServer.config.*;
-import kr.toy.lyricsQuizServer.config.ConfigurationProperties.SecurityProperties;
-import kr.toy.lyricsQuizServer.docs.RestDocsSupport;
-import kr.toy.lyricsQuizServer.quiz.controller.port.QuizService;
+import kr.toy.lyricsQuizServer.docs.quiz.QuizRestDocs;
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
 import kr.toy.lyricsQuizServer.quiz.domain.QuizContent;
 import kr.toy.lyricsQuizServer.quiz.domain.QuizContentType;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizContentCreate;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizCreate;
-import kr.toy.lyricsQuizServer.quiz.service.QuizRepository;
 import kr.toy.lyricsQuizServer.user.domain.LoginType;
 import kr.toy.lyricsQuizServer.user.domain.Role;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.domain.dto.UserCreate;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -38,28 +30,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(QuizController.class)
-public class QuizControllerTest extends RestDocsSupport {
+public class QuizControllerTest extends QuizRestDocs {
 
-    @MockBean
-    private QuizService quizService;
-    @Autowired
-    QuizController quizController;
-
-    @MockBean
-    QuizRepository quizRepository;
-
-
-    private final String quizUrl = "/api/quiz";
-
-    @Override
-    protected Object getController() {
-        return this.quizController;
-    }
-
-//    @BeforeEach
-//    public void setup(RestDocumentationContextProvider restDocumentation) throws Exception {
-//        super.setup(restDocumentation);
-//    }
 
     @Test
     void create_를_통해_Quiz를_생성할_수_있다() throws Exception {
@@ -79,23 +51,14 @@ public class QuizControllerTest extends RestDocsSupport {
                 .singer("너드커넥션")
                 .quizContentCreate(quizContentCreate)
                 .build();
-        QuizContent quizContent = QuizContent.from(quizContentCreate);
-        UserCreate userCreate = UserCreate.builder()
-                .email("kams1011@naver.com")
-        .loginType(LoginType.NAVER)
-        .nickName("kams")
-        .build();
-        User user = User.from(userCreate, LocalDateTime.now());
-
-
-        Quiz quiz = Quiz.from(quizCreate, quizContent, user, LocalDateTime.now());
+        Quiz quiz = initializeDummyData();
 
         //when
         when(quizService.create(any(), any())).thenReturn(quiz); // 이 데이터가 mockMVC에서 return됨.
 
         ResultActions perform = this.mockMvc
                 .perform(RestDocumentationRequestBuilders
-                        .post(quizUrl)
+                        .post(quizApiUrl)
                         .content(objectMapper.writeValueAsString(quizCreate))
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
@@ -112,6 +75,7 @@ public class QuizControllerTest extends RestDocsSupport {
                                 fieldWithPath("startTime").description("노래 중 퀴즈 시작 시간"),
                                 fieldWithPath("endTime").description("노래 중 퀴즈 끝 시간"),
                                 fieldWithPath("beforeLyrics").description("퀴즈 시간 이전 가사"),
+                                fieldWithPath("afterLyrics").description("퀴즈 시간 이후 가사"),
                                 fieldWithPath("afterLyrics").description("퀴즈 시간 이후 가사"),
                                 fieldWithPath("answer").description("퀴즈 정답"),
                                 fieldWithPath("isDeleted").description("삭제여부"),
@@ -131,7 +95,7 @@ public class QuizControllerTest extends RestDocsSupport {
                                     fieldWithPath("data.afterLyrics").type(JsonFieldType.STRING).description("퀴즈 시간 이후 가사"),
                                     fieldWithPath("data.answer").type(JsonFieldType.STRING).description("퀴즈 정답"),
                                     fieldWithPath("data.createdAt").type(JsonFieldType.STRING).description("퀴즈 생성시각"),
-                                    fieldWithPath("data.updatedAt").type(JsonFieldType.STRING).description("퀴즈 수정시각"),
+                                    fieldWithPath("data.updatedAt").type(JsonFieldType.STRING).description("퀴즈 수정시각").optional(),
                                     subsectionWithPath("data.maker").type(JsonFieldType.OBJECT).description("퀴즈 생성인. 고유키만 보내는 것으로 변경가능성 있음.").optional(),
                                     fieldWithPath("data.startTime").type(JsonFieldType.STRING).description("노래 중 퀴즈 시작 시간"),
                                     fieldWithPath("data.endTime").type(JsonFieldType.STRING).description("노래 중 퀴즈 끝 시간"),
@@ -152,44 +116,12 @@ public class QuizControllerTest extends RestDocsSupport {
                 .quizContentType(QuizContentType.YOUTUBE)
                 .url("https://youtu.be/Km71Rr9K-Bw?feature=shared")
                 .build();
-        QuizContent quizContent = QuizContent.builder()
-                .quizContentType(QuizContentType.YOUTUBE)
-                .quizContentSeq(1L)
-                .detail("KK")
-                .build();
-        User maker = User.builder().userSeq(1L)
-                .isDeleted(false)
-                .isBan(false)
-                .nickName("kams")
-                .createdAt(LocalDateTime.now())
-                .updatedAt(null)
-                .email("kams1011@naver.com")
-                .role(Role.USER)
-                .lastLoginAt(LocalDateTime.now())
-                .loginType(LoginType.NAVER)
-                .build();
-        Quiz quiz = Quiz.builder()
-                .quizSeq(1L)
-                .isDeleted(false)
-                .title("좋은밤")
-                .singer("좋은꿈")
-                .information("정보")
-                .startTime(LocalTime.parse("01:01"))
-                .endTime(LocalTime.parse("01:03"))
-                .beforeLyrics("이전가사")
-                .afterLyrics("이후가사")
-                .answer("정답")
-                .createdAt(LocalDateTime.now())
-                .updatedAt(null)
-                .maker(maker)
-                .quizContent(quizContent)
-                .build();
 
-        quizRepository.save(quiz, quizContent);
+        Quiz quiz = initializeDummyData();
 
         ResultActions perform = this.mockMvc
                 .perform(RestDocumentationRequestBuilders
-                        .delete(quizUrl+"/{quizSeq}", quiz.getQuizSeq())
+                        .delete(quizApiUrl+"/{quizSeq}", quiz.getQuizSeq())
                 );
 
         perform.andExpect(status().isOk())
