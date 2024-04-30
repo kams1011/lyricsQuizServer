@@ -34,12 +34,12 @@ public class QuizRepositoryImpl implements QuizRepository {
         return quizEntity.toModel();
     }
 
-        @Override
-        public PageImpl<Quiz> getList(String keyword, Pageable pageable) {
-            keyword = keyword == null ? "" : keyword;
-            PageImpl<QuizEntity> pages = quizJpaRepository.findAllByTitleContainingAndIsDeletedIsFalse(keyword, pageable);
-            return new PageImpl<>(pages.stream().map(data -> data.toModel()).collect(Collectors.toList()), pageable, pages.getTotalElements());
-        }
+    @Override
+    public PageImpl<Quiz> getList(String keyword, Pageable pageable) {
+        keyword = keyword == null ? "" : keyword;
+        PageImpl<QuizEntity> pages = quizJpaRepository.findAllByTitleContainingAndIsDeletedIsFalse(keyword, pageable);
+        return new PageImpl<>(pages.stream().map(data -> data.toModel()).collect(Collectors.toList()), pageable, pages.getTotalElements());
+    }
 
     @Override
     @Transactional

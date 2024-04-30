@@ -13,12 +13,18 @@ import kr.toy.lyricsQuizServer.user.domain.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.restdocs.RestDocumentationContextProvider;
+import org.springframework.security.core.parameters.P;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
-public class QuizRestDocs extends RestDocsSupport {
+public class QuizRestDocs extends RestDocsSupport<Quiz> {
+
+
 
     @MockBean
     protected QuizService quizService;
@@ -35,14 +41,40 @@ public class QuizRestDocs extends RestDocsSupport {
         return this.quizController;
     }
 
+//    @Override
+//    protected <T> PageImpl<T> getPageImpl() {
+//        return null;
+//    }
+
+    @Override
+    protected PageImpl<Quiz> getPageImpl(List<Quiz> quizList) {
+        PageImpl<Quiz> pageImpl = new PageImpl(quizList);
+        return pageImpl;
+    }
+
+    @Override
+    protected PageImpl<Quiz> getPageImpl() {
+        return null;
+    }
+
+    @Override
+    protected List<Quiz> initializeDummyDataList() {
+        List<Quiz> quizList = new ArrayList<>();
+        for (int i=0; i<10; i++) {
+            quizList.add(initializeDummyData());
+        }
+
+        return quizList;
+    }
+
     @Override
     protected Quiz initializeDummyData() {
         QuizContent quizContent = QuizContent.builder()
                 .quizContentType(QuizContentType.YOUTUBE)
-                .quizContentSeq(1L)
+                .quizContentSeq(getId())
                 .detail("KK")
                 .build();
-        User maker = User.builder().userSeq(1L)
+        User maker = User.builder().userSeq(getId())
                 .isDeleted(false)
                 .isBan(false)
                 .nickName("kams")
@@ -54,7 +86,7 @@ public class QuizRestDocs extends RestDocsSupport {
                 .loginType(LoginType.NAVER)
                 .build();
         Quiz quiz = Quiz.builder()
-                .quizSeq(1L)
+                .quizSeq(getId())
                 .isDeleted(false)
                 .title("좋은밤")
                 .singer("좋은꿈")

@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
@@ -24,7 +26,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
-import org.springframework.web.servlet.mvc.Controller;
+
+import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -36,7 +40,9 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.subsecti
 @WebMvcTest
 @ExtendWith(RestDocumentationExtension.class)
 @Import(RestDocConfig.class)
-public abstract class RestDocsSupport {
+public abstract class RestDocsSupport<T>{
+
+    protected AtomicLong id = new AtomicLong(0);
 
     @MockBean
     protected AuthServerAPI authServerAPI;
@@ -63,17 +69,27 @@ public abstract class RestDocsSupport {
     @Autowired
     protected MockMvc mockMvc;
 
-    protected abstract <T> Object initializeDummyData();
+    protected Long getId(){
+        return id.incrementAndGet();
+    }
+    protected abstract PageImpl<T> getPageImpl(List<T> list);
+    protected abstract PageImpl<T> getPageImpl();
+
+    protected abstract <T> T initializeDummyData();
+
+    protected abstract <T> List<T> initializeDummyDataList();
 
     @BeforeEach
     public void setup(RestDocumentationContextProvider restDocumentation) throws Exception {
         initializeDummyData();
+        initializeDummyDataList();
         when(jwtArgumentResolver.supportsParameter(any())).thenReturn(true);
         when(jwtArgumentResolver.resolveArgument(any(), any(), any(), any())).thenReturn(true);
         this.mockMvc = MockMvcBuilders.standaloneSetup(getController())
 //                .setCustomArgumentResolvers(jwtArgumentResolver)
                 .setControllerAdvice(new ApiControllerAdvice())
                 .alwaysDo(restDoc)
+                .setCustomArgumentResolvers(new PageableHandlerMethodArgumentResolver())
                 .addFilters(new CharacterEncodingFilter("UTF-8", true))
 //                .apply(springSecurity())    // FIXME : springSecurity 추가시 주석 해제
                 .apply(documentationConfiguration(restDocumentation)).build();

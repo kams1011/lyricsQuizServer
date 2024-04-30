@@ -12,6 +12,8 @@ import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.domain.dto.UserCreate;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -19,13 +21,15 @@ import org.springframework.test.web.servlet.ResultActions;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.restdocs.request.RequestDocumentation.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -132,6 +136,52 @@ public class QuizControllerTest extends QuizRestDocs {
                                 this.responseCommon()
                         )
                 )).andReturn();
+    }
+
+
+    @Test
+    public void getList_를_통해_list를_불러_올_수_있다() throws Exception {
+
+        List<Quiz> quizList = initializeDummyDataList();
+
+        PageImpl<Quiz> responsePages = getPageImpl(quizList);
+
+        when(quizService.getList(any(), any())).thenReturn(responsePages);
+        ResultActions perform = this.mockMvc
+                .perform(RestDocumentationRequestBuilders
+                        .get(quizApiUrl));
+
+        perform.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("quiz",
+                        pathParameters(parameterWithName("keyword").description("검색어").optional()),
+                        responseFields(
+                                this.responseCommon()
+                        )
+                )).andReturn();
+
+    }
+
+    @Test
+    public void getDetail_을_통해_quiz_를_조회_할_수_있다() throws Exception {
+
+        Quiz quiz = initializeDummyData();
+
+        when(quizService.find(quiz.getQuizSeq())).thenReturn(quiz);
+
+        ResultActions perform = this.mockMvc
+                .perform(RestDocumentationRequestBuilders
+                        .get(quizApiUrl+"/{quizSeq}", quiz.getQuizSeq()));
+
+        perform.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document("quiz",
+                        pathParameters(parameterWithName("quizSeq").description("퀴즈 고유키")),
+                        responseFields(
+                                this.responseCommon()
+                        )
+                )).andReturn();
+
     }
 
 
