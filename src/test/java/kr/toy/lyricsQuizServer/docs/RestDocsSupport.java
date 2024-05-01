@@ -79,6 +79,8 @@ public abstract class RestDocsSupport<T>{
 
     protected abstract <T> List<T> initializeDummyDataList();
 
+    protected final String documentPath = "{class-name}/{method-name}";
+
     @BeforeEach
     public void setup(RestDocumentationContextProvider restDocumentation) throws Exception {
         initializeDummyData();

@@ -71,21 +71,20 @@ public class QuizControllerTest extends QuizRestDocs {
         //then
         perform.andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("quiz",
+                .andDo(document(documentPath,
                         requestFields(
-                                fieldWithPath("title").description("유저 이름"),
-                                fieldWithPath("singer").description("가수"),
-                                fieldWithPath("information").description("곡 정보"),
-                                fieldWithPath("startTime").description("노래 중 퀴즈 시작 시간"),
-                                fieldWithPath("endTime").description("노래 중 퀴즈 끝 시간"),
-                                fieldWithPath("beforeLyrics").description("퀴즈 시간 이전 가사"),
-                                fieldWithPath("afterLyrics").description("퀴즈 시간 이후 가사"),
-                                fieldWithPath("afterLyrics").description("퀴즈 시간 이후 가사"),
-                                fieldWithPath("answer").description("퀴즈 정답"),
-                                fieldWithPath("isDeleted").description("삭제여부"),
-                                fieldWithPath("quizContentCreate.quizContentType").description("퀴즈가 유튜브로 생성됐는지 파일업로드로 생성됐는지 여부. 각각 YOUTUBE / FILE 로 값을 받음."),
-                                fieldWithPath("quizContentCreate.url").description("유튜브로 업로드했을 때 유튜브 경로").optional(),
-                                fieldWithPath("quizContentCreate.fileSeq").description("파일로 업로드 했을 때 반환받은 파일 고유키").optional()
+                                fieldWithPath("title").description("유저 이름").type(JsonFieldType.STRING),
+                                fieldWithPath("singer").description("가수").type(JsonFieldType.STRING),
+                                fieldWithPath("information").description("곡 정보").type(JsonFieldType.STRING),
+                                fieldWithPath("startTime").description("노래 중 퀴즈 시작 시간").type(JsonFieldType.STRING),
+                                fieldWithPath("endTime").description("노래 중 퀴즈 끝 시간").type(JsonFieldType.STRING),
+                                fieldWithPath("beforeLyrics").description("퀴즈 시간 이전 가사").type(JsonFieldType.STRING),
+                                fieldWithPath("afterLyrics").description("퀴즈 시간 이후 가사").type(JsonFieldType.STRING),
+                                fieldWithPath("answer").description("퀴즈 정답").type(JsonFieldType.STRING),
+                                fieldWithPath("isDeleted").description("삭제여부").type(JsonFieldType.BOOLEAN).optional(),
+                                fieldWithPath("quizContentCreate.quizContentType").description("퀴즈가 유튜브로 생성됐는지 파일업로드로 생성됐는지 여부. 각각 YOUTUBE / FILE 로 값을 받음.").type(JsonFieldType.STRING),
+                                fieldWithPath("quizContentCreate.url").description("유튜브로 업로드했을 때 유튜브 경로").type(JsonFieldType.STRING).optional(),
+                                fieldWithPath("quizContentCreate.fileSeq").description("파일로 업로드 했을 때 반환받은 파일 고유키").type(JsonFieldType.NUMBER).optional()
                         ),
                         responseFields(
                                 this.responseCommon())
@@ -130,7 +129,7 @@ public class QuizControllerTest extends QuizRestDocs {
 
         perform.andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("quiz",
+                .andDo(document(documentPath,
                         pathParameters(parameterWithName("quizSeq").description("퀴즈 고유키")),
                         responseFields(
                                 this.responseCommon()
@@ -153,7 +152,7 @@ public class QuizControllerTest extends QuizRestDocs {
 
         perform.andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("quiz",
+                .andDo(document(documentPath,
                         pathParameters(parameterWithName("keyword").description("검색어").optional()),
                         responseFields(
                                 this.responseCommon()
@@ -175,7 +174,7 @@ public class QuizControllerTest extends QuizRestDocs {
 
         perform.andExpect(status().isOk())
                 .andDo(print())
-                .andDo(document("quiz",
+                .andDo(document(documentPath,
                         pathParameters(parameterWithName("quizSeq").description("퀴즈 고유키")),
                         responseFields(
                                 this.responseCommon()

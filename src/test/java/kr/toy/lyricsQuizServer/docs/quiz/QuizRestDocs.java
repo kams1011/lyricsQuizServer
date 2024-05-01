@@ -111,7 +111,6 @@ public class QuizRestDocs extends RestDocsSupport<Quiz> {
     @BeforeEach
     public void setup(RestDocumentationContextProvider restDocumentation) throws Exception {
         super.setup(restDocumentation);
-
     }
 
 
