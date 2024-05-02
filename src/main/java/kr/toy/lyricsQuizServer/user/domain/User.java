@@ -1,5 +1,6 @@
 package kr.toy.lyricsQuizServer.user.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import kr.toy.lyricsQuizServer.user.domain.dto.UserCreate;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,6 +18,7 @@ public class User {
 
     String nickName;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime lastLoginAt;
 
     Boolean isBan;
@@ -27,8 +29,10 @@ public class User {
 
     Role role;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime createdAt;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     LocalDateTime updatedAt; // JPAAuditing 사용하면 어떻게 변경할지 생각
 
 

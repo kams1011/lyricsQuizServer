@@ -31,13 +31,13 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity getById(@PathVariable Long id){
-        return ResponseEntity.ok().body(userService.getById(id));
-    } // FIXME : response dto로 변경
+        return ResponseEntity.ok().body(Response.success(null, userService.getById(id)));
+    }
 
     @GetMapping("/email/{email}")
-    public void getByEmail(@PathVariable String email){
-        userService.getByEmail(email);
-    } // FIXME : response dto로 변경
+    public ResponseEntity getByEmail(@PathVariable String email){
+        return ResponseEntity.ok().body(Response.success(null, userService.getByEmail(email)));
+    }
 
     @GetMapping("/login")
     public ResponseEntity<Response> login(HttpServletResponse response,  @RequestParam LoginType loginType, @RequestParam String code){
@@ -57,14 +57,6 @@ public class UserController {
 
         return ResponseEntity.created(URI.create("/api/users/" + user.getUserSeq())).body(Response.success("회원가입에 성공했습니다.", user));
     }
-
-
-    @GetMapping("/temp")
-    public ResponseEntity temp(){
-        return ResponseEntity.status(200).body("success");
-    }
-
-
 
 
 }

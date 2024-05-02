@@ -6,6 +6,8 @@ import kr.toy.lyricsQuizServer.config.ConfigurationProperties.SecurityProperties
 import kr.toy.lyricsQuizServer.config.JwtArgumentResolver;
 import kr.toy.lyricsQuizServer.config.JwtUtils;
 import kr.toy.lyricsQuizServer.config.SecurityService;
+import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
+import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.service.port.AuthServerAPI;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -27,6 +29,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -72,12 +75,22 @@ public abstract class RestDocsSupport<T>{
     protected Long getId(){
         return id.incrementAndGet();
     }
-    protected abstract PageImpl<T> getPageImpl(List<T> list);
+    protected PageImpl<T> getPageImpl(List<T> list){
+        PageImpl<T> pageImpl = new PageImpl(list);
+        return pageImpl;
+    };
+
     protected abstract PageImpl<T> getPageImpl();
 
     protected abstract <T> T initializeDummyData();
 
-    protected abstract <T> List<T> initializeDummyDataList();
+    protected <T> List<T> initializeDummyDataList(){
+        List<T> list = new ArrayList<>();
+        for (int i=0; i<10; i++) {
+            list.add(initializeDummyData());
+        }
+        return list;
+    }
 
     protected final String documentPath = "{class-name}/{method-name}";
 

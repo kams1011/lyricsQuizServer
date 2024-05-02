@@ -25,7 +25,6 @@ import java.util.List;
 public class QuizRestDocs extends RestDocsSupport<Quiz> {
 
 
-
     @MockBean
     protected QuizService quizService;
 
@@ -41,31 +40,11 @@ public class QuizRestDocs extends RestDocsSupport<Quiz> {
         return this.quizController;
     }
 
-//    @Override
-//    protected <T> PageImpl<T> getPageImpl() {
-//        return null;
-//    }
-
-    @Override
-    protected PageImpl<Quiz> getPageImpl(List<Quiz> quizList) {
-        PageImpl<Quiz> pageImpl = new PageImpl(quizList);
-        return pageImpl;
-    }
-
     @Override
     protected PageImpl<Quiz> getPageImpl() {
         return null;
     }
 
-    @Override
-    protected List<Quiz> initializeDummyDataList() {
-        List<Quiz> quizList = new ArrayList<>();
-        for (int i=0; i<10; i++) {
-            quizList.add(initializeDummyData());
-        }
-
-        return quizList;
-    }
 
     @Override
     protected Quiz initializeDummyData() {
@@ -108,10 +87,10 @@ public class QuizRestDocs extends RestDocsSupport<Quiz> {
     }
 
 
-    @BeforeEach
-    public void setup(RestDocumentationContextProvider restDocumentation) throws Exception {
-        super.setup(restDocumentation);
-    }
+//    @BeforeEach
+//    public void setup(RestDocumentationContextProvider restDocumentation) throws Exception {
+//        super.setup(restDocumentation);
+//    }
 
 
 }
