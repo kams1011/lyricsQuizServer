@@ -17,7 +17,7 @@ else
 fi
 
 echo "> $JAR_PATH 배포" #3
-nohup java -jar \
+sudo nohup java -jar \
         -Dspring.profiles.active=dev \
         build/libs/$JAR_NAME > $REPOSITORY/nohup.out 2>&1 &
 echo "> $JAR_PATH 완료" #4
