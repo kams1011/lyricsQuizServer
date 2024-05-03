@@ -25,7 +25,7 @@ public class WebMVCConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry){
             registry.addMapping("/**")
 //                    .allowedOrigins("http://localhost:8080", "https://localhost:8080")
-                    .allowedOrigins("https://lyricsquizkaams.site")
+                    .allowedOrigins("https://lyricsquizkaams.site", "https://lyricsquizkaams.site:8080")
                     .allowedMethods("*")
                     .allowedHeaders("*")
                     .allowCredentials(true)
