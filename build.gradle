@@ -24,7 +24,7 @@ repositories {
 
 ext {
 //	profile = (!project.hasProperty('profile') || !profile) ? 'dev' : profile
-    set('profile', 'local')
+    set('profile', 'dev')
 	set('springCloudVersion', "2021.0.4")
 	snippetsDir = file('build/generated-snippets')
 }
