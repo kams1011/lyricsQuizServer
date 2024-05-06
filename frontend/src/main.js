@@ -30,7 +30,43 @@ const routes = [
 const router = createRouter({
     mode: 'history',
     history: createWebHistory(),
-    routes,
+    routes: [
+        {
+            path: '/',  // 루트를 제외한 나머지 path를
+            name: 'Lobby',
+            component: Lobby
+        },
+        {
+            path: '/login',  // 구분을 위한 sub path로 앞을 맞춰줍니다.
+            name: 'Login',
+            component: Login
+        },
+        {
+            path: '/login/callback',  // 구분을 위한 sub path로 앞을 맞춰줍니다.
+            name: 'LoginCallback',
+            component: LoginCallback
+        },
+        {
+            path: '/user/register/:loginType/:id',  // 구분을 위한 sub path로 앞을 맞춰줍니다.
+            name: 'UserRegister',
+            component: UserRegister
+        },
+        {
+            path: '/room/:roomSeq',  // 구분을 위한 sub path로 앞을 맞춰줍니다.
+            name: 'Room',
+            component: Room
+        },
+        {
+            path: '/room/create',  // 구분을 위한 sub path로 앞을 맞춰줍니다.
+            name: 'RoomCreate',
+            component: RoomCreate
+        },
+        {
+            path: '/quiz/register',  // 구분을 위한 sub path로 앞을 맞춰줍니다.
+            name: 'QuizRegister',
+            component: QuizRegister
+        }
+    ]
 });
 
 

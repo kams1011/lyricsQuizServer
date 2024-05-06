@@ -14,8 +14,8 @@ public class WebController {
      *
      * @return
      */
-    @RequestMapping(value = "/")
+    @RequestMapping(value = {"/", "/login/**", "/user/**", "/room/**", "/quiz/**"})
     public String viewMapping() {
         return "forward:/index.html";
-    }
+}
 }
