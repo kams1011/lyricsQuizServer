@@ -35,8 +35,8 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .anyRequest().permitAll();
+//        http.authorizeRequests()
+//                .anyRequest().permitAll();
         http.cors();
         http
 //                .authorizeRequests()
@@ -66,7 +66,7 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
-                .mvcMatchers("/favicon.io", "/js/*", "/css/*", "/docs/*")
+                .mvcMatchers("/favicon.io", "/js/**", "/css/**", "/docs/**", "/login/**", "/user/**", "/room/**", "/quiz/**")
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
