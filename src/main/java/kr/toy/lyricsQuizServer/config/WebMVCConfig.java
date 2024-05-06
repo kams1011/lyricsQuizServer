@@ -3,12 +3,17 @@ package kr.toy.lyricsQuizServer.config;
 import kr.toy.lyricsQuizServer.config.ConfigurationProperties.SecurityProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.resource.PathResourceResolver;
 
+import java.io.IOException;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -40,15 +45,20 @@ public class WebMVCConfig implements WebMvcConfigurer {
         resolvers.add(new JwtArgumentResolver(securityService, jwtUtils, securityProperties));
     }
 
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/login/**").setViewName("forward:/index.html");
-        registry.addViewController("/user/**").setViewName("forward:/index.html");
-        registry.addViewController("/room/**").setViewName("forward:/index.html");
-        registry.addViewController("/quiz/**").setViewName("forward:/index.html");
-        registry.addViewController("/").setViewName("forward:/index.html");
-    }
 
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/**/*")
+                .addResourceLocations("classpath:/static/")
+                .resourceChain(true)
+                .addResolver(new PathResourceResolver() {
+                    @Override
+                    protected Resource getResource(String resourcePath, Resource location) throws IOException {
+                        Resource requestedResource = location.createRelative(resourcePath);
+                        return requestedResource.exists() && requestedResource.isReadable() ? requestedResource : new ClassPathResource("/static/index.html");
+                    }
+                });
+    }
 
 //    @Override
 //    public void addInterceptors(InterceptorRegistry registry) {
