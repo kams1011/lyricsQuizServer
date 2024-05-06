@@ -40,6 +40,16 @@ public class WebMVCConfig implements WebMvcConfigurer {
         resolvers.add(new JwtArgumentResolver(securityService, jwtUtils, securityProperties));
     }
 
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/login/**").setViewName("forward:/index.html");
+        registry.addViewController("/user/**").setViewName("forward:/index.html");
+        registry.addViewController("/room/**").setViewName("forward:/index.html");
+        registry.addViewController("/quiz/**").setViewName("forward:/index.html");
+        registry.addViewController("/").setViewName("forward:/index.html");
+    }
+
+
 //    @Override
 //    public void addInterceptors(InterceptorRegistry registry) {
 //        registry.addInterceptor(new AuthenticationInterceptor(securityService, securityProperties, jwtUtils));
