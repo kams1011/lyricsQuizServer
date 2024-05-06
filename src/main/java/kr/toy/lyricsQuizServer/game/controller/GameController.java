@@ -65,7 +65,7 @@ public class GameController {
     }
 
     @PostMapping("/password")
-    public ResponseEntity<Response> checkPassword(@RequestBody GamePassword gamePassword){
+    public ResponseEntity<Response> checkGamePassword(@RequestBody GamePassword gamePassword){
         try {
             gameService.checkPassword(gamePassword);
         } catch (IllegalStateException | IllegalArgumentException e) {
@@ -77,7 +77,7 @@ public class GameController {
     }
 
     @GetMapping("/host")
-    public ResponseEntity<Response> isHost(@RequestParam Long roomId, User user) {
+    public ResponseEntity<Response> getUserIsHost(@RequestParam Long roomId, User user) {
         try {
             return ResponseEntity.ok().body(new Response(true, null, gameService.isHost(roomId, user), null));
         } catch (IllegalStateException | InvalidDataAccessApiUsageException e) {
@@ -110,7 +110,7 @@ public class GameController {
         }
     }
     @PatchMapping("/start")
-    public ResponseEntity<Response> start(@RequestParam Long roomId, User user){
+    public ResponseEntity<Response> gameStart(@RequestParam Long roomId, User user){
         StreamingInfo streamingInfo = null;
         try{
             gameService.start(roomId, user);
