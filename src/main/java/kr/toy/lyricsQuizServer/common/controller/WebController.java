@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * Web Mapping Controller
  */
 @Controller
-public class WebController  implements ErrorController {
+public class WebController {
 
     /**
      * Vue Project
@@ -21,14 +21,4 @@ public class WebController  implements ErrorController {
         return "forward:/index.html";
     }
 
-    private final String ERROR_PATH = "/error";
-
-    @GetMapping(ERROR_PATH)
-    public String redirectRoot(){
-        return "forward:/index.html";
-    }
-
-    public String getErrorPath(){
-        return null;
-    }
 }
