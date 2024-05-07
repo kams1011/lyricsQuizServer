@@ -18,6 +18,7 @@ public class WebController {
      */
     @RequestMapping(value = {"/", "/login/**", "/user/**", "/room/**", "/quiz/**"})
     public String viewMapping() {
+        System.out.println("여기 들어는 옴?");
         return "forward:/index.html";
     }
 
