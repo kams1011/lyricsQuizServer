@@ -139,6 +139,7 @@ public class OauthProperties {
 
     @NoArgsConstructor
     @AllArgsConstructor
+    @Getter
     public static class UserLoginInfoDTO{
 
         Long id;
