@@ -1,9 +1,7 @@
 package kr.toy.lyricsQuizServer.config.ConfigurationProperties;
 
 import kr.toy.lyricsQuizServer.user.domain.LoginType;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
@@ -120,8 +118,8 @@ public class OauthProperties {
         }
     }
 
-    @Getter
-    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class AccessTokenResponse{
 
         String access_token;
@@ -138,8 +136,8 @@ public class OauthProperties {
     }
 
 
-    @Getter
-    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class UserLoginInfoDTO{
 
         Long id;
