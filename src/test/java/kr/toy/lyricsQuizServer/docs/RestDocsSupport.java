@@ -58,6 +58,7 @@ public abstract class RestDocsSupport<T>{
 
     @MockBean
     protected JwtUtils jwtUtils;
+
     @Autowired
     protected ObjectMapper objectMapper;
 

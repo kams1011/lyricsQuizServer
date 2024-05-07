@@ -129,6 +129,8 @@ public class OauthProperties {
         String scope;
 
         String token_type;
+
+        String refresh_token;
     }
 
 
