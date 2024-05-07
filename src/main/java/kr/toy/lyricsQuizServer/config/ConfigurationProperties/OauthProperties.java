@@ -120,6 +120,7 @@ public class OauthProperties {
 
     @NoArgsConstructor
     @AllArgsConstructor
+    @Getter
     public static class AccessTokenResponse{
 
         String access_token;
