@@ -142,6 +142,8 @@ public class OauthProperties {
     @Setter
     public static class UserLoginInfoDTO{
 
+        Long id;
+
         String email; //GOOGLE
 
         String login; //GITHUB
