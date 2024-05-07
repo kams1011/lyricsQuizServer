@@ -28,7 +28,7 @@ export default {
       state = hashParams.get('state');
     }
 
-    axios.get('https://lyricsquizkaams.site/api/users/login?loginType=' + state + '&code=' + code,
+    axios.get('/api/users/login?loginType=' + state + '&code=' + code,
         { withCredentials : true})
         .then(function(res) {
           if(!res.data) {

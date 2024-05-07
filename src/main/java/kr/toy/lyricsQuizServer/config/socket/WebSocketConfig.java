@@ -34,6 +34,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
 //        registry.addEndpoint("/chat/message").setAllowedOrigins("https://localhost:8080").withSockJS();
         registry.addEndpoint("/ws-stomp").setAllowedOrigins("https://lyricsquizkaams.site:8080")
+                .setAllowedOrigins("https://lyricsquizkaams.site")
                 .addInterceptors(new SocketInterceptor()).withSockJS();
     }
 

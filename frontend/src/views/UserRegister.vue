@@ -60,7 +60,7 @@ export default {
         nickName: this.$refs['nickName'].value,
       };
 
-      axios.post('https://lyricsquizkaams.site/api/users/signup', jsonData,
+      axios.post('/api/users/signup', jsonData,
           { withCredentials : true
           }).then(response => {
             alert('회원가입에 성공했습니다.');

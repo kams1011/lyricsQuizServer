@@ -95,7 +95,7 @@ export default {
         password: this.$refs['password'].value,
         attendeeLimit: this.$refs['attendeeLimit'].value,
       };
-      axios.post('https://lyricsquizkaams.site/api/game', jsonData,
+      axios.post('/api/game', jsonData,
           { withCredentials : true
           }).then(response => {
         if(response.data.success){

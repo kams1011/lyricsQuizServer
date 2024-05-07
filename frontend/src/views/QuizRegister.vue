@@ -120,7 +120,7 @@ export default {
       const selectedFile = this.$refs.file.files[0];
       const formData = new FormData();
       formData.append('file', selectedFile);
-      axios.post('https://lyricsquizkaams.site/api/file', formData,
+      axios.post('/api/file', formData,
           { withCredentials : true
           }).then(response => {
             this.fileSeq = response.data.data.id;
@@ -184,7 +184,7 @@ export default {
           url: this.$refs['url'].value
         }
       };
-      axios.post('https://lyricsquizkaams.site/api/quiz', jsonData,
+      axios.post('/api/quiz', jsonData,
           { withCredentials : true
           }).then(response => {
             if(response.data.success){

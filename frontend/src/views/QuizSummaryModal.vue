@@ -54,7 +54,7 @@ export default {
     },
     getQuizList: function (currentPage) {
       currentPage = currentPage == undefined ? 0 : currentPage - 1;
-      axios.get('https://lyricsquizkaams.site/api/game/quiz?size=' + this.pageSize + '&page=' + currentPage + '&keyword=' + this.keyword,
+      axios.get('/api/game/quiz?size=' + this.pageSize + '&page=' + currentPage + '&keyword=' + this.keyword,
           { withCredentials : true
           }).then(response => {
         this.quizSummary = response.data.data.content;
