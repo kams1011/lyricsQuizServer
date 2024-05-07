@@ -100,9 +100,10 @@ axios.interceptors.response.use(
 // Vue 인스턴스에 Axios 설정
 
 
-const app = createApp(App);
+const app = createApp(App).provide('$URL', process.env.VUE_APP_URL);
 
 app.config.globalProperties.$http = axios;
+
 app.use(router);
 app.use(store); // Vuex 스토어 등록
 app.use(ElementPlus);

@@ -110,10 +110,14 @@ import axios from "axios";
 import * as SockJS from "sockjs-client";
 import * as Stomp from "webstomp-client";
 import Pagination from "@/components/Pagination";
+import { inject, ref } from 'vue'
 
 export default {
   name: "Lobby",
   components: {Pagination},
+  setup(){
+    const URL = inject('$URL')
+  },
   data() {
     return{
       password: '',
@@ -135,7 +139,7 @@ export default {
       this.getList(currentPage);
     },
     initInvitationInfo : function () {
-      axios.get('https://lyricsquizkaams.site/api/game/invitation',
+      axios.get('/api/game/invitation',
           { withCredentials : true
           }).then(response => {
             this.isAllowed = response.data.data;
@@ -144,7 +148,7 @@ export default {
       });
     },
     allowInvitation(){
-      axios.patch('https://lyricsquizkaams.site/api/game/invitation?isAllowed=' + !this.isAllowed, {},{ withCredentials : true})
+      axios.patch('/api/game/invitation?isAllowed=' + !this.isAllowed, {},{ withCredentials : true})
           .then(response => {
             this.isAllowed = !this.isAllowed;
             if (this.isAllowed) {
@@ -158,7 +162,7 @@ export default {
           });
     },
     inviteNotice(userSeq) {
-      const serverURL = "https://lyricsquizkaams.site/ws-stomp"
+      const serverURL = "/ws-stomp"
       let socket = new SockJS(serverURL);
       this.stompClient = Stomp.over(socket);
       this.stompClient.connect(
@@ -184,7 +188,7 @@ export default {
     getList: function (currentPage) {
       const keyword = '';
       currentPage = currentPage == undefined ? 0 : currentPage - 1;
-      axios.get('https://lyricsquizkaams.site/api/game?size=' + this.pageSize + '&page=' + currentPage + '&keyword=' + keyword,
+      axios.get('/api/game?size=' + this.pageSize + '&page=' + currentPage + '&keyword=' + keyword,
           { withCredentials : true
           }).then(response => {
         this.itemList = response.data.data.content;
@@ -202,7 +206,7 @@ export default {
       }
     },
     enter(roomSeq){
-      axios.patch('https://lyricsquizkaams.site/api/game/room?roomId=' + roomSeq +'&password=' + this.password, {},{ withCredentials : true}).then(response => {
+      axios.patch( '/api/game/room?roomId=' + roomSeq +'&password=' + this.password, {},{ withCredentials : true}).then(response => {
         this.$router.push({ path: `/room/${roomSeq}` });
       }).catch(error => {
         alert(error.response.data.message);
@@ -215,7 +219,7 @@ export default {
         password: this.password,
       };
       // 비밀번호 확인 로직 추가
-      axios.post('https://lyricsquizkaams.site/api/game/password', jsonData,
+      axios.post('/api/game/password', jsonData,
           { withCredentials : true
           }).then(response => {
         this.enter(this.roomId);
