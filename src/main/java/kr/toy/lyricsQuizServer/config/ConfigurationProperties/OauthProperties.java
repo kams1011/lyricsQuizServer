@@ -131,6 +131,10 @@ public class OauthProperties {
         String token_type;
 
         String refresh_token;
+
+        Integer expires_in;
+
+        Integer refresh_token_expires_in;
     }
 
 
