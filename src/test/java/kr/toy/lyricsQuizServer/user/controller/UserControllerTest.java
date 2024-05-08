@@ -51,7 +51,7 @@ public class UserControllerTest extends UserRestDocs {
                 .andDo(document(documentPath,
                         pathParameters(parameterWithName("id").description("유저 고유키")),
                         responseFields(
-                                this.responseCommon())
+                                this.commonResponse())
                                 .and(
                                         fieldWithPath("data.userSeq").type(JsonFieldType.NUMBER).description("유저 고유키"),
                                         fieldWithPath("data.email").type(JsonFieldType.STRING).description("유저 이메일").optional(),
@@ -88,7 +88,7 @@ public class UserControllerTest extends UserRestDocs {
                 .andDo(document(documentPath,
                         pathParameters(parameterWithName("email").description("유저 고유키")),
                         responseFields(
-                                this.responseCommon())
+                                this.commonResponse())
                                 .and(
                                         fieldWithPath("data.userSeq").type(JsonFieldType.NUMBER).description("유저 고유키"),
                                         fieldWithPath("data.email").type(JsonFieldType.STRING).description("유저 이메일").optional(),
@@ -140,7 +140,7 @@ public class UserControllerTest extends UserRestDocs {
                                 fieldWithPath("loginType").description("유저 로그인 정보").type(JsonFieldType.STRING)
                         ),
                         responseFields(
-                                this.responseCommon())
+                                this.commonResponse())
                                 .and(
                                         fieldWithPath("data.userSeq").type(JsonFieldType.NUMBER).description("유저 고유키"),
                                         fieldWithPath("data.email").type(JsonFieldType.STRING).description("유저 이메일").optional(),

@@ -1,11 +1,8 @@
 package kr.toy.lyricsQuizServer.docs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import kr.toy.lyricsQuizServer.config.ApiControllerAdvice;
+import kr.toy.lyricsQuizServer.config.*;
 import kr.toy.lyricsQuizServer.config.ConfigurationProperties.SecurityProperties;
-import kr.toy.lyricsQuizServer.config.JwtArgumentResolver;
-import kr.toy.lyricsQuizServer.config.JwtUtils;
-import kr.toy.lyricsQuizServer.config.SecurityService;
 import kr.toy.lyricsQuizServer.file.domain.File;
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
 import kr.toy.lyricsQuizServer.user.domain.User;
@@ -26,6 +23,7 @@ import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.mockmvc.RestDocumentationResultHandler;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.restdocs.payload.SubsectionDescriptor;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -116,13 +114,19 @@ public abstract class RestDocsSupport<T>{
                 .apply(documentationConfiguration(restDocumentation)).build();
     }
 
-    protected FieldDescriptor[] responseCommon(){
-        return new FieldDescriptor[] {
+    protected FieldDescriptor[] commonResponse(ResponseType... responseType){
+        boolean isBoolean = responseType.length > 0 && responseType[0].equals(ResponseType.BOOLEAN);
+
+        JsonFieldType dataType = isBoolean ? JsonFieldType.BOOLEAN : JsonFieldType.OBJECT;
+
+        FieldDescriptor[] descriptors = {
                 field("success", JsonFieldType.BOOLEAN, "성공여부"),
                 field("message", JsonFieldType.STRING, "메시지", optional),
-                subsectionWithPath("data").type(JsonFieldType.OBJECT).description("데이터가 없는 메서드도 있음.").optional(),
+                subsectionWithPath("data").type(dataType).description(isBoolean ? "참 거짓 여부" : "데이터가 없는 메서드도 있음.").optional(),
                 field("errorCode", JsonFieldType.STRING, "에러코드", optional)
         };
+
+        return descriptors;
     }
 
     protected FieldDescriptor field(String path, JsonFieldType type, String description, boolean... isOptional) {

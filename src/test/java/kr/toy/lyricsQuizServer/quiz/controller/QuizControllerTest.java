@@ -83,7 +83,7 @@ public class QuizControllerTest extends QuizRestDocs {
                                 fieldWithPath("quizContentCreate.fileSeq").description("파일로 업로드 했을 때 반환받은 파일 고유키").type(JsonFieldType.NUMBER).optional()
                         ),
                         responseFields(
-                                this.responseCommon())
+                                this.commonResponse())
                                 .and(
                                     fieldWithPath("data.isDeleted").type(JsonFieldType.BOOLEAN).description("삭제여부"),
                                     fieldWithPath("data.quizSeq").type(JsonFieldType.NUMBER).description("삭제여부").optional(),
@@ -128,7 +128,7 @@ public class QuizControllerTest extends QuizRestDocs {
                 .andDo(document(documentPath,
                         pathParameters(parameterWithName("quizSeq").description("퀴즈 고유키")),
                         responseFields(
-                                this.responseCommon()
+                                this.commonResponse()
                         )
                 )).andReturn();
     }
@@ -151,7 +151,7 @@ public class QuizControllerTest extends QuizRestDocs {
                 .andDo(document(documentPath,
                         pathParameters(parameterWithName("keyword").description("검색어").optional()),
                         responseFields(
-                                this.responseCommon()
+                                this.commonResponse()
                         )
                 )).andReturn();
 
@@ -173,7 +173,7 @@ public class QuizControllerTest extends QuizRestDocs {
                 .andDo(document(documentPath,
                         pathParameters(parameterWithName("quizSeq").description("퀴즈 고유키")),
                         responseFields(
-                                this.responseCommon()
+                                this.commonResponse()
                         )
                 )).andReturn();
 

@@ -22,37 +22,17 @@ public class Response {
         this.errorCode = errorCode;
     }
 
-    public static Response success(String message, Object data){
+    public static Response success(Object data, String... message){
+        String checkedMessage = message.length > 0 ? message[0] : null;
+
         Response response = Response.builder()
                 .success(true)
-                .message(message)
                 .data(data)
+                .message(checkedMessage)
                 .build();
 
         return response;
     }
-
-    public static Response success(String message){
-        Response response = Response.builder()
-                .success(true)
-                .message(message)
-                .data(null)
-                .build();
-
-        return response;
-    }
-
-    public static Response success(Object data){
-        Response response = Response.builder()
-                .success(true)
-                .message(null)
-                .data(data)
-                .build();
-
-        return response;
-    }
-
-
 
     public static Response fail(String message, Object data, ErrorCode errorCode){
         Response response = Response.builder()
@@ -60,6 +40,18 @@ public class Response {
                 .message(message)
                 .data(data)
                 .errorCode(errorCode)
+                .build();
+
+        return response;
+    }
+
+    public static Response returnBoolean(Object data, String... message){
+        String checkedMessage = message.length > 0 ? message[0] : null;
+
+        Response response = Response.builder()
+                .success(true)
+                .data(data)
+                .message(checkedMessage)
                 .build();
 
         return response;

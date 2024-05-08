@@ -31,12 +31,12 @@ public class UserController {
 
     @GetMapping("/{id}")
     public ResponseEntity getById(@PathVariable Long id){
-        return ResponseEntity.ok().body(Response.success(null, userService.getById(id)));
+        return ResponseEntity.ok().body(Response.success(userService.getById(id)));
     }
 
     @GetMapping("/email/{email}")
     public ResponseEntity getByEmail(@PathVariable String email){
-        return ResponseEntity.ok().body(Response.success(null, userService.getByEmail(email)));
+        return ResponseEntity.ok().body(Response.success(userService.getByEmail(email)));
     }
 
     @GetMapping("/login")
@@ -45,7 +45,7 @@ public class UserController {
         UserCreate userCreate = userService.loginHandler(response, loginType, code);
 
         if (userCreate == null) {
-            return ResponseEntity.status(HttpStatus.OK).body(Response.success("로그인에 성공했습니다.", null));
+            return ResponseEntity.status(HttpStatus.OK).body(Response.success(null,"로그인에 성공했습니다."));
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Response.fail("로그인에 실패했습니다.", userCreate, ErrorCode.USER_NOT_REGISTERED));
         }
@@ -55,7 +55,7 @@ public class UserController {
     public ResponseEntity register(HttpServletResponse response, @Valid @RequestBody UserCreate userCreate){
         User user = userService.signUp(response, userCreate);
 
-        return ResponseEntity.created(URI.create("/api/users/" + user.getUserSeq())).body(Response.success("회원가입에 성공했습니다.", user));
+        return ResponseEntity.created(URI.create("/api/users/" + user.getUserSeq())).body(Response.success(user,"회원가입에 성공했습니다."));
     }
 
 
