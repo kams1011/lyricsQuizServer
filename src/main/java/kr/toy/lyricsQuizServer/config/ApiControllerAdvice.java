@@ -44,16 +44,11 @@ public class ApiControllerAdvice {
 
     }
 
-
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
     public ResponseEntity<Response> handleFileValidationExceptions(HttpMediaTypeNotSupportedException e){
 
         return ResponseEntity.badRequest().body(Response.fail(e.getMessage(), null, null));
 
-    }
-
-    @ExceptionHandler(JwtInvalidException.class)
-    public void handleJwtInvalidException(JwtInvalidException e) {
     }
 
     @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class,

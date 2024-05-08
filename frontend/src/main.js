@@ -77,12 +77,12 @@ axios.interceptors.response.use(
         return response;
     },
     // 에러 응답 처리
-    error => {
+    async error => {
         if (error.response && error.response.status == 401) {
             alert('로그인이 필요합니다.');
-            router.push('/login');
+            await router.push('/login');
         } else if (error.response && error.response.status == 406) {
-            axios.request(error.config); // FIXME 04-11 렌더링 전에 작동하게 체크
+            await axios.request(error.config); // FIXME 04-11 렌더링 전에 작동하게 체크
         } else if (error.request) {
             // 요청은 보냈지만 응답이 없는 경우
             console.error("No response received:", error.request);
