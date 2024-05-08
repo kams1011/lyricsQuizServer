@@ -22,6 +22,7 @@ public class UserRestDocs extends RestDocsSupport<User> {
     protected UserRepository userRepository;
 
     protected final String apiUrl = "/api/users";
+
     @Autowired
     protected UserController userController;
 

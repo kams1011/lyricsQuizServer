@@ -1,13 +1,11 @@
 package kr.toy.lyricsQuizServer.docs.game;
 
 import kr.toy.lyricsQuizServer.docs.RestDocsSupport;
-import kr.toy.lyricsQuizServer.docs.quiz.QuizRestDocs;
 import kr.toy.lyricsQuizServer.game.controller.GameController;
 import kr.toy.lyricsQuizServer.game.controller.port.GameService;
 import kr.toy.lyricsQuizServer.game.domain.Game;
 import kr.toy.lyricsQuizServer.game.domain.GameStatus;
 import kr.toy.lyricsQuizServer.game.service.port.GameRepository;
-import kr.toy.lyricsQuizServer.quiz.controller.QuizController;
 import kr.toy.lyricsQuizServer.quiz.controller.port.QuizService;
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
 import kr.toy.lyricsQuizServer.quiz.domain.QuizContent;
@@ -26,20 +24,25 @@ import java.time.LocalTime;
 
 public class GameRestDocs extends RestDocsSupport<Game> {
 
+    @Autowired
+    protected GameController gameController;
+
     @MockBean
     protected GameService gameService;
 
     @MockBean
+    protected QuizService quizService;
+
+    @MockBean
     protected GameRepository gameRepository;
 
-    @Autowired
-    protected GameController gameController;
-
-    @Autowired
+    @MockBean
     protected UserRepository userRepository;
 
-    @Autowired
+    @MockBean
     protected QuizRepository quizRepository;
+
+
 
     protected final String apiUrl = "/api/game";
 
@@ -107,6 +110,7 @@ public class GameRestDocs extends RestDocsSupport<Game> {
 
 
         Game game = Game.builder()
+                .gameRoomSeq(getId())
                 .gameStatus(GameStatus.READY)
                 .isSecretRoom(false)
                 .isDeleted(false)

@@ -35,7 +35,6 @@ public class GameController {
 
     private final QuizService quizService;
 
-    private final SecurityService securityService;
     //트랜잭션 보장을 해야하는 서비스라면 따로 추출하기.
     //그렇지 않다면 각각 서비스를 injection하는 쪽으로 구현.
 

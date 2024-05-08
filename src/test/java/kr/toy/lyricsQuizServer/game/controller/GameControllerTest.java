@@ -1,12 +1,27 @@
 package kr.toy.lyricsQuizServer.game.controller;
 
 import kr.toy.lyricsQuizServer.docs.game.GameRestDocs;
+import kr.toy.lyricsQuizServer.game.domain.Game;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.MediaType;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
+import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.test.web.servlet.ResultActions;
 
-//@WebMvcTest(GameController.class)
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+@WebMvcTest(GameController.class)
 public class GameControllerTest extends GameRestDocs {
-
 
 //    @Test
 //    public void get_game_list_test(){
@@ -32,11 +47,41 @@ public class GameControllerTest extends GameRestDocs {
 //
 //    }
 //
-//    @Test
-//    public void get_user_is_host_test(){
-//
-//
-//    }
+    @Test
+    public void get_user_is_host_test() throws Exception {
+        Game game = initializeDummyData();
+
+
+        when(gameRepository.save(any(), any(), any())).thenReturn(game);
+
+
+        ResultActions perform = this.mockMvc
+                .perform(RestDocumentationRequestBuilders
+                        .get(apiUrl+"/host?roomId=" + game.getGameRoomSeq())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                );
+
+        perform.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document(documentPath,
+                        pathParameters(parameterWithName("email").description("유저 고유키")),
+                        responseFields(
+                                this.responseCommon())
+                                .and(
+                                        field("data.userSeq", JsonFieldType.NUMBER, "유저 고유키"),
+                                        field("data.email", JsonFieldType.STRING, "유저 이메일", optional),
+                                        field("data.nickName", JsonFieldType.STRING, "유저 닉네임"),
+                                        field("data.lastLoginAt", JsonFieldType.STRING, "마지막 접속시간"),
+                                        field("data.isBan", JsonFieldType.BOOLEAN, "밴 여부"),
+                                        field("data.isDeleted", JsonFieldType.BOOLEAN, "삭제여부"),
+                                        field("data.loginType", JsonFieldType.STRING, "로그인 타입"),
+                                        field("data.role", JsonFieldType.STRING, "권한"),
+                                        field("data.createdAt", JsonFieldType.STRING, "유저 가입 시각"),
+                                        field("data.updatedAt", JsonFieldType.STRING, "유저 정보 수정 시각", optional)
+                                )
+                )).andReturn();
+    }
 //
 //    @Test
 //    public void enter_test(){

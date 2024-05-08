@@ -6,9 +6,11 @@ import kr.toy.lyricsQuizServer.config.ConfigurationProperties.SecurityProperties
 import kr.toy.lyricsQuizServer.config.JwtArgumentResolver;
 import kr.toy.lyricsQuizServer.config.JwtUtils;
 import kr.toy.lyricsQuizServer.config.SecurityService;
+import kr.toy.lyricsQuizServer.file.domain.File;
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.service.port.AuthServerAPI;
+import lombok.Builder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -76,6 +78,9 @@ public abstract class RestDocsSupport<T>{
     protected Long getId(){
         return id.incrementAndGet();
     }
+
+    protected boolean optional = true;
+
     protected PageImpl<T> getPageImpl(List<T> list){
         PageImpl<T> pageImpl = new PageImpl(list);
         return pageImpl;
@@ -113,11 +118,19 @@ public abstract class RestDocsSupport<T>{
 
     protected FieldDescriptor[] responseCommon(){
         return new FieldDescriptor[] {
-                fieldWithPath("success").type(JsonFieldType.BOOLEAN).description("성공여부"),
-                fieldWithPath("message").type(JsonFieldType.STRING).description("메시지").optional(),
+                field("success", JsonFieldType.BOOLEAN, "성공여부"),
+                field("message", JsonFieldType.STRING, "메시지", optional),
                 subsectionWithPath("data").type(JsonFieldType.OBJECT).description("데이터가 없는 메서드도 있음.").optional(),
-                fieldWithPath("errorCode").type(JsonFieldType.STRING).description("에러코드").optional()
+                field("errorCode", JsonFieldType.STRING, "에러코드", optional)
         };
+    }
+
+    protected FieldDescriptor field(String path, JsonFieldType type, String description, boolean... isOptional) {
+        FieldDescriptor descriptor = fieldWithPath(path).type(type).description(description);
+        if (isOptional.length > 0 && isOptional[0]) {
+            descriptor = descriptor.optional();
+        }
+        return descriptor;
     }
 
 }
