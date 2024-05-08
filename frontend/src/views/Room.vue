@@ -145,9 +145,10 @@ export default {
           { withCredentials : true
           }).then(response => {
         this.isHost = response.data.data;
-      }).catch(error => {
-        console.error(error);
-      });
+      })
+      //     .catch(error => {
+      //   console.error(error);
+      // });
     },
     buttonClicked() {
       if (this.isHost) {
