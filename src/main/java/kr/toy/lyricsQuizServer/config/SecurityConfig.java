@@ -36,8 +36,6 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http.authorizeRequests()
-//                .anyRequest().permitAll();
         http.cors();
         http
 //                .authorizeRequests()
@@ -48,8 +46,7 @@ public class SecurityConfig {
                 .formLogin().disable()
                 .httpBasic().disable()
                 .addFilterBefore(new JwtAuthenticationFilter(securityProperties, authenticationManager(), securityService, jwtUtils ), UsernamePasswordAuthenticationFilter.class);
-        //FIXME addFilterBefore로 바꾼 부분 정상작동되는지 확인
-        return http.build(); 
+        return http.build();
     }
 
     @Bean

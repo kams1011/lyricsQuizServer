@@ -45,10 +45,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         chain.doFilter(request, response);
     }
 
-
-    //Filter로 들어온 요청 중, 소켓통신관련한 요청이면 해당 JWT를 Redis에 저장해서 관리한다.
-    //해당 Jwt가 동일한 요청인지 여부는 어떻게 판단함?
-
     public String refreshTokenCheck(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String refreshToken = "";
         try {

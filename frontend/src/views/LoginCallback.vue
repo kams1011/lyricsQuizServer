@@ -17,7 +17,6 @@ export default {
     },
   },
   created() {
-    console.log("들어 오나요?")
     const redirect = this.redirect;
     let state = this.$route.query.state;
     let code = this.$route.query.code;
