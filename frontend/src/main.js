@@ -82,7 +82,7 @@ axios.interceptors.response.use(
             alert('로그인이 필요합니다.');
             router.push('/login');
         } else if (error.response && error.response.status == 406) {
-
+            alert('혹시여기임?');
             alert(error.response.data.message);
             axios.request(error.config); // FIXME 04-11 렌더링 전에 작동하게 체크
         } else if (error.request) {
