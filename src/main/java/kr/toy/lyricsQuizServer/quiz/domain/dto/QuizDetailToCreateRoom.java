@@ -50,8 +50,8 @@ public class QuizDetailToCreateRoom {
                 .beforeLyrics(quiz.getBeforeLyrics())
                 .afterLyrics(quiz.getAfterLyrics())
                 .answer(quiz.getAnswer())
-                .startTime(quiz.getStartTime())
-                .endTime(quiz.getEndTime())
+                .startTime(quiz.getPlayTime().getStartTime())
+                .endTime(quiz.getPlayTime().getEndTime())
                 .build();
         return quizToCreateRoom;
     }

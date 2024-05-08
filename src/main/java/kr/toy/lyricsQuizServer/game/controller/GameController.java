@@ -1,10 +1,7 @@
 package kr.toy.lyricsQuizServer.game.controller;
 
 import kr.toy.lyricsQuizServer.common.domain.Response;
-import kr.toy.lyricsQuizServer.config.SecurityService;
 import kr.toy.lyricsQuizServer.game.controller.port.GameService;
-import kr.toy.lyricsQuizServer.game.controller.response.GameRoom;
-import kr.toy.lyricsQuizServer.game.domain.Game;
 import kr.toy.lyricsQuizServer.game.domain.dto.GameCreate;
 import kr.toy.lyricsQuizServer.game.domain.dto.GamePassword;
 import kr.toy.lyricsQuizServer.quiz.controller.port.QuizService;

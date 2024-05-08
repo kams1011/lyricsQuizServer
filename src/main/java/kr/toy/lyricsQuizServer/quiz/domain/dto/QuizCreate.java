@@ -45,7 +45,6 @@ public class QuizCreate {
     @Builder
     @JsonCreator
     public QuizCreate(@JsonProperty("title") String title,
-//                      Boolean isDeleted,
                       @JsonProperty("singer") String singer,
                       @JsonProperty("information") String information,
                       @JsonProperty("startTime") LocalTime startTime,
@@ -55,7 +54,6 @@ public class QuizCreate {
                       @JsonProperty("answer") String answer,
                       @JsonProperty("quizContentCreate") QuizContentCreate quizContentCreate){
         this.title = title;
-//        this.isDeleted = isDeleted;
         this.singer = singer;
         this.information = information;
         this.startTime = startTime;

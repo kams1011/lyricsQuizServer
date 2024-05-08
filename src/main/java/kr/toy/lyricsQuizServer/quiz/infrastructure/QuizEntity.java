@@ -79,8 +79,9 @@ public class QuizEntity {
                 .title(title)
                 .singer(singer)
                 .information(information)
-                .startTime(startTime)
-                .endTime(endTime)
+                .playTime(new Quiz.PlayTime(startTime, endTime))
+//                .startTime(startTime)
+//                .endTime(endTime)
                 .beforeLyrics(beforeLyrics)
                 .afterLyrics(afterLyrics)
                 .answer(answer)
@@ -93,14 +94,15 @@ public class QuizEntity {
 
 
     public static QuizEntity fromModel(Quiz quiz){
+
         return QuizEntity.builder()
                 .quizSeq(quiz.getQuizSeq())
                 .isDeleted(quiz.getIsDeleted())
                 .title(quiz.getTitle())
                 .singer(quiz.getSinger())
                 .information(quiz.getInformation())
-                .startTime(quiz.getStartTime())
-                .endTime(quiz.getEndTime())
+                .startTime(quiz.getPlayTime().getStartTime())
+                .endTime(quiz.getPlayTime().getEndTime())
                 .beforeLyrics(quiz.getBeforeLyrics())
                 .afterLyrics(quiz.getAfterLyrics())
                 .answer(quiz.getAnswer())

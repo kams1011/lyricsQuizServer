@@ -32,8 +32,8 @@ public class StreamingInfo {
         return StreamingInfo.builder()
                 .url(quizContent.getStreamingURL())
                 .quizContentType(quizContent.getQuizContentType())
-                .startTime(quiz.getStartTime())
-                .endTime(quiz.getEndTime())
+                .startTime(quiz.getPlayTime().getStartTime())
+                .endTime(quiz.getPlayTime().getEndTime())
                 .build();
     }
 }
