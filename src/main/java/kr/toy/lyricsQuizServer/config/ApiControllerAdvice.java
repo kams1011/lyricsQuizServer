@@ -53,8 +53,7 @@ public class ApiControllerAdvice {
     }
 
     @ExceptionHandler(JwtInvalidException.class)
-    public ResponseEntity<Response> handleJwtInvalidException(JwtInvalidException e) {
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Response.fail("JWT token is invalid or expired", null, null));
+    public void handleJwtInvalidException(JwtInvalidException e) {
     }
 
     @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class,
