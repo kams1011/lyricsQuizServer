@@ -77,14 +77,13 @@ axios.interceptors.response.use(
         return response;
     },
     // 에러 응답 처리
-    async error => {
+    error => {
         if (error.response && error.response.status == 401) {
             alert('로그인이 필요합니다.');
-            await router.push('/login');
+            router.push('/login');
         } else if (error.response && error.response.status == 406) {
-            console.log('재시도');
-            console.log(error.config);
-            await axios.request(error.config); // FIXME 04-11 렌더링 전에 작동하게 체크
+            return retryRequest(error);
+            // axios.request(error.config); // FIXME 04-11 렌더링 전에 작동하게 체크
         } else if (error.request) {
             // 요청은 보냈지만 응답이 없는 경우
             console.error("No response received:", error.request);
@@ -96,6 +95,27 @@ axios.interceptors.response.use(
         return Promise.reject(error);
     }
 );
+
+function retryRequest(error) {
+    // 기존 요청을 저장
+    const originalRequest = error.config;
+
+    // 새 Promise 반환
+    return new Promise((resolve, reject) => {
+        // 다시 요청
+        axios.request(originalRequest)
+            .then(response => {
+                // 요청이 성공한 경우
+                // 여기서 추가적인 동작을 수행할 수 있음
+                resolve(response);
+            })
+            .catch(err => {
+                // 다시 요청한 후에도 실패한 경우
+                // 에러 처리 로직을 추가할 수 있음
+                reject(err);
+            });
+    });
+}
 
 // Vue 인스턴스에 Axios 설정
 

@@ -119,9 +119,6 @@ public class Quiz {
         }
 
         private void validatePlayTimeGap(LocalTime startTime, LocalTime endTime){
-            System.out.println("STARTTIEM : " + startTime);
-            System.out.println("STARTTIEM : " + endTime);
-            System.out.println("STARTTIEM : " + Duration.between(startTime, endTime).getSeconds());
             if (Duration.between(startTime, endTime).getSeconds() > PLAY_TIME_GAP_MAX) {
                 throw new IllegalArgumentException("시작 시간과 끝 시간의 차이는 30초를 넘을 수 없습니다.");
             }
