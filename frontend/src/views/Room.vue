@@ -209,7 +209,7 @@ export default {
         }
     },
     connect() {
-        const serverURL = "/ws-stomp"
+        const serverURL = "/api/ws-stomp"
         let socket = new SockJS(serverURL);
         this.stompClient = Stomp.over(socket);
         this.stompClient.connect(
