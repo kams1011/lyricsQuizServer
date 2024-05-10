@@ -103,7 +103,8 @@ public class OauthProperties {
 
         String redirect_uri;
 
-        String grant_type;
+        final String grant_type = "authorization_code";
+
 
         public static AccessTokenRequest from(Element element, String code){
             AccessTokenRequest accessTokenRequest = AccessTokenRequest.builder()
@@ -111,7 +112,6 @@ public class OauthProperties {
                     .client_secret(element.client_secret)
                     .redirect_uri("https://lyricsquizkaams.site/login/callback") //FIXME 환경변수로 관리
                     .code(code)
-                    .grant_type("authorization_code")
                     .build();
 
             return accessTokenRequest;
