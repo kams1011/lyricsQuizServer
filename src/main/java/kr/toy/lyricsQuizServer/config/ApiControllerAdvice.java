@@ -1,5 +1,6 @@
 package kr.toy.lyricsQuizServer.config;
 
+import kr.toy.lyricsQuizServer.common.domain.ErrorCode;
 import kr.toy.lyricsQuizServer.common.domain.Response;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -49,6 +50,11 @@ public class ApiControllerAdvice {
 
         return ResponseEntity.badRequest().body(Response.fail(e.getMessage(), null, null));
 
+    }
+
+    @ExceptionHandler(JwtInvalidException.class)
+    public ResponseEntity<Response> handleJwtInvalidException(JwtInvalidException e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Response.fail("JWT가 만료됐습니다.", null, ErrorCode.JWT_EXPIRED));
     }
 
     @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class,

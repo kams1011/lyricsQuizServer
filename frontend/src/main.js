@@ -78,12 +78,13 @@ axios.interceptors.response.use(
     },
     // 에러 응답 처리
     error => {
+        console.log("ERROR::")
+        console.log(error)
         if (error.response && error.response.status == 401) {
             alert('로그인이 필요합니다.');
             router.push('/login');
-        } else if (error.response && error.response.status == 406) {
+        } else if (error.response && error.response.status == 406 && error.response.data.errorCode.code =='AUTH-001') {
             return retryRequest(error);
-            // axios.request(error.config); // FIXME 04-11 렌더링 전에 작동하게 체크
         } else if (error.request) {
             // 요청은 보냈지만 응답이 없는 경우
             console.error("No response received:", error.request);
@@ -120,7 +121,7 @@ function retryRequest(error) {
 // Vue 인스턴스에 Axios 설정
 
 
-const app = createApp(App).provide('$URL', process.env.VUE_APP_URL);
+const app = createApp(App).provide('$SERVER_URL', process.env.VUE_APP_SERVER_URL);
 
 app.config.globalProperties.$http = axios;
 

@@ -13,7 +13,9 @@ public enum ErrorCode {
     ROOM_ALREADY_START(HttpStatus.CONFLICT, "ROOM-003", "이미 시작된 방입니다."),
     ROOM_LOCK(HttpStatus.LOCKED, "ROOM-004", "비밀 방입니다."),
     USER_NOT_REGISTERED(HttpStatus.NO_CONTENT, "USER-001", "가입되지 않은 유저입니다."),
-    COOKIE_NOT_FOUND(HttpStatus.NOT_FOUND, "AUTH-001", "로그인 쿠키 정보가 없습니다.");
+    USER_ALREADY_JOINED(HttpStatus.NOT_ACCEPTABLE, "USER-002", "이미 게임에 참여한 유저입니다."),
+    COOKIE_NOT_FOUND(HttpStatus.NOT_FOUND, "AUTH-001", "로그인 쿠키 정보가 없습니다."),
+    JWT_EXPIRED(HttpStatus.UNAUTHORIZED, "AUTH-001", "로그인 쿠키 정보가 없습니다.");
 
     private final HttpStatus httpStatus;	// HttpStatus
     private final String code;				// 임의 코드
