@@ -225,7 +225,8 @@ public class GameServiceImpl implements GameService {
         if (gameRoom.isEntered(userInfo)) {
             throw new IllegalStateException("이미 입장한 방입니다.");
         } else if (userInfo.inGame()) {
-            throw new IllegalStateException("다른 방에 입장한 유저입니다.");
+            //FIXME 임시로 비활성화
+//            throw new IllegalStateException("다른 방에 입장한 유저입니다.");
         }
         //FIXME 방장이 존재하지 않으면 방을 종료하는 로직.
         //FIXME 모든 인원이 준비를 마쳤는데 1분 내에 게임을 실행하지 않으면 방을 종료하는 로직.
