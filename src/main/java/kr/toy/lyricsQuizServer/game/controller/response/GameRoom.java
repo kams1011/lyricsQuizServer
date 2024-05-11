@@ -110,10 +110,12 @@ public class GameRoom implements Serializable {
             return false;
         }
     }
-    public void isUserPresent(UserInfo user){
+    public boolean isUserPresent(UserInfo user){
         if (!this.userList.contains(user)) {
-            throw new NoSuchElementException("유저가 존재하지 않습니다.");
+            return false;
         }
+
+        return true;
     }
 
     public void isHostPresent(UserInfo host){
@@ -158,8 +160,9 @@ public class GameRoom implements Serializable {
     }
 
     public void streamingComplete(Long userSeq){
-        isUserPresent(findUser(userSeq));
-
+        if (!isUserPresent(findUser(userSeq))) {
+            throw new NoSuchElementException("유저가 존재하지 않습니다.");
+        }
         if (!isGameStart()) {
             throw new IllegalStateException("게임이 시작되지 않았습니다.");
         }

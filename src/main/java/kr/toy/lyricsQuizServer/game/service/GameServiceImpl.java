@@ -26,6 +26,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -88,7 +89,9 @@ public class GameServiceImpl implements GameService {
     public void ready(Long gameRoomSeq, User user) {
         GameRoom gameRoom = getGameRoom(gameRoomSeq);
         UserInfo userInfo = findUserInfo(user);
-        gameRoom.isUserPresent(userInfo);
+        if (!gameRoom.isUserPresent(userInfo)) {
+            throw new NoSuchElementException("유저가 존재하지 않습니다.");
+        }
         gameRoom.ready(userInfo);
         saveGameInRedis(gameRoom);
     }

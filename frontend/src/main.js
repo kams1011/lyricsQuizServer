@@ -80,12 +80,10 @@ axios.interceptors.response.use(
     error => {
         console.log('errorCODE print')
         console.log(error.response.data);
-        console.log(error.response.data.errorCode);
-        console.log(error.response.data.errorCode.code);
         if (error.response && error.response.status == 401) {
             alert('로그인이 필요합니다.');
             router.push('/login');
-        } else if (error.response && error.response.status == 406 && error.response.data.errorCode == 'JWT_EXPIRED') {
+        } else if (error.response && error.response.status == 406 && error.response.data.errorCode.code == 'AUTH-001') {
             return retryRequest(error);
         } else if (error.request) {
             // 요청은 보냈지만 응답이 없는 경우
