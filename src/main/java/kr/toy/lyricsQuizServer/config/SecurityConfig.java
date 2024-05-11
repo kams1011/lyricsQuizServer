@@ -60,8 +60,6 @@ public class SecurityConfig {
         return authentication -> jwtAuthenticationProvider.authenticate(authentication);
     }
 
-
-
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()

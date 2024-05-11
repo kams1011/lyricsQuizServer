@@ -3,6 +3,7 @@ package kr.toy.lyricsQuizServer.chat.service;
 import kr.toy.lyricsQuizServer.chat.controller.dto.ChatMessage;
 import kr.toy.lyricsQuizServer.chat.controller.port.ChatService;
 import kr.toy.lyricsQuizServer.chat.domain.MessageType;
+import kr.toy.lyricsQuizServer.game.controller.response.GameRoom;
 import kr.toy.lyricsQuizServer.memory.Redis.RedisCategory;
 import kr.toy.lyricsQuizServer.memory.Redis.RedisUtil;
 import kr.toy.lyricsQuizServer.user.domain.dto.UserInfo;
@@ -23,7 +24,13 @@ public class ChatServiceImpl implements ChatService {
     public void sendMessage(ChatMessage message, UserInfo user) {
         String nickName = user.getNickName();
         message.setSender(nickName);
-        if (message.getType().equals(MessageType.ENTER)) {
+        GameRoom gameRoom = redisUtil.getGameRoomFromRedis(Long.parseLong(message.getRoomId()));
+
+        System.out.println("check하는부분");
+        System.out.println(gameRoom.getUserList().size());
+        System.out.println(gameRoom.isUserPresent(user));
+
+        if (message.getType().equals(MessageType.ENTER) && !gameRoom.isUserPresent(user)) {
             message = message.join(nickName);
         }
         redisUtil.publish(RedisCategory.GAME_ROOM, message);

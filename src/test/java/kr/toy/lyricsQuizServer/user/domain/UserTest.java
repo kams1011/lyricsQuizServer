@@ -28,7 +28,6 @@
 //public class UserTest {
 //
 //
-//    //FIXME : 데이터를 넣어주는 반복 코드 제거하기.
 //
 //    @Autowired
 //    OauthProperties oauthProperties;
