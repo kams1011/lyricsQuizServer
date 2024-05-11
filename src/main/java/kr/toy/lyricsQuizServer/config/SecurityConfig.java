@@ -65,9 +65,7 @@ public class SecurityConfig {
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
         return (web) -> web.ignoring()
-                .mvcMatchers("/favicon.io", "/js/*", "/css/*", "/docs/*", "/node_modules/**", "/"
-//                        "/login/**", "/user/**", "/room/**", "/quiz/**"
-                )
+                .mvcMatchers("/favicon.io", "/js/*", "/css/*", "/docs/*", "/node_modules/**", "/", "/login/**")
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations());
     }
 
