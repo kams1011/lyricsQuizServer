@@ -1,10 +1,10 @@
 <template>
   <div class="login-box">
     <h2>Social Login Button</h2>
-    <a href="#" class="social-button" id="kakao-connect" v-on:click="goToOauthServer('KAKAO', KAKAO_URL, KAKAO_CLIENT_KEY, KAKAO_RESPONSE_TYPE)"> <span>카카오 로그인</span></a>
-    <a href="#" class="social-button" id="naver-connect" v-on:click="goToOauthServer('NAVER', NAVER_URL, NAVER_CLIENT_KEY, NAVER_RESPONSE_TYPE)"> <span>네이버 로그인</span></a>
-    <a href="#" class="social-button" id="google-connect" v-on:click="goToOauthServer('GOOGLE', GOOGLE_URL, GOOGLE_CLIENT_KEY, GOOGLE_RESPONSE_TYPE)"> <span>Connect with Google</span></a>
-    <a href="#" class="social-button" id="github-connect" v-on:click="goToOauthServer('GITHUB', GITHUB_URL, GITHUB_CLIENT_KEY, GITHUB_RESPONSE_TYPE)"> <span>Connect with GitHub</span></a>
+    <a href="#" class="social-button" id="kakao-connect" v-on:click="goToOauthServer('KAKAO', KAKAO_URL, KAKAO_CLIENT_KEY, KAKAO_RESPONSE_TYPE)"><img src="../assets/logo/kakao.png"></a>
+    <a href="#" class="social-button" id="naver-connect" v-on:click="goToOauthServer('NAVER', NAVER_URL, NAVER_CLIENT_KEY, NAVER_RESPONSE_TYPE)"><img src="../assets/logo/naver.png"></a>
+    <a href="#" class="social-button" id="google-connect" v-on:click="goToOauthServer('GOOGLE', GOOGLE_URL, GOOGLE_CLIENT_KEY, GOOGLE_RESPONSE_TYPE)"><img src="../assets/logo/google.png"></a>
+    <a href="#" class="social-button" id="github-connect" v-on:click="goToOauthServer('GITHUB', GITHUB_URL, GITHUB_CLIENT_KEY, GITHUB_RESPONSE_TYPE)"><img src="../assets/logo/github.png"></a>
   </div>
 </template>
 
