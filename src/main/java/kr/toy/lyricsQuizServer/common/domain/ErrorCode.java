@@ -1,9 +1,12 @@
 package kr.toy.lyricsQuizServer.common.domain;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
@@ -20,5 +23,6 @@ public enum ErrorCode {
     private final HttpStatus httpStatus;	// HttpStatus
     private final String code;				// 임의 코드
     private final String message;			// 설명
+
 
 }

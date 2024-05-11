@@ -1,5 +1,8 @@
 package kr.toy.lyricsQuizServer.user.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import kr.toy.lyricsQuizServer.common.domain.ErrorCode;
 import kr.toy.lyricsQuizServer.docs.user.UserRestDocs;
 import kr.toy.lyricsQuizServer.user.domain.LoginType;
 import kr.toy.lyricsQuizServer.user.domain.User;
@@ -31,6 +34,13 @@ public class UserControllerTest extends UserRestDocs {
 
     @Mock
     HttpServletResponse response;
+
+    @Test
+    public void tmep() throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        System.out.println(ErrorCode.JWT_EXPIRED);
+        System.out.println(objectMapper.writeValueAsString(ErrorCode.JWT_EXPIRED));
+    }
 
     @Test
     void getById_test() throws Exception {
