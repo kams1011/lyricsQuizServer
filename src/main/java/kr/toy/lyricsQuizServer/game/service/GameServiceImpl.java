@@ -219,8 +219,11 @@ public class GameServiceImpl implements GameService {
         if (gameRoom == null) {
             throw new IllegalStateException("존재하지 않는 방입니다.");
         }
-        if (!gameRoom.isRoomOpen(password)) {
+        if (!gameRoom.passwordCheck(password)) {
             throw new IllegalArgumentException("비밀번호가 맞지 않습니다.");
+        }
+        if (!gameRoom.isWithinCapacity()) {
+            throw new IllegalArgumentException("입장 가능인원을 초과했습니다.");
         }
         if (gameRoom.isEntered(userInfo)) {
             throw new IllegalStateException("이미 입장한 방입니다.");

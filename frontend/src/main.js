@@ -78,20 +78,21 @@ axios.interceptors.response.use(
     },
     // 에러 응답 처리
     error => {
-        console.log("ERROR::")
-        console.log(error)
+        console.log('errorCODE print')
+        console.log(error.response.data);
+        console.log(error.response.data.errorCode);
+        console.log(error.response.data.errorCode.code);
         if (error.response && error.response.status == 401) {
             alert('로그인이 필요합니다.');
             router.push('/login');
-        } else if (error.response && error.response.status == 406 && error.response.data.errorCode.code =='AUTH-001') {
+        } else if (error.response && error.response.status == 406 && error.response.data.errorCode.code == 'AUTH-001') {
             return retryRequest(error);
         } else if (error.request) {
             // 요청은 보냈지만 응답이 없는 경우
             console.error("No response received:", error.request);
-        } else {
-            // 요청을 보내기 전에 에러가 발생한 경우
-            console.error("Error during request setup:", error.message);
         }
+        console.error("Error :: ", error.message);
+        alert(error.message);
         // Promise를 사용하여 에러 전파
         return Promise.reject(error);
     }

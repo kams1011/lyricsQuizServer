@@ -75,7 +75,7 @@ public class GameRoom implements Serializable {
                 .build();
     }
 
-    public Boolean isCapacityExceeded(){
+    public Boolean isWithinCapacity(){
         return this.attendeeLimit <= this.userList.size();
     }
 
@@ -93,8 +93,8 @@ public class GameRoom implements Serializable {
         }
     }
 
-    public Boolean isRoomOpen(String password){ // FIXME 변수명 변경
-        if (!isCapacityExceeded() && passwordCheck(password) && isReady()) {
+    public Boolean isRoomOpen(){ // FIXME 변수명 변경
+        if (!isCapacityExceeded() && isReady()) {
             return true;
         } else {
             return false;
