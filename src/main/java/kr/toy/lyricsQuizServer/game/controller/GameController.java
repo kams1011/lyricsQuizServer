@@ -145,7 +145,6 @@ public class GameController {
     @PostMapping("/answer/{roomId}")
     public ResponseEntity<Response> checkAnswer(@PathVariable Long roomId,
                                           @RequestBody Map<String, String> answer){
-        System.out.println("통신두번함?");
         return ResponseEntity.ok()
                 .body(Response.success(gameService.checkAnswer(roomId, answer.get("answer"))));
     }

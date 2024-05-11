@@ -93,14 +93,6 @@ public class GameRoom implements Serializable {
         }
     }
 
-    public Boolean isRoomOpen(){ // FIXME 변수명 변경
-        if (!isCapacityExceeded() && isReady()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     public static List<UserInfo> userInfoListInitFrom(Game game){
         List<UserInfo> userInfoList = new ArrayList<>(game.getAttendeeLimit());
         userInfoList.add(UserInfo.from(game.getHost(), game.getGameRoomSeq(), null));

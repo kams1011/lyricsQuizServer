@@ -225,6 +225,9 @@ public class GameServiceImpl implements GameService {
         if (!gameRoom.isWithinCapacity()) {
             throw new IllegalArgumentException("입장 가능인원을 초과했습니다.");
         }
+        if (!gameRoom.isReady()) {
+            throw new IllegalArgumentException("이미 시작한 방입니다.");
+        }
         if (gameRoom.isEntered(userInfo)) {
             throw new IllegalStateException("이미 입장한 방입니다.");
         } else if (userInfo.inGame()) {
