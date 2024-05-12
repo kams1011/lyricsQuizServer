@@ -2,14 +2,21 @@ package kr.toy.lyricsQuizServer.game.controller;
 
 import kr.toy.lyricsQuizServer.config.ResponseType;
 import kr.toy.lyricsQuizServer.docs.game.GameRestDocs;
+import kr.toy.lyricsQuizServer.game.controller.response.GameRoom;
 import kr.toy.lyricsQuizServer.game.domain.Game;
+import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
@@ -24,14 +31,40 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(GameController.class)
 public class GameControllerTest extends GameRestDocs {
 
+    @Test
+    public void get_game_list_test() throws Exception {
+        List<Game> gameList = initializeDummyDataList();
+
+        PageImpl<Game> responsePages = getPageImpl(gameList);
+
+        List<GameRoom> gameRoomList = responsePages.stream().map(data -> GameRoom.from(data))
+                .collect(Collectors.toList());
+
+        when(gameService.getGameList(any())).thenReturn(responsePages);
+
+        ResultActions perform = this.mockMvc
+                .perform(RestDocumentationRequestBuilders
+                        .get(apiUrl)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                );
+
+        perform.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document(documentPath,
+                        pathParameters(parameterWithName("keyword").description("검색어").optional()),
+                        responseFields(
+                                this.commonResponse()
+                        ).and(
+
+                        )
+                )).andReturn();
+
+
+    }
+
 //    @Test
-//    public void get_game_list_test(){
-//        initializeDummyDataList();
-//
-//    }
-//
-//    @Test
-//    public void get_quiz_summary_list_test(){
+//    public void get_quiz_summary_list_test() throws Exception {
 //
 //
 //    }

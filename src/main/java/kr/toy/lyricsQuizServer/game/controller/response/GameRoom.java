@@ -128,10 +128,11 @@ public class GameRoom implements Serializable {
         }
     }
 
-    public void isEveryoneReady(UserInfo host){
+    public boolean isEveryoneReady(UserInfo host){
         if (getUserList().stream().filter(user -> !user.isReady() && !isHost(host)).findAny().isPresent()) {
-            throw new IllegalStateException("준비완료 되지 않은 참여자가 있습니다.");
+            return false;
         }
+        return true;
     }
 
     public void ready(UserInfo user) {

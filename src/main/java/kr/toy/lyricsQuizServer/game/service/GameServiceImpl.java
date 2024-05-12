@@ -36,7 +36,6 @@ public class GameServiceImpl implements GameService {
 
     private final GameRepository gameRepository;
     private final QuizRepository quizRepository;
-    private final QuizContentRepository quizContentRepository;
     private final RedisUtil redisUtil;
 
 
@@ -102,7 +101,9 @@ public class GameServiceImpl implements GameService {
         UserInfo hostInfo = findUserInfo(host);
         Game game = gameRepository.findById(gameRoom.getGameRoomSeq());
         game.start(LocalDateTime.now());
-        gameRoom.isEveryoneReady(hostInfo); // 방장 이외의 인원이 전부 준비완료 상태인가.
+        if (!gameRoom.isEveryoneReady(hostInfo)) {
+            throw new IllegalStateException("준비완료 되지 않은 참여자가 있습니다."); // 방장 이외의 인원이 전부 준비완료 상태인가.
+        }
         gameRoom.isHostPresent(hostInfo); // 시작 버튼을 누르는게 방장인가, 방장이 존재하는가.
         gameRoom.checkPlayerCount();
         gameRoom.start(LocalDateTime.now());
@@ -233,9 +234,8 @@ public class GameServiceImpl implements GameService {
         }
         if (gameRoom.isEntered(userInfo)) {
             throw new IllegalStateException("이미 입장한 방입니다.");
-        } else if (userInfo.inGame()) {
-            //FIXME 임시로 비활성화
-//            throw new IllegalStateException("다른 방에 입장한 유저입니다.");
+        } else if (userInfo.inGame() && !gameRoom.isUserPresent(userInfo)) {
+            throw new IllegalStateException("다른 방에 입장한 유저입니다.");
         }
         //FIXME 방장이 존재하지 않으면 방을 종료하는 로직.
         //FIXME 모든 인원이 준비를 마쳤는데 1분 내에 게임을 실행하지 않으면 방을 종료하는 로직.

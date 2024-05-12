@@ -3,9 +3,11 @@ package kr.toy.lyricsQuizServer.docs.game;
 import kr.toy.lyricsQuizServer.docs.RestDocsSupport;
 import kr.toy.lyricsQuizServer.game.controller.GameController;
 import kr.toy.lyricsQuizServer.game.controller.port.GameService;
+import kr.toy.lyricsQuizServer.game.controller.response.GameRoom;
 import kr.toy.lyricsQuizServer.game.domain.Game;
 import kr.toy.lyricsQuizServer.game.domain.GameStatus;
 import kr.toy.lyricsQuizServer.game.service.port.GameRepository;
+import kr.toy.lyricsQuizServer.memory.Redis.RedisUtil;
 import kr.toy.lyricsQuizServer.quiz.controller.port.QuizService;
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
 import kr.toy.lyricsQuizServer.quiz.domain.QuizContent;
@@ -21,6 +23,7 @@ import org.springframework.data.domain.PageImpl;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 public class GameRestDocs extends RestDocsSupport<Game> {
 
@@ -41,6 +44,9 @@ public class GameRestDocs extends RestDocsSupport<Game> {
 
     @MockBean
     protected QuizRepository quizRepository;
+
+    @MockBean
+    protected RedisUtil redisUtil;
 
 
 
@@ -108,6 +114,8 @@ public class GameRestDocs extends RestDocsSupport<Game> {
         quizRepository.save(quiz, quizContent);
 
 
+
+
         Game game = Game.builder()
                 .gameRoomSeq(getId())
                 .gameStatus(GameStatus.READY)
@@ -121,6 +129,10 @@ public class GameRestDocs extends RestDocsSupport<Game> {
                 .quiz(quiz)
                 .startedAt(null)
                 .build();
+
+        redisUtil.putGameRoomInRedis(game.getGameRoomSeq(), GameRoom.from(game));
+
         return game;
     }
+
 }

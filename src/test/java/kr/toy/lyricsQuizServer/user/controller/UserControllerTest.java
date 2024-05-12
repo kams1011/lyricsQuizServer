@@ -35,12 +35,6 @@ public class UserControllerTest extends UserRestDocs {
     @Mock
     HttpServletResponse response;
 
-    @Test
-    public void tmep() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        System.out.println(ErrorCode.JWT_EXPIRED);
-        System.out.println(objectMapper.writeValueAsString(ErrorCode.JWT_EXPIRED));
-    }
 
     @Test
     void getById_test() throws Exception {
