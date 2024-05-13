@@ -88,6 +88,7 @@
 <script>
 import axios from "axios";
 import TimeSelector from "@/components/TimeSelector";
+import {inject} from "vue";
 
 export default {
   name: "QuizRegister",
@@ -120,7 +121,7 @@ export default {
       const selectedFile = this.$refs.file.files[0];
       const formData = new FormData();
       formData.append('file', selectedFile);
-      axios.post('/api/file', formData,
+      axios.post(inject('$SERVER_URL') + '/api/file', formData,
           { withCredentials : true
           }).then(response => {
             this.fileSeq = response.data.data.id;
@@ -184,7 +185,7 @@ export default {
           url: this.$refs['url'].value
         }
       };
-      axios.post('/api/quiz', jsonData,
+      axios.post(inject('$SERVER_URL') + '/api/quiz', jsonData,
           { withCredentials : true
           }).then(response => {
             if(response.data.success){

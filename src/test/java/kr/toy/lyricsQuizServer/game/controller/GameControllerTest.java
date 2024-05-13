@@ -40,7 +40,7 @@ public class GameControllerTest extends GameRestDocs {
         List<GameRoom> gameRoomList = responsePages.stream().map(data -> GameRoom.from(data))
                 .collect(Collectors.toList());
 
-        when(gameService.getGameList(any())).thenReturn(responsePages);
+        when(gameService.getGameListByWord(any(), any())).thenReturn(new PageImpl<>(gameRoomList));
 
         ResultActions perform = this.mockMvc
                 .perform(RestDocumentationRequestBuilders
@@ -63,11 +63,11 @@ public class GameControllerTest extends GameRestDocs {
 
     }
 
-//    @Test
-//    public void get_quiz_summary_list_test() throws Exception {
-//
-//
-//    }
+    @Test
+    public void get_quiz_summary_list_test() throws Exception {
+
+
+    }
 //
 //    @Test
 //    public void create_test(){

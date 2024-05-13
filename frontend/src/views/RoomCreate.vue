@@ -75,6 +75,7 @@
 <script>
 import axios from "axios";
 import QuizSummaryModal from "@/views/QuizSummaryModal";
+import {inject} from "vue";
 
 export default {
   name: "RoomRegister",
@@ -95,7 +96,7 @@ export default {
         password: this.$refs['password'].value,
         attendeeLimit: this.$refs['attendeeLimit'].value,
       };
-      axios.post('/api/game', jsonData,
+      axios.post(inject('$SERVER_URL') + '/api/game', jsonData,
           { withCredentials : true
           }).then(response => {
         if(response.data.success){

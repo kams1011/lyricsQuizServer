@@ -3,6 +3,7 @@
 
 <script>
 import axios from "axios";
+import {inject} from "vue";
 
 export default {
   name: "LoginCallback",
@@ -27,7 +28,7 @@ export default {
       state = hashParams.get('state');
     }
 
-    axios.get('/api/users/login?loginType=' + state + '&code=' + code,
+    axios.get(inject('$SERVER_URL')+'/api/users/login?loginType=' + state + '&code=' + code,
         { withCredentials : true})
         .then(function(res) {
           if(!res.data) {

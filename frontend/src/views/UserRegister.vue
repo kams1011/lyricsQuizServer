@@ -38,6 +38,7 @@
 
 <script>
 import axios from "axios";
+import {inject} from "vue";
 
 export default {
   name: "UserRegister",
@@ -60,7 +61,7 @@ export default {
         nickName: this.$refs['nickName'].value,
       };
 
-      axios.post('/api/users/signup', jsonData,
+      axios.post(inject('$SERVER_URL') + '/api/users/signup', jsonData,
           { withCredentials : true
           }).then(response => {
             alert('회원가입에 성공했습니다.');

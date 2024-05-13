@@ -1,6 +1,8 @@
 package kr.toy.lyricsQuizServer.quiz.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import kr.toy.lyricsQuizServer.common.domain.ErrorCode;
+import kr.toy.lyricsQuizServer.config.CustomError.DomainValidError;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizCreate;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import lombok.Builder;
@@ -120,7 +122,7 @@ public class Quiz {
 
         private void validatePlayTimeGap(LocalTime startTime, LocalTime endTime){
             if (Duration.between(startTime, endTime).getSeconds() > PLAY_TIME_GAP_MAX) {
-                throw new IllegalArgumentException("시작 시간과 끝 시간의 차이는 30초를 넘을 수 없습니다.");
+                throw new DomainValidError(ErrorCode.GAME_TIME_ERROR);
             }
         }
     }

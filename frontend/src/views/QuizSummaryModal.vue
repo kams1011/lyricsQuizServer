@@ -25,6 +25,7 @@
 <script>
 import axios from "axios";
 import Pagination from "@/components/Pagination";
+import {inject} from "vue";
 
 export default {
   name: "QuizSummaryModal",
@@ -54,7 +55,7 @@ export default {
     },
     getQuizList: function (currentPage) {
       currentPage = currentPage == undefined ? 0 : currentPage - 1;
-      axios.get('/api/game/quiz?size=' + this.pageSize + '&page=' + currentPage + '&keyword=' + this.keyword,
+      axios.get(inject('$SERVER_URL') + '/api/game/quiz?size=' + this.pageSize + '&page=' + currentPage + '&keyword=' + this.keyword,
           { withCredentials : true
           }).then(response => {
         this.quizSummary = response.data.data.content;

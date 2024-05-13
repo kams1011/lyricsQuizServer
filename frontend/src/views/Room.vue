@@ -68,6 +68,7 @@ import axios from "axios";
 import VideoPlayer from '@/components/VideoPlayer.vue';
 import Input from '@/components/Input.vue';
 import GameAnswerInput from "@/components/GameAnswerInput";
+import {inject} from "vue";
 
 export default {
   name: 'App',
@@ -112,7 +113,7 @@ export default {
   methods: {
     getInvitableUsers(isHost){
       if(isHost){
-        axios.get('/api/game/invitation/users', { withCredentials : true})
+        axios.get(inject('$SERVER_URL') + '/api/game/invitation/users', { withCredentials : true})
         .then(response => {
           console.log(response);
           if (response.data.data.length == 0) {
@@ -131,7 +132,7 @@ export default {
     invite(nickName, userSeq){
       let isConfirmed = confirm(nickName + '님을 초대하시겠습니까?');
       if (isConfirmed) {
-        axios.post('/api/game/invitation?roomId=' + this.roomSeq + '&invitedUserSeq=' + userSeq,{},
+        axios.post(inject('$SERVER_URL') + '/api/game/invitation?roomId=' + this.roomSeq + '&invitedUserSeq=' + userSeq,{},
             { withCredentials : true})
             .then(response => {
               alert('초대에 성공했습니다.');
@@ -141,7 +142,7 @@ export default {
       }
     },
     isHostCheck(){
-      axios.get('/api/game/host?roomId=' + this.roomSeq,
+      axios.get(inject('$SERVER_URL') + '/api/game/host?roomId=' + this.roomSeq,
           { withCredentials : true
           }).then(response => {
         this.isHost = response.data.data;
@@ -162,7 +163,7 @@ export default {
       this.sendActionToServer([action]);
     },
     sendActionToServer(action) {
-      const url = `/api/game/${action}?roomId=${this.roomSeq}`;
+      const url = inject('$SERVER_URL') + `/api/game/${action}?roomId=${this.roomSeq}`;
       axios.patch(url, {}, { withCredentials: true })
           .then(response => {
             const box = document.getElementById('waiting-box');
@@ -231,7 +232,7 @@ export default {
         );
     },
     streamingComplete(){
-      const url = `/api/game/streaming/complete/` + this.roomId;
+      const url = inject('$SERVER_URL') + `/api/game/streaming/complete/` + this.roomId;
       axios.patch(url, {}, { withCredentials: true })
           .then(response => {
             this.showAnswerModal = true; // FIXME 이부분 구현중
@@ -242,7 +243,7 @@ export default {
           });
     },
     checkAnswer(answer){
-      axios.post('/api/game/answer/' + this.roomId,{answer},
+      axios.post(inject('$SERVER_URL') + '/api/game/answer/' + this.roomId,{answer},
           { withCredentials : true})
           .then(response => {
             if (response.data.data) {

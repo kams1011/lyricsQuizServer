@@ -78,8 +78,6 @@ axios.interceptors.response.use(
     },
     // 에러 응답 처리
     error => {
-        console.log('errorCODE print')
-        console.log(error.response.data);
         if (error.response && error.response.status == 401) {
             alert('로그인이 필요합니다.');
             router.push('/login');
@@ -89,7 +87,6 @@ axios.interceptors.response.use(
             // 요청은 보냈지만 응답이 없는 경우
             console.error("No response received:", error.request);
         }
-        console.error("Error :: ", error.message);
         alert(error.message);
         // Promise를 사용하여 에러 전파
         return Promise.reject(error);
