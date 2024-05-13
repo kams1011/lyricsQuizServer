@@ -54,6 +54,7 @@ export default {
       this.getQuizList(currentPage);
     },
     getQuizList: function (currentPage) {
+      console.log("LOG ! : " + inject('$SERVER_URL'));
       currentPage = currentPage == undefined ? 0 : currentPage - 1;
       axios.get(inject('$SERVER_URL') + '/api/game/quiz?size=' + this.pageSize + '&page=' + currentPage + '&keyword=' + this.keyword,
           { withCredentials : true
