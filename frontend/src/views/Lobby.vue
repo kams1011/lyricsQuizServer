@@ -116,7 +116,8 @@ export default {
   name: "Lobby",
   components: {Pagination},
   setup(){
-    const URL = inject( '$SERVER_URL')
+    const SERVER_URL = inject( '$SERVER_URL')
+    return SERVER_URL;
   },
   data() {
     return{
@@ -140,7 +141,7 @@ export default {
       this.getList(currentPage);
     },
     initInvitationInfo : function () {
-      axios.get(inject('$SERVER_URL') + '/api/game/invitation',
+      axios.get(process.env.VUE_APP_SERVER_URL + '/api/game/invitation',
           { withCredentials : true
           }).then(response => {
             this.isAllowed = response.data.data;
@@ -149,7 +150,7 @@ export default {
       });
     },
     allowInvitation(){
-      axios.patch(inject('$SERVER_URL') + '/api/game/invitation?isAllowed=' + !this.isAllowed, {},{ withCredentials : true})
+      axios.patch(process.env.VUE_APP_SERVER_URL + '/api/game/invitation?isAllowed=' + !this.isAllowed, {},{ withCredentials : true})
           .then(response => {
             this.isAllowed = !this.isAllowed;
             if (this.isAllowed) {
@@ -163,7 +164,7 @@ export default {
           });
     },
     inviteNotice(userSeq) {
-      const serverURL = "/ws-stomp"
+      const serverURL = process.env.VUE_APP_SERVER_URL + "/ws-stomp"
       let socket = new SockJS(serverURL);
       this.stompClient = Stomp.over(socket);
       this.stompClient.connect(
@@ -187,9 +188,8 @@ export default {
       );
     },
     getList: function (currentPage) {
-      console.log(this.keyword);
       currentPage = currentPage == undefined ? 0 : currentPage - 1;
-      axios.get(inject('$SERVER_URL') + '/api/game?size=' + this.pageSize + '&page=' + currentPage + '&keyword=' + this.keyword,
+      axios.get(process.env.VUE_APP_SERVER_URL + '/api/game?size=' + this.pageSize + '&page=' + currentPage + '&keyword=' + this.keyword,
           { withCredentials : true
           }).then(response => {
             if (response.data.data != null){
@@ -211,7 +211,7 @@ export default {
       }
     },
     enter(roomSeq){
-      axios.patch(inject('$SERVER_URL') + '/api/game/room?roomId=' + roomSeq +'&password=' + this.password, {},{ withCredentials : true}).then(response => {
+      axios.patch(process.env.VUE_APP_SERVER_URL + '/api/game/room?roomId=' + roomSeq +'&password=' + this.password, {},{ withCredentials : true}).then(response => {
         this.$router.push({ path: `/room/${roomSeq}` });
       }).catch(error => {
         alert(error.response.data.message);
@@ -224,7 +224,7 @@ export default {
         password: this.password,
       };
       // 비밀번호 확인 로직 추가
-      axios.post(inject('$SERVER_URL') + '/api/game/password', jsonData,
+      axios.post(process.env.VUE_APP_SERVER_URL + '/api/game/password', jsonData,
           { withCredentials : true
           }).then(response => {
         this.enter(this.roomId);

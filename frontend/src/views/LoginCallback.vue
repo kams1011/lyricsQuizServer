@@ -28,7 +28,7 @@ export default {
       state = hashParams.get('state');
     }
 
-    axios.get(inject('$SERVER_URL')+'/api/users/login?loginType=' + state + '&code=' + code,
+    axios.get(process.env.VUE_APP_SERVER_URL + '/api/users/login?loginType=' + state + '&code=' + code,
         { withCredentials : true})
         .then(function(res) {
           if(!res.data) {

@@ -96,7 +96,7 @@ export default {
         password: this.$refs['password'].value,
         attendeeLimit: this.$refs['attendeeLimit'].value,
       };
-      axios.post(inject('$SERVER_URL') + '/api/game', jsonData,
+      axios.post(process.env.VUE_APP_SERVER_URL + '/api/game', jsonData,
           { withCredentials : true
           }).then(response => {
         if(response.data.success){

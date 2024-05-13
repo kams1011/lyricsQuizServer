@@ -61,7 +61,7 @@ export default {
         nickName: this.$refs['nickName'].value,
       };
 
-      axios.post(inject('$SERVER_URL') + '/api/users/signup', jsonData,
+      axios.post(process.env.VUE_APP_SERVER_URL + '/api/users/signup', jsonData,
           { withCredentials : true
           }).then(response => {
             alert('회원가입에 성공했습니다.');

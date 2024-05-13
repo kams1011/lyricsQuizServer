@@ -113,7 +113,7 @@ export default {
   methods: {
     getInvitableUsers(isHost){
       if(isHost){
-        axios.get(inject('$SERVER_URL') + '/api/game/invitation/users', { withCredentials : true})
+        axios.get(process.env.VUE_APP_SERVER_URL + '/api/game/invitation/users', { withCredentials : true})
         .then(response => {
           console.log(response);
           if (response.data.data.length == 0) {
@@ -132,7 +132,7 @@ export default {
     invite(nickName, userSeq){
       let isConfirmed = confirm(nickName + '님을 초대하시겠습니까?');
       if (isConfirmed) {
-        axios.post(inject('$SERVER_URL') + '/api/game/invitation?roomId=' + this.roomSeq + '&invitedUserSeq=' + userSeq,{},
+        axios.post(process.env.VUE_APP_SERVER_URL + '/api/game/invitation?roomId=' + this.roomSeq + '&invitedUserSeq=' + userSeq,{},
             { withCredentials : true})
             .then(response => {
               alert('초대에 성공했습니다.');
@@ -142,7 +142,7 @@ export default {
       }
     },
     isHostCheck(){
-      axios.get(inject('$SERVER_URL') + '/api/game/host?roomId=' + this.roomSeq,
+      axios.get(process.env.VUE_APP_SERVER_URL + '/api/game/host?roomId=' + this.roomSeq,
           { withCredentials : true
           }).then(response => {
         this.isHost = response.data.data;
@@ -163,7 +163,7 @@ export default {
       this.sendActionToServer([action]);
     },
     sendActionToServer(action) {
-      const url = inject('$SERVER_URL') + `/api/game/${action}?roomId=${this.roomSeq}`;
+      const url = process.env.VUE_APP_SERVER_URL + `/api/game/${action}?roomId=${this.roomSeq}`;
       axios.patch(url, {}, { withCredentials: true })
           .then(response => {
             const box = document.getElementById('waiting-box');
@@ -210,7 +210,7 @@ export default {
         }
     },
     connect() {
-        const serverURL = "/ws-stomp"
+        const serverURL = process.env.VUE_APP_SERVER_URL + "/ws-stomp"
         let socket = new SockJS(serverURL);
         this.stompClient = Stomp.over(socket);
         this.stompClient.connect(
@@ -218,7 +218,7 @@ export default {
             frame => {
               this.connected = true;
               console.log('소켓 연결 성공', frame);
-              const subscribe = this.stompClient.subscribe("/sub/chat/room/" + this.roomId, res => {
+              const subscribe = this.stompClient.subscribe(process.env.VUE_APP_SERVER_URL + "/sub/chat/room/" + this.roomId, res => {
                 this.recvList.push(JSON.parse(res.body))
               });
               this.send('ENTER');
@@ -232,7 +232,7 @@ export default {
         );
     },
     streamingComplete(){
-      const url = inject('$SERVER_URL') + `/api/game/streaming/complete/` + this.roomId;
+      const url = process.env.VUE_APP_SERVER_URL + `/api/game/streaming/complete/` + this.roomId;
       axios.patch(url, {}, { withCredentials: true })
           .then(response => {
             this.showAnswerModal = true; // FIXME 이부분 구현중
@@ -243,7 +243,7 @@ export default {
           });
     },
     checkAnswer(answer){
-      axios.post(inject('$SERVER_URL') + '/api/game/answer/' + this.roomId,{answer},
+      axios.post(process.env.VUE_APP_SERVER_URL + '/api/game/answer/' + this.roomId,{answer},
           { withCredentials : true})
           .then(response => {
             if (response.data.data) {
