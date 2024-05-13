@@ -2,6 +2,8 @@ package kr.toy.lyricsQuizServer.game.service;
 
 
 import kr.toy.lyricsQuizServer.chat.domain.InvitationInfo;
+import kr.toy.lyricsQuizServer.common.domain.ErrorCode;
+import kr.toy.lyricsQuizServer.config.CustomError.RoomAccessError;
 import kr.toy.lyricsQuizServer.game.controller.response.UserInvitationInfo;
 import kr.toy.lyricsQuizServer.memory.Redis.RedisCategory;
 import kr.toy.lyricsQuizServer.memory.Redis.RedisUtil;
@@ -36,6 +38,7 @@ public class GameServiceImpl implements GameService {
 
     private final GameRepository gameRepository;
     private final QuizRepository quizRepository;
+    private final QuizContentRepository quizContentRepository;
     private final RedisUtil redisUtil;
 
 
@@ -221,21 +224,21 @@ public class GameServiceImpl implements GameService {
 
     public boolean isRoomEnterAllowed(GameRoom gameRoom, String password, UserInfo userInfo) {
         if (gameRoom == null) {
-            throw new IllegalStateException("존재하지 않는 방입니다.");
+            throw new RoomAccessError(ErrorCode.ROOM_NOT_FOUND);
         }
         if (!gameRoom.passwordCheck(password)) {
-            throw new IllegalArgumentException("비밀번호가 맞지 않습니다.");
+            throw new RoomAccessError(ErrorCode.ROOM_LOCK);
         }
         if (!gameRoom.isWithinCapacity()) {
-            throw new IllegalArgumentException("입장 가능인원을 초과했습니다.");
+            throw new RoomAccessError(ErrorCode.ROOM_FULL);
         }
         if (!gameRoom.isReady()) {
-            throw new IllegalArgumentException("이미 시작한 방입니다.");
+            throw new RoomAccessError(ErrorCode.ROOM_ALREADY_START);
         }
         if (gameRoom.isEntered(userInfo)) {
-            throw new IllegalStateException("이미 입장한 방입니다.");
+            throw new RoomAccessError(ErrorCode.USER_ALREADY_JOINED);
         } else if (userInfo.inGame() && !gameRoom.isUserPresent(userInfo)) {
-            throw new IllegalStateException("다른 방에 입장한 유저입니다.");
+            throw new RoomAccessError(ErrorCode.USER_ALREADY_JOINED);
         }
         //FIXME 방장이 존재하지 않으면 방을 종료하는 로직.
         //FIXME 모든 인원이 준비를 마쳤는데 1분 내에 게임을 실행하지 않으면 방을 종료하는 로직.

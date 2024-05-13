@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public class DomainValidError extends RuntimeException {
+public class RoomAccessError extends RuntimeException {
 
     ErrorCode errorCode;
 }

@@ -3,6 +3,7 @@ package kr.toy.lyricsQuizServer.config;
 import kr.toy.lyricsQuizServer.common.domain.ErrorCode;
 import kr.toy.lyricsQuizServer.common.domain.Response;
 import kr.toy.lyricsQuizServer.config.CustomError.DomainValidError;
+import kr.toy.lyricsQuizServer.config.CustomError.RoomAccessError;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -61,6 +62,11 @@ public class ApiControllerAdvice {
     @ExceptionHandler(DomainValidError.class)
     public ResponseEntity<Response> domainValidNotPassException(DomainValidError e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Response.fail(e.getErrorCode().getMessage(), null, e.getErrorCode()));
+    }
+
+    @ExceptionHandler(RoomAccessError.class)
+    public ResponseEntity<Response> RoomAccessError(RoomAccessError e) {
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Response.fail(e.getErrorCode().getMessage(), null, e.getErrorCode()));
     }
 
     @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class,

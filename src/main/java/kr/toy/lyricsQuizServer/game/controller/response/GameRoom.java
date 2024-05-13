@@ -129,7 +129,14 @@ public class GameRoom implements Serializable {
     }
 
     public boolean isEveryoneReady(UserInfo host){
-        if (getUserList().stream().filter(user -> !user.isReady() && !isHost(host)).findAny().isPresent()) {
+        System.out.println("listSize : " + getUserList().size());
+        for (int i=0; i<getUserList().size(); i++) {
+            System.out.println(i + "번쨰 : " + getUserList().get(i).isReady());
+            System.out.println(i + "번쨰 : " + getUserList().get(i).getUserSeq());
+            System.out.println(i + "번쨰 : " + isHost(getUserList().get(i)));
+        }
+        if (getUserList().stream().filter(user -> !user.isReady() && !isHost(host))
+                .findAny().isPresent()) {
             return false;
         }
         return true;
