@@ -11,8 +11,8 @@
       <div class="main-header">
         <h1>로비</h1>
         <div class="search">
-          <input type="text" placeholder="방 제목, 닉네임을 검색해보세요">
-          <button type="submit">
+          <input type="text" placeholder="방 제목, 닉네임을 검색해보세요" v-model="keyword"  @keyup.enter="getList(keyword)">
+          <button type="submit" @click="getList(keyword)">
             <i class="ph-magnifying-glass-bold"></i>
           </button>
         </div>
@@ -120,6 +120,7 @@ export default {
   },
   data() {
     return{
+      keyword: '',
       password: '',
       roomId:'',
       showPasswordModal : false,
@@ -186,13 +187,17 @@ export default {
       );
     },
     getList: function (currentPage) {
-      const keyword = '';
+      console.log(this.keyword);
       currentPage = currentPage == undefined ? 0 : currentPage - 1;
-      axios.get(inject('$SERVER_URL') + '/api/game?size=' + this.pageSize + '&page=' + currentPage + '&keyword=' + keyword,
+      axios.get(inject('$SERVER_URL') + '/api/game?size=' + this.pageSize + '&page=' + currentPage + '&keyword=' + this.keyword,
           { withCredentials : true
           }).then(response => {
-        this.itemList = response.data.data.content;
-        this.totalPage = response.data.data.totalElements;
+            if (response.data.data != null){
+              this.itemList = response.data.data.content;
+              this.totalPage = response.data.data.totalElements;
+            } else {
+              alert('검색결과가 없습니다.');
+            }
       }).catch(error => {
         console.error(error);
       });
