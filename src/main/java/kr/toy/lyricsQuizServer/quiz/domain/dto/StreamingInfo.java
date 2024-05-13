@@ -1,5 +1,6 @@
 package kr.toy.lyricsQuizServer.quiz.domain.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
 import kr.toy.lyricsQuizServer.quiz.domain.QuizContent;
 import kr.toy.lyricsQuizServer.quiz.domain.QuizContentType;
@@ -15,8 +16,10 @@ public class StreamingInfo {
 
     QuizContentType quizContentType;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     LocalTime startTime;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
     LocalTime endTime;
 
 
