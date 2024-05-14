@@ -218,7 +218,7 @@ export default {
             frame => {
               this.connected = true;
               console.log('소켓 연결 성공', frame);
-              const subscribe = this.stompClient.subscribe(process.env.VUE_APP_SERVER_URL + "/sub/chat/room/" + this.roomId, res => {
+              const subscribe = this.stompClient.subscribe("/sub/chat/room/" + this.roomId, res => {
                 this.recvList.push(JSON.parse(res.body))
               });
               this.send('ENTER');
