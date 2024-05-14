@@ -76,7 +76,7 @@ public class GameRoom implements Serializable {
     }
 
     public Boolean isWithinCapacity(){
-        return this.attendeeLimit <= this.userList.size();
+        return this.attendeeLimit >= this.userList.size();
     }
 
     public Boolean isReady(){
