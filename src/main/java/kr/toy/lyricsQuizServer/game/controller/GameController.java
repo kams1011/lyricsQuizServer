@@ -110,7 +110,7 @@ public class GameController {
     @PatchMapping("/start")
     public ResponseEntity<Response> gameStart(@RequestParam Long roomId, User user){
         StreamingInfo streamingInfo;
-        try{
+        try {
             gameService.start(roomId, user);
             streamingInfo = gameService.getStreamingInfo(roomId);
         } catch (PlayGameError e){

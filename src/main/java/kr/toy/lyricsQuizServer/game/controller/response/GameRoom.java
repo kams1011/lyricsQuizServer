@@ -144,7 +144,7 @@ public class GameRoom implements Serializable {
             System.out.println(i + "번쨰 : " + getUserList().get(i).getUserSeq());
             System.out.println(i + "번쨰 : " + isHost(getUserList().get(i)));
         }
-        if (getUserList().stream().filter(user -> !user.isReady() && !isHost(host))
+        if (getUserList().stream().filter(user -> !user.isReady() && !isHost(user))
                 .findAny().isPresent()) {
             return false;
         }

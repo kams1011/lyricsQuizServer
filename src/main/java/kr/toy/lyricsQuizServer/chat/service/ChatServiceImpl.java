@@ -26,10 +26,6 @@ public class ChatServiceImpl implements ChatService {
         message.setSender(nickName);
         GameRoom gameRoom = redisUtil.getGameRoomFromRedis(Long.parseLong(message.getRoomId()));
 
-        System.out.println("check하는부분");
-        System.out.println(gameRoom.getUserList().size());
-        System.out.println(gameRoom.isUserPresent(user));
-
         if (message.getType().equals(MessageType.ENTER) && !gameRoom.isUserPresent(user)) {
             message = message.join(nickName);
         }
