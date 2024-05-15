@@ -103,6 +103,10 @@ public class Game {
         this.attendeeCount--;
     }
 
+    public void delete(){
+        this.isDeleted = true;
+    }
+
     public void isAccessibleGameCheck(){
         if (!this.gameStatus.isAccessible()) {
             throw new IllegalStateException("게임이 준비상태가 이닙니다.");

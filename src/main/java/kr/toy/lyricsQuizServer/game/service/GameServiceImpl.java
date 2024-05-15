@@ -53,7 +53,9 @@ public class GameServiceImpl implements GameService {
     public PageImpl<GameRoom> getGameListByWord(String word, Pageable pageable) {
         PageImpl<Game> pages = gameRepository.findAllByRoomNameOrManagerName(word, pageable);
 
-        List<GameRoom> gameRooms = pages.stream().map(data -> redisUtil.getGameRoomFromRedis(data.getGameRoomSeq())).collect(Collectors.toList());
+        List<GameRoom> gameRooms = pages.stream()
+                .map(data -> redisUtil.getGameRoomFromRedis(data.getGameRoomSeq()))
+                .collect(Collectors.toList());
         return new PageImpl<>(gameRooms, pageable, pages.getTotalElements());
     }
 
@@ -307,7 +309,7 @@ public class GameServiceImpl implements GameService {
     @Transactional
     public void roomClose(GameRoom gameRoom) {
         Game game = gameRepository.findById(gameRoom.getGameRoomSeq());
-        game.exit();
+        game.delete();
         gameRepository.save(game.getHost(), game, game.getQuiz());
         redisUtil.deleteGameRoomInRedis(gameRoom.getGameRoomSeq());
         deleteUserInfoInRoom(gameRoom);

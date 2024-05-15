@@ -64,7 +64,7 @@
         </div> -->
         <div class="content-main">
           <div class="card-grid">
-            <article class="card" v-for="(item, index) in itemList" :key="index" @click="secretRoomCheck(item.isSecretRoom, item.gameRoomSeq)">
+            <article class="card" v-for="item in itemList" :key="item.gameRoomSeq" @click="secretRoomCheck(item.isSecretRoom, item.gameRoomSeq)">
               <div class="card-header">
                 <div>
                   <span><img src="https://assets.codepen.io/285131/zeplin.svg"></span>
