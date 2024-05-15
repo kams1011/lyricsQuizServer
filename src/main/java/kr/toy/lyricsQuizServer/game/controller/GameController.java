@@ -1,6 +1,8 @@
 package kr.toy.lyricsQuizServer.game.controller;
 
+import kr.toy.lyricsQuizServer.common.domain.ErrorCode;
 import kr.toy.lyricsQuizServer.common.domain.Response;
+import kr.toy.lyricsQuizServer.config.CustomError.PlayGameError;
 import kr.toy.lyricsQuizServer.game.controller.port.GameService;
 import kr.toy.lyricsQuizServer.game.domain.dto.GameCreate;
 import kr.toy.lyricsQuizServer.game.domain.dto.GamePassword;
@@ -107,12 +109,12 @@ public class GameController {
     }
     @PatchMapping("/start")
     public ResponseEntity<Response> gameStart(@RequestParam Long roomId, User user){
-        StreamingInfo streamingInfo = null;
+        StreamingInfo streamingInfo;
         try{
             gameService.start(roomId, user);
             streamingInfo = gameService.getStreamingInfo(roomId);
-        } catch (Exception e){
-            e.printStackTrace();
+        } catch (PlayGameError e){
+            return ResponseEntity.internalServerError().body(Response.fail(e.getMessage(), null, e.getErrorCode()));
         }
         return ResponseEntity.ok().body(new Response(true, null, streamingInfo, null));
     }

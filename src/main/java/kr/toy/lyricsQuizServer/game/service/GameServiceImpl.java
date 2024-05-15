@@ -3,6 +3,7 @@ package kr.toy.lyricsQuizServer.game.service;
 
 import kr.toy.lyricsQuizServer.chat.domain.InvitationInfo;
 import kr.toy.lyricsQuizServer.common.domain.ErrorCode;
+import kr.toy.lyricsQuizServer.config.CustomError.PlayGameError;
 import kr.toy.lyricsQuizServer.config.CustomError.RoomAccessError;
 import kr.toy.lyricsQuizServer.game.controller.response.UserInvitationInfo;
 import kr.toy.lyricsQuizServer.memory.Redis.RedisCategory;
@@ -109,7 +110,7 @@ public class GameServiceImpl implements GameService {
         Game game = gameRepository.findById(gameRoom.getGameRoomSeq());
         game.start(LocalDateTime.now());
         if (!gameRoom.isEveryoneReady(hostInfo)) {
-            throw new IllegalStateException("준비완료 되지 않은 참여자가 있습니다."); // 방장 이외의 인원이 전부 준비완료 상태인가.
+            throw new PlayGameError(ErrorCode.NOT_READY_USER_EXIST);
         }
         gameRoom.isHostPresent(hostInfo); // 시작 버튼을 누르는게 방장인가, 방장이 존재하는가.
         gameRoom.checkPlayerCount();

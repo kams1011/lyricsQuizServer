@@ -174,7 +174,7 @@ export default {
           })
           .catch(error => { // FIXME 전역에러로 잡고있어서 해당 부분 제거
             console.log(error);
-            alert('에러가 발생했습니다.');
+            alert(error.response.data.message);
           });
     },
     videoStreaming(response){
