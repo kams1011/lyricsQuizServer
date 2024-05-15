@@ -291,8 +291,9 @@ public class GameServiceImpl implements GameService {
         List<GameRoom> gameRoomList = redisUtil.getAllGameRoomFromRedis();
 
         gameRoomList.stream()
-                .filter(data -> data.isExpiredByCreatedAt(LocalDateTime.now())
-                || data.isExpiredByStartedAt(LocalDateTime.now()))
+                .filter(data -> data.getCreatedAt() == null
+                        || data.isExpiredByCreatedAt(LocalDateTime.now())
+                        || data.isExpiredByStartedAt(LocalDateTime.now()))
                 .collect(Collectors.toList());
 
         return gameRoomList;

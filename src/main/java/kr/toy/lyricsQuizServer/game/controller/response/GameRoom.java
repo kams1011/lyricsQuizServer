@@ -218,6 +218,9 @@ public class GameRoom implements Serializable {
     }
 
     public boolean isExpiredByStartedAt(LocalDateTime now){
+        if (this.startedAt == null) {
+            return false;
+        }
         return this.startedAt.isBefore(now.minusMinutes(START_EXPIRED_MINUTE));
     }
 

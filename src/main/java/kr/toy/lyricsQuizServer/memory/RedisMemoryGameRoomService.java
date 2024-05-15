@@ -23,7 +23,7 @@ public class RedisMemoryGameRoomService implements MemoryService<GameRoom, Long>
     }
 
     @Override
-    public List<GameRoom> getAll() {
+    public List<GameRoom> getAll() { // FIXME 레디스가 실질적으로 싱글스레드로 작동하기 때문에 해당 로직을 Scan을 사용하여 변경해줘야함
         Set<Long> keySet = gameRoomHashOperations.keys(key);
         return gameRoomHashOperations.multiGet(key, keySet);
     }
