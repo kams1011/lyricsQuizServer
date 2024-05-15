@@ -7,6 +7,7 @@ import org.springframework.data.redis.core.HashOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -23,7 +24,8 @@ public class RedisMemoryGameRoomService implements MemoryService<GameRoom, Long>
 
     @Override
     public List<GameRoom> getAll() {
-        throw new RuntimeException("잘못된 호출입니다.");
+        Set<Long> keySet = gameRoomHashOperations.keys(key);
+        return gameRoomHashOperations.multiGet(key, keySet);
     }
 
     @Override
