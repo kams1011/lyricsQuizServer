@@ -62,4 +62,6 @@ public interface GameService {
     void streamingComplete(Long roomId, User player);
 
     boolean checkAnswer(Long roomId, String answer);
+
+    void finishTimedOutGames();
 }

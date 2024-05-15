@@ -63,6 +63,12 @@ public class RedisUtil {
         return memoryGameRoomService.getObject(id);
     }
 
+    public List<GameRoom> getAllGameRoomFromRedis(){
+        return memoryGameRoomService.getAll();
+    }
+
+
+
 //    @Cacheable(value = "USER_INFO", key = "#id", unless = "#result == null")
     public UserInfo getUserInfoFromRedis(Long id){
         return memoryUserInfoService.getObject(id);

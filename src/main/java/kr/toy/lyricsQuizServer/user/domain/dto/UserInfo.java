@@ -64,10 +64,12 @@ public class UserInfo implements Serializable {
         return this.gameRoomSeq == gameRoom.getGameRoomSeq();
     }
 
-    public void exit(){
+    public UserInfo exit(){
         this.gameRoomSeq = null;
         this.ready = false;
         this.sessionId = null;
+
+        return this;
     }
 
     public void ready(){

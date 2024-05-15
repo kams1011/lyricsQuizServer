@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 
 @SpringBootApplication(
@@ -15,6 +16,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 )
 // aws s3 세팅으로 인해 어플리케이션 기동이 느려지는 걸 방지하기 위해 추가
 @EnableFeignClients
+@EnableScheduling
 public class LyricsQuizServerApplication {
 
 	public static void main(String[] args) {

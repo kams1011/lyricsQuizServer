@@ -9,6 +9,7 @@ import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
 @Getter
@@ -19,6 +20,8 @@ public class GameRoom implements Serializable {
     private Long gameRoomSeq;
 
     private String roomName;
+
+    private LocalDateTime createdAt;
 
     private LocalDateTime startedAt;
 
@@ -40,12 +43,17 @@ public class GameRoom implements Serializable {
 
     private Set<Long> streamingCompleteUserSet;
 
+    private final int START_EXPIRED_MINUTE = 30;
+    private final int CREATE_EXPIRED_MINUTE = 60;
+
+
     @Builder
-    public GameRoom(Long gameRoomSeq, String roomName, LocalDateTime startedAt, String hostName, Long hostSeq,
+    public GameRoom(Long gameRoomSeq, String roomName, LocalDateTime createdAt, LocalDateTime startedAt, String hostName, Long hostSeq,
                     String topic, Integer attendeeLimit, GameStatus gameStatus,
                     Boolean isSecretRoom, String password, List<UserInfo> userList, Set<Long> streamingCompleteUserSet) {
         this.gameRoomSeq = gameRoomSeq;
         this.roomName = roomName;
+        this.createdAt = createdAt;
         this.startedAt = startedAt;
         this.hostName = hostName;
         this.hostSeq = hostSeq;
@@ -63,6 +71,7 @@ public class GameRoom implements Serializable {
                 .gameRoomSeq(game.getGameRoomSeq())
                 .roomName(game.getRoomName())
                 .topic(game.getQuiz().getTitle()) //FIXME Query 확인하기
+                .createdAt(game.getCreatedAt())
                 .startedAt(game.getStartedAt())
                 .hostName(game.getHost().getNickName())
                 .hostSeq(game.getHost().getUserSeq())
@@ -83,7 +92,7 @@ public class GameRoom implements Serializable {
         return this.gameStatus == GameStatus.READY;
     }
 
-    public Boolean passwordCheck(String password){
+    public Boolean passwordCheck(String password){ // FIXME Service로 뺴기
         if (!this.isSecretRoom) {
             return true;
         } else if (this.isSecretRoom && StringUtils.hasText(password) && this.password.equals(password)) {
@@ -202,6 +211,14 @@ public class GameRoom implements Serializable {
 
     public boolean roomEmpty(){
         return this.getUserList().isEmpty();
+    }
+
+    public boolean isExpiredByCreatedAt(LocalDateTime now){
+        return this.createdAt.isBefore(now.minusMinutes(CREATE_EXPIRED_MINUTE));
+    }
+
+    public boolean isExpiredByStartedAt(LocalDateTime now){
+        return this.startedAt.isBefore(now.minusMinutes(START_EXPIRED_MINUTE));
     }
 
     @Override

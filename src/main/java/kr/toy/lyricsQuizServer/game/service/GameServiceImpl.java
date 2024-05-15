@@ -22,10 +22,12 @@ import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.domain.dto.UserInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import org.springframework.data.domain.Pageable;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -136,7 +138,7 @@ public class GameServiceImpl implements GameService {
         UserInfo userInfo = findUserInfo(user);
         gameRoom.removeUser(userInfo);
         if (gameRoom.roomEmpty()) {
-            roomClose(gameRoomSeq);
+            roomClose(gameRoom);
         } else {
             saveGameInRedis(gameRoom);
         }
@@ -269,21 +271,51 @@ public class GameServiceImpl implements GameService {
         return quiz.isCorrect(answer);
     }
 
+    @Override
+    @Scheduled(cron = "0 */2 * * * *")
+    public void finishTimedOutGames() {
+        List<GameRoom> gameRoomList = findTimedOutGames();
+        System.out.println("Cron START");
+        try {
+            for (int i=0; i<gameRoomList.size(); i++) {
+                roomClose(gameRoomList.get(i));
+            }
+        } catch (Exception e){
+            e.printStackTrace();
+            throw new RuntimeException("cron 작업 중 에러가 발생했습니다. " + e.getMessage());
+        }
+    }
+
+
+    public List<GameRoom> findTimedOutGames(){
+        List<GameRoom> gameRoomList = redisUtil.getAllGameRoomFromRedis();
+
+        gameRoomList.stream()
+                .filter(data -> data.isExpiredByCreatedAt(LocalDateTime.now())
+                || data.isExpiredByStartedAt(LocalDateTime.now()))
+                .collect(Collectors.toList());
+
+        return gameRoomList;
+    }
+
     public GameRoom saveGameInRedis(GameRoom gameRoom) {
         redisUtil.putGameRoomInRedis(gameRoom.getGameRoomSeq(), gameRoom);
         return gameRoom;
     }
 
-    public UserInfo saveUserInfoInRedis(UserInfo userInfo) {
-        redisUtil.putUserInfoInRedis(userInfo.getUserSeq(), userInfo);
-        return userInfo;
-    }
-
-    public void roomClose(Long roomSeq){
-        Game game = gameRepository.findById(roomSeq);
+    @Transactional
+    public void roomClose(GameRoom gameRoom) {
+        Game game = gameRepository.findById(gameRoom.getGameRoomSeq());
         game.exit();
         gameRepository.save(game.getHost(), game, game.getQuiz());
-        redisUtil.deleteGameRoomInRedis(roomSeq);
+        redisUtil.deleteGameRoomInRedis(gameRoom.getGameRoomSeq());
+        deleteUserInfoInRoom(gameRoom);
+    }
+
+    public void deleteUserInfoInRoom(GameRoom gameRoom){
+        gameRoom.getUserList().stream()
+                .map(data -> data.exit())
+                .forEach(data -> redisUtil.putUserInfoInRedis(data.getUserSeq(), data));
     }
 
     @Override
