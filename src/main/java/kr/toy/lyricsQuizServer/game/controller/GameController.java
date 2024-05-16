@@ -1,6 +1,5 @@
 package kr.toy.lyricsQuizServer.game.controller;
 
-import kr.toy.lyricsQuizServer.common.domain.ErrorCode;
 import kr.toy.lyricsQuizServer.common.domain.Response;
 import kr.toy.lyricsQuizServer.config.CustomError.PlayGameError;
 import kr.toy.lyricsQuizServer.game.controller.port.GameService;
@@ -9,9 +8,8 @@ import kr.toy.lyricsQuizServer.game.domain.dto.GamePassword;
 import kr.toy.lyricsQuizServer.quiz.controller.port.QuizService;
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizDetailToCreateRoom;
-import kr.toy.lyricsQuizServer.quiz.domain.dto.StreamingInfo;
+import kr.toy.lyricsQuizServer.game.domain.dto.StreamingInfo;
 import kr.toy.lyricsQuizServer.user.domain.User;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.data.domain.PageImpl;
@@ -20,9 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.data.domain.Pageable;
 
-import java.io.IOException;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @RestController

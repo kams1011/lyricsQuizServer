@@ -3,6 +3,7 @@ package kr.toy.lyricsQuizServer.memory.Redis;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.toy.lyricsQuizServer.chat.controller.dto.ChatMessage;
 import kr.toy.lyricsQuizServer.chat.domain.InvitationInfo;
+import kr.toy.lyricsQuizServer.game.domain.dto.StreamingInfo;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,15 @@ public class RedisSubscriber {
         try {
             ChatMessage chatMessage = objectMapper.readValue(publishMessage, ChatMessage.class);
             messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessage.getRoomId(), chatMessage);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendStreamingInfo(String publishMessage) {
+        try {
+            StreamingInfo streamingInfo = objectMapper.readValue(publishMessage, StreamingInfo.class);
+            messagingTemplate.convertAndSend("/sub/chat/room/" + streamingInfo.getRoomId(), streamingInfo);
         } catch (Exception e) {
             e.printStackTrace();
         }

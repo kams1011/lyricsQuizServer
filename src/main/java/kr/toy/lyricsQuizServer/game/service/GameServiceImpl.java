@@ -1,6 +1,7 @@
 package kr.toy.lyricsQuizServer.game.service;
 
 
+import kr.toy.lyricsQuizServer.chat.controller.port.ChatService;
 import kr.toy.lyricsQuizServer.chat.domain.InvitationInfo;
 import kr.toy.lyricsQuizServer.common.domain.ErrorCode;
 import kr.toy.lyricsQuizServer.config.CustomError.PlayGameError;
@@ -15,9 +16,7 @@ import kr.toy.lyricsQuizServer.game.domain.dto.GameCreate;
 import kr.toy.lyricsQuizServer.game.domain.dto.GamePassword;
 import kr.toy.lyricsQuizServer.game.service.port.GameRepository;
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
-import kr.toy.lyricsQuizServer.quiz.domain.QuizContent;
-import kr.toy.lyricsQuizServer.quiz.domain.dto.StreamingInfo;
-import kr.toy.lyricsQuizServer.quiz.service.QuizContentRepository;
+import kr.toy.lyricsQuizServer.game.domain.dto.StreamingInfo;
 import kr.toy.lyricsQuizServer.quiz.service.QuizRepository;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.domain.dto.UserInfo;
@@ -41,8 +40,10 @@ public class GameServiceImpl implements GameService {
 
     private final GameRepository gameRepository;
     private final QuizRepository quizRepository;
-    private final QuizContentRepository quizContentRepository;
+
     private final RedisUtil redisUtil;
+
+    private final ChatService chatService;
 
 
     @Override
@@ -118,8 +119,12 @@ public class GameServiceImpl implements GameService {
         saveGameInRedis(gameRoom);
         
         gameRepository.save(game.getHost(), game, game.getQuiz());
-
+        sendStreamingInfo(gameRoomSeq);
     }
+
+
+
+
 
     @Override
     public void invite(Long gameRoomSeq, User host, Long invitedUserSeq){
@@ -326,11 +331,15 @@ public class GameServiceImpl implements GameService {
     public StreamingInfo getStreamingInfo(Long roomId) {
         Game game = gameRepository.findById(roomId);
         Quiz quiz = game.getQuiz();
-        StreamingInfo streamingInfo = StreamingInfo.from(quiz, quiz.getQuizContent());
+        StreamingInfo streamingInfo = StreamingInfo.from(game.getGameRoomSeq(), quiz, quiz.getQuizContent());
         // File upload시 S3에서 URL가져오는 로직.
         // File과 Quiz와 Game을 매핑하는 로직.
         // Quiz 정보로 Game에서 잘라오는 로직.
         return streamingInfo;
+    }
+
+    public void sendStreamingInfo(Long roomId){
+        redisUtil.publishStreamingInfo(RedisCategory.STREAMING, getStreamingInfo(roomId));
     }
 
 

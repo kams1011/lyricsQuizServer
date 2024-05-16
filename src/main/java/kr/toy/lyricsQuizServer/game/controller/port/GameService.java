@@ -6,15 +6,12 @@ import kr.toy.lyricsQuizServer.game.domain.Game;
 import kr.toy.lyricsQuizServer.game.domain.dto.GameCreate;
 
 import kr.toy.lyricsQuizServer.game.domain.dto.GamePassword;
-import kr.toy.lyricsQuizServer.quiz.domain.dto.StreamingInfo;
+import kr.toy.lyricsQuizServer.game.domain.dto.StreamingInfo;
 import kr.toy.lyricsQuizServer.user.domain.User;
 import kr.toy.lyricsQuizServer.user.domain.dto.UserInfo;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 
-import java.io.IOException;
 import java.util.List;
 
 public interface GameService {

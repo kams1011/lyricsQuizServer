@@ -4,6 +4,7 @@ import kr.toy.lyricsQuizServer.chat.controller.dto.ChatMessage;
 import kr.toy.lyricsQuizServer.chat.domain.InvitationInfo;
 import kr.toy.lyricsQuizServer.game.controller.response.GameRoom;
 import kr.toy.lyricsQuizServer.game.controller.response.UserInvitationInfo;
+import kr.toy.lyricsQuizServer.game.domain.dto.StreamingInfo;
 import kr.toy.lyricsQuizServer.memory.RedisMemoryGameRoomService;
 import kr.toy.lyricsQuizServer.memory.RedisMemoryInvitePendingService;
 import kr.toy.lyricsQuizServer.memory.RedisMemoryUserInfoService;
@@ -39,8 +40,12 @@ public class RedisUtil {
 //        topics = new HashMap<>();
 //    }
 
-    public void publish(RedisCategory redisCategory, ChatMessage message){
+    public void publishMessage(RedisCategory redisCategory, ChatMessage message){
         redisTemplate.convertAndSend(redisCategory.name(), message);
+    }
+
+    public void publishStreamingInfo(RedisCategory redisCategory, StreamingInfo streamingInfo){
+        redisTemplate.convertAndSend(redisCategory.name(), streamingInfo);
     }
 
     public void invite(RedisCategory redisCategory, InvitationInfo invitationInfo){

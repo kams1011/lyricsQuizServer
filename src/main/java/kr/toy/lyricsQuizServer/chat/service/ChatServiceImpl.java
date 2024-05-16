@@ -29,7 +29,7 @@ public class ChatServiceImpl implements ChatService {
         if (message.getType().equals(MessageType.ENTER) && !gameRoom.isUserPresent(user)) {
             message = message.join(nickName);
         }
-        redisUtil.publish(RedisCategory.GAME_ROOM, message);
+        redisUtil.publishMessage(RedisCategory.GAME_ROOM, message);
     }
 
     @Override

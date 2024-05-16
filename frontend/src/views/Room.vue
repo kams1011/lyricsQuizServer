@@ -87,6 +87,7 @@ export default {
       ready : false,
       showAnswerModal: false,
       showInvitableUsersModal : false,
+      enterCheck : false,
       roomId : this.$route.params.roomSeq,
       invitableUsers : [],
       techOrder: ['youtube'],
@@ -106,6 +107,7 @@ export default {
   },
   created() {
     this.roomSeq = this.$route.params.roomSeq;
+    this.enterCheck = false;
     // App.vue가 생성되면 소켓 연결을 시도합니다.
     this.isHostCheck();
     this.connect();
@@ -168,68 +170,71 @@ export default {
           .then(response => {
             const box = document.getElementById('waiting-box');
             box.remove();
-            if (this.isHost){
-              this.videoStreaming(response);
-            }
           })
           .catch(error => { // FIXME 전역에러로 잡고있어서 해당 부분 제거
             console.log(error);
-            alert(error.response.data.message);
+            alert(error.response.data.errorCode.message);
           });
     },
     videoStreaming(response){
       let sources = '';
       let type = '';
-      if (response.data.data.quizContentType === 'YOUTUBE') {
+
+      if (response.quizContentType === 'YOUTUBE') {
         type = "video/youtube";
       } else {
         type =  "video/webm";
       }
       sources = {
-          src: response.data.data.url,
+          src: response.url,
           type: type,
       };
       this.videoOptions.streamingStart = true;
       this.videoOptions.sources[0] = sources;
-      this.videoOptions.sources[0].startTime = response.data.data.startTime;
-      this.videoOptions.sources[0].endTime = response.data.data.endTime;
+      this.videoOptions.sources[0].startTime = response.startTime;
+      this.videoOptions.sources[0].endTime = response.endTime;
       //FIXME 중간에 5초 카운트다운 하는 영상 추가해주는 방법도 있음
       this.key++;
     },
     send(type) {
-        console.log("Send message:" + this.message);
         if (this.stompClient && this.stompClient.connected) {
           const msg = {
             type: type,
             roomId : this.roomId,
-            // senderNickName: 'test',
             message : this.message
           };
           this.stompClient.send("/pub/chat/message", JSON.stringify(msg), {}); // 그냥 쿠키 넣어주면 될듯?
           this.message = '';
         }
     },
+
     connect() {
-        const serverURL = process.env.VUE_APP_SERVER_URL + "/ws-stomp"
-        let socket = new SockJS(serverURL);
-        this.stompClient = Stomp.over(socket);
-        this.stompClient.connect(
-            {},
-            frame => {
-              this.connected = true;
-              console.log('소켓 연결 성공', frame);
-              const subscribe = this.stompClient.subscribe("/sub/chat/room/" + this.roomId, res => {
-                this.recvList.push(JSON.parse(res.body))
-              });
-              this.send('ENTER');
-            },
-            error => {
-              console.log('소켓 연결 실패', error.headers);
-              alert('방에 접속할 수 없습니다.');
-              this.connected = false;
-              window.location.href ='/';
-            }
-        );
+      const serverURL = process.env.VUE_APP_SERVER_URL + "/ws-stomp";
+      let socket = new SockJS(serverURL);
+      this.stompClient = Stomp.over(socket);
+      this.stompClient.connect(
+          {},
+          frame => {
+            console.log('소켓 연결 성공', frame);
+            this.connected = true;
+            const subscribe = this.stompClient.subscribe("/sub/chat/room/" + this.roomId, res => {
+              let message = JSON.parse(res.body);
+              if (message.type === 'STREAMING') {
+                this.videoStreaming(message);
+              } else {
+                this.recvList.push(message);
+              }
+            });
+            // 구독이 성공한 후에 바로 ENTER 메시지를 전송
+            this.send('ENTER');
+          },
+          error => {
+            console.log('소켓 연결 실패', error.headers);
+            alert('방에 접속할 수 없습니다.');
+            this.connected = false;
+            window.location.href = '/';
+          }
+      );
     },
     streamingComplete(){
       const url = process.env.VUE_APP_SERVER_URL + `/api/game/streaming/complete/` + this.roomId;
