@@ -133,6 +133,7 @@ public class GameRoom implements Serializable {
                 .findFirst()
                 .isPresent();
         if (!attendeeList || !isHost(host)) {
+            System.out.println("여기에들어옴");
             throw new NoSuchElementException("호스트가 존재하지 않습니다.");
         }
     }

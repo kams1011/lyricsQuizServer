@@ -75,11 +75,11 @@ public class ApiControllerAdvice {
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Response.fail(e.getErrorCode().getMessage(), null, e.getErrorCode()));
     }
 
-    @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class,
-            NoSuchElementException.class, RuntimeException.class, NullPointerException.class})
-    public ResponseEntity<Response> handleException(Exception e){
-        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Response.fail(e.getMessage(), null, null));
-    }
+//    @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class,
+//            NoSuchElementException.class, RuntimeException.class, NullPointerException.class})
+//    public ResponseEntity<Response> handleException(Exception e){
+//        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Response.fail(e.getMessage(), null, null));
+//    }
 
 
 
