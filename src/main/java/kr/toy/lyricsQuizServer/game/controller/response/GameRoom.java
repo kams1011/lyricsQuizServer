@@ -120,11 +120,11 @@ public class GameRoom implements Serializable {
         }
     }
     public boolean isUserPresent(UserInfo user){
-        if (!this.userList.contains(user)) {
-            return false;
-        }
+        boolean isUserPresent = this.userList.stream()
+                .filter(data -> data.getUserSeq().equals(user.getUserSeq()))
+                .findFirst().isPresent();
 
-        return true;
+        return isUserPresent;
     }
 
     public void isHostPresent(UserInfo host){
