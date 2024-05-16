@@ -105,13 +105,10 @@ public class GameController {
     }
     @PatchMapping("/start")
     public ResponseEntity<Response> gameStart(@RequestParam Long roomId, User user){
-        StreamingInfo streamingInfo;
-        try {
-            gameService.start(roomId, user);
-            streamingInfo = gameService.getStreamingInfo(roomId);
-        } catch (PlayGameError e){
-            return ResponseEntity.internalServerError().body(Response.fail(e.getMessage(), null, e.getErrorCode()));
-        }
+        StreamingInfo streamingInfo = gameService.getStreamingInfo(roomId);
+
+        gameService.start(roomId, user);
+
         return ResponseEntity.ok().body(new Response(true, null, streamingInfo, null));
     }
 
