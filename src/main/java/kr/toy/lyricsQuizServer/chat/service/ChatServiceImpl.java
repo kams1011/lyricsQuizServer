@@ -26,7 +26,9 @@ public class ChatServiceImpl implements ChatService {
         message.setSender(nickName);
         GameRoom gameRoom = redisUtil.getGameRoomFromRedis(Long.parseLong(message.getRoomId()));
 
-        if (message.getType().equals(MessageType.ENTER) && !gameRoom.isUserPresent(user)) {
+        if (message.getType().equals(MessageType.ENTER)
+//                && !gameRoom.isUserPresent(user) // FIXME 새로고침하면 무한으로 들어오는 부분 수정
+        ) {
             message = message.join(nickName);
         }
         redisUtil.publishMessage(RedisCategory.GAME_ROOM, message);

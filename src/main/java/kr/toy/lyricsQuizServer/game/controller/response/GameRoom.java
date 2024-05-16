@@ -133,18 +133,11 @@ public class GameRoom implements Serializable {
                 .findFirst()
                 .isPresent();
         if (!attendeeList || !isHost(host)) {
-            System.out.println("여기에들어옴");
             throw new NoSuchElementException("호스트가 존재하지 않습니다.");
         }
     }
 
-    public boolean isEveryoneReady(UserInfo host){
-        System.out.println("listSize : " + getUserList().size());
-        for (int i=0; i<getUserList().size(); i++) {
-            System.out.println(i + "번쨰 : " + getUserList().get(i).isReady());
-            System.out.println(i + "번쨰 : " + getUserList().get(i).getUserSeq());
-            System.out.println(i + "번쨰 : " + isHost(getUserList().get(i)));
-        }
+    public boolean isEveryoneReady(){
         if (getUserList().stream().filter(user -> !user.isReady() && !isHost(user))
                 .findAny().isPresent()) {
             return false;
