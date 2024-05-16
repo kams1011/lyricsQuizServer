@@ -97,7 +97,15 @@ public class GameServiceImpl implements GameService {
     public void ready(Long gameRoomSeq, User user) {
         GameRoom gameRoom = getGameRoom(gameRoomSeq);
         UserInfo userInfo = findUserInfo(user);
+        System.out.println("READY입니다");
+        System.out.println(userInfo.getUserSeq());
+        System.out.println(userInfo.getSessionId());
+        for (int i=0; i<gameRoom.getUserList().size(); i++) {
+            System.out.println(gameRoom.getUserList().get(i).getUserSeq());
+            System.out.println(gameRoom.getUserList().get(i).getSessionId());
+        }
         if (!gameRoom.isUserPresent(userInfo)) {
+            System.out.println("유저가 존재하지 않나요");
             throw new NoSuchElementException("유저가 존재하지 않습니다.");
         }
         gameRoom.ready(userInfo);
