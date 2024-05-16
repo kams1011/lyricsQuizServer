@@ -71,7 +71,7 @@ public class ApiControllerAdvice {
     }
 
     @ExceptionHandler(PlayGameError.class)
-    public ResponseEntity<Response> PlayGameError(RoomAccessError e) {
+    public ResponseEntity<Response> PlayGameError(PlayGameError e) {
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Response.fail(e.getErrorCode().getMessage(), null, e.getErrorCode()));
     }
 
