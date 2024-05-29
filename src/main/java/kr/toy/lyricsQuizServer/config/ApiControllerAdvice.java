@@ -3,6 +3,7 @@ package kr.toy.lyricsQuizServer.config;
 import kr.toy.lyricsQuizServer.common.domain.ErrorCode;
 import kr.toy.lyricsQuizServer.common.domain.Response;
 import kr.toy.lyricsQuizServer.config.CustomError.DomainValidError;
+import kr.toy.lyricsQuizServer.config.CustomError.PlayGameError;
 import kr.toy.lyricsQuizServer.config.CustomError.RoomAccessError;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -69,11 +70,16 @@ public class ApiControllerAdvice {
         return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Response.fail(e.getErrorCode().getMessage(), null, e.getErrorCode()));
     }
 
-    @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class,
-            NoSuchElementException.class, RuntimeException.class, NullPointerException.class})
-    public ResponseEntity<Response> handleException(Exception e){
-        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Response.fail(e.getMessage(), null, null));
+    @ExceptionHandler(PlayGameError.class)
+    public ResponseEntity<Response> PlayGameError(PlayGameError e) {
+        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Response.fail(e.getErrorCode().getMessage(), null, e.getErrorCode()));
     }
+
+//    @ExceptionHandler({IllegalArgumentException.class, IllegalStateException.class,
+//            NoSuchElementException.class, RuntimeException.class, NullPointerException.class})
+//    public ResponseEntity<Response> handleException(Exception e){
+//        return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(Response.fail(e.getMessage(), null, null));
+//    }
 
 
 

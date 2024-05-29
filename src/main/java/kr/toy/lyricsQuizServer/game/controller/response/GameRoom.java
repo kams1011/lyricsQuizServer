@@ -120,11 +120,11 @@ public class GameRoom implements Serializable {
         }
     }
     public boolean isUserPresent(UserInfo user){
-        if (!this.userList.contains(user)) {
-            return false;
-        }
+        boolean isUserPresent = this.userList.stream()
+                .filter(data -> data.getUserSeq().equals(user.getUserSeq()))
+                .findFirst().isPresent();
 
-        return true;
+        return isUserPresent;
     }
 
     public void isHostPresent(UserInfo host){
@@ -137,14 +137,8 @@ public class GameRoom implements Serializable {
         }
     }
 
-    public boolean isEveryoneReady(UserInfo host){
-        System.out.println("listSize : " + getUserList().size());
-        for (int i=0; i<getUserList().size(); i++) {
-            System.out.println(i + "번쨰 : " + getUserList().get(i).isReady());
-            System.out.println(i + "번쨰 : " + getUserList().get(i).getUserSeq());
-            System.out.println(i + "번쨰 : " + isHost(getUserList().get(i)));
-        }
-        if (getUserList().stream().filter(user -> !user.isReady() && !isHost(host))
+    public boolean isEveryoneReady(){
+        if (getUserList().stream().filter(user -> !user.isReady() && !isHost(user))
                 .findAny().isPresent()) {
             return false;
         }

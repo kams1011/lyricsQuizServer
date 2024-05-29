@@ -1,15 +1,15 @@
 package kr.toy.lyricsQuizServer.game.controller;
 
 import kr.toy.lyricsQuizServer.common.domain.Response;
+import kr.toy.lyricsQuizServer.config.CustomError.PlayGameError;
 import kr.toy.lyricsQuizServer.game.controller.port.GameService;
 import kr.toy.lyricsQuizServer.game.domain.dto.GameCreate;
 import kr.toy.lyricsQuizServer.game.domain.dto.GamePassword;
 import kr.toy.lyricsQuizServer.quiz.controller.port.QuizService;
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
 import kr.toy.lyricsQuizServer.quiz.domain.dto.QuizDetailToCreateRoom;
-import kr.toy.lyricsQuizServer.quiz.domain.dto.StreamingInfo;
+import kr.toy.lyricsQuizServer.game.domain.dto.StreamingInfo;
 import kr.toy.lyricsQuizServer.user.domain.User;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.data.domain.PageImpl;
@@ -18,9 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.data.domain.Pageable;
 
-import java.io.IOException;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @RestController
@@ -107,13 +105,10 @@ public class GameController {
     }
     @PatchMapping("/start")
     public ResponseEntity<Response> gameStart(@RequestParam Long roomId, User user){
-        StreamingInfo streamingInfo = null;
-        try{
-            gameService.start(roomId, user);
-            streamingInfo = gameService.getStreamingInfo(roomId);
-        } catch (Exception e){
-            e.printStackTrace();
-        }
+        StreamingInfo streamingInfo = gameService.getStreamingInfo(roomId);
+
+        gameService.start(roomId, user);
+
         return ResponseEntity.ok().body(new Response(true, null, streamingInfo, null));
     }
 

@@ -30,6 +30,7 @@ public class RedisConfig {
     public Map<String, ChannelTopic> channelTopic() {
         Map<String, ChannelTopic> map = new HashMap<>();
         map.put(RedisCategory.GAME_ROOM.name(), new ChannelTopic(RedisCategory.GAME_ROOM.name()));
+        map.put(RedisCategory.STREAMING.name(), new ChannelTopic(RedisCategory.STREAMING.name()));
         map.put(RedisCategory.INVITE_PENDING.name(), new ChannelTopic(RedisCategory.INVITE_PENDING.name()));
         return map;
     }
@@ -40,11 +41,13 @@ public class RedisConfig {
     @Bean
     public RedisMessageListenerContainer redisMessageListener(RedisConnectionFactory connectionFactory,
                                                               MessageListenerAdapter sendMessageListenerAdapter,
+                                                              MessageListenerAdapter sendStreamingInfoListenerAdapter,
                                                               MessageListenerAdapter inviteListenerAdapter,
                                                               Map<String, ChannelTopic> channelTopic) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
         container.addMessageListener(sendMessageListenerAdapter, channelTopic.get(RedisCategory.GAME_ROOM.name()));
+        container.addMessageListener(sendStreamingInfoListenerAdapter, channelTopic.get(RedisCategory.STREAMING.name()));
         container.addMessageListener(inviteListenerAdapter, channelTopic.get(RedisCategory.INVITE_PENDING.name()));
         return container;
     }
@@ -56,6 +59,12 @@ public class RedisConfig {
     public MessageListenerAdapter sendMessageListenerAdapter(RedisSubscriber subscriber) {
 
         return new MessageListenerAdapter(subscriber, "sendMessage");
+    }
+
+    @Bean
+    public MessageListenerAdapter sendStreamingInfoListenerAdapter(RedisSubscriber subscriber) {
+
+        return new MessageListenerAdapter(subscriber, "sendStreamingInfo");
     }
 
     @Bean

@@ -154,7 +154,6 @@ export default {
           .then(response => {
             this.isAllowed = !this.isAllowed;
             if (this.isAllowed) {
-
               this.inviteNotice(response.data.data.userSeq);
             } else {
               alert('초대를 거부했습니다.');
