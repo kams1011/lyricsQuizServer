@@ -100,7 +100,7 @@ public class GameControllerTest extends GameRestDocs {
                 .andDo(print())
                 .andDo(document(documentPath,
                         requestFields(
-                                fieldWithPath("roomId").description("방 번호").type(JsonFieldType.NUMBER),
+                                fieldWithPath("gameRoomSeq").description("방 번호").type(JsonFieldType.NUMBER),
                                 fieldWithPath("password").description("비밀번호").type(JsonFieldType.STRING)
                         ),
                         responseFields(
