@@ -67,7 +67,7 @@ public class GameController {
         } catch (Exception e){
             e.printStackTrace();
         }
-        return ResponseEntity.ok().body(Response.success("유효한 비밀번호입니다."));
+        return ResponseEntity.ok().body(Response.success(null,"유효한 비밀번호입니다."));
     }
 
     @GetMapping("/host")

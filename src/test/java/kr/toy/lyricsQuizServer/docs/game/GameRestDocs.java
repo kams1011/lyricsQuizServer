@@ -48,8 +48,6 @@ public class GameRestDocs extends RestDocsSupport<Game> {
     @MockBean
     protected RedisUtil redisUtil;
 
-
-
     protected final String apiUrl = "/api/game";
 
     @Override
@@ -114,12 +112,11 @@ public class GameRestDocs extends RestDocsSupport<Game> {
         quizRepository.save(quiz, quizContent);
 
 
-
-
         Game game = Game.builder()
                 .gameRoomSeq(getId())
                 .gameStatus(GameStatus.READY)
-                .isSecretRoom(false)
+                .isSecretRoom(true)
+                .password("1234")
                 .isDeleted(false)
                 .createdAt(LocalDateTime.now())
                 .attendeeCount(1)

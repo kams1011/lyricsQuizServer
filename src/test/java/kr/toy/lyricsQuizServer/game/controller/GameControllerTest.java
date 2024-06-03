@@ -1,15 +1,18 @@
 package kr.toy.lyricsQuizServer.game.controller;
 
+import kr.toy.lyricsQuizServer.common.domain.Response;
 import kr.toy.lyricsQuizServer.config.ResponseType;
 import kr.toy.lyricsQuizServer.docs.game.GameRestDocs;
 import kr.toy.lyricsQuizServer.game.controller.response.GameRoom;
 import kr.toy.lyricsQuizServer.game.domain.Game;
+import kr.toy.lyricsQuizServer.game.domain.dto.GamePassword;
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.JsonFieldType;
@@ -20,6 +23,7 @@ import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
@@ -75,12 +79,37 @@ public class GameControllerTest extends GameRestDocs {
 //
 //    }
 //
-//    @Test
-//    public void check_game_password_test(){
-//
-//
-//    }
-//
+    @Test
+    public void check_game_password_test() throws Exception {
+        Game game = initializeDummyData();
+
+        GamePassword gamePassword = GamePassword.builder().roomId(game.getGameRoomSeq())
+                .password("1234")
+                .build();
+
+        gameService.checkPassword(gamePassword);
+        verify(gameService).checkPassword(gamePassword);
+        ResultActions perform = this.mockMvc
+                .perform(RestDocumentationRequestBuilders
+                        .post(apiUrl + "/password")
+                        .content(objectMapper.writeValueAsString(gamePassword))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                );
+        perform.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document(documentPath,
+                        requestFields(
+                                fieldWithPath("roomId").description("방 번호").type(JsonFieldType.NUMBER),
+                                fieldWithPath("password").description("비밀번호").type(JsonFieldType.STRING)
+                        ),
+                        responseFields(
+                                this.commonResponse())
+                )).andReturn();
+
+
+    }
+
     @Test
     public void get_user_is_host_test() throws Exception {
         Game game = initializeDummyData();
