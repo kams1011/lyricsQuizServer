@@ -1,5 +1,6 @@
 package kr.toy.lyricsQuizServer.game.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import kr.toy.lyricsQuizServer.common.domain.Response;
 import kr.toy.lyricsQuizServer.config.ResponseType;
 import kr.toy.lyricsQuizServer.docs.game.GameRestDocs;
@@ -18,7 +19,9 @@ import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -194,11 +197,33 @@ public class GameControllerTest extends GameRestDocs {
 //
 //    }
 //
-//    @Test
-//    public void check_answer_test(){
-//
-//
-//    }
+    @Test
+    public void check_answer_test() throws Exception {
+        Game game = initializeDummyData();
+
+        when(gameService.checkAnswer(game.getGameRoomSeq(), game.getQuiz().getAnswer())).thenReturn(true);
+        Map<String, String> map = new HashMap();
+        map.put("answer", game.getQuiz().getAnswer());
+        ResultActions perform = this.mockMvc
+                .perform(RestDocumentationRequestBuilders
+                        .post(apiUrl + "/answer/" + game.getGameRoomSeq())
+                        .content(objectMapper.writeValueAsString(map))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                );
+        perform.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document(documentPath,
+                        requestFields(
+                                fieldWithPath("answer").description("정답").type(JsonFieldType.STRING)
+                        ),
+                        responseFields(
+                                this.commonResponse(ResponseType.BOOLEAN)
+                        )
+                )).andReturn();
+
+
+    }
 //
 //
 
