@@ -1,6 +1,7 @@
 package kr.toy.lyricsQuizServer.game.domain.dto;
 
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -18,6 +19,8 @@ public class GameCreate {
 
         private Long quizSeq;
 
+
+        @Builder
         public GameCreate(String roomName, Boolean isSecretRoom, String password, Integer attendeeLimit, Long quizSeq){
                 this.roomName = roomName;
                 this.isSecretRoom = isSecretRoom;

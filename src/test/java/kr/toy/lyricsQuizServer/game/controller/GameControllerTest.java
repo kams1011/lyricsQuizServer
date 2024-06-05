@@ -6,26 +6,25 @@ import kr.toy.lyricsQuizServer.config.ResponseType;
 import kr.toy.lyricsQuizServer.docs.game.GameRestDocs;
 import kr.toy.lyricsQuizServer.game.controller.response.GameRoom;
 import kr.toy.lyricsQuizServer.game.domain.Game;
+import kr.toy.lyricsQuizServer.game.domain.dto.GameCreate;
 import kr.toy.lyricsQuizServer.game.domain.dto.GamePassword;
 import kr.toy.lyricsQuizServer.quiz.domain.Quiz;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
-import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.web.servlet.ResultActions;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
@@ -62,26 +61,77 @@ public class GameControllerTest extends GameRestDocs {
                         pathParameters(parameterWithName("keyword").description("검색어").optional()),
                         responseFields(
                                 this.commonResponse()
-                        ).and(
-
                         )
                 )).andReturn();
-
-
     }
 
     @Test
     public void get_quiz_summary_list_test() throws Exception {
+        List<Game> gameList = initializeDummyDataList();
+        List<Quiz> quizList = gameList.stream()
+                .map(data -> data.getQuiz())
+                .collect(Collectors.toList());
 
+        PageImpl<Quiz> responsePages = new PageImpl(quizList);
+
+        when(quizService.getList(any(), any())).thenReturn(responsePages);
+
+        ResultActions perform = this.mockMvc
+                .perform(RestDocumentationRequestBuilders
+                        .get(apiUrl + "/quiz")
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                );
+
+        perform.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document(documentPath,
+                        pathParameters(parameterWithName("keyword").description("검색어").optional()),
+                        responseFields(
+                                this.commonResponse()
+                        )
+                )).andReturn();
 
     }
-//
-//    @Test
-//    public void create_test(){
-//
-//
-//    }
-//
+
+    @Test
+    public void create_test() throws Exception {
+        Game game = initializeDummyData();
+        GameCreate gameCreate = GameCreate.builder()
+                .quizSeq(game.getQuiz().getQuizSeq())
+                .attendeeLimit(12)
+                .isSecretRoom(true)
+                .password("55123444")
+                .roomName("방제목이에요")
+                .build();
+
+        when(gameService.create(any(), any()))
+                .thenReturn(Game.from(gameCreate, game.getHost(), game.getQuiz()).create(LocalDateTime.now()));
+
+        ResultActions perform = this.mockMvc
+                .perform(RestDocumentationRequestBuilders
+                        .post(apiUrl)
+                        .content(objectMapper.writeValueAsString(gameCreate))
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                );
+        perform.andExpect(status().isOk())
+                .andDo(print())
+                .andDo(document(documentPath,
+                        requestFields(
+                                fieldWithPath("roomName").description("방제목").type(JsonFieldType.STRING),
+                                fieldWithPath("isSecretRoom").description("비밀 방 여부").type(JsonFieldType.BOOLEAN),
+                                fieldWithPath("password").description("비밀번호").type(JsonFieldType.STRING),
+                                fieldWithPath("attendeeLimit").description("인원 수 제한").type(JsonFieldType.NUMBER),
+                                fieldWithPath("quizSeq").description("퀴즈 고유키").type(JsonFieldType.NUMBER)
+                        ),
+                        responseFields(
+                                this.commonResponse()
+                        )
+                )).andReturn();
+    }
+
+
     @Test
     public void check_game_password_test() throws Exception {
         Game game = initializeDummyData();
@@ -103,7 +153,7 @@ public class GameControllerTest extends GameRestDocs {
                 .andDo(print())
                 .andDo(document(documentPath,
                         requestFields(
-                                fieldWithPath("gameRoomSeq").description("방 번호").type(JsonFieldType.NUMBER),
+                                fieldWithPath("roomId").description("방 번호").type(JsonFieldType.NUMBER),
                                 fieldWithPath("password").description("비밀번호").type(JsonFieldType.STRING)
                         ),
                         responseFields(
@@ -153,6 +203,7 @@ public class GameControllerTest extends GameRestDocs {
 
 //    @Test
 //    public void enter_test(){
+
 //    }
 //
 //    @Test
@@ -224,9 +275,5 @@ public class GameControllerTest extends GameRestDocs {
 
 
     }
-//
-//
-
-
 
 }
