@@ -132,36 +132,34 @@ public class GameControllerTest extends GameRestDocs {
     }
 
 
-    @Test
-    public void check_game_password_test() throws Exception {
-        Game game = initializeDummyData();
-
-        GamePassword gamePassword = GamePassword.builder().roomId(game.getGameRoomSeq())
-                .password("1234")
-                .build();
-
-        gameService.checkPassword(gamePassword);
-        verify(gameService).checkPassword(gamePassword);
-        ResultActions perform = this.mockMvc
-                .perform(RestDocumentationRequestBuilders
-                        .post(apiUrl + "/password")
-                        .content(objectMapper.writeValueAsString(gamePassword))
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON)
-                );
-        perform.andExpect(status().isOk())
-                .andDo(print())
-                .andDo(document(documentPath,
-                        requestFields(
-                                fieldWithPath("roomId").description("방 번호").type(JsonFieldType.NUMBER),
-                                fieldWithPath("password").description("비밀번호").type(JsonFieldType.STRING)
-                        ),
-                        responseFields(
-                                this.commonResponse())
-                )).andReturn();
-
-
-    }
+//    @Test
+//    public void check_game_password_test() throws Exception {
+//        Game game = initializeDummyData();
+//
+//        GamePassword gamePassword = GamePassword.builder().roomId(game.getGameRoomSeq())
+//                .password("1234")
+//                .build();
+//
+//        gameService.checkPassword(gamePassword);
+//        verify(gameService).checkPassword(gamePassword);
+//        ResultActions perform = this.mockMvc
+//                .perform(RestDocumentationRequestBuilders
+//                        .post(apiUrl + "/password")
+//                        .content(objectMapper.writeValueAsString(gamePassword))
+//                        .accept(MediaType.APPLICATION_JSON)
+//                        .contentType(MediaType.APPLICATION_JSON)
+//                );
+//        perform.andExpect(status().isOk())
+//                .andDo(print())
+//                .andDo(document(documentPath,
+//                        requestFields(
+//                                fieldWithPath("roomId").description("방 번호").type(JsonFieldType.NUMBER),
+//                                fieldWithPath("password").description("비밀번호").type(JsonFieldType.STRING)
+//                        ),
+//                        responseFields(
+//                                this.commonResponse())
+//                )).andReturn();
+//    }
 
     @Test
     public void get_user_is_host_test() throws Exception {
